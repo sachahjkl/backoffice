@@ -7,6 +7,7 @@ import { I18nService } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { PageHeader } from '@shared/page-header/page-header';
+import { Notice } from '@shared/notice/notice';
 import { formatLocalizedDate, LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
 import {
   BusinessCardContent,
@@ -23,7 +24,7 @@ const defaultContent: BusinessCardContent = {
 
 @Component({
   selector: 'app-business-card',
-  imports: [Button, FormField, LocalizedDatePipe, PageHeader, RouterLink],
+  imports: [Button, FormField, LocalizedDatePipe, Notice, PageHeader, RouterLink],
   templateUrl: './business-card.html',
   styleUrl: './business-card.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

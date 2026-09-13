@@ -29,8 +29,28 @@ import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
 import { Tabs, type TabItem } from '@shared/tabs/tabs';
 import { TabLayout, TabPanel } from '@shared/tabs/tab-panel';
+import { TableSort } from '@shared/table-sort/table-sort';
+import { createWorkspaceTable, type WorkspaceTableOptions } from '../configuration/workspace-table';
 
 type AffairView = 'attention' | 'active' | 'completed' | 'all';
+
+type Affair = (typeof AffairList.Type)[number];
+const affairTableOptions: WorkspaceTableOptions<Affair> = {
+  columns: [
+    { kind: 'text', key: 'reference', value: (item) => item.reference },
+    { kind: 'text', key: 'title', value: (item) => item.title },
+    { kind: 'text', key: 'client', value: (item) => item.clientDisplayName },
+    { kind: 'text', key: 'status', value: (item) => item.status },
+    {
+      kind: 'number',
+      key: 'documents',
+      value: (item) => item.quoteIds.length + item.orderIds.length + item.invoiceIds.length,
+    },
+  ],
+  defaultSort: 'referenceDesc',
+  id: (item) => item.id,
+  searchKeys: ['reference', 'title', 'clientDisplayName'],
+};
 
 @Component({
   host: { class: 'page-container' },
@@ -48,6 +68,7 @@ type AffairView = 'attention' | 'active' | 'completed' | 'all';
     Tabs,
     TabLayout,
     TabPanel,
+    TableSort,
   ],
   templateUrl: './affairs.html',
   styleUrl: './affairs.scss',
@@ -86,6 +107,7 @@ export class Affairs {
       return affair.status === 'open';
     });
   });
+  protected readonly table = createWorkspaceTable(this.visible, affairTableOptions);
 
   constructor() {
     afterNextRender(() => {

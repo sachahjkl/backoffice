@@ -29,12 +29,13 @@ import { Button } from '@shared/button/button';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
+import { FieldHint } from '@shared/field-hint/field-hint';
 import { clientNavigationQuery } from '../client-navigation';
 
 @Component({
   selector: 'app-client-access-editor',
   host: { class: 'page-container' },
-  imports: [Can, Button, FormField, Notice, PageHeader, RouterLink],
+  imports: [Can, Button, FieldHint, FormField, Notice, PageHeader, RouterLink],
   templateUrl: './client-access-editor.html',
   styleUrl: './client-access-editor.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

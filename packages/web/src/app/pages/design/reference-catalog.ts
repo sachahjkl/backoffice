@@ -194,6 +194,22 @@ export const referenceCatalog: readonly ReferenceEntry[] = [
     variants: 2,
   },
   {
+    id: 'field-hint',
+    name: 'FieldHint',
+    group: 'fields',
+    selectors: '[appFieldHint]',
+    source: 'field-hint/field-hint.ts',
+    variants: 2,
+  },
+  {
+    id: 'inline-edit',
+    name: 'InlineEdit',
+    group: 'fields',
+    selectors: 'div[appInlineEdit]',
+    source: 'inline-edit/inline-edit.ts',
+    variants: 3,
+  },
+  {
     id: 'data-table',
     name: 'DataTable',
     group: 'data',

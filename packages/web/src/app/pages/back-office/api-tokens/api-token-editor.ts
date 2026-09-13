@@ -106,7 +106,7 @@ export class ApiTokenEditor {
   protected readonly permissionOptions = computed(() =>
     ApiTokenPermissionCodes.map((code) => ({
       code,
-      label: this.i18n.t(`backOffice.apiTokens.permission.${code}`),
+      description: this.i18n.t(`permission.${code}`),
     })),
   );
 

@@ -14,6 +14,7 @@
       *appCan="'supplier.update'"
       pageActions
       appLinkButton
+      icon="pencil"
       [routerLink]="['/backoffice/suppliers', current.id, 'edit']"
       [queryParams]="listQuery()"
       >{{ i18n.t('supplier.edit') }}</a
@@ -23,6 +24,7 @@
       *appCan="'supplier.archive'"
       pageActions
       appButton
+      icon="folder"
       type="button"
       [disabled]="changing()"
       (click)="changeArchive()"

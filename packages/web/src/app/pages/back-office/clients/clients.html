@@ -6,9 +6,10 @@
       *appCan="'client.create'"
       pageActions
       appLinkButton
+      icon="plus"
       variant="primary"
       routerLink="/backoffice/clients/new"
-      ><app-icon name="plus" />{{ i18n.t('backOffice.clients.create') }}</a
+      >{{ i18n.t('backOffice.clients.create') }}</a
     >
   </app-page-header>
   <app-tabs [label]="i18n.t('backOffice.clients.tabs')" [tabs]="tabs()" [preserveQuery]="true" />

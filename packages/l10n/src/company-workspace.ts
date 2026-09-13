@@ -24,6 +24,15 @@ export const companyWorkspaceText = {
     'company.module.tax': 'Fiscalité France',
     'company.module.ai': 'Analyse assistée',
     'company.module.demonstration': 'Démonstration',
+    'company.module.sales.hint': 'Gère les clients, devis, commandes, factures et avoirs.',
+    'company.module.purchasing.hint': 'Gère les fournisseurs, factures d’achat et paiements.',
+    'company.module.banking.hint': 'Gère les relevés bancaires, transactions et rapprochements.',
+    'company.module.accounting.hint':
+      'Gère les écritures, journaux, exercices et contrôles comptables.',
+    'company.module.tax.hint': 'Gère les règles fiscales françaises et les déclarations de TVA.',
+    'company.module.ai.hint': 'Active les analyses assistées pour les documents compatibles.',
+    'company.module.demonstration.hint':
+      'Autorise la réinitialisation protégée des données hors production.',
     'company.retention': 'Conservation',
     'company.retentionYears': 'Durée de conservation en années',
     'company.retentionExplanation':
@@ -81,6 +90,14 @@ export const companyWorkspaceText = {
     'company.module.tax': 'France tax',
     'company.module.ai': 'Assisted analysis',
     'company.module.demonstration': 'Demonstration',
+    'company.module.sales.hint': 'Manages clients, quotes, orders, invoices, and credit notes.',
+    'company.module.purchasing.hint': 'Manages suppliers, purchase invoices, and payments.',
+    'company.module.banking.hint': 'Manages bank statements, transactions, and reconciliations.',
+    'company.module.accounting.hint':
+      'Manages entries, journals, fiscal years, and accounting controls.',
+    'company.module.tax.hint': 'Manages French tax rules and VAT returns.',
+    'company.module.ai.hint': 'Enables assisted analysis for compatible documents.',
+    'company.module.demonstration.hint': 'Allows protected data resets outside production.',
     'company.retention': 'Retention',
     'company.retentionYears': 'Retention period in years',
     'company.retentionExplanation':

@@ -15,6 +15,8 @@ import { FilterChoice, type FilterChoiceOption } from '@shared/filter-choice/fil
 import { DateRangeFilter, type DateRange } from '@shared/date-range-filter/date-range-filter';
 import { ObjectPicker } from '@shared/object-picker/object-picker';
 import { FieldGroup } from '@shared/field-group/field-group';
+import { FieldHint } from '@shared/field-hint/field-hint';
+import { InlineEdit } from '@shared/inline-edit/inline-edit';
 import { StoryPage, currentReference, type StoryDefinition } from '../story-page';
 import { referenceText } from '../reference-text';
 
@@ -44,6 +46,8 @@ interface FieldPreview {
     DateRangeFilter,
     ObjectPicker,
     FieldGroup,
+    FieldHint,
+    InlineEdit,
   ],
   templateUrl: './field-stories.html',
   styleUrl: './story.scss',
@@ -78,6 +82,8 @@ export class FieldStories {
     disabled(path, () => this.model().disabled);
   });
   protected readonly event = signal('');
+  protected readonly inlineEditing = signal(false);
+  protected readonly inlineValue = signal(this.text().examples.firstName);
   protected readonly options = computed<readonly FilterChoiceOption[]>(() =>
     this.model().empty
       ? []
@@ -140,5 +146,10 @@ export class FieldStories {
         afterNextRender(() => this.emailField().focusBoundControl(), { injector: this.injector });
       },
     });
+  }
+  protected saveInline(value: string): void {
+    this.inlineValue.set(value);
+    this.inlineEditing.set(false);
+    this.event.set(value);
   }
 }

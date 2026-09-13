@@ -5,14 +5,23 @@
     <div pageActions class="spacer-x-3">
       <a
         appLinkButton
+        icon="mail"
         variant="primary"
         routerLink="invitations/new"
         *appCan="'user.create'"
         [queryParams]="navigation.params()"
         >{{ i18n.t('configurationWorkspace.newInvitation') }}</a
       >
-      <a appLinkButton routerLink="roles" *appCan="'role.read'">{{ i18n.t('role.title') }}</a>
-      <button appButton type="button" [disabled]="busy() || loading()" (click)="reload()">
+      <a appLinkButton icon="user" routerLink="roles" *appCan="'role.read'"
+        >{{ i18n.t('role.title') }}</a
+      >
+      <button
+        appButton
+        icon="redo"
+        type="button"
+        [disabled]="busy() || loading()"
+        (click)="reload()"
+      >
         {{ i18n.t('team.reload') }}
       </button>
     </div>

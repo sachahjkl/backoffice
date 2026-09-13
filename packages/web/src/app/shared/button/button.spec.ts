@@ -5,8 +5,12 @@ import { Button, type ButtonVariant } from './button';
 @Component({
   imports: [Button],
   template: `
-    <button appButton type="button" [variant]="variant()" [disabled]="disabled()">Action</button>
-    <a appLinkButton href="#target" [variant]="variant()">Destination</a>
+    <button appButton type="button" icon="plus" [variant]="variant()" [disabled]="disabled()">
+      Action
+    </button>
+    <a appLinkButton href="#target" icon="external" iconPosition="end" [variant]="variant()"
+      >Destination</a
+    >
   `,
 })
 class TestHost {
@@ -26,6 +30,8 @@ describe('Button', () => {
     expect(link.dataset['buttonVariant']).toBe('ghost');
     expect(button.type).toBe('button');
     expect(link.getAttribute('href')).toBe('#target');
+    expect(button.firstElementChild?.tagName).toBe('APP-ICON');
+    expect(link.lastElementChild?.tagName).toBe('APP-ICON');
 
     fixture.componentInstance.variant.set('link');
     fixture.componentInstance.disabled.set(true);

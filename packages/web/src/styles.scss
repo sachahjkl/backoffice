@@ -168,42 +168,8 @@ p {
   text-wrap: pretty;
 }
 
-.document-text-input {
-  font-weight: 400;
-  min-block-size: 12rem;
-  padding: var(--space-4);
-  overflow-wrap: anywhere;
-  white-space: pre-wrap;
-  outline-offset: -2px;
-}
-.document-text-input > * + * {
-  margin-block-start: var(--space-3);
-}
-.document-text-input h2 {
-  font-size: var(--text-lg);
-}
-.document-text-input h3 {
-  font-size: var(--text-base);
-}
-.document-text-input ul,
-.document-text-input ol {
-  padding-inline-start: var(--space-6);
-}
-.document-text-input[aria-disabled="true"] {
-  opacity: 0.65;
-}
-.document-text-input[aria-invalid="true"] {
-  outline: 1px solid var(--color-danger);
-}
-
 router-outlet {
   display: none;
-}
-
-[appTabLayout] {
-  display: grid;
-  gap: var(--space-4);
-  min-inline-size: 0;
 }
 
 app-page-header .muted {
@@ -246,83 +212,6 @@ app-page-header .muted {
   font-size: var(--text-sm);
 }
 
-.data-table {
-  width: 100%;
-  min-width: 0;
-  max-width: 100%;
-  margin: 0;
-  overflow-x: auto;
-  overscroll-behavior-inline: contain;
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius-sm);
-  background: var(--color-panel);
-}
-
-.data-table:focus-visible {
-  outline: 2px solid var(--color-focus);
-  outline-offset: 2px;
-  box-shadow: var(--shadow-focus);
-}
-
-.data-table table {
-  width: max-content;
-  min-width: 100%;
-  border-collapse: collapse;
-}
-
-.data-table th,
-.data-table td {
-  padding: var(--space-2) var(--space-3);
-  border-bottom: 1px solid var(--color-line-strong);
-  text-align: start;
-  font-variant-numeric: tabular-nums;
-  vertical-align: middle;
-  white-space: nowrap;
-  font-size: var(--text-sm);
-}
-
-.data-table thead th {
-  padding-block: var(--space-1);
-  background: var(--color-surface-sunken);
-  color: var(--color-muted);
-  font-size: var(--text-xs);
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
-}
-
-.data-table[data-table-layout="fluid"] table {
-  width: 100%;
-  table-layout: fixed;
-}
-
-.data-table[data-table-layout="fluid"].wide-table table {
-  min-width: 40rem;
-}
-
-.data-table[data-table-layout="fluid"] th,
-.data-table[data-table-layout="fluid"] td {
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
-
-.data-table .actions-column {
-  text-align: right;
-}
-
-.data-table tbody tr,
-.data-table tbody tr * {
-  transition: none;
-  animation: none;
-}
-
-.data-table tbody tr:hover {
-  background: color-mix(in oklab, var(--color-surface-sunken), transparent 35%);
-}
-
-.data-table tbody tr:last-child td,
-.data-table tbody tr:last-child th {
-  border-bottom: 0;
-}
 .anchored-title {
   display: flex;
   align-items: baseline;
@@ -527,14 +416,6 @@ textarea.input {
   font-size: var(--text-sm);
 }
 
-.field-hint {
-  display: block;
-  margin-block: var(--space-1) 0;
-  color: var(--color-muted);
-  font-size: var(--text-xs);
-  font-weight: 400;
-}
-
 .field-error {
   color: var(--color-danger);
   font-size: var(--text-xs);
@@ -605,55 +486,8 @@ textarea.input {
   accent-color: var(--color-button-primary-highlight);
 }
 
-.badge {
-  display: inline-block;
-  justify-self: start;
-  padding: 0.18rem 0.4rem;
-  border: 1px solid var(--color-line-strong);
-  border-radius: var(--radius-sm);
-  background: color-mix(in oklab, var(--color-surface-sunken), var(--color-surface-raised) 28%);
-  font-size: var(--text-xs);
-  line-height: 1.2;
-}
-.badge.ok {
-  border-color: color-mix(in oklab, var(--color-success), white 48%);
-  background: var(--color-success-soft);
-  color: var(--color-success);
-}
-.badge.warn {
-  border-color: color-mix(in oklab, var(--color-warning), white 48%);
-  background: var(--color-warning-soft);
-}
-.badge.err {
-  border-color: color-mix(in oklab, var(--color-danger), white 48%);
-  background: var(--color-danger-soft);
-  color: var(--color-danger);
-}
-.notice {
-  padding: var(--space-3) var(--space-4);
-  border: 1px solid color-mix(in oklab, var(--color-info), white 65%);
-  border-radius: var(--radius-sm);
-  background: var(--color-info-soft);
-  color: var(--color-info);
-}
-.notice.success {
-  border-color: color-mix(in oklab, var(--color-success), white 65%);
-  background: var(--color-success-soft);
-  color: var(--color-success);
-}
-
 .notice-flow > :where(.notice:not(:first-child), .notice + *) {
   margin-block-start: var(--space-4);
-}
-.notice.warning {
-  border-color: color-mix(in oklab, var(--color-warning), white 65%);
-  background: var(--color-warning-soft);
-  color: var(--color-warning);
-}
-.notice.danger {
-  border-color: color-mix(in oklab, var(--color-danger), white 65%);
-  background: var(--color-danger-soft);
-  color: var(--color-danger);
 }
 .grid {
   display: grid;
@@ -712,8 +546,7 @@ textarea.input {
   :where(a, button, input, select, textarea, summary, [tabindex="0"]):focus-visible {
     outline-color: Highlight;
   }
-  .ds-panel,
-  .badge {
+  .ds-panel {
     box-shadow: none;
   }
 }

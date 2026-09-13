@@ -16,6 +16,7 @@
       @if (client(); as current) { @if (!current.archived) {
       <a
         appLinkButton
+        icon="file-plus"
         variant="primary"
         routerLink="/backoffice/quotes/new"
         *appCan="'quote.create'"

@@ -25,7 +25,6 @@ import { EmptyState } from '@shared/empty-state/empty-state';
 import { FilterChip } from '@shared/filter-chip/filter-chip';
 import { FilterMenu, FilterPanel } from '@shared/filter-menu/filter-menu';
 import { FilterChoice } from '@shared/filter-choice/filter-choice';
-import { Icon } from '@shared/icon/icon';
 import { ListSearch } from '@shared/list-search/list-search';
 import { ListToolbar } from '@shared/list-toolbar/list-toolbar';
 import { ListWorkspace } from '@shared/list-toolbar/list-workspace';
@@ -61,7 +60,6 @@ import {
     FilterPanel,
     FilterChoice,
     FormField,
-    Icon,
     ListSearch,
     ListToolbar,
     ListWorkspace,

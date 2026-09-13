@@ -28,6 +28,7 @@
       @if (quote(); as quote) { @if (editAction(); as action) {
       <a
         appLinkButton
+        icon="pencil"
         [variant]="action.variant"
         [routerLink]="['/backoffice/quotes', quote.id, 'edit']"
         *appCan="'quote.update'"
@@ -37,6 +38,7 @@
       } @if (quote.status === 'draft') {
       <a
         appLinkButton
+        icon="mail"
         variant="primary"
         [routerLink]="['/backoffice/quotes', quote.id, 'publication']"
         *appCan="'quote.send'"
@@ -47,6 +49,7 @@
       <a
         *appCan="'quote.send'"
         appLinkButton
+        icon="external"
         [routerLink]="['/backoffice/quotes', quote.id, 'publication']"
         [queryParams]="context()"
       >

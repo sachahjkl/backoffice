@@ -140,10 +140,11 @@ export const accountingText = {
     'accounting.rows.other': '{count} résultats',
     'demo.reset': 'Réinitialiser la démonstration',
     'demo.title': 'Données de démonstration',
-    'demo.hint': 'Restaurez toutes les données de démonstration de cette installation staging.',
+    'demo.hint':
+      'Restaurez toutes les données de démonstration de cet environnement hors production.',
     'demo.password': 'Mot de passe de réinitialisation',
     'demo.confirm':
-      'Remplacer toutes les données de staging par le jeu de démonstration ? Toutes les sessions seront fermées.',
+      'Remplacer toutes les données par le jeu de démonstration ? Toutes les sessions seront fermées.',
     'demo.error':
       'La réinitialisation est indisponible. Vérifiez l’environnement et le secret serveur.',
   },
@@ -286,10 +287,9 @@ export const accountingText = {
     'accounting.rows.other': '{count} results',
     'demo.reset': 'Reset demonstration data',
     'demo.title': 'Demonstration data',
-    'demo.hint': 'Restore all demonstration data for this staging installation.',
+    'demo.hint': 'Restore all demonstration data for this non-production environment.',
     'demo.password': 'Reset password',
-    'demo.confirm':
-      'Replace all staging data with the demonstration dataset? All sessions will close.',
+    'demo.confirm': 'Replace all data with the demonstration dataset? All sessions will close.',
     'demo.error': 'The reset is unavailable. Check the environment and the server secret.',
   },
 } as const;

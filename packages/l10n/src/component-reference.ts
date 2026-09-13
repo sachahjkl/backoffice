@@ -40,6 +40,8 @@ function storyProperties(description: StoryDescriptions) {
       ['variant', 'ButtonVariant', 'default'],
       buttonVariantProperty,
       ['iconOnly', 'boolean', 'false'],
+      ['icon', 'IconName | undefined', 'undefined'],
+      ['iconPosition', "'start' | 'end'", 'start'],
       ['disabled', `boolean · ${description.nativeAttribute}`, 'false'],
       ['type', `'button' | 'submit' | 'reset' · ${description.nativeAttribute}`, 'submit'],
       ['click', `MouseEvent · ${description.nativeEvent}`, '—'],
@@ -48,6 +50,8 @@ function storyProperties(description: StoryDescriptions) {
       ['variant', 'ButtonVariant', 'default'],
       buttonVariantProperty,
       ['iconOnly', 'boolean', 'false'],
+      ['icon', 'IconName | undefined', 'undefined'],
+      ['iconPosition', "'start' | 'end'", 'start'],
       ['routerLink', 'string | readonly any[] | UrlTree | null | undefined', 'undefined'],
       ['href', `string · ${description.nativeAttribute}`, "''"],
     ],
@@ -70,6 +74,7 @@ function storyProperties(description: StoryDescriptions) {
       ['actions', 'readonly MenuAction[]', 'required'],
       ['primaryDisabled / menuDisabled', 'boolean', 'false'],
       ['variant', 'ButtonVariant', 'primary'],
+      ['icon', 'IconName | undefined', 'undefined'],
       buttonVariantProperty,
       ['primaryAction', 'OutputEmitterRef<void>', '—'],
       ['actionSelected', 'OutputEmitterRef<string>', '—'],
@@ -173,6 +178,18 @@ function storyProperties(description: StoryDescriptions) {
     'field-group': [
       ['legend', 'string', 'required'],
       ['description', 'string', "''"],
+    ],
+    'field-hint': [['style', description.hostStyles, '—']],
+    'inline-edit': [
+      ['label / value / emptyValue', 'string', 'required'],
+      ['displayValue', 'string | undefined', 'undefined'],
+      ['editable', 'boolean', 'true'],
+      ['editing / saving / required', 'boolean', 'false'],
+      ['inputType', "'text' | 'email' | 'tel'", 'text'],
+      ['maximumLength', 'number | undefined', 'undefined'],
+      ['options', 'readonly InlineEditOption[]', '[]'],
+      ['editRequested / cancelRequested', 'OutputEmitterRef<void>', '—'],
+      ['saveRequested', 'OutputEmitterRef<string>', '—'],
     ],
     'data-table': [
       ['tableLayout', "'scroll' | 'fluid'", 'scroll'],
@@ -398,7 +415,7 @@ const frenchStories = /* @__PURE__ */ storyDefinitions(
   },
   {
     button:
-      '<button appButton type="button" variant="primary" (click)="preview()">Aperçu</button>\n<!-- ghost partage les surfaces des onglets et de la barre d’icônes. link reste souligné. -->\n<button appButton type="button" variant="ghost" (click)="preview()">Aperçu secondaire</button>',
+      '<button appButton type="button" variant="primary" icon="check" (click)="preview()">Aperçu</button>\n<button appButton type="button" icon="external" iconPosition="end" (click)="preview()">Ouvrir</button>\n<!-- ghost partage les surfaces des onglets et de la barre d’icônes. link reste souligné. -->',
     'link-button':
       '<a appLinkButton variant="ghost" routerLink="/design/button">Référence du bouton</a>\n<a appLinkButton variant="link" routerLink="/design/button">Lien souligné</a>',
     'action-menu':
@@ -435,6 +452,10 @@ const frenchStories = /* @__PURE__ */ storyDefinitions(
       '<app-object-picker label="Choisir" [options]="[{id: \'angular\', label: \'Angular\', detail: \'Web\'}]" (selected)="selected.set($event)" />',
     'field-group':
       '<fieldset appFieldGroup legend="Contact" description="Exemple local"><label class="field">Courriel<input class="input" type="email" [formField]="contact.email" /></label></fieldset>',
+    'field-hint':
+      '<label class="field">Courriel<input class="input" type="email" aria-describedby="email-hint" /><small id="email-hint" appFieldHint>Utilisez l’adresse professionnelle.</small></label>',
+    'inline-edit':
+      '<dl><div appInlineEdit label="Courriel" [value]="email()" emptyValue="Non renseigné" [editing]="editing()" (editRequested)="editing.set(true)" (cancelRequested)="editing.set(false)" (saveRequested)="saveEmail($event)" /></dl>',
     'data-table':
       '<div appDataTable tableLayout="fluid"><table><caption>Exemples</caption><thead><tr><th>Nom</th></tr></thead><tbody><tr><td>Atlas</td></tr></tbody></table></div>',
     'table-sort':
@@ -521,7 +542,7 @@ const englishStories = /* @__PURE__ */ storyDefinitions(
   },
   {
     button:
-      '<button appButton type="button" variant="primary" (click)="preview()">Preview</button>\n<!-- ghost shares tab and icon toolbar surfaces. link stays underlined. -->\n<button appButton type="button" variant="ghost" (click)="preview()">Secondary preview</button>',
+      '<button appButton type="button" variant="primary" icon="check" (click)="preview()">Preview</button>\n<button appButton type="button" icon="external" iconPosition="end" (click)="preview()">Open</button>\n<!-- ghost shares tab and icon toolbar surfaces. link stays underlined. -->',
     'link-button':
       '<a appLinkButton variant="ghost" routerLink="/design/button">Button reference</a>\n<a appLinkButton variant="link" routerLink="/design/button">Underlined link</a>',
     'action-menu':
@@ -558,6 +579,10 @@ const englishStories = /* @__PURE__ */ storyDefinitions(
       '<app-object-picker label="Choose" [options]="[{id: \'angular\', label: \'Angular\', detail: \'Web\'}]" (selected)="selected.set($event)" />',
     'field-group':
       '<fieldset appFieldGroup legend="Contact" description="Local example"><label class="field">Email<input class="input" type="email" [formField]="contact.email" /></label></fieldset>',
+    'field-hint':
+      '<label class="field">Email<input class="input" type="email" aria-describedby="email-hint" /><small id="email-hint" appFieldHint>Use the work address.</small></label>',
+    'inline-edit':
+      '<dl><div appInlineEdit label="Email" [value]="email()" emptyValue="Not provided" [editing]="editing()" (editRequested)="editing.set(true)" (cancelRequested)="editing.set(false)" (saveRequested)="saveEmail($event)" /></dl>',
     'data-table':
       '<div appDataTable tableLayout="fluid"><table><caption>Examples</caption><thead><tr><th>Name</th></tr></thead><tbody><tr><td>Atlas</td></tr></tbody></table></div>',
     'table-sort':

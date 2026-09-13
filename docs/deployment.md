@@ -115,7 +115,7 @@ L’API valide `PASETO_SECRET_KEY` comme une paire Ed25519 complète au démarra
 
 `SETTINGS_ENCRYPTION_KEY` chiffre les clés configurées depuis le backoffice.
 
-`DEMO_PASSWORD` est obligatoire sur staging. Il protège la réinitialisation des données de démonstration.
+`DEMO_PASSWORD` est obligatoire hors production. Il protège la réinitialisation des données de démonstration.
 
 ## Données de démonstration staging
 

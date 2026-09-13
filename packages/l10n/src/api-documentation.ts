@@ -674,7 +674,7 @@ export const apiDocumentation = {
       },
       demo: {
         title: 'Demonstration',
-        description: 'Protected reset of staging demonstration data.',
+        description: 'Protected reset of demonstration data outside production.',
       },
       integrations: { title: 'External services', description: 'Adapters and request history.' },
     },

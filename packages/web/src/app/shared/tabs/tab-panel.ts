@@ -25,9 +25,12 @@ class TabPanelRegistry {
   readonly panels = signal<ReadonlyMap<string, TemplateRef<unknown>>>(new Map());
 }
 
-@Directive({
+@Component({
   selector: '[appTabLayout]',
   providers: [TabPanelRegistry],
+  template: '<ng-content />',
+  styleUrl: './tab-layout.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TabLayout {
   private readonly registry = inject(TabPanelRegistry);

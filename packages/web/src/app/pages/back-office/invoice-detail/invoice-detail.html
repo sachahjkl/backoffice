@@ -30,6 +30,7 @@
       @if (task.invoice(); as invoice) { @if (actions().edit) {
       <a
         appLinkButton
+        icon="pencil"
         [routerLink]="['/backoffice/invoices', invoice.id, 'edit']"
         *appCan="'invoice.update'"
         [queryParams]="task.navigation.detailQuery()"
@@ -37,6 +38,7 @@
       >
       <a
         appLinkButton
+        icon="mail"
         variant="primary"
         [routerLink]="['/backoffice/invoices', invoice.id, 'issue']"
         *appCan="'invoice.issue'"
@@ -46,6 +48,7 @@
       } @else if (actions().recordPayment) {
       <app-split-action
         variant="primary"
+        icon="bank"
         *appCan="'invoice.mark-paid'"
         [primaryLabel]="i18n.t('billingWorkspace.receipt')"
         [menuLabel]="i18n.t('billingWorkspace.receiptOptions')"
@@ -55,6 +58,7 @@
       />
       } @if (actions().credit) {
       <app-split-action
+        icon="invoice"
         *appCan="'invoice.credit'"
         [primaryLabel]="i18n.t('credit.create')"
         [menuLabel]="i18n.t('credit.options')"
@@ -65,6 +69,7 @@
       } @if (actions().recordPayment) {
       <a
         appLinkButton
+        icon="mail"
         routerLink="/backoffice/emails/new"
         *appCan="'email.draft.manage'"
         [queryParams]="{ invoice: invoice.id }"
@@ -72,6 +77,7 @@
       >
       <a
         appLinkButton
+        icon="calendar"
         routerLink="/backoffice/emails/reminders/new"
         *appCan="'email.reminder.manage'"
         [queryParams]="{ invoice: invoice.id }"
@@ -80,6 +86,7 @@
       } @if (actions().void) {
       <a
         appLinkButton
+        icon="close"
         variant="danger"
         [routerLink]="['/backoffice/invoices', invoice.id, 'void']"
         *appCan="'invoice.void'"
@@ -87,7 +94,13 @@
         >{{ i18n.t('backOffice.invoice.void') }}</a
       >
       }
-      <button appButton type="button" [disabled]="reloadDisabled()" (click)="task.load()">
+      <button
+        appButton
+        icon="redo"
+        type="button"
+        [disabled]="reloadDisabled()"
+        (click)="task.load()"
+      >
         {{ i18n.t('listControls.reload') }}
       </button>
       }

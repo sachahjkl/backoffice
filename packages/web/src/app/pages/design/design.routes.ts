@@ -50,6 +50,8 @@ export const designRoutes: Routes = [
     'date-range',
     'object-picker',
     'field-group',
+    'field-hint',
+    'inline-edit',
   ].map((path) => ({ path, loadComponent: fields })),
   ...[
     'data-table',

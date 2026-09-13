@@ -5,11 +5,12 @@
     <a
       pageActions
       appLinkButton
+      icon="plus"
       variant="primary"
       routerLink="/backoffice/catalog/new"
       *appCan="'catalog.manage'"
       [queryParams]="createQuery()"
-      ><app-icon name="plus" />{{ i18n.t('catalog.create') }}</a
+      >{{ i18n.t('catalog.create') }}</a
     >
   </app-page-header>
   <app-tabs [label]="i18n.t('catalogWorkspace.views')" [tabs]="tabs()" [preserveQuery]="true" />

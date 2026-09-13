@@ -17,7 +17,7 @@
     @switch (state()) { @case ('loading') {
     <p class="state" aria-live="polite">{{ i18n.t("version.loading") }}</p>
     } @case ('error') {
-    <p class="notice danger state" role="alert">{{ i18n.t("version.error") }}</p>
+    <p appNotice variant="danger" class="state" role="alert">{{ i18n.t("version.error") }}</p>
     } @case ('ready') { @if (metadata(); as deployment) {
     <div class="deployment-data">
       <section class="commit" aria-labelledby="commit-title">

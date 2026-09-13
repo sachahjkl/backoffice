@@ -14,7 +14,7 @@
     </ng-container>
     <ng-container pageActions>
       @if (pdfUrl(); as url) {
-      <a appLinkButton variant="primary" [href]="url" download
+      <a appLinkButton icon="download" variant="primary" [href]="url" download
         >{{ i18n.t('backOffice.client.pdf') }}</a
       >
       }

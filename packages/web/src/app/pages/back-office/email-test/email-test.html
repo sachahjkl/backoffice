@@ -7,7 +7,14 @@
       {{ i18n.t('connections.resend') }} — {{ i18n.t('configurationWorkspace.newTest') }}
     </h1>
     <p>{{ i18n.t('emailTest.intro') }}</p>
-    <button appButton pageActions type="button" [disabled]="saving()" (click)="refresh()">
+    <button
+      appButton
+      pageActions
+      icon="redo"
+      type="button"
+      [disabled]="saving()"
+      (click)="refresh()"
+    >
       {{ i18n.t('emailTest.refresh') }}
     </button>
   </app-page-header>

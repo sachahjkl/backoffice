@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { Icon, type IconName } from '@shared/icon/icon';
 
 export type ButtonVariant =
   | 'default'
@@ -13,8 +14,20 @@ export type ButtonVariant =
 
 @Component({
   selector: 'button[appButton], a[appLinkButton]',
-  imports: [],
-  template: '<ng-content />',
+  imports: [Icon],
+  template: `
+    @if (iconPosition() === 'start') {
+      @if (icon(); as name) {
+        <app-icon [name]="name" />
+      }
+    }
+    <ng-content />
+    @if (iconPosition() === 'end') {
+      @if (icon(); as name) {
+        <app-icon [name]="name" />
+      }
+    }
+  `,
   styleUrl: './button.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
@@ -25,4 +38,6 @@ export type ButtonVariant =
 export class Button {
   readonly variant = input<ButtonVariant>('default');
   readonly iconOnly = input(false);
+  readonly icon = input<IconName>();
+  readonly iconPosition = input<'start' | 'end'>('start');
 }

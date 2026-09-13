@@ -7,8 +7,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import type { SupplierSummaryValue } from '@froment/contracts';
 
 import { SuppliersApi } from '@backoffice/suppliers-api';
@@ -18,13 +17,36 @@ import { Button } from '@shared/button/button';
 import { Can } from '@backoffice/can';
 import { DataTable } from '@shared/data-table/data-table';
 import { EmptyState } from '@shared/empty-state/empty-state';
-import { Icon } from '@shared/icon/icon';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
 import { TabLayout, TabPanel } from '@shared/tabs/tab-panel';
 import { Tabs, type TabItem } from '@shared/tabs/tabs';
+import { TableSort } from '@shared/table-sort/table-sort';
+import { createWorkspaceTable, type WorkspaceTableOptions } from '../configuration/workspace-table';
 
 type SupplierView = 'active' | 'archived' | 'all';
+
+const supplierTableOptions: WorkspaceTableOptions<SupplierSummaryValue> = {
+  columns: [
+    { kind: 'text', key: 'name', value: (item) => item.displayName },
+    { kind: 'text', key: 'contact', value: (item) => item.email || item.phone },
+    { kind: 'text', key: 'country', value: (item) => item.country },
+    { kind: 'text', key: 'currency', value: (item) => item.defaultCurrency },
+    { kind: 'number', key: 'paymentTerms', value: (item) => item.paymentTermsDays },
+    { kind: 'text', key: 'status', value: (item) => (item.archived ? 'archived' : 'active') },
+  ],
+  defaultSort: 'nameAsc',
+  id: (item) => item.id,
+  searchKeys: [
+    'displayName',
+    'email',
+    'phone',
+    'city',
+    'country',
+    'registrationNumber',
+    'vatNumber',
+  ],
+};
 
 @Component({
   host: { class: 'page-container' },
@@ -35,7 +57,6 @@ type SupplierView = 'active' | 'archived' | 'all';
     Can,
     DataTable,
     EmptyState,
-    Icon,
     Notice,
     PageHeader,
     RouterLink,
@@ -43,6 +64,7 @@ type SupplierView = 'active' | 'archived' | 'all';
     TabLayout,
     TabPanel,
     Tabs,
+    TableSort,
   ],
   templateUrl: './suppliers.html',
   styleUrl: './suppliers.scss',
@@ -51,15 +73,12 @@ type SupplierView = 'active' | 'archived' | 'all';
 export class Suppliers {
   protected readonly i18n = inject(I18nService);
   private readonly api = inject(SuppliersApi);
-  private readonly route = inject(ActivatedRoute);
-  private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
   private loadGeneration = 0;
   protected readonly state = signal<'loading' | 'ready' | 'error'>('loading');
   protected readonly suppliers = signal<ReadonlyArray<SupplierSummaryValue>>([]);
-  protected readonly query = signal(
-    this.route.snapshot.queryParamMap.get('q')?.slice(0, 120) ?? '',
-  );
+  protected readonly table = createWorkspaceTable(this.suppliers, supplierTableOptions);
+  protected readonly query = computed(() => this.table.query().q);
   protected readonly tabs = computed<readonly TabItem[]>(() =>
     (['active', 'archived', 'all'] as const).map((view) => ({
       path: view,
@@ -67,59 +86,27 @@ export class Suppliers {
       label: this.i18n.t(`supplier.tab.${view}`),
     })),
   );
-  private readonly collator = computed(
-    () => new Intl.Collator(this.i18n.language(), { numeric: true, sensitivity: 'base' }),
-  );
-
   constructor() {
     afterNextRender(() => {
-      this.route.queryParamMap
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe((params) => this.query.set(params.get('q')?.slice(0, 120) ?? ''));
       void this.load();
     });
   }
 
   protected visible(view: SupplierView): ReadonlyArray<SupplierSummaryValue> {
-    const query = this.query().trim().toLocaleLowerCase(this.i18n.language());
-    return this.suppliers()
-      .filter(
-        (supplier) =>
-          (view === 'all' || supplier.archived === (view === 'archived')) &&
-          (query === '' ||
-            [
-              supplier.displayName,
-              supplier.email,
-              supplier.city,
-              supplier.country,
-              supplier.registrationNumber,
-              supplier.vatNumber,
-            ].some((value) => value.toLocaleLowerCase(this.i18n.language()).includes(query))),
-      )
-      .toSorted((left, right) => this.collator().compare(left.displayName, right.displayName));
+    return this.table
+      .rows()
+      .filter((supplier) => view === 'all' || supplier.archived === (view === 'archived'));
   }
 
   protected setQuery(event: Event): void {
     if (!(event.currentTarget instanceof HTMLInputElement)) return;
     const value = event.currentTarget.value.slice(0, 120);
-    this.query.set(value);
-    void this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { q: value || null },
-      queryParamsHandling: 'merge',
-      replaceUrl: true,
-    });
+    this.table.search(value);
   }
 
   protected clearQuery(input: HTMLInputElement): void {
     input.value = '';
-    this.query.set('');
-    void this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { q: null },
-      queryParamsHandling: 'merge',
-      replaceUrl: true,
-    });
+    this.table.search('');
     input.focus();
   }
 
@@ -140,7 +127,7 @@ export class Suppliers {
   }
 
   protected detailQuery() {
-    return { q: this.query() || null };
+    return this.table.params();
   }
 
   protected async load(): Promise<void> {

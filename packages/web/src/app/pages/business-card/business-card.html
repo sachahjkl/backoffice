@@ -86,11 +86,11 @@
       </div>
 
       @if (contentForm().invalid() && contentForm().touched()) {
-      <p class="notice danger" role="alert">{{ i18n.t("businessCard.contentInvalid") }}</p>
+      <p appNotice variant="danger" role="alert">{{ i18n.t("businessCard.contentInvalid") }}</p>
       } @if (versionForm().invalid() && versionForm().touched()) {
-      <p class="notice danger" role="alert">{{ i18n.t("businessCard.versionInvalid") }}</p>
+      <p appNotice variant="danger" role="alert">{{ i18n.t("businessCard.versionInvalid") }}</p>
       } @if (storageMessage()) {
-      <p class="notice" role="status">{{ storageMessage() }}</p>
+      <p appNotice role="status">{{ storageMessage() }}</p>
       }
     </form>
 

@@ -167,7 +167,7 @@
             [attr.aria-invalid]="invalid('signature')"
             [formField]="signatureForm.signature"
           />
-          <span id="public-quote-signature-hint" class="field-hint"
+          <span id="public-quote-signature-hint" appFieldHint
             >{{ i18n.t('publicQuote.typedSignatureHint') }}</span
           >
           @if (invalid('signature')) {

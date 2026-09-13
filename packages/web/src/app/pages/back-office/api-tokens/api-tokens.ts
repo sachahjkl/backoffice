@@ -110,7 +110,7 @@ export class ApiTokens {
   }
 
   protected permissionLabel(permission: ApiTokenPermissionCodeValue): TranslationKey {
-    return `backOffice.apiTokens.permission.${permission}`;
+    return `permission.${permission}`;
   }
 
   protected async revoke(token: ApiTokenValue): Promise<void> {

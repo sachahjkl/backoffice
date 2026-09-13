@@ -14,6 +14,8 @@ export const accountTableOptions: WorkspaceTableOptions<AccountingAccount> = {
   columns: [
     { kind: 'text', key: 'code', value: (item) => item.code },
     { kind: 'text', key: 'label', value: (item) => item.label },
+    { kind: 'text', key: 'kind', value: (item) => item.kind },
+    { kind: 'text', key: 'status', value: (item) => (item.archived ? 'archived' : 'active') },
   ],
   defaultSort: 'codeAsc',
   id: (item) => item.id,
@@ -30,6 +32,8 @@ export const journalTableOptions: WorkspaceTableOptions<AccountingJournal> = {
   columns: [
     { kind: 'text', key: 'code', value: (item) => item.code },
     { kind: 'text', key: 'label', value: (item) => item.label },
+    { kind: 'text', key: 'kind', value: (item) => item.kind },
+    { kind: 'text', key: 'status', value: (item) => (item.archived ? 'archived' : 'active') },
   ],
   defaultSort: 'codeAsc',
   id: (item) => item.id,
@@ -46,6 +50,7 @@ export const periodTableOptions: WorkspaceTableOptions<AccountingPeriod> = {
   columns: [
     { kind: 'text', key: 'startsOn', value: (item) => item.startsOn },
     { kind: 'text', key: 'label', value: (item) => item.label },
+    { kind: 'text', key: 'status', value: (item) => (item.finalClosed ? 'final' : item.status) },
   ],
   defaultSort: 'startsOnDesc',
   id: (item) => item.id,
@@ -65,6 +70,8 @@ export const entryTableOptions: WorkspaceTableOptions<AccountingEntry> = {
   columns: [
     { kind: 'text', key: 'date', value: (item) => item.entryDate },
     { kind: 'text', key: 'reference', value: (item) => item.reference },
+    { kind: 'text', key: 'description', value: (item) => item.description },
+    { kind: 'text', key: 'status', value: (item) => item.status },
   ],
   defaultSort: 'dateDesc',
   id: (item) => item.id,
@@ -82,6 +89,11 @@ export const letteringTableOptions: WorkspaceTableOptions<AccountingLetterableLi
   columns: [
     { kind: 'text', key: 'date', value: (item) => item.entryDate },
     { kind: 'text', key: 'reference', value: (item) => item.reference },
+    { kind: 'text', key: 'account', value: (item) => item.accountCode },
+    { kind: 'text', key: 'label', value: (item) => item.lineLabel },
+    { kind: 'number', key: 'debit', value: (item) => item.debitCents },
+    { kind: 'number', key: 'credit', value: (item) => item.creditCents },
+    { kind: 'text', key: 'lettering', value: (item) => item.letteringCode },
   ],
   defaultSort: 'dateDesc',
   id: (item) => item.lineId,
@@ -95,7 +107,12 @@ export const letteringTableOptions: WorkspaceTableOptions<AccountingLetterableLi
 };
 
 export const evidenceTableOptions: WorkspaceTableOptions<AccountingEvidence> = {
-  columns: [{ kind: 'text', key: 'file', value: (item) => item.fileName }],
+  columns: [
+    { kind: 'text', key: 'file', value: (item) => item.fileName },
+    { kind: 'text', key: 'entry', value: (item) => item.entryId },
+    { kind: 'text', key: 'mediaType', value: (item) => item.mediaType },
+    { kind: 'text', key: 'fingerprint', value: (item) => item.sha256 },
+  ],
   defaultSort: 'fileAsc',
   id: (item) => item.id,
   searchKeys: ['fileName', 'entryId', 'mediaType', 'sha256'],
@@ -114,7 +131,13 @@ export const evidenceTableOptions: WorkspaceTableOptions<AccountingEvidence> = {
 
 type BalanceRow = AccountingBalanceReport['rows'][number];
 export const balanceTableOptions: WorkspaceTableOptions<BalanceRow> = {
-  columns: [{ kind: 'text', key: 'account', value: (item) => item.accountCode }],
+  columns: [
+    { kind: 'text', key: 'account', value: (item) => item.accountCode },
+    { kind: 'text', key: 'label', value: (item) => item.accountLabel },
+    { kind: 'number', key: 'debit', value: (item) => item.debitCents },
+    { kind: 'number', key: 'credit', value: (item) => item.creditCents },
+    { kind: 'number', key: 'balance', value: (item) => item.balanceCents },
+  ],
   defaultSort: 'accountAsc',
   id: (item) => item.accountCode,
   searchKeys: ['accountCode', 'accountLabel'],
@@ -136,7 +159,12 @@ type LedgerRow = AccountingLedgerReport['rows'][number];
 export const ledgerTableOptions: WorkspaceTableOptions<LedgerRow> = {
   columns: [
     { kind: 'text', key: 'date', value: (item) => item.entryDate },
+    { kind: 'text', key: 'journal', value: (item) => item.journalCode },
     { kind: 'text', key: 'reference', value: (item) => item.reference },
+    { kind: 'text', key: 'account', value: (item) => item.accountCode },
+    { kind: 'text', key: 'label', value: (item) => item.lineLabel },
+    { kind: 'number', key: 'debit', value: (item) => item.debitCents },
+    { kind: 'number', key: 'credit', value: (item) => item.creditCents },
   ],
   defaultSort: 'dateDesc',
   id: (item) => `${item.entryId}:${item.accountCode}:${item.lineLabel}`,

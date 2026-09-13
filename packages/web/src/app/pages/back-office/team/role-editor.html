@@ -22,7 +22,7 @@
     </div>
     <div class="ds-panel form-panel permissions">
       <app-permission-picker
-        [options]="permissionOptions"
+        [options]="permissionOptions()"
         [selectedCodes]="roleForm.permissions().value()"
         [disabled]="saving()"
         (selectionChange)="changePermission($event)"

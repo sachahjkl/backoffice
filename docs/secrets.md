@@ -19,7 +19,7 @@ La clé `SUPPLIER_INVOICE_ANALYSIS_API_KEY` initialise l’adaptateur d’analys
 La clé `ACCOUNTING_TAX_FILING_API_KEY` initialise l’adaptateur de télédéclaration quand elle existe.
 L’administration peut remplacer cette clé avec `SETTINGS_ENCRYPTION_KEY` configurée.
 
-`DEMO_PASSWORD` protège la réinitialisation staging. Ne publiez jamais sa valeur.
+`DEMO_PASSWORD` protège la réinitialisation hors production. Ne publiez jamais sa valeur.
 
 Lors du passage en service réel, renseignez ensemble les identifiants liés : client OAuth et secret, clé Stripe et secret de webhook.
 
@@ -39,6 +39,7 @@ nix develop -c sops secrets/froment-software/development.yaml
 
 Le champ chiffré `BOOTSTRAP_PASSWORD` contient le mot de passe initial du développement. Il n’est pas injecté dans l’application.
 Son empreinte `BOOTSTRAP_PASSWORD_SCRYPT` sert à l’initialisation du premier compte.
+`DEMO_PASSWORD` contient la même valeur que `BOOTSTRAP_PASSWORD` en développement et staging.
 Les clés d’authentification du développement ont été générées indépendamment de celles de production.
 
 Après compilation et configuration d’une base locale distincte, lancez l’API avec le profil explicite :

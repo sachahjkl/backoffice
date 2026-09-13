@@ -10,9 +10,10 @@
       *appCan="'supplier.create'"
       pageActions
       appLinkButton
+      icon="plus"
       variant="primary"
       routerLink="/backoffice/suppliers/new"
-      ><app-icon name="plus" />{{ i18n.t('supplier.create') }}</a
+      >{{ i18n.t('supplier.create') }}</a
     >
   </app-page-header>
   <app-tabs [label]="i18n.t('supplier.tabs')" [tabs]="tabs()" [preserveQuery]="true" />
@@ -56,12 +57,54 @@
         <table>
           <thead>
             <tr>
-              <th scope="col">{{ i18n.t('supplier.name') }}</th>
-              <th scope="col">{{ i18n.t('supplier.contact') }}</th>
-              <th scope="col">{{ i18n.t('supplier.country') }}</th>
-              <th scope="col">{{ i18n.t('supplier.currency') }}</th>
-              <th scope="col">{{ i18n.t('supplier.paymentTerms') }}</th>
-              <th scope="col">{{ i18n.t('supplier.status') }}</th>
+              <th scope="col" [attr.aria-sort]="table.direction('name')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('supplier.name')"
+                  [direction]="table.direction('name')"
+                  (click)="table.sort('name')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="table.direction('contact')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('supplier.contact')"
+                  [direction]="table.direction('contact')"
+                  (click)="table.sort('contact')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="table.direction('country')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('supplier.country')"
+                  [direction]="table.direction('country')"
+                  (click)="table.sort('country')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="table.direction('currency')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('supplier.currency')"
+                  [direction]="table.direction('currency')"
+                  (click)="table.sort('currency')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="table.direction('paymentTerms')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('supplier.paymentTerms')"
+                  [direction]="table.direction('paymentTerms')"
+                  (click)="table.sort('paymentTerms')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="table.direction('status')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('supplier.status')"
+                  [direction]="table.direction('status')"
+                  (click)="table.sort('status')"
+                ></button>
+              </th>
             </tr>
           </thead>
           <tbody>

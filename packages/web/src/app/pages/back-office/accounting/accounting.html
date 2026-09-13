@@ -72,10 +72,38 @@
         <table>
           <thead>
             <tr>
-              <th scope="col">{{ i18n.t('accounting.code') }}</th>
-              <th scope="col">{{ i18n.t('accounting.label') }}</th>
-              <th scope="col">{{ i18n.t('accounting.kind') }}</th>
-              <th scope="col">{{ i18n.t('accounting.status') }}</th>
+              <th scope="col" [attr.aria-sort]="accountTable.direction('code')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.code')"
+                  [direction]="accountTable.direction('code')"
+                  (click)="accountTable.sort('code')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="accountTable.direction('label')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.label')"
+                  [direction]="accountTable.direction('label')"
+                  (click)="accountTable.sort('label')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="accountTable.direction('kind')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.kind')"
+                  [direction]="accountTable.direction('kind')"
+                  (click)="accountTable.sort('kind')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="accountTable.direction('status')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.status')"
+                  [direction]="accountTable.direction('status')"
+                  (click)="accountTable.sort('status')"
+                ></button>
+              </th>
               <th scope="col">{{ i18n.t('accounting.actions') }}</th>
             </tr>
           </thead>
@@ -162,10 +190,38 @@
         <table>
           <thead>
             <tr>
-              <th scope="col">{{ i18n.t('accounting.code') }}</th>
-              <th scope="col">{{ i18n.t('accounting.label') }}</th>
-              <th scope="col">{{ i18n.t('accounting.kind') }}</th>
-              <th scope="col">{{ i18n.t('accounting.status') }}</th>
+              <th scope="col" [attr.aria-sort]="journalTable.direction('code')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.code')"
+                  [direction]="journalTable.direction('code')"
+                  (click)="journalTable.sort('code')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="journalTable.direction('label')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.label')"
+                  [direction]="journalTable.direction('label')"
+                  (click)="journalTable.sort('label')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="journalTable.direction('kind')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.kind')"
+                  [direction]="journalTable.direction('kind')"
+                  (click)="journalTable.sort('kind')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="journalTable.direction('status')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.status')"
+                  [direction]="journalTable.direction('status')"
+                  (click)="journalTable.sort('status')"
+                ></button>
+              </th>
               <th scope="col">{{ i18n.t('accounting.actions') }}</th>
             </tr>
           </thead>
@@ -244,9 +300,30 @@
         <table>
           <thead>
             <tr>
-              <th scope="col">{{ i18n.t('accounting.label') }}</th>
-              <th scope="col">{{ i18n.t('accounting.period') }}</th>
-              <th scope="col">{{ i18n.t('accounting.status') }}</th>
+              <th scope="col" [attr.aria-sort]="periodTable.direction('label')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.label')"
+                  [direction]="periodTable.direction('label')"
+                  (click)="periodTable.sort('label')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="periodTable.direction('startsOn')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.period')"
+                  [direction]="periodTable.direction('startsOn')"
+                  (click)="periodTable.sort('startsOn')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="periodTable.direction('status')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.status')"
+                  [direction]="periodTable.direction('status')"
+                  (click)="periodTable.sort('status')"
+                ></button>
+              </th>
               <th scope="col">{{ i18n.t('accounting.actions') }}</th>
             </tr>
           </thead>
@@ -405,10 +482,38 @@
         <table>
           <thead>
             <tr>
-              <th scope="col">{{ i18n.t('accounting.date') }}</th>
-              <th scope="col">{{ i18n.t('accounting.reference') }}</th>
-              <th scope="col">{{ i18n.t('accounting.description') }}</th>
-              <th scope="col">{{ i18n.t('accounting.status') }}</th>
+              <th scope="col" [attr.aria-sort]="entryTable.direction('date')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.date')"
+                  [direction]="entryTable.direction('date')"
+                  (click)="entryTable.sort('date')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="entryTable.direction('reference')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.reference')"
+                  [direction]="entryTable.direction('reference')"
+                  (click)="entryTable.sort('reference')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="entryTable.direction('description')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.description')"
+                  [direction]="entryTable.direction('description')"
+                  (click)="entryTable.sort('description')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="entryTable.direction('status')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.status')"
+                  [direction]="entryTable.direction('status')"
+                  (click)="entryTable.sort('status')"
+                ></button>
+              </th>
               <th scope="col">{{ i18n.t('accounting.actions') }}</th>
             </tr>
           </thead>
@@ -490,13 +595,62 @@
           <thead>
             <tr>
               <th scope="col">{{ i18n.t('accounting.select') }}</th>
-              <th scope="col">{{ i18n.t('accounting.date') }}</th>
-              <th scope="col">{{ i18n.t('accounting.reference') }}</th>
-              <th scope="col">{{ i18n.t('accounting.account') }}</th>
-              <th scope="col">{{ i18n.t('accounting.label') }}</th>
-              <th scope="col">{{ i18n.t('accounting.debit') }}</th>
-              <th scope="col">{{ i18n.t('accounting.credit') }}</th>
-              <th scope="col">{{ i18n.t('accounting.lettering.code') }}</th>
+              <th scope="col" [attr.aria-sort]="letteringTable.direction('date')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.date')"
+                  [direction]="letteringTable.direction('date')"
+                  (click)="letteringTable.sort('date')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="letteringTable.direction('reference')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.reference')"
+                  [direction]="letteringTable.direction('reference')"
+                  (click)="letteringTable.sort('reference')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="letteringTable.direction('account')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.account')"
+                  [direction]="letteringTable.direction('account')"
+                  (click)="letteringTable.sort('account')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="letteringTable.direction('label')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.label')"
+                  [direction]="letteringTable.direction('label')"
+                  (click)="letteringTable.sort('label')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="letteringTable.direction('debit')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.debit')"
+                  [direction]="letteringTable.direction('debit')"
+                  (click)="letteringTable.sort('debit')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="letteringTable.direction('credit')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.credit')"
+                  [direction]="letteringTable.direction('credit')"
+                  (click)="letteringTable.sort('credit')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="letteringTable.direction('lettering')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.lettering.code')"
+                  [direction]="letteringTable.direction('lettering')"
+                  (click)="letteringTable.sort('lettering')"
+                ></button>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -647,11 +801,46 @@
         <table>
           <thead>
             <tr>
-              <th scope="col">{{ i18n.t('accounting.account') }}</th>
-              <th scope="col">{{ i18n.t('accounting.label') }}</th>
-              <th scope="col">{{ i18n.t('accounting.debit') }}</th>
-              <th scope="col">{{ i18n.t('accounting.credit') }}</th>
-              <th scope="col">{{ i18n.t('accounting.balance') }}</th>
+              <th scope="col" [attr.aria-sort]="balanceTable.direction('account')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.account')"
+                  [direction]="balanceTable.direction('account')"
+                  (click)="balanceTable.sort('account')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="balanceTable.direction('label')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.label')"
+                  [direction]="balanceTable.direction('label')"
+                  (click)="balanceTable.sort('label')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="balanceTable.direction('debit')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.debit')"
+                  [direction]="balanceTable.direction('debit')"
+                  (click)="balanceTable.sort('debit')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="balanceTable.direction('credit')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.credit')"
+                  [direction]="balanceTable.direction('credit')"
+                  (click)="balanceTable.sort('credit')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="balanceTable.direction('balance')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.balance')"
+                  [direction]="balanceTable.direction('balance')"
+                  (click)="balanceTable.sort('balance')"
+                ></button>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -744,13 +933,62 @@
         <table>
           <thead>
             <tr>
-              <th scope="col">{{ i18n.t('accounting.date') }}</th>
-              <th scope="col">{{ i18n.t('accounting.journal') }}</th>
-              <th scope="col">{{ i18n.t('accounting.reference') }}</th>
-              <th scope="col">{{ i18n.t('accounting.account') }}</th>
-              <th scope="col">{{ i18n.t('accounting.label') }}</th>
-              <th scope="col">{{ i18n.t('accounting.debit') }}</th>
-              <th scope="col">{{ i18n.t('accounting.credit') }}</th>
+              <th scope="col" [attr.aria-sort]="ledgerTable.direction('date')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.date')"
+                  [direction]="ledgerTable.direction('date')"
+                  (click)="ledgerTable.sort('date')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="ledgerTable.direction('journal')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.journal')"
+                  [direction]="ledgerTable.direction('journal')"
+                  (click)="ledgerTable.sort('journal')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="ledgerTable.direction('reference')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.reference')"
+                  [direction]="ledgerTable.direction('reference')"
+                  (click)="ledgerTable.sort('reference')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="ledgerTable.direction('account')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.account')"
+                  [direction]="ledgerTable.direction('account')"
+                  (click)="ledgerTable.sort('account')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="ledgerTable.direction('label')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.label')"
+                  [direction]="ledgerTable.direction('label')"
+                  (click)="ledgerTable.sort('label')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="ledgerTable.direction('debit')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.debit')"
+                  [direction]="ledgerTable.direction('debit')"
+                  (click)="ledgerTable.sort('debit')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="ledgerTable.direction('credit')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.credit')"
+                  [direction]="ledgerTable.direction('credit')"
+                  (click)="ledgerTable.sort('credit')"
+                ></button>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -781,7 +1019,7 @@
   <section class="flow">
     <div class="ds-panel form-panel" *appCan="'accounting.write'">
       <h2>{{ i18n.t('accounting.opening.title') }}</h2>
-      <p class="field-hint">{{ i18n.t('accounting.opening.hint') }}</p>
+      <p appFieldHint>{{ i18n.t('accounting.opening.hint') }}</p>
       <div class="field">
         <label for="opening-file">{{ i18n.t('accounting.file') }}</label
         ><input
@@ -863,7 +1101,7 @@
   <section class="workspace-grid">
     <div class="ds-panel form-panel" *appCan="'accounting.evidence'">
       <h2>{{ i18n.t('accounting.evidence.add') }}</h2>
-      <p class="field-hint">{{ i18n.t('accounting.evidence.retention') }}</p>
+      <p appFieldHint>{{ i18n.t('accounting.evidence.retention') }}</p>
       <div class="field">
         <label for="evidence-entry">{{ i18n.t('accounting.entry') }}</label
         ><select class="select" id="evidence-entry" [(ngModel)]="evidenceForm.entryId">
@@ -899,10 +1137,38 @@
         <table>
           <thead>
             <tr>
-              <th scope="col">{{ i18n.t('accounting.file') }}</th>
-              <th scope="col">{{ i18n.t('accounting.entry') }}</th>
-              <th scope="col">{{ i18n.t('accounting.mediaType') }}</th>
-              <th scope="col">{{ i18n.t('accounting.fingerprint') }}</th>
+              <th scope="col" [attr.aria-sort]="evidenceTable.direction('file')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.file')"
+                  [direction]="evidenceTable.direction('file')"
+                  (click)="evidenceTable.sort('file')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="evidenceTable.direction('entry')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.entry')"
+                  [direction]="evidenceTable.direction('entry')"
+                  (click)="evidenceTable.sort('entry')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="evidenceTable.direction('mediaType')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.mediaType')"
+                  [direction]="evidenceTable.direction('mediaType')"
+                  (click)="evidenceTable.sort('mediaType')"
+                ></button>
+              </th>
+              <th scope="col" [attr.aria-sort]="evidenceTable.direction('fingerprint')">
+                <button
+                  appTableSort
+                  [label]="i18n.t('accounting.fingerprint')"
+                  [direction]="evidenceTable.direction('fingerprint')"
+                  (click)="evidenceTable.sort('fingerprint')"
+                ></button>
+              </th>
               <th scope="col">{{ i18n.t('accounting.actions') }}</th>
             </tr>
           </thead>

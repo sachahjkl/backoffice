@@ -3,13 +3,14 @@ import { type DeploymentMetadataValue } from '@froment/contracts';
 import { RouterLink } from '@angular/router';
 
 import { I18nService } from '@app/i18n.service';
+import { Notice } from '@shared/notice/notice';
 import { VersionApi } from './version-api';
 
 type VersionState = 'loading' | 'ready' | 'error';
 
 @Component({
   selector: 'app-version',
-  imports: [RouterLink],
+  imports: [Notice, RouterLink],
   templateUrl: './version.html',
   styleUrl: './version.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,0 +1,25 @@
+.notice {
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid color-mix(in oklab, var(--color-info), white 65%);
+  border-radius: var(--radius-sm);
+  background: var(--color-info-soft);
+  color: var(--color-info);
+}
+
+.notice.success {
+  border-color: color-mix(in oklab, var(--color-success), white 65%);
+  background: var(--color-success-soft);
+  color: var(--color-success);
+}
+
+.notice.warning {
+  border-color: color-mix(in oklab, var(--color-warning), white 65%);
+  background: var(--color-warning-soft);
+  color: var(--color-warning);
+}
+
+.notice.danger {
+  border-color: color-mix(in oklab, var(--color-danger), white 65%);
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}

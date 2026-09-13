@@ -15,6 +15,7 @@
       <button
         *appCan="'supplier-invoice.create'"
         appButton
+        icon="invoice"
         type="button"
         [disabled]="busy()"
         (click)="createCredit()"
@@ -22,13 +23,14 @@
         {{ i18n.t('supplierInvoice.creditAction') }}
       </button>
       } @if (editable()) {
-      <a *appCan="'supplier-invoice.update'" appLinkButton [routerLink]="['edit']"
+      <a *appCan="'supplier-invoice.update'" appLinkButton icon="pencil" [routerLink]="['edit']"
         >{{ i18n.t('supplierInvoice.edit') }}</a
       >
       } @if (canConfirm()) {
       <button
         *appCan="'supplier-invoice.update'"
         appButton
+        icon="check"
         type="button"
         [disabled]="busy()"
         (click)="transition('confirm')"
@@ -39,6 +41,7 @@
       <button
         *appCan="'supplier-invoice.approve'"
         appButton
+        icon="check"
         variant="primary"
         type="button"
         [disabled]="busy()"
@@ -50,6 +53,7 @@
       <button
         *appCan="'supplier-invoice.update'"
         appButton
+        icon="close"
         type="button"
         [disabled]="busy()"
         (click)="transition('cancel')"

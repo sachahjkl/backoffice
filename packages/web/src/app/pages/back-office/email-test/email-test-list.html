@@ -5,11 +5,18 @@
     <div pageActions class="spacer-x-3">
       <a
         appLinkButton
+        icon="tests"
         variant="primary"
         routerLink="/backoffice/services/resend/tests/new"
         [queryParams]="table.params()"
         >{{ i18n.t('configurationWorkspace.newTest') }}</a
-      ><button appButton type="button" [disabled]="history.loading()" (click)="history.refresh()">
+      ><button
+        appButton
+        icon="redo"
+        type="button"
+        [disabled]="history.loading()"
+        (click)="history.refresh()"
+      >
         {{ i18n.t('emailTest.refresh') }}
       </button>
     </div>

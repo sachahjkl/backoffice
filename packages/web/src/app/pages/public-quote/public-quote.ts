@@ -41,6 +41,7 @@ import { Tabs, type TabItem } from '@shared/tabs/tabs';
 import { TabLayout, TabPanel } from '@shared/tabs/tab-panel';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { formatLocalizedDate } from '@shared/localized-date/localized-date-pipe';
+import { FieldHint } from '@shared/field-hint/field-hint';
 
 @Component({
   host: { class: 'page-container' },
@@ -49,6 +50,7 @@ import { formatLocalizedDate } from '@shared/localized-date/localized-date-pipe'
     Button,
     DocumentTextView,
     FormField,
+    FieldHint,
     Notice,
     RouterLink,
     RouterOutlet,

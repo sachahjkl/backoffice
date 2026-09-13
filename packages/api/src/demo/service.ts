@@ -114,7 +114,7 @@ const make = Effect.gen(function* () {
     request: DemoResetRequest,
     actorUserId: UlidValue,
   ) {
-    if (runtime.application.appEnvironment !== 'staging')
+    if (runtime.application.appEnvironment === 'production')
       return yield* new DemoResetRejected({ code: 'demo.environment_rejected' });
     const password = Option.getOrUndefined(runtime.demo.password);
     if (password === undefined)
@@ -1176,7 +1176,7 @@ const make = Effect.gen(function* () {
                 action: 'demo.reset',
                 actorUserId: administratorId,
                 resourceType: 'demo',
-                resourceId: 'staging',
+                resourceId: runtime.application.appEnvironment,
                 metadata: { requestedBy: actorUserId },
                 occurredAt: now,
               });

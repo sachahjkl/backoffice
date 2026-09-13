@@ -59,7 +59,7 @@
         [attr.aria-invalid]="invalid('password')"
         aria-describedby="client-account-password-requirements client-account-password-error"
       />
-      <span id="client-account-password-requirements" class="field-hint"
+      <span id="client-account-password-requirements" appFieldHint
         >{{ i18n.tf('backOffice.clientDetail.passwordRequirements', { min: passwordConfig.minLength,
         max: passwordConfig.maxLength }) }}</span
       >

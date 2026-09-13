@@ -51,7 +51,12 @@ export class RoleEditor {
     pattern(path.name, /\S/);
     maxLength(path.name, 80);
   });
-  protected readonly permissionOptions = PermissionCodes.map((code) => ({ code, label: code }));
+  protected readonly permissionOptions = computed(() =>
+    PermissionCodes.map((code) => ({
+      code,
+      description: this.i18n.t(`permission.${code}`),
+    })),
+  );
   protected readonly loading = signal(this.editing);
   protected readonly saving = signal(false);
   protected readonly error = signal<TranslationKey | undefined>(undefined);
@@ -103,7 +108,10 @@ export class RoleEditor {
           return;
         }
         this.roleForm().reset(this.model());
-        await this.router.navigate(['/backoffice/team/roles']);
+        this.saving.set(false);
+        await this.router.navigate(['/backoffice/team/roles'], {
+          state: { roleNotice: this.editing ? 'role.updated' : 'role.created' },
+        });
       } catch {
         this.error.set('role.error');
       } finally {

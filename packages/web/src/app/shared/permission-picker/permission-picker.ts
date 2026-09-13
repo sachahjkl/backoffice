@@ -24,13 +24,13 @@ import { SearchHighlight, SearchHighlightRegistry } from '@shared/search-highlig
 
 export interface PermissionPickerOption {
   readonly code: string;
-  readonly label: string;
+  readonly description: string;
 }
 
 interface PermissionResult {
   readonly item: PermissionPickerOption;
   readonly codeMatches: FuseResultMatch['indices'];
-  readonly labelMatches: FuseResultMatch['indices'];
+  readonly descriptionMatches: FuseResultMatch['indices'];
 }
 
 export interface PermissionSelectionChange {
@@ -39,6 +39,33 @@ export interface PermissionSelectionChange {
 }
 
 const noMatches: FuseResultMatch['indices'] = [];
+const permissionDomains = [
+  'affair',
+  'integration',
+  'ledger',
+  'invoice',
+  'email',
+  'bank',
+  'catalog',
+  'issuer',
+  'company',
+  'condition',
+  'payment',
+  'client',
+  'supplier',
+  'supplier-invoice',
+  'quote',
+  'order',
+  'template',
+  'document',
+  'user',
+  'role',
+  'session',
+  'api-token',
+  'audit',
+  'accounting',
+  'demo',
+] as const;
 
 @Component({
   selector: 'app-permission-picker',
@@ -68,7 +95,7 @@ export class PermissionPicker {
   private readonly searchResults = createFuzzySearch(this.options, this.query, {
     keys: [
       { name: 'code', weight: 0.45 },
-      { name: 'label', weight: 0.55 },
+      { name: 'description', weight: 0.55 },
     ],
     ignoreDiacritics: true,
     ignoreLocation: true,
@@ -80,12 +107,13 @@ export class PermissionPicker {
       ({ item, matches = [] }) => ({
         item,
         codeMatches: matches.find(({ key }) => key === 'code')?.indices ?? noMatches,
-        labelMatches: matches.find(({ key }) => key === 'label')?.indices ?? noMatches,
+        descriptionMatches: matches.find(({ key }) => key === 'description')?.indices ?? noMatches,
       }),
     );
-    return [...new Set(this.options().map(({ code }) => code.split('.')[0] ?? code))]
+    return permissionDomains
       .map((domain) => ({
         domain,
+        description: this.i18n.t(`permission.group.${domain}`),
         expanded: this.expandedDomains().has(domain),
         selectionLabel: this.i18n.plural('configurationWorkspace.permissionSelection', {
           count: this.selectedCodes().filter((code) => code.startsWith(`${domain}.`)).length,

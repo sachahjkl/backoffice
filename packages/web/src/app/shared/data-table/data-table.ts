@@ -1,8 +1,18 @@
-import { Directive, inject, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  ViewEncapsulation,
+} from '@angular/core';
 import { I18nService } from '@app/i18n.service';
 
-@Directive({
-  selector: '[appDataTable]',
+@Component({
+  selector: 'div[appDataTable]',
+  template: '<ng-content />',
+  styleUrl: './data-table.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   host: {
     class: 'data-table',
     '[attr.data-table-layout]': 'tableLayout()',

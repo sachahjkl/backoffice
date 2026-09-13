@@ -35,6 +35,8 @@ export type IconName =
   | 'arrow-left'
   | 'chevron-right'
   | 'download'
+  | 'upload'
+  | 'file-plus'
   | 'filter'
   | 'rss'
   | 'paragraph'
@@ -163,6 +165,14 @@ export type IconName =
         }
         @case ('download') {
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+        }
+        @case ('upload') {
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" />
+        }
+        @case ('file-plus') {
+          <path
+            d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M12 18v-6m-3 3h6"
+          />
         }
         @case ('filter') {
           <path d="M4 7h16M7 12h10M10 17h4" />

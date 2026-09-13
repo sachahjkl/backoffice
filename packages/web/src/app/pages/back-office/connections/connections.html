@@ -3,10 +3,12 @@
     <h1 id="connections-title">{{ i18n.t('connections.title') }}</h1>
     <p>{{ i18n.t('connections.intro') }}</p>
     <div pageActions class="spacer-x-3">
-      <button appButton type="button" [disabled]="data.loading()" (click)="data.load()">
+      <button appButton icon="redo" type="button" [disabled]="data.loading()" (click)="data.load()">
         {{ i18n.t('connections.reload') }}
       </button>
-      <a routerLink="/backoffice/services/simulations">{{ i18n.t('connections.simulations') }}</a>
+      <a appLinkButton icon="tests" routerLink="/backoffice/services/simulations"
+        >{{ i18n.t('connections.simulations') }}</a
+      >
     </div>
   </app-page-header>
   <p appNotice variant="info">{{ i18n.t('connections.safety') }}</p>

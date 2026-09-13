@@ -7,7 +7,14 @@
       {{ i18n.t('connections.stripe') }} — {{ i18n.t('configurationWorkspace.newTest') }}
     </h1>
     <p>{{ i18n.t('checkout.invoiceHint') }}</p>
-    <button appButton pageActions type="button" [disabled]="loading() || saving()" (click)="load()">
+    <button
+      appButton
+      pageActions
+      icon="redo"
+      type="button"
+      [disabled]="loading() || saving()"
+      (click)="load()"
+    >
       {{ i18n.t('checkout.refresh') }}
     </button>
   </app-page-header>

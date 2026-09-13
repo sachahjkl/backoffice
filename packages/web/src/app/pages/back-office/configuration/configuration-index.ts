@@ -21,7 +21,9 @@ export class ConfigurationIndex {
   private readonly confirmation = inject(Confirmation);
   private readonly router = inject(Router);
   private readonly runtime = inject(RuntimeConfiguration);
-  protected readonly demoAvailable = this.runtime.value?.appEnvironment === 'staging';
+  protected readonly demoAvailable =
+    this.runtime.value?.appEnvironment !== undefined &&
+    this.runtime.value.appEnvironment !== 'production';
   protected readonly resetting = signal(false);
   protected readonly resetError = signal(false);
 

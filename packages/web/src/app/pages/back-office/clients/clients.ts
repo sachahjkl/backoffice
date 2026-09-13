@@ -29,7 +29,6 @@ import { FilterMenu, FilterPanel } from '@shared/filter-menu/filter-menu';
 import { FilterChoice } from '@shared/filter-choice/filter-choice';
 import { TableExport } from '@shared/table-export/table-export';
 import { EmptyState } from '@shared/empty-state/empty-state';
-import { Icon } from '@shared/icon/icon';
 import { createFuzzySearch } from '@shared/fuzzy-search';
 import { SearchHighlight, SearchHighlightRegistry } from '@shared/search-highlight';
 import { FilterChip } from '@shared/filter-chip/filter-chip';
@@ -69,7 +68,6 @@ import {
     FilterChoice,
     TableExport,
     EmptyState,
-    Icon,
     SearchHighlight,
     TableSort,
   ],

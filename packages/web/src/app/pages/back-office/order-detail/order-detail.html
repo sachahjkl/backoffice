@@ -27,6 +27,7 @@
       @if (order(); as order) { @if (!order.invoiceId) {
       <a
         appLinkButton
+        icon="file-plus"
         variant="primary"
         routerLink="/backoffice/invoices/new"
         *appCan="'invoice.create'"

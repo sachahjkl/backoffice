@@ -10,6 +10,7 @@ import {
   model,
   output,
   signal,
+  ViewEncapsulation,
   viewChild,
 } from '@angular/core';
 import type { FormValueControl } from '@angular/forms/signals';
@@ -68,6 +69,7 @@ const actionGroups = [
   selector: 'app-document-text-editor',
   styleUrl: './document-text-editor.scss',
   templateUrl: './document-text-editor.html',
+  encapsulation: ViewEncapsulation.None,
 })
 export class DocumentTextEditor implements FormValueControl<string> {
   readonly value = model('');

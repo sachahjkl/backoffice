@@ -7,18 +7,26 @@
       @if (item.status === 'open' && canCreateQuote()) {
       <a
         appLinkButton
+        icon="file-plus"
         variant="primary"
         routerLink="/backoffice/quotes/new"
         [queryParams]="{ affairId: item.id, clientId: item.clientId }"
       >
-        <app-icon name="plus" />{{ i18n.t('affair.createQuote') }}
+        {{ i18n.t('affair.createQuote') }}
       </a>
       } @if (canEdit()) { @if (item.status === 'open') {
-      <button appButton type="button" variant="danger" [disabled]="saving()" (click)="archive()">
+      <button
+        appButton
+        icon="folder"
+        type="button"
+        variant="danger"
+        [disabled]="saving()"
+        (click)="archive()"
+      >
         {{ i18n.t('affair.archive') }}
       </button>
       } @else {
-      <button appButton type="button" [disabled]="saving()" (click)="reopen()">
+      <button appButton icon="redo" type="button" [disabled]="saving()" (click)="reopen()">
         {{ i18n.t('affair.reopen') }}
       </button>
       } }

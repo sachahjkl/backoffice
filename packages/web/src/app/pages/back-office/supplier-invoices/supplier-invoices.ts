@@ -13,19 +13,25 @@ import { formatMoney } from '@froment/l10n';
 import { Can } from '@backoffice/can';
 import { SupplierInvoicesApi } from '@backoffice/supplier-invoices-api';
 import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { Button } from '@shared/button/button';
 import { DataTable } from '@shared/data-table/data-table';
 import { ListWorkspace } from '@shared/list-toolbar/list-workspace';
 import { WorkspaceTableTools } from '@shared/list-toolbar/workspace-table-tools';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
+import { TableSort } from '@shared/table-sort/table-sort';
 import { createWorkspaceTable, type WorkspaceTableOptions } from '../configuration/workspace-table';
 
 const invoiceTableOptions: WorkspaceTableOptions<SupplierInvoice> = {
   columns: [
-    { kind: 'text', key: 'date', value: (item) => item.invoiceDate },
     { kind: 'text', key: 'reference', value: (item) => item.reference },
+    { kind: 'text', key: 'supplier', value: (item) => item.supplierName },
+    { kind: 'text', key: 'invoiceDate', value: (item) => item.invoiceDate },
+    { kind: 'text', key: 'dueDate', value: (item) => item.dueDate },
+    { kind: 'text', key: 'status', value: (item) => item.status },
+    { kind: 'number', key: 'total', value: (item) => item.totalCents },
   ],
-  defaultSort: 'dateDesc',
+  defaultSort: 'invoiceDateDesc',
   id: (item) => item.id,
   searchKeys: ['reference', 'supplierName', 'invoiceDate', 'dueDate'],
   parameters: { q: 'q', sort: 'sort', filter: 'status' },
@@ -42,7 +48,17 @@ const invoiceTableOptions: WorkspaceTableOptions<SupplierInvoice> = {
 @Component({
   host: { class: 'page-container' },
   selector: 'app-supplier-invoices',
-  imports: [Can, DataTable, ListWorkspace, Notice, PageHeader, RouterLink, WorkspaceTableTools],
+  imports: [
+    Button,
+    Can,
+    DataTable,
+    ListWorkspace,
+    Notice,
+    PageHeader,
+    RouterLink,
+    TableSort,
+    WorkspaceTableTools,
+  ],
   templateUrl: './supplier-invoices.html',
   styleUrl: './supplier-invoices.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

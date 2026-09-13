@@ -6,7 +6,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import type { CustomRole } from '@froment/contracts';
 
 import { Can } from '@backoffice/can';
@@ -31,6 +31,8 @@ export class RolesPage {
   protected readonly i18n = inject(I18nService);
   private readonly api = inject(RolesApi);
   private readonly confirmation = inject(Confirmation);
+  private readonly router = inject(Router);
+  protected readonly notice = this.savedNotice();
   protected readonly roles = signal<ReadonlyArray<CustomRole>>([]);
   protected readonly loading = signal(true);
   protected readonly busy = signal(false);
@@ -38,6 +40,11 @@ export class RolesPage {
   protected readonly breadcrumbs = computed(() => [
     { label: this.i18n.t('team.title'), path: '/backoffice/team' },
   ]);
+
+  private savedNotice(): TranslationKey | undefined {
+    const notice = this.router.getCurrentNavigation()?.extras.state?.['roleNotice'];
+    return notice === 'role.created' || notice === 'role.updated' ? notice : undefined;
+  }
 
   constructor() {
     afterNextRender(() => void this.load());

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { ActionMenu, type MenuAction } from '@shared/action-menu/action-menu';
 import { Button, type ButtonVariant } from '@shared/button/button';
+import type { IconName } from '@shared/icon/icon';
 
 @Component({
   imports: [ActionMenu, Button],
@@ -31,6 +32,7 @@ import { Button, type ButtonVariant } from '@shared/button/button';
       class="primary"
       type="button"
       [variant]="variant()"
+      [icon]="icon()"
       [disabled]="primaryDisabled()"
       (click)="primaryAction.emit()"
     >
@@ -53,6 +55,7 @@ export class SplitAction {
   readonly primaryDisabled = input(false);
   readonly menuDisabled = input(false);
   readonly variant = input<ButtonVariant>('primary');
+  readonly icon = input<IconName>();
   readonly primaryAction = output<void>();
   readonly actionSelected = output<string>();
 }

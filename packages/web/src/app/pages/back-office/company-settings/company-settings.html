@@ -35,7 +35,7 @@
           type="text"
           [formField]="settingsForm.functionalCurrency"
       /></label>
-      <p class="field-hint wide">{{ accountingState() }}</p>
+      <p appFieldHint class="wide">{{ accountingState() }}</p>
     </fieldset>
     <fieldset class="field-grid ds-panel">
       <legend>{{ i18n.t('company.fiscalYear') }}</legend>
@@ -55,19 +55,22 @@
           step="1"
           [formField]="settingsForm.fiscalYearStartDay"
       /></label>
-      <p class="field-hint wide">{{ i18n.t('company.fiscalDuration') }}</p>
+      <p appFieldHint class="wide">{{ i18n.t('company.fiscalDuration') }}</p>
     </fieldset>
     <fieldset class="field-grid ds-panel">
       <legend>{{ i18n.t('company.modules') }}</legend>
       <div class="module-grid wide">
         @for (module of modules; track module) {
-        <label
-          ><input
-            type="checkbox"
-            [checked]="moduleEnabled(module)"
-            (change)="setModule(module, $event)"
-          />{{ moduleLabel(module) }}</label
-        >
+        <app-hint #moduleHelp [text]="moduleHint(module)">
+          <label
+            ><input
+              type="checkbox"
+              [checked]="moduleEnabled(module)"
+              [attr.aria-describedby]="moduleHelp.id"
+              (change)="setModule(module, $event)"
+            />{{ moduleLabel(module) }}</label
+          >
+        </app-hint>
         }
       </div>
     </fieldset>
@@ -81,7 +84,7 @@
           step="1"
           [formField]="settingsForm.retentionYears"
       /></label>
-      <p class="field-hint wide">{{ i18n.t('company.retentionExplanation') }}</p>
+      <p appFieldHint class="wide">{{ i18n.t('company.retentionExplanation') }}</p>
     </fieldset>
     <div class="actions spacer-x-2">
       <button

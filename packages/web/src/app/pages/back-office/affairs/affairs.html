@@ -25,14 +25,14 @@
         <input class="input" [formField]="createForm.title" />
       </label>
       <div class="actions">
-        <button appButton type="submit" variant="primary" [disabled]="saving()">
+        <button appButton type="submit" variant="primary" icon="plus" [disabled]="saving()">
           {{ i18n.t('affair.create') }}
         </button>
       </div>
     </form>
   </section>
 
-  <app-tabs [tabs]="tabs()" [label]="i18n.t('backOffice.affairs.title')" />
+  <app-tabs [tabs]="tabs()" [label]="i18n.t('backOffice.affairs.title')" [preserveQuery]="true" />
   <router-outlet />
   <ng-template appTabPanel="affairs">
     @switch (state()) { @case ('loading') {
@@ -45,15 +45,50 @@
       <table>
         <thead>
           <tr>
-            <th>{{ i18n.t('affair.reference') }}</th>
-            <th>{{ i18n.t('backOffice.invoice.title') }}</th>
-            <th>{{ i18n.t('backOffice.invoices.client') }}</th>
-            <th>{{ i18n.t('billingWorkspace.financialStatus') }}</th>
-            <th>{{ i18n.t('affair.documents') }}</th>
+            <th scope="col" [attr.aria-sort]="table.direction('reference')">
+              <button
+                appTableSort
+                [label]="i18n.t('affair.reference')"
+                [direction]="table.direction('reference')"
+                (click)="table.sort('reference')"
+              ></button>
+            </th>
+            <th scope="col" [attr.aria-sort]="table.direction('title')">
+              <button
+                appTableSort
+                [label]="i18n.t('backOffice.invoice.title')"
+                [direction]="table.direction('title')"
+                (click)="table.sort('title')"
+              ></button>
+            </th>
+            <th scope="col" [attr.aria-sort]="table.direction('client')">
+              <button
+                appTableSort
+                [label]="i18n.t('backOffice.invoices.client')"
+                [direction]="table.direction('client')"
+                (click)="table.sort('client')"
+              ></button>
+            </th>
+            <th scope="col" [attr.aria-sort]="table.direction('status')">
+              <button
+                appTableSort
+                [label]="i18n.t('billingWorkspace.financialStatus')"
+                [direction]="table.direction('status')"
+                (click)="table.sort('status')"
+              ></button>
+            </th>
+            <th scope="col" [attr.aria-sort]="table.direction('documents')">
+              <button
+                appTableSort
+                [label]="i18n.t('affair.documents')"
+                [direction]="table.direction('documents')"
+                (click)="table.sort('documents')"
+              ></button>
+            </th>
           </tr>
         </thead>
         <tbody>
-          @for (affair of visible(); track affair.id) {
+          @for (result of table.results(); track result.item.id) { @let affair = result.item;
           <tr>
             <th scope="row">
               <a [routerLink]="['/backoffice/affairs', affair.id]">{{ affair.reference }}</a>
@@ -78,7 +113,9 @@
       </table>
     </div>
     <footer class="list-summary">
-      <p role="status">{{ i18n.plural('entityList.affairs', { count: visible().length }) }}</p>
+      <p role="status">
+        {{ i18n.plural('entityList.affairs', { count: table.results().length }) }}
+      </p>
     </footer>
     } }
   </ng-template>

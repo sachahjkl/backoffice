@@ -30,6 +30,8 @@ import { Button } from '@shared/button/button';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
+import { FieldHint } from '@shared/field-hint/field-hint';
+import { Hint } from '@shared/hint/hint';
 import { formatFixedDecimal, parseFixedDecimal } from '@backoffice/quote-input';
 
 type CompanyModel = Omit<CompanySettingsUpdateRequestValue, 'expectedVersion'>;
@@ -56,7 +58,7 @@ const initialModel = (): CompanyModel => ({
 @Component({
   host: { class: 'page-container' },
   selector: 'app-company-settings',
-  imports: [Button, Can, FormField, Notice, PageHeader],
+  imports: [Button, Can, FieldHint, FormField, Hint, Notice, PageHeader],
   templateUrl: './company-settings.html',
   styleUrl: './company-settings.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -129,6 +131,10 @@ export class CompanySettingsPage {
 
   protected moduleLabel(module: CompanyModuleValue): string {
     return this.i18n.t(`company.module.${module}`);
+  }
+
+  protected moduleHint(module: CompanyModuleValue): string {
+    return this.i18n.t(`company.module.${module}.hint`);
   }
 
   protected currencyLocked(): boolean {

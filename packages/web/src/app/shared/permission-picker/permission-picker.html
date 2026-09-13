@@ -25,7 +25,11 @@
           [expanded]="group.expanded"
           (expandedChange)="setExpanded(group.domain, $event)"
         >
-          <code>{{ group.domain }}</code>
+          <span class="permission-domain">
+            <code>{{ group.domain }}</code>
+            <span aria-hidden="true"> · </span>
+            <span>{{ group.description }}</span>
+          </span>
           <span class="permission-count">{{ group.selectionLabel }}</span>
           <app-icon name="chevron-right" />
         </button>
@@ -48,8 +52,10 @@
               "
             />
             <span>
-              <span [appSearchHighlight]="result.labelMatches">{{ result.item.label }}</span>
               <code [appSearchHighlight]="result.codeMatches">{{ result.item.code }}</code>
+              <span class="permission-description" [appSearchHighlight]="result.descriptionMatches"
+                >{{ result.item.description }}</span
+              >
             </span>
           </label>
           }

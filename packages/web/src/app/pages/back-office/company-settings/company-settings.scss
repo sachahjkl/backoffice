@@ -23,6 +23,11 @@ fieldset {
   align-items: center;
 }
 
+.module-grid app-hint,
+.module-grid label {
+  inline-size: 100%;
+}
+
 .exchange-rates {
   display: grid;
   gap: var(--space-4);
@@ -48,7 +53,8 @@ fieldset {
 }
 
 .table-scroll {
-  overflow-x: auto;
+  max-block-size: 24rem;
+  overflow: auto;
 }
 
 table {
@@ -57,4 +63,11 @@ table {
 
 th {
   text-align: start;
+}
+
+thead {
+  position: sticky;
+  z-index: 1;
+  inset-block-start: 0;
+  background: var(--color-panel);
 }

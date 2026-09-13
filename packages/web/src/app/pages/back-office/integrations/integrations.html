@@ -3,7 +3,14 @@
     <a pageBack routerLink="/backoffice/services">{{ i18n.t('connections.back') }}</a>
     <h1 id="integrations-title">{{ i18n.t('configurationWorkspace.simulations') }}</h1>
     <p>{{ i18n.t('settingsHeader.simulationsDescription') }}</p>
-    <button appButton pageActions type="button" [disabled]="loading() || saving()" (click)="load()">
+    <button
+      appButton
+      pageActions
+      icon="redo"
+      type="button"
+      [disabled]="loading() || saving()"
+      (click)="load()"
+    >
       {{ i18n.t('integrations.reload') }}
     </button>
   </app-page-header>

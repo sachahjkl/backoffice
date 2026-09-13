@@ -28,6 +28,8 @@ import { Confirmation } from '@shared/confirmation/confirmation';
 import { ListWorkspace } from '@shared/list-toolbar/list-workspace';
 import { WorkspaceTableTools } from '@shared/list-toolbar/workspace-table-tools';
 import { Tabs } from '@shared/tabs/tabs';
+import { TableSort } from '@shared/table-sort/table-sort';
+import { FieldHint } from '@shared/field-hint/field-hint';
 import { createWorkspaceTable } from '../configuration/workspace-table';
 import {
   accountTableOptions,
@@ -118,6 +120,7 @@ const yearRange = () => {
   selector: 'app-accounting',
   host: { class: 'page-container' },
   imports: [
+    FieldHint,
     WorkspaceTableTools,
     Button,
     Can,
@@ -127,6 +130,7 @@ const yearRange = () => {
     Notice,
     PageHeader,
     Tabs,
+    TableSort,
   ],
   templateUrl: './accounting.html',
   styleUrl: './accounting.scss',

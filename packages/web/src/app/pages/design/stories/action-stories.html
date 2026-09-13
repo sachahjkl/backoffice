@@ -62,27 +62,31 @@
     <button
       appButton
       type="button"
+      icon="check"
       [variant]="model().variant"
       [iconOnly]="model().iconOnly"
       [disabled]="model().disabled"
       [attr.aria-label]="model().label"
       (click)="event.set('click')"
     >
-      <app-icon name="check" />@if (!model().iconOnly) { {{ model().label }} }
+      @if (!model().iconOnly) { {{ model().label }} }
     </button>
     } @case ('link-button') {
     <a
       appLinkButton
       routerLink="/design/button"
+      icon="external"
+      iconPosition="end"
       [variant]="model().variant"
       [iconOnly]="model().iconOnly"
       [attr.aria-label]="model().label"
-      ><app-icon name="arrow-left" />@if (!model().iconOnly) { {{ model().label }} }</a
+      >@if (!model().iconOnly) { {{ model().label }} }</a
     >
     } @case ('action-menu') {
     <app-action-menu
       [label]="model().label"
       [actions]="actions()"
+      icon="check"
       [variant]="model().variant"
       [disabled]="model().disabled"
       [iconOnly]="model().iconOnly"

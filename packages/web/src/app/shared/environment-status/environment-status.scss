@@ -36,12 +36,17 @@
 
 .environment-ribbon.header-link {
   position: static;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: auto;
+  min-block-size: 2rem;
   padding: 0.35rem 0.55rem;
   border: 1px solid rgb(83 12 17 / 0.65);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-sm);
   box-shadow: none;
   letter-spacing: 0.08em;
+  line-height: 1.2;
   transform: none;
 }
 

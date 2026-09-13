@@ -42,6 +42,28 @@
       </p>
       <button appButton type="submit">{{ text().validate }}</button>
     </form>
+    } @case ('field-hint') {
+    <label class="field" for="field-hint-preview"
+      >{{ model().label }}<input
+        id="field-hint-preview"
+        class="input"
+        [formField]="controls.value"
+      />
+      <small appFieldHint>{{ model().description }}</small>
+    </label>
+    } @case ('inline-edit') {
+    <dl>
+      <div
+        appInlineEdit
+        [label]="model().label"
+        [value]="inlineValue()"
+        [emptyValue]="text().none"
+        [editing]="inlineEditing()"
+        (editRequested)="inlineEditing.set(true)"
+        (cancelRequested)="inlineEditing.set(false)"
+        (saveRequested)="saveInline($event)"
+      ></div>
+    </dl>
     } @case ('list-search') {
     <app-list-search
       [label]="model().label"
@@ -132,7 +154,27 @@
     <label class="sample" data-variant
       >{{ 'textarea' }}<textarea class="input" [formField]="sampleFields.note"></textarea>
     </label>
-    } @case ('field-group') { @for (description of ['', text().description]; track description) {
+    } @case ('field-hint') { @for (element of ['small', 'p']; track element) {
+    <div class="sample" data-variant>
+      <code>{{ element }}</code>
+      @if (element === 'small') { <small appFieldHint>{{ text().description }}</small> } @else {
+      <p appFieldHint>{{ text().description }}</p>
+      }
+    </div>
+    } } @case ('inline-edit') { @for (editing of [false, true, false]; track $index) {
+    <div class="sample" data-variant>
+      <dl>
+        <div
+          appInlineEdit
+          [label]="model().label"
+          [value]="$index === 2 ? '' : inlineValue()"
+          [emptyValue]="text().none"
+          [editable]="$index !== 2"
+          [editing]="editing"
+        ></div>
+      </dl>
+    </div>
+    } } @case ('field-group') { @for (description of ['', text().description]; track description) {
     <div class="sample" data-variant>
       <fieldset appFieldGroup [legend]="text().name" [description]="description">
         <label class="field"

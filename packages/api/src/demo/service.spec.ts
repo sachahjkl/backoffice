@@ -8,7 +8,7 @@ import { makeMigratedDatabaseLayer } from '../database/database.spec-helper.js';
 import { defaultRuntimeConfig, RuntimeConfiguration } from '../runtime-config.js';
 import { Demo, DemoLive } from './service.js';
 
-const layer = () => {
+const layer = (appEnvironment: 'development' | 'staging' | 'production' = 'staging') => {
   const database = makeMigratedDatabaseLayer({
     filename: ':memory:',
     migrationsFolder: join(import.meta.dirname, '../../drizzle'),
@@ -25,7 +25,7 @@ const layer = () => {
     ),
     Layer.succeed(RuntimeConfiguration, {
       ...defaultRuntimeConfig,
-      application: { ...defaultRuntimeConfig.application, appEnvironment: 'staging' },
+      application: { ...defaultRuntimeConfig.application, appEnvironment },
       demo: { password: Option.some(Redacted.make('demo-secret')) },
     }),
   );
@@ -60,6 +60,33 @@ describe('Demonstration reset', () => {
             .get(),
         ).toBe('local');
       }).pipe(Effect.provide(layer())),
+    );
+  });
+
+  it('accepts a development environment', async () => {
+    await Effect.runPromise(
+      Effect.gen(function* () {
+        const demo = yield* Demo;
+        const result = yield* demo.reset(
+          { password: 'demo-secret', confirmed: true },
+          '01ARZ3NDEKTSV4RRFFQ69G5FAA',
+        );
+        expect(result.clients).toBeGreaterThan(0);
+      }).pipe(Effect.provide(layer('development'))),
+    );
+  });
+
+  it('rejects a production environment', async () => {
+    await Effect.runPromise(
+      Effect.gen(function* () {
+        const demo = yield* Demo;
+        const error = yield* demo
+          .reset({ password: 'demo-secret', confirmed: true }, '01ARZ3NDEKTSV4RRFFQ69G5FAA')
+          .pipe(Effect.flip);
+        expect(error._tag).toBe('DemoResetRejected');
+        if (error._tag === 'DemoResetRejected')
+          expect(error.code).toBe('demo.environment_rejected');
+      }).pipe(Effect.provide(layer('production'))),
     );
   });
 });

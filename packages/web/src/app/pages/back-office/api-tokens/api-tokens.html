@@ -5,6 +5,7 @@
     <a
       pageActions
       appLinkButton
+      icon="plus"
       variant="primary"
       routerLink="new"
       [queryParams]="navigation.params()"
@@ -161,10 +162,10 @@
                 <ul class="permissions-list">
                   @for (permission of token.permissions; track permission) {
                   <li>
-                    {{ i18n.t(permissionLabel(permission)) }}
                     <code [appSearchHighlight]="table.match(result, 'permissions', $index)"
                       >{{ permission }}</code
                     >
+                    <span>{{ i18n.t(permissionLabel(permission)) }}</span>
                   </li>
                   }
                 </ul>

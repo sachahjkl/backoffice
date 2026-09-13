@@ -3,13 +3,18 @@
     <h1 id="supplier-invoices-title">{{ i18n.t('supplierInvoice.title') }}</h1>
     <p>{{ i18n.t('supplierInvoice.intro') }}</p>
     <div pageActions class="spacer-x-2">
-      <a *appCan="'supplier-invoice.pay'" appLinkButton routerLink="payments"
+      <a *appCan="'supplier-invoice.pay'" appLinkButton icon="bank" routerLink="payments"
         >{{ i18n.t('supplierPaymentBatch.open') }}</a
       >
-      <a *appCan="'supplier-invoice.analyze'" appLinkButton routerLink="analyze"
+      <a *appCan="'supplier-invoice.analyze'" appLinkButton icon="ai" routerLink="analyze"
         >{{ i18n.t('supplierInvoice.analysis.action') }}</a
       >
-      <a *appCan="'supplier-invoice.create'" appLinkButton variant="primary" routerLink="new"
+      <a
+        *appCan="'supplier-invoice.create'"
+        appLinkButton
+        icon="file-plus"
+        variant="primary"
+        routerLink="new"
         >{{ i18n.t('supplierInvoice.create') }}</a
       >
     </div>
@@ -37,12 +42,54 @@
       <table>
         <thead>
           <tr>
-            <th scope="col">{{ i18n.t('supplierInvoice.reference') }}</th>
-            <th scope="col">{{ i18n.t('supplierInvoice.supplier') }}</th>
-            <th scope="col">{{ i18n.t('supplierInvoice.invoiceDate') }}</th>
-            <th scope="col">{{ i18n.t('supplierInvoice.dueDate') }}</th>
-            <th scope="col">{{ i18n.t('supplierInvoice.status') }}</th>
-            <th scope="col">{{ i18n.t('supplierInvoice.total') }}</th>
+            <th scope="col" [attr.aria-sort]="table.direction('reference')">
+              <button
+                appTableSort
+                [label]="i18n.t('supplierInvoice.reference')"
+                [direction]="table.direction('reference')"
+                (click)="table.sort('reference')"
+              ></button>
+            </th>
+            <th scope="col" [attr.aria-sort]="table.direction('supplier')">
+              <button
+                appTableSort
+                [label]="i18n.t('supplierInvoice.supplier')"
+                [direction]="table.direction('supplier')"
+                (click)="table.sort('supplier')"
+              ></button>
+            </th>
+            <th scope="col" [attr.aria-sort]="table.direction('invoiceDate')">
+              <button
+                appTableSort
+                [label]="i18n.t('supplierInvoice.invoiceDate')"
+                [direction]="table.direction('invoiceDate')"
+                (click)="table.sort('invoiceDate')"
+              ></button>
+            </th>
+            <th scope="col" [attr.aria-sort]="table.direction('dueDate')">
+              <button
+                appTableSort
+                [label]="i18n.t('supplierInvoice.dueDate')"
+                [direction]="table.direction('dueDate')"
+                (click)="table.sort('dueDate')"
+              ></button>
+            </th>
+            <th scope="col" [attr.aria-sort]="table.direction('status')">
+              <button
+                appTableSort
+                [label]="i18n.t('supplierInvoice.status')"
+                [direction]="table.direction('status')"
+                (click)="table.sort('status')"
+              ></button>
+            </th>
+            <th scope="col" [attr.aria-sort]="table.direction('total')">
+              <button
+                appTableSort
+                [label]="i18n.t('supplierInvoice.total')"
+                [direction]="table.direction('total')"
+                (click)="table.sort('total')"
+              ></button>
+            </th>
           </tr>
         </thead>
         <tbody>
