@@ -159,7 +159,7 @@ describe('Quote editor navigation', () => {
     expect(lines).toHaveLength(2);
     expect(Array.from(lines[1]?.querySelectorAll('input') ?? [], (input) => input.value)).toEqual([
       'Catalog service',
-      '1.500',
+      '1.5',
       '125.00',
       '5.50',
     ]);
@@ -232,6 +232,23 @@ describe('Quote editor navigation', () => {
     inputValue(root, 'input[inputmode="decimal"]', '0');
     await harness.fixture.whenStable();
     expect(root.textContent).toMatch(/quantité positive|positive quantity/);
+  });
+  it('updates the line total while editing', async () => {
+    const { harness, root } = await open();
+    inputValue(root, '.unit-price-cell input', '200.00');
+    await harness.fixture.whenStable();
+    expect(root.querySelector('tbody .amount')?.textContent).toContain('240');
+  });
+  it('shows and focuses an invalid line description when saving', async () => {
+    const { harness, root } = await open();
+    inputValue(root, '.description-cell input', '');
+    control<HTMLButtonElement>(root, 'button[type="submit"]').click();
+    await harness.fixture.whenStable();
+    expect(document.activeElement).toBe(root.querySelector('.description-cell input'));
+    const error = root.querySelector<HTMLElement>('.description-cell .field-error')!;
+    expect(error.classList).not.toContain('visually-hidden');
+    expect(error.textContent).toMatch(/description/i);
+    expect(createRevision).not.toHaveBeenCalled();
   });
   it('rejects malformed URLs instead of opening a creation form', async () => {
     const { root } = await open('/backoffice/quotes/invalid/edit');

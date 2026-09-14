@@ -51,6 +51,7 @@ describe('Emails', () => {
           recipient: 'client@example.test',
           reference: 'FA-1',
           body: '',
+          bodyFormat: 'plain',
           reminder: false,
           version: 1,
         })),
@@ -61,6 +62,7 @@ describe('Emails', () => {
           subject,
           updatedAt: date,
           body: '',
+          bodyFormat: 'plain',
           version: 1,
         })),
       );

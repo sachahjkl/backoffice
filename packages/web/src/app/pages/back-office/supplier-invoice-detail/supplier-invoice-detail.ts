@@ -21,13 +21,25 @@ import { Button } from '@shared/button/button';
 import { Breadcrumbs } from '@shared/breadcrumbs/breadcrumbs';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { DataTable } from '@shared/data-table/data-table';
+import { DetailGrid, DetailList, DetailPanel } from '@shared/detail-panel/detail-panel';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
 
 @Component({
   host: { class: 'page-container' },
   selector: 'app-supplier-invoice-detail',
-  imports: [Breadcrumbs, Button, Can, DataTable, Notice, PageHeader, RouterLink],
+  imports: [
+    Breadcrumbs,
+    Button,
+    Can,
+    DataTable,
+    DetailGrid,
+    DetailList,
+    DetailPanel,
+    Notice,
+    PageHeader,
+    RouterLink,
+  ],
   templateUrl: './supplier-invoice-detail.html',
   styleUrl: './supplier-invoice-detail.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -41,6 +41,7 @@
       <label class="field version-selector"
         >{{ i18n.t('commercial.versions') }}
         <select
+          appFilterSelect
           class="input"
           [value]="selectedVersion()"
           (change)="selectedVersion.set(+$any($event.target).value)"
@@ -113,6 +114,7 @@
         <label class="field"
           >{{ i18n.t('credit.addInvoice') }}
           <select
+            appFilterSelect
             class="input"
             [value]="selectedInvoiceId()"
             (change)="selectedInvoiceId.set($any($event.target).value)"

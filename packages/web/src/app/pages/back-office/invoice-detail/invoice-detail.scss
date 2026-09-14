@@ -16,9 +16,6 @@ h2 {
 .summary {
   margin: 0;
 }
-.summary.ds-panel {
-  padding: var(--space-5);
-}
 section.summary > * + * {
   margin-block-start: var(--space-3);
 }
@@ -97,7 +94,7 @@ dd {
 .preview {
   width: 100%;
   height: clamp(28rem, 80dvh, 65rem);
-  border: 1px solid var(--color-line);
+  border: 1px dashed var(--color-line-strong);
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-panel);
   background: white;

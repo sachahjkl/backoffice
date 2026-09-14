@@ -31,6 +31,16 @@
         >@if (invalid('subject')) { {{ i18n.t('emailsWorkspace.shortTextInvalid') }} }</span
       ></label
     >
+    <app-segmented-control
+      controlId="template-body-format"
+      [label]="i18n.t('emailsWorkspace.bodyFormat')"
+      [options]="bodyFormatOptions()"
+      [value]="model().bodyFormat"
+      variant="default"
+      [disabled]="busy()"
+      (valueChange)="changeBodyFormat($event)"
+    />
+    @if (model().bodyFormat === 'plain') {
     <label class="field"
       >{{ i18n.t('emails.body') }}<textarea
         id="template-body"
@@ -44,10 +54,23 @@
         >@if (invalid('body')) { {{ i18n.t('emailsWorkspace.bodyInvalid') }} }</span
       ></label
     >
-    <section class="message-preview" aria-labelledby="template-preview-title">
+    } @else {
+    <app-document-text-editor
+      controlId="template-body"
+      [label]="i18n.t('emails.body')"
+      [formField]="templateForm.body"
+      [presentation]="bodyPresentation()"
+      [showPlacement]="false"
+      descriptionId="template-body-error"
+    />
+    <span id="template-body-error" class="field-error"
+      >@if (invalid('body')) { {{ i18n.t('emailsWorkspace.bodyInvalid') }} }</span
+    >
+    }
+    <section class="message-preview preview-surface" aria-labelledby="template-preview-title">
       <h2 id="template-preview-title">{{ i18n.t('emailsWorkspace.preview') }}</h2>
       <strong>{{ model().subject }}</strong>
-      <p class="message-body">{{ model().body }}</p>
+      <app-document-text-view [source]="model().body" [presentation]="bodyPresentation()" />
     </section>
     <div class="actions">
       <button appButton variant="primary" type="submit" [disabled]="busy()">

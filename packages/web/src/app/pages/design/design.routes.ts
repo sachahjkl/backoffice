@@ -43,6 +43,8 @@ export const designRoutes: Routes = [
   ),
   ...[
     'input',
+    'filter-select',
+    'segmented-control',
     'list-search',
     'filter-menu',
     'filter-panel',

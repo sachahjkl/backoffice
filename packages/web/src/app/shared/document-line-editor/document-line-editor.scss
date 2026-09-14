@@ -18,12 +18,46 @@ th {
   text-align: start;
 }
 
-td:not(.description-cell) .input {
-  min-inline-size: 6rem;
-}
-
 .description-cell {
   width: 100%;
+}
+
+.description-cell .input {
+  inline-size: 100%;
+  min-inline-size: 16rem;
+}
+
+.quantity-cell .input,
+.vat-cell .input {
+  inline-size: 5rem;
+}
+
+.unit-price-cell .input {
+  inline-size: 7rem;
+}
+
+td .field-error {
+  display: block;
+  margin-block-start: var(--space-1);
+  max-inline-size: 12rem;
+}
+
+tfoot th {
+  text-align: end;
+  font-weight: 500;
+}
+
+.add-line-row td {
+  padding-block: var(--space-1) var(--space-3);
+}
+
+.add-line-row + tr > * {
+  border-block-start: 1px solid var(--color-line);
+  padding-block-start: var(--space-3);
+}
+
+.grand-total {
+  font-weight: 700;
 }
 
 .mobile-lines {
@@ -31,6 +65,29 @@ td:not(.description-cell) .input {
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.mobile-summary {
+  display: none;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-3);
+}
+
+.mobile-add {
+  display: none;
+  justify-self: start;
+}
+
+.mobile-summary div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.mobile-summary dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
 }
 
 .mobile-lines li {
@@ -55,5 +112,13 @@ td:not(.description-cell) .input {
   .mobile-lines {
     display: grid;
     gap: var(--space-3);
+  }
+
+  .mobile-summary {
+    display: grid;
+  }
+
+  .mobile-add {
+    display: inline-flex;
   }
 }

@@ -1,3 +1,4 @@
+import { FilterSelect } from '@shared/filter-select/filter-select';
 import { Can } from '@backoffice/can';
 import { DOCUMENT } from '@angular/common';
 import {
@@ -75,6 +76,7 @@ type MatchField = keyof ReturnType<typeof blankMatch>;
   selector: 'app-bank-reconciliation',
   host: { class: 'page-container', '(window:beforeunload)': 'beforeUnload($event)' },
   imports: [
+    FilterSelect,
     Can,
     Badge,
     Button,

@@ -1,3 +1,4 @@
+import { FilterSelect } from '@shared/filter-select/filter-select';
 import { Can } from '@backoffice/can';
 import { Authentication } from '@backoffice/authentication';
 import {
@@ -40,6 +41,7 @@ import { teamErrorMessage, type TeamOperation } from './team-error-message';
 
 @Component({
   imports: [
+    FilterSelect,
     Can,
     FormField,
     Button,

@@ -28,7 +28,14 @@
   min-inline-size: 0;
 }
 .samples {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  display: flex;
+  flex-wrap: wrap;
+}
+.samples > * {
+  flex: none;
+  inline-size: fit-content;
+  min-inline-size: 0;
+  max-inline-size: 100%;
 }
 .sample {
   padding: var(--space-4);
@@ -67,7 +74,7 @@
   max-inline-size: 100%;
 }
 .full {
-  grid-column: 1 / -1;
+  inline-size: 100%;
 }
 .sample input,
 .sample select,

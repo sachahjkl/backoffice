@@ -1,3 +1,4 @@
+import { FilterSelect } from '@shared/filter-select/filter-select';
 import { afterNextRender, ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import {
   applyEach,
@@ -65,7 +66,7 @@ const emptyModel = (): Model => ({
 @Component({
   host: { class: 'page-container', '(window:beforeunload)': 'beforeUnload($event)' },
   selector: 'app-supplier-invoice-editor',
-  imports: [Breadcrumbs, Button, FormField, Notice, PageHeader, RouterLink],
+  imports: [FilterSelect, Breadcrumbs, Button, FormField, Notice, PageHeader, RouterLink],
   templateUrl: './supplier-invoice-editor.html',
   styleUrl: './supplier-invoice-editor.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

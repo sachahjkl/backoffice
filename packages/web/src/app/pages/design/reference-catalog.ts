@@ -23,7 +23,7 @@ export const referenceCatalog: readonly ReferenceEntry[] = [
     group: 'actions',
     selectors: 'button[appButton]',
     source: 'button/button.ts',
-    variants: 11,
+    variants: 14,
   },
   {
     id: 'link-button',
@@ -31,7 +31,7 @@ export const referenceCatalog: readonly ReferenceEntry[] = [
     group: 'actions',
     selectors: 'a[appLinkButton]',
     source: 'button/button.ts',
-    variants: 10,
+    variants: 13,
   },
   {
     id: 'action-menu',
@@ -136,6 +136,22 @@ export const referenceCatalog: readonly ReferenceEntry[] = [
     selectors: 'input, select, textarea + [formField]',
     source: 'field-group/field-group.ts',
     variants: 8,
+  },
+  {
+    id: 'filter-select',
+    name: 'FilterSelect',
+    group: 'fields',
+    selectors: 'select[appFilterSelect]',
+    source: 'filter-select/filter-select.ts',
+    variants: 3,
+  },
+  {
+    id: 'segmented-control',
+    name: 'SegmentedControl',
+    group: 'fields',
+    selectors: 'app-segmented-control',
+    source: 'segmented-control/segmented-control.ts',
+    variants: 4,
   },
   {
     id: 'list-search',

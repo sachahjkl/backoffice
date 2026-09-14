@@ -36,7 +36,10 @@
     <dd>{{ operation.request.requestId }}</dd>
   </dl>
   <article aria-labelledby="email-detail-title">
-    <p class="message-body">{{ operation.request.body }}</p>
+    <app-document-text-view
+      [source]="operation.request.body"
+      [presentation]="bodyPresentation(operation.request.bodyFormat)"
+    />
   </article>
   @if (operation.receipt === null) {
   <p class="muted">{{ i18n.t('integrationRetry.info') }}</p>

@@ -19,7 +19,12 @@ import {
   submit,
 } from '@angular/forms/signals';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { EmailTemplate, EmailTemplateId, EmailTemplateSave } from '@froment/contracts';
+import {
+  EmailTemplate,
+  EmailTemplateId,
+  EmailTemplateSave,
+  type EmailBodyFormat,
+} from '@froment/contracts';
 import { Option, Schema } from 'effect';
 import { EmailTemplatesApi } from '@backoffice/email-templates-api';
 import { I18nService, type TranslationKey } from '@app/i18n.service';
@@ -28,12 +33,26 @@ import { ActionMenu } from '@shared/action-menu/action-menu';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
+import { DocumentTextEditor } from '@shared/document-text-editor/document-text-editor';
+import { DocumentTextView } from '@shared/document-text-view/document-text-view';
+import { SegmentedControl } from '@shared/segmented-control/segmented-control';
 import { emailFilterQuery, emailQuery } from '../emails/email-workspace';
+import { convertEmailBody, emailBodyPresentation } from '../email-body';
 
 @Component({
   host: { class: 'page-container' },
   selector: 'app-email-template-editor',
-  imports: [ActionMenu, Button, FormField, Notice, PageHeader, RouterLink],
+  imports: [
+    ActionMenu,
+    Button,
+    DocumentTextEditor,
+    DocumentTextView,
+    FormField,
+    Notice,
+    PageHeader,
+    RouterLink,
+    SegmentedControl,
+  ],
   templateUrl: './email-template-editor.html',
   styleUrl: './email-template-editor.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -50,6 +69,7 @@ export class EmailTemplateEditor {
   protected readonly confirming = signal(false);
   protected readonly completed = signal(false);
   protected readonly archived = signal(false);
+  private readonly formatChanged = signal(false);
   protected readonly error = signal<TranslationKey | undefined>(undefined);
   protected readonly template = signal<typeof EmailTemplate.Type | undefined>(undefined);
   protected readonly titleLabel = computed<TranslationKey>(() =>
@@ -58,7 +78,22 @@ export class EmailTemplateEditor {
   protected readonly templateActions = computed(() => [
     { id: 'archive', label: this.i18n.t('emailDraft.archive'), danger: true },
   ]);
-  protected readonly model = signal({ subject: '', body: '' });
+  protected readonly model = signal<{
+    subject: string;
+    body: string;
+    bodyFormat: EmailBodyFormat;
+  }>({
+    subject: '',
+    body: '',
+    bodyFormat: 'plain',
+  });
+  protected readonly bodyPresentation = computed(() =>
+    emailBodyPresentation(this.model().bodyFormat),
+  );
+  protected readonly bodyFormatOptions = computed(() => [
+    { value: 'plain' as const, label: this.i18n.t('emailsWorkspace.plainText') },
+    { value: 'blocks' as const, label: this.i18n.t('emailsWorkspace.formattedText') },
+  ]);
   protected readonly templateForm = form(this.model, (path) => {
     disabled(path, () => this.busy() || this.completed() || this.state() !== 'ready');
     required(path.subject);
@@ -87,13 +122,14 @@ export class EmailTemplateEditor {
     return (
       !this.busy() &&
       !this.confirming() &&
-      (!this.templateForm().dirty() ||
+      ((!this.templateForm().dirty() && !this.formatChanged()) ||
         (await this.confirmation.request(this.i18n.t('emailsWorkspace.unsavedTemplate'))))
     );
   }
   @HostListener('window:beforeunload', ['$event'])
   protected preventUnload(event: BeforeUnloadEvent): void {
-    if (this.busy() || this.confirming() || this.templateForm().dirty()) event.preventDefault();
+    if (this.busy() || this.confirming() || this.templateForm().dirty() || this.formatChanged())
+      event.preventDefault();
   }
   protected async load(): Promise<void> {
     const generation = ++this.generation;
@@ -102,7 +138,8 @@ export class EmailTemplateEditor {
     this.template.set(undefined);
     this.completed.set(false);
     this.archived.set(false);
-    this.model.set({ subject: '', body: '' });
+    this.formatChanged.set(false);
+    this.model.set({ subject: '', body: '', bodyFormat: 'plain' });
     this.templateForm().reset();
     this.requestId = undefined;
     const id = this.route.snapshot.paramMap.get('templateId');
@@ -130,7 +167,11 @@ export class EmailTemplateEditor {
         return;
       }
       this.template.set(template);
-      this.model.set({ subject: template.subject, body: template.body });
+      this.model.set({
+        subject: template.subject,
+        body: template.body,
+        bodyFormat: template.bodyFormat,
+      });
       this.templateForm().reset();
       this.state.set('ready');
     } catch {
@@ -139,6 +180,15 @@ export class EmailTemplateEditor {
         this.state.set('error');
       }
     }
+  }
+  protected changeBodyFormat(bodyFormat: EmailBodyFormat): void {
+    if (this.busy() || this.completed() || this.state() !== 'ready') return;
+    this.model.update((value) => ({
+      ...value,
+      body: convertEmailBody(value.body, value.bodyFormat, bodyFormat),
+      bodyFormat,
+    }));
+    this.formatChanged.set(true);
   }
   protected save(event: SubmitEvent): void {
     event.preventDefault();
@@ -169,6 +219,7 @@ export class EmailTemplateEditor {
           return;
         }
         this.template.set(outcome.result);
+        this.formatChanged.set(false);
         this.templateForm().reset();
         this.completed.set(true);
       } catch {

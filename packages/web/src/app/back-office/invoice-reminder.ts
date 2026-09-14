@@ -11,6 +11,7 @@ export interface InvoiceReminderDraft {
   readonly reference: string;
   readonly subject: string;
   readonly body: string;
+  readonly bodyFormat: 'plain';
 }
 
 export const reminderBalance = (invoice: InvoiceDetailValue): number => {
@@ -50,6 +51,7 @@ export class InvoiceReminder {
           dateStyle: 'long',
         }),
       }),
+      bodyFormat: 'plain',
     };
   }
 }

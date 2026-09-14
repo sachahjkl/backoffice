@@ -60,6 +60,7 @@ describe('BackOfficeHeader', () => {
     expect(root.querySelector<HTMLSelectElement>('app-language-selector select')?.value).toBe('en');
     expect(root.querySelector('a[href="/services"]')).toBeNull();
     const account = root.querySelector<HTMLButtonElement>('.account-trigger')!;
+    expect(account.dataset['buttonVariant']).toBe('ghost');
     account.focus();
     account.click();
     await fixture.whenStable();

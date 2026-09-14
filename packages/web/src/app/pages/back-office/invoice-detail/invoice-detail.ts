@@ -1,3 +1,4 @@
+import { FilterSelect } from '@shared/filter-select/filter-select';
 import { Authentication } from '@backoffice/authentication';
 import { Can } from '@backoffice/can';
 import {
@@ -38,15 +39,20 @@ import {
 import { canCancelPayment } from '../billing/receipt-cancellation';
 import { invoiceActions, recordedEntryStatus } from './invoice-actions';
 import { ClientDescription } from '../client-description/client-description';
+import { DetailList, DetailPanel } from '@shared/detail-panel/detail-panel';
+import { createEventHistoryResource } from '@shared/event-history/event-history-resource';
 
 @Component({
   selector: 'app-invoice-detail',
   imports: [
+    FilterSelect,
     Can,
     Button,
     Badge,
     ClientDescription,
     DataTable,
+    DetailList,
+    DetailPanel,
     Notice,
     PageHeader,
     DocumentTextView,
@@ -153,13 +159,18 @@ export class InvoiceDetail {
     const invoice = this.task.invoice();
     return invoice ? detailBalance(invoice) : 0;
   });
+  protected readonly paymentTrackingApplies = computed(() => {
+    const status = this.task.invoice()?.status;
+    return status === 'issued' || status === 'paid';
+  });
   protected readonly financialBadge = computed(() => {
     const invoice = this.task.invoice();
     return invoice ? invoiceFinancialBadge(invoice) : undefined;
   });
-  protected readonly history = resource({
-    params: () => (this.tab() === 'history' ? this.task.invoice()?.id : undefined),
-    loader: ({ params }) => this.task.api.history(params),
+  protected readonly history = createEventHistoryResource({
+    active: () => this.tab() === 'history',
+    params: () => this.task.invoice()?.id,
+    loader: (id) => this.task.api.history(id),
   });
   protected readonly events = computed(() => {
     const result = this.history.hasValue() ? this.history.value() : undefined;
@@ -252,7 +263,10 @@ export class InvoiceDetail {
       const result = await this.task.api.renderPdf(invoice.id, revision.version);
       if (this.destroyRef.destroyed || this.task.invoice()?.id !== invoice.id) return;
       if (!result.success) this.task.error.set(result.code);
-      else this.generated.update((values) => new Set([...values, revision.id]));
+      else {
+        this.generated.update((values) => new Set([...values, revision.id]));
+        this.history.invalidate();
+      }
     } catch {
       if (!this.destroyRef.destroyed) this.task.error.set('invoice.error');
     } finally {

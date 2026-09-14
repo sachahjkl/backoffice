@@ -1,6 +1,6 @@
 import { Option, Schema } from 'effect';
 import { Marked } from 'marked';
-import { decodeHTMLStrict } from 'entities';
+import { decodeHTMLStrict, escapeText } from 'entities';
 
 export const DocumentTextPresentation = Schema.Struct({
   format: Schema.Literals(['plain', 'markdown', 'blocks']),
@@ -171,3 +171,27 @@ export const documentTextContent = (
       .join('\n\n');
   return text(parseDocumentText(source, presentation.format));
 };
+
+const spansHtml = (values: ReadonlyArray<DocumentTextSpan>): string =>
+  values
+    .map((span) => {
+      const text = escapeText(span.text).replaceAll('\n', '<br>');
+      const italic = span.italic ? `<em>${text}</em>` : text;
+      return span.bold ? `<strong>${italic}</strong>` : italic;
+    })
+    .join('');
+
+const blocksHtml = (values: ReadonlyArray<DocumentTextBlock>): string =>
+  values
+    .map((block) => {
+      if (block.kind === 'heading')
+        return `<h${block.level}>${spansHtml(block.spans)}</h${block.level}>`;
+      if (block.kind === 'paragraph') return `<p>${spansHtml(block.spans)}</p>`;
+      const tag = block.ordered ? 'ol' : 'ul';
+      const start = block.ordered && block.start !== 1 ? ` start="${block.start}"` : '';
+      return `<${tag}${start}>${block.items.map((item) => `<li>${blocksHtml(item)}</li>`).join('')}</${tag}>`;
+    })
+    .join('');
+
+export const documentTextHtml = (source: string): string =>
+  blocksHtml(parseDocumentText(source, 'blocks'));

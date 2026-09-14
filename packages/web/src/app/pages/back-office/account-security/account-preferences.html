@@ -6,14 +6,14 @@
   <form (submit)="apply($event)" novalidate>
     <label class="field">
       {{ i18n.t('adminPages.theme') }}
-      <select class="select" [formField]="preferencesForm.theme">
+      <select appFilterSelect class="select" [formField]="preferencesForm.theme">
         <option [value]="'light'">{{ i18n.t('adminPages.lightTheme') }}</option>
         <option [value]="'dark'">{{ i18n.t('adminPages.darkTheme') }}</option>
       </select>
     </label>
     <label class="field">
       {{ i18n.t('configurationWorkspace.language') }}
-      <select class="select" [formField]="preferencesForm.language">
+      <select appFilterSelect class="select" [formField]="preferencesForm.language">
         <option [value]="'fr'" lang="fr">{{ i18n.t('lang.fr') }}</option>
         <option [value]="'en'" lang="en">{{ i18n.t('lang.en') }}</option>
       </select>

@@ -102,9 +102,12 @@ export class AccountingApi {
     id: string,
     action: 'lock' | 'close' | 'reopen' | 'final-close',
     expectedVersion: number,
+    acknowledgement?: string,
   ) {
+    const payload =
+      action === 'reopen' ? { expectedVersion, acknowledgement } : { expectedVersion };
     return requestOutcome(
-      this.http.post(`/api/accounting/periods/${id}/${action}`, { expectedVersion }),
+      this.http.post(`/api/accounting/periods/${id}/${action}`, payload),
       AccountingPeriod,
       AccountingFailure,
       'accounting.error',

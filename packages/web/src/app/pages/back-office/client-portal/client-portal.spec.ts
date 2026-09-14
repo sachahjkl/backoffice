@@ -404,7 +404,7 @@ describe('ClientPortal', () => {
     const { root, harness } = await configure('/backoffice/client', api);
     expect(root.querySelector('[role="alert"]')).not.toBeNull();
     api.fail = false;
-    root.querySelector<HTMLButtonElement>('.state button')!.click();
+    root.querySelector<HTMLButtonElement>('.state button[appButton]')!.click();
     await harness.fixture.whenStable();
     expect(root.querySelectorAll('tbody tr')).toHaveLength(3);
     expect(api.calls).toBe(2);

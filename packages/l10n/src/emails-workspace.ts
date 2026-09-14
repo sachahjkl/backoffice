@@ -71,6 +71,9 @@ export const emailsWorkspaceText = {
       'Saisissez une adresse courriel valide de 254 caractères maximum.',
     'emailsWorkspace.shortTextInvalid': 'Saisissez un texte de 1 à 160 caractères.',
     'emailsWorkspace.bodyInvalid': 'Saisissez un texte de 1 à 20 000 caractères.',
+    'emailsWorkspace.bodyFormat': 'Format du message',
+    'emailsWorkspace.plainText': 'Texte brut',
+    'emailsWorkspace.formattedText': 'Texte formaté',
     'emailsWorkspace.preview': 'Aperçu du texte',
     'emailsWorkspace.saving': 'Enregistrement…',
     'emailsWorkspace.simulationOnly':
@@ -85,7 +88,7 @@ export const emailsWorkspaceText = {
       'La réception d’une demande par le prestataire ne prouve ni la livraison du courriel ni sa lecture.',
     'emailsWorkspace.requestId': 'Identifiant de la demande',
     'emailsWorkspace.templateHint':
-      'Ce modèle contient uniquement un objet et un texte. Sa modification ne change pas les brouillons et messages existants.',
+      'Ce modèle contient un objet et un texte brut ou formaté. Sa modification ne change pas les brouillons et messages existants.',
     'emailsWorkspace.chooseInvoice': 'Choisir une facture',
     'emailsWorkspace.chooseInvoiceError':
       'Choisissez une facture émise avec un solde positif, sans avoir.',
@@ -166,6 +169,9 @@ export const emailsWorkspaceText = {
     'emailsWorkspace.recipientInvalid': 'Enter a valid email address with at most 254 characters.',
     'emailsWorkspace.shortTextInvalid': 'Enter text with 1 to 160 characters.',
     'emailsWorkspace.bodyInvalid': 'Enter text with 1 to 20,000 characters.',
+    'emailsWorkspace.bodyFormat': 'Message format',
+    'emailsWorkspace.plainText': 'Plain text',
+    'emailsWorkspace.formattedText': 'Formatted text',
     'emailsWorkspace.preview': 'Text preview',
     'emailsWorkspace.saving': 'Saving…',
     'emailsWorkspace.simulationOnly':
@@ -179,7 +185,7 @@ export const emailsWorkspaceText = {
     'emailsWorkspace.receiptHint': 'Provider acceptance proves neither email delivery nor reading.',
     'emailsWorkspace.requestId': 'Request identifier',
     'emailsWorkspace.templateHint':
-      'This template contains only a subject and text. Changes do not alter existing drafts or messages.',
+      'This template contains a subject and plain or formatted text. Changes do not alter existing drafts or messages.',
     'emailsWorkspace.chooseInvoice': 'Choose an invoice',
     'emailsWorkspace.chooseInvoiceError':
       'Choose an issued invoice with a positive balance and no credit note.',

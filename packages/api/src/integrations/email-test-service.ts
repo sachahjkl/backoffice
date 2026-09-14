@@ -252,7 +252,12 @@ const makeEmailTests = Effect.gen(function* () {
       return;
     }
     const outcome = yield* transport
-      .send({ ...job.request, ...EmailTestAddress, subject: `[Test] ${job.request.subject}` })
+      .send({
+        ...job.request,
+        ...EmailTestAddress,
+        subject: `[Test] ${job.request.subject}`,
+        bodyFormat: 'plain',
+      })
       .pipe(
         Effect.map((providerId) => ({ status: 'accepted' as const, providerId, error: null })),
         Effect.catch((error) =>

@@ -27,7 +27,7 @@
   <form (submit)="run($event)" novalidate>
     <label
       >{{ i18n.t('configurationWorkspace.simulationDomain') }}
-      <select class="select" [formField]="domainForm.kind">
+      <select appFilterSelect class="select" [formField]="domainForm.kind">
         <option value="">{{ i18n.t('configurationWorkspace.chooseDomain') }}</option>
         @for (provider of providers(); track provider.kind) { @if (provider.mode === 'simulation') {
         <option [value]="provider.kind">{{ i18n.t(labels[provider.kind]) }}</option>

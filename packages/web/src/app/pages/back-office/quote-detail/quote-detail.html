@@ -92,6 +92,7 @@
       <label class="field"
         >{{ i18n.t('backOffice.quote.cancelReason') }}
         <select
+          appFilterSelect
           class="input"
           [formField]="cancellation.reason"
           aria-describedby="cancel-reason-error"
@@ -143,7 +144,12 @@
   />
   <label class="field version-selector"
     >{{ i18n.t('commercial.versions') }}
-    <select class="input" [value]="version()" (change)="selectVersion($any($event.target).value)">
+    <select
+      appFilterSelect
+      class="input"
+      [value]="version()"
+      (change)="selectVersion($any($event.target).value)"
+    >
       @for (item of revisions(); track item.id) {
       <option [value]="item.version === quote.version ? '' : item.version">
         {{ i18n.tf('commercial.revision', { version: item.version }) }} · {{ date(item.createdAt) }}
@@ -163,11 +169,11 @@
       </p>
       <app-quote-lines [revision]="selectedRevision" />
       } @if (order(); as order) {
-      <section class="section-space" aria-labelledby="quote-related-documents-title">
-        <h2 id="quote-related-documents-title">
-          {{ i18n.t('commercialHeader.relatedDocuments') }}
-        </h2>
-        <dl class="facts">
+      <app-detail-panel
+        class="section-space"
+        [heading]="i18n.t('commercialHeader.relatedDocuments')"
+      >
+        <dl appDetailList class="facts">
           <div>
             <dt>{{ i18n.t('commercial.order') }}</dt>
             <dd>
@@ -187,7 +193,7 @@
           </div>
           }
         </dl>
-      </section>
+      </app-detail-panel>
       } @if (quote.status === 'sent') {
       <p *appCan="'quote.send'" appNotice>{{ i18n.t('commercial.linkUnavailable') }}</p>
       } @if (quote.status !== 'draft') {

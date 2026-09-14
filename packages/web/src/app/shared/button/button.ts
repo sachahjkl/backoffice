@@ -11,6 +11,7 @@ export type ButtonVariant =
   | 'dark'
   | 'ghost'
   | 'link';
+export type ButtonSize = 'small' | 'default' | 'large';
 
 @Component({
   selector: 'button[appButton], a[appLinkButton]',
@@ -32,11 +33,13 @@ export type ButtonVariant =
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[attr.data-button-variant]': 'variant()',
+    '[attr.data-button-size]': 'size()',
     '[attr.data-button-icon-only]': "iconOnly() ? '' : null",
   },
 })
 export class Button {
   readonly variant = input<ButtonVariant>('default');
+  readonly size = input<ButtonSize>('default');
   readonly iconOnly = input(false);
   readonly icon = input<IconName>();
   readonly iconPosition = input<'start' | 'end'>('start');

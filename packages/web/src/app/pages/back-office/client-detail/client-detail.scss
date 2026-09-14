@@ -15,19 +15,7 @@
 }
 
 .profile {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
-  gap: var(--space-6);
   margin-block-start: var(--space-6);
-}
-.profile h2 {
-  font-size: var(--text-lg);
-}
-.profile dl {
-  margin-block-start: var(--space-4);
-}
-.profile dl > [appInlineEdit] + [appInlineEdit] {
-  margin-block-start: var(--space-4);
 }
 .client-primary-actions {
   display: flex;

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { form, FormField } from '@angular/forms/signals';
 import { RouterLink } from '@angular/router';
-import { Button, type ButtonVariant } from '@shared/button/button';
+import { Button, type ButtonSize, type ButtonVariant } from '@shared/button/button';
 import { Icon } from '@shared/icon/icon';
 import { IconToolbar, type IconToolbarGroup } from '@shared/icon-toolbar/icon-toolbar';
 import { I18nService } from '@app/i18n.service';
@@ -10,6 +10,7 @@ import { SplitAction } from '@shared/split-action/split-action';
 import { CopyField } from '@shared/copy-field/copy-field';
 import { AnchorLink } from '@shared/anchor-link/anchor-link';
 import { AnchorCopy } from '@shared/anchor-copy';
+import { Hint } from '@shared/hint/hint';
 import { currentReference, StoryPage, type StoryDefinition } from '../story-page';
 import { referenceText } from '../reference-text';
 
@@ -25,6 +26,7 @@ interface ActionPreview {
   fragment: string;
   noticeMessage: string;
   variant: ButtonVariant;
+  size: ButtonSize;
   disabled: boolean;
   iconOnly: boolean;
   appearance: 'button' | 'more';
@@ -56,6 +58,7 @@ export const buttonVariants: readonly ButtonVariant[] = [
     SplitAction,
     CopyField,
     AnchorLink,
+    Hint,
   ],
   templateUrl: './action-stories.html',
   styleUrl: './story.scss',
@@ -68,6 +71,7 @@ export class ActionStories {
     return this.text().stories[this.entry.id];
   }
   protected readonly variants = buttonVariants;
+  protected readonly sizes: readonly ButtonSize[] = ['small', 'default', 'large'];
   protected readonly anchorCopy = inject(AnchorCopy);
   protected readonly model = signal<ActionPreview>({
     label: this.entry.id === 'copy-notice' ? this.text().copy : this.text().content,
@@ -81,6 +85,7 @@ export class ActionStories {
     fragment: 'reference-anchor',
     noticeMessage: this.text().copyNoticeMessage,
     variant: 'primary',
+    size: 'default',
     disabled: false,
     iconOnly: false,
     appearance: 'button',

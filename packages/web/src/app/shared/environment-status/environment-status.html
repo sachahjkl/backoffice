@@ -1,14 +1,15 @@
-@if (environmentStatus; as status) {
+@if (environmentStatus; as status) { @if (placement() !== 'hidden') {
 <a
   class="environment-ribbon"
-  [class.header-link]="headerLink()"
+  [class.footer-link]="placement() === 'footer'"
+  [class.header-link]="placement() === 'header'"
   [class.staging]="environment === 'staging'"
   routerLink="/version"
   [attr.aria-label]="i18n.t(status.nameKey)"
 >
   {{ i18n.t(status.labelKey) }}
 </a>
-} @else if (headerLink()) {
+} } @else if (placement() === 'header') {
 <a class="version-link" routerLink="/version">{{ i18n.t('nav.version') }}</a>
 } @if (publicPage()) {
 <aside class="construction-notice runtime-construction-only" aria-labelledby="construction-title">

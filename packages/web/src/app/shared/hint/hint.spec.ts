@@ -15,6 +15,8 @@ import { Hint } from './hint';
         CSV
       </button>
     </app-hint>
+    <ng-template #details><strong>Détail formaté</strong></ng-template>
+    <app-hint [content]="details"><button type="button">Détails</button></app-hint>
   `,
 })
 class HintExample {}
@@ -53,6 +55,11 @@ describe('Hint', () => {
     expect(button.getAttribute('aria-describedby')).toBe(bubble.id);
     expect(button.getAttribute('aria-label')).toBe('Exporter les résultats affichés (CSV)');
     expect(button.hasAttribute('title')).toBe(false);
+  });
+
+  it('renders template content in an optional hint', () => {
+    const bubbles = fixture.nativeElement.querySelectorAll('[popover]');
+    expect(bubbles[1]?.querySelector('strong')?.textContent).toBe('Détail formaté');
   });
 
   it('opens on hover and stays open while the pointer enters the hint', () => {

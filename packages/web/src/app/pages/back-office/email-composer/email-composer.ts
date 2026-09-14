@@ -27,6 +27,7 @@ import {
   EmailDraftSave,
   EmailSubmission,
   EmailTemplate,
+  type EmailBodyFormat,
   Ulid,
   type IntegrationOperationValue,
 } from '@froment/contracts';
@@ -47,9 +48,27 @@ import { Confirmation } from '@shared/confirmation/confirmation';
 import { Notice } from '@shared/notice/notice';
 import { ObjectPicker } from '@shared/object-picker/object-picker';
 import { PageHeader } from '@shared/page-header/page-header';
+import { DocumentTextEditor } from '@shared/document-text-editor/document-text-editor';
+import { DocumentTextView } from '@shared/document-text-view/document-text-view';
+import { SegmentedControl } from '@shared/segmented-control/segmented-control';
 import { emailFilterQuery, emailQuery, emailView } from '../emails/email-workspace';
+import { convertEmailBody, emailBodyPresentation } from '../email-body';
 
-const blank = () => ({ recipient: '', reference: '', subject: '', body: '' });
+interface MessageModel {
+  recipient: string;
+  reference: string;
+  subject: string;
+  body: string;
+  bodyFormat: EmailBodyFormat;
+}
+
+const blank = (): MessageModel => ({
+  recipient: '',
+  reference: '',
+  subject: '',
+  body: '',
+  bodyFormat: 'plain',
+});
 type MessageField = keyof ReturnType<typeof blank>;
 
 @Component({
@@ -58,12 +77,15 @@ type MessageField = keyof ReturnType<typeof blank>;
   imports: [
     ActionMenu,
     Button,
+    DocumentTextEditor,
+    DocumentTextView,
     FieldGroup,
     FormField,
     Notice,
     ObjectPicker,
     PageHeader,
     RouterLink,
+    SegmentedControl,
   ],
   templateUrl: './email-composer.html',
   styleUrl: './email-composer.scss',
@@ -105,6 +127,13 @@ export class EmailComposer {
     this.templates().map((template) => ({ id: template.id, label: template.subject })),
   );
   protected readonly model = signal(blank());
+  protected readonly bodyPresentation = computed(() =>
+    emailBodyPresentation(this.model().bodyFormat),
+  );
+  protected readonly bodyFormatOptions = computed(() => [
+    { value: 'plain' as const, label: this.i18n.t('emailsWorkspace.plainText') },
+    { value: 'blocks' as const, label: this.i18n.t('emailsWorkspace.formattedText') },
+  ]);
   protected readonly messageForm = form(this.model, (path) => {
     disabled(
       path,
@@ -205,6 +234,7 @@ export class EmailComposer {
           operation.request.reference === pending.reference &&
           operation.request.subject === pending.subject &&
           operation.request.body === pending.body &&
+          operation.request.bodyFormat === pending.bodyFormat &&
           operation.request.expectedMode === pending.expectedMode
         ) {
           store.clear();
@@ -282,7 +312,22 @@ export class EmailComposer {
       this.confirming.set(false);
     }
     if (this.destroyRef.destroyed) return;
-    this.model.update((value) => ({ ...value, subject: template.subject, body: template.body }));
+    this.model.update((value) => ({
+      ...value,
+      subject: template.subject,
+      body: template.body,
+      bodyFormat: template.bodyFormat,
+    }));
+    this.prepared.set(true);
+  }
+
+  protected changeBodyFormat(bodyFormat: EmailBodyFormat): void {
+    if (this.busy() || this.pending() || this.completed() || this.state() !== 'ready') return;
+    this.model.update((value) => ({
+      ...value,
+      body: convertEmailBody(value.body, value.bodyFormat, bodyFormat),
+      bodyFormat,
+    }));
     this.prepared.set(true);
   }
 

@@ -1,3 +1,4 @@
+import { FilterSelect } from '@shared/filter-select/filter-select';
 import {
   afterRenderEffect,
   ChangeDetectionStrategy,
@@ -57,6 +58,7 @@ type BankImportModel = {
   selector: 'app-bank-import',
   host: { class: 'page-container', '(window:beforeunload)': 'beforeUnload($event)' },
   imports: [
+    FilterSelect,
     Button,
     DataTable,
     FormField,

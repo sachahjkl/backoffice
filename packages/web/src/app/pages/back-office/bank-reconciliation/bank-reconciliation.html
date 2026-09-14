@@ -161,6 +161,7 @@
         <form class="task-form" novalidate (submit)="reconcile($event)">
           <label class="field"
             >{{ i18n.t('bank.invoice') }}<select
+              appFilterSelect
               #invoice
               class="select"
               [formField]="matchForm.invoiceId"
@@ -196,6 +197,7 @@
           }
           <label class="field"
             >{{ i18n.t('bankWorkspace.payment') }}<select
+              appFilterSelect
               class="select"
               [formField]="matchForm.paymentId"
               aria-describedby="payment-error"

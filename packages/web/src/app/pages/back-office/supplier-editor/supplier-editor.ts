@@ -1,3 +1,4 @@
+import { FilterSelect } from '@shared/filter-select/filter-select';
 import {
   afterNextRender,
   ChangeDetectionStrategy,
@@ -50,7 +51,7 @@ const emptySupplier = (): SupplierInputValue => ({
 @Component({
   host: { class: 'page-container' },
   selector: 'app-supplier-editor',
-  imports: [Button, FormField, Notice, PageHeader, RouterLink],
+  imports: [FilterSelect, Button, FormField, Notice, PageHeader, RouterLink],
   templateUrl: './supplier-editor.html',
   styleUrl: './supplier-editor.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

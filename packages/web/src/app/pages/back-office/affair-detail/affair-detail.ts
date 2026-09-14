@@ -11,11 +11,11 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import {
   AffairUpdateRequest,
   type Affair,
-  type AuditEvent,
   type InvoiceListValue,
   type OrderListValue,
   type QuoteListValue,
@@ -33,7 +33,9 @@ import { TabLayout, TabPanel } from '@shared/tabs/tab-panel';
 import { InlineEdit } from '@shared/inline-edit/inline-edit';
 import { Icon, type IconName } from '@shared/icon/icon';
 import { Confirmation } from '@shared/confirmation/confirmation';
+import { createEventHistoryResource } from '@shared/event-history/event-history-resource';
 import { formatLocalizedDate } from '@shared/localized-date/localized-date-pipe';
+import { filter } from 'rxjs';
 import { invoiceStatusBadge, quoteStatusBadge } from '../commercial-header';
 
 interface AffairDocumentSummary {
@@ -79,12 +81,35 @@ export class AffairDetail {
   private readonly ordersApi = inject(OrdersApi);
   private readonly invoicesApi = inject(InvoicesApi);
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly navigation = toSignal(
+    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)),
+    { initialValue: undefined },
+  );
+  protected readonly tab = computed(() => {
+    this.navigation();
+    return this.route.firstChild?.snapshot.data['tab'] === 'history' ? 'history' : 'overview';
+  });
   protected readonly state = signal<'loading' | 'ready' | 'error'>('loading');
   protected readonly affair = signal<typeof Affair.Type | undefined>(undefined);
   protected readonly quotes = signal<QuoteListValue>([]);
   protected readonly orders = signal<OrderListValue>([]);
   protected readonly invoices = signal<InvoiceListValue>([]);
-  protected readonly events = signal<ReadonlyArray<typeof AuditEvent.Type>>([]);
+  protected readonly history = createEventHistoryResource({
+    active: () => this.tab() === 'history',
+    params: () => this.affair()?.id,
+    loader: (id) => this.api.events(id),
+  });
+  protected readonly events = computed(() => {
+    const outcome = this.history.hasValue() ? this.history.value() : undefined;
+    return outcome?.success
+      ? outcome.result.toSorted((left, right) => left.occurredAt.localeCompare(right.occurredAt))
+      : [];
+  });
+  protected readonly historyFailed = computed(() => {
+    const outcome = this.history.hasValue() ? this.history.value() : undefined;
+    return this.history.error() !== undefined || (outcome !== undefined && !outcome.success);
+  });
   protected readonly editing = signal<'title' | 'status' | undefined>(undefined);
   protected readonly saving = signal(false);
   protected readonly canEdit = computed(() => this.authentication.can('affair.update'));
@@ -180,12 +205,11 @@ export class AffairDetail {
     }
     this.state.set('loading');
     try {
-      const [affair, quotes, orders, invoices, events] = await Promise.all([
+      const [affair, quotes, orders, invoices] = await Promise.all([
         this.api.get(id.value),
         this.quotesApi.list(),
         this.ordersApi.list(),
         this.invoicesApi.list(),
-        this.api.events(id.value),
       ]);
       if (!affair.success) {
         this.state.set('error');
@@ -195,11 +219,6 @@ export class AffairDetail {
       this.quotes.set(quotes);
       this.orders.set(orders);
       this.invoices.set(invoices);
-      this.events.set(
-        events.success
-          ? events.result.toSorted((left, right) => left.occurredAt.localeCompare(right.occurredAt))
-          : [],
-      );
       this.state.set('ready');
     } catch {
       this.state.set('error');
@@ -226,6 +245,7 @@ export class AffairDetail {
       );
       if (result.success) {
         this.affair.set(result.result);
+        this.history.invalidate();
         this.editing.set(undefined);
       } else this.state.set('error');
     } finally {

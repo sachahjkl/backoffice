@@ -20,6 +20,7 @@
           <input
             class="input"
             [id]="'line-description-' + $index"
+            [placeholder]="i18n.t('documentLine.descriptionPlaceholder')"
             [value]="line.description"
             [disabled]="disabled()"
             [attr.aria-invalid]="showError($index, 'description', line.description)"
@@ -27,12 +28,12 @@
             (input)="update($index, 'description', $event)"
           />
           @if (showError($index, 'description', line.description)) {
-          <span class="field-error visually-hidden" [id]="'line-description-error-' + $index">
+          <span class="field-error" [id]="'line-description-error-' + $index">
             {{ i18n.t('documentLine.descriptionInvalid') }}
           </span>
           }
         </td>
-        <td>
+        <td class="quantity-cell">
           <label class="visually-hidden" [for]="'line-quantity-' + $index">
             {{ i18n.tf('documentLine.quantityNumber', { number: $index + 1 }) }}
           </label>
@@ -45,14 +46,15 @@
             [attr.aria-invalid]="showError($index, 'quantity', line.quantity)"
             [attr.aria-describedby]="showError($index, 'quantity', line.quantity) ? 'line-quantity-error-' + $index : null"
             (input)="update($index, 'quantity', $event)"
+            (keydown)="step($index, 'quantity', $event)"
           />
           @if (showError($index, 'quantity', line.quantity)) {
-          <span class="field-error visually-hidden" [id]="'line-quantity-error-' + $index">
+          <span class="field-error" [id]="'line-quantity-error-' + $index">
             {{ i18n.t('documentLine.quantityInvalid') }}
           </span>
           }
         </td>
-        <td>
+        <td class="unit-price-cell">
           <label class="visually-hidden" [for]="'line-price-' + $index">
             {{ i18n.tf('documentLine.unitPriceNumber', { number: $index + 1 }) }}
           </label>
@@ -65,14 +67,15 @@
             [attr.aria-invalid]="showError($index, 'unitPrice', line.unitPrice)"
             [attr.aria-describedby]="showError($index, 'unitPrice', line.unitPrice) ? 'line-price-error-' + $index : null"
             (input)="update($index, 'unitPrice', $event)"
+            (keydown)="step($index, 'unitPrice', $event)"
           />
           @if (showError($index, 'unitPrice', line.unitPrice)) {
-          <span class="field-error visually-hidden" [id]="'line-price-error-' + $index">
+          <span class="field-error" [id]="'line-price-error-' + $index">
             {{ i18n.t('documentLine.unitPriceInvalid') }}
           </span>
           }
         </td>
-        <td>
+        <td class="vat-cell">
           <label class="visually-hidden" [for]="'line-vat-' + $index">
             {{ i18n.tf('documentLine.vatRateNumber', { number: $index + 1 }) }}
           </label>
@@ -85,15 +88,16 @@
             [attr.aria-invalid]="showError($index, 'vatRate', line.vatRate)"
             [attr.aria-describedby]="showError($index, 'vatRate', line.vatRate) ? 'line-vat-error-' + $index : null"
             (input)="update($index, 'vatRate', $event)"
+            (keydown)="step($index, 'vatRate', $event)"
           />
           @if (showError($index, 'vatRate', line.vatRate)) {
-          <span class="field-error visually-hidden" [id]="'line-vat-error-' + $index">
+          <span class="field-error" [id]="'line-vat-error-' + $index">
             {{ i18n.t('documentLine.vatRateInvalid') }}
           </span>
           }
         </td>
         <td class="amount">
-          @if (totals()[$index] !== undefined) { {{ money(totals()[$index]!) }} }
+          @if (lineAmounts()[$index]; as amounts) { {{ money(amounts.totalCents) }} }
         </td>
         <td>
           <button
@@ -109,6 +113,32 @@
       </tr>
       }
     </tbody>
+    <tfoot>
+      <tr class="add-line-row">
+        <td colspan="6">
+          <button appButton type="button" [disabled]="addDisabled()" (click)="add()">
+            {{ i18n.t('documentLine.add') }}
+          </button>
+        </td>
+      </tr>
+      @if (summary(); as totals) {
+      <tr>
+        <th colspan="4" scope="row">{{ i18n.t('documentLine.subtotal') }}</th>
+        <td class="amount">{{ money(totals.netTotalCents) }}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <th colspan="4" scope="row">{{ i18n.t('documentLine.vatTotal') }}</th>
+        <td class="amount">{{ money(totals.vatTotalCents) }}</td>
+        <td></td>
+      </tr>
+      <tr class="grand-total">
+        <th colspan="4" scope="row">{{ i18n.t('documentLine.totalWithTax') }}</th>
+        <td class="amount">{{ money(totals.totalCents) }}</td>
+        <td></td>
+      </tr>
+      }
+    </tfoot>
   </table>
 </div>
 
@@ -120,8 +150,8 @@
         >{{ line.description || i18n.tf('documentLine.number', { number: $index + 1 }) }}</strong
       >
       <p>{{ line.quantity }} × {{ line.unitPrice }} · {{ line.vatRate }} %</p>
-      @if (totals()[$index] !== undefined) {
-      <p class="amount">{{ money(totals()[$index]!) }}</p>
+      @if (lineAmounts()[$index]; as amounts) {
+      <p class="amount">{{ money(amounts.totalCents) }}</p>
       }
     </div>
     <div class="line-actions spacer-x-2">
@@ -142,6 +172,23 @@
   }
 </ol>
 
-<button appButton type="button" [disabled]="addDisabled()" (click)="add()">
+<button class="mobile-add" appButton type="button" [disabled]="addDisabled()" (click)="add()">
   {{ i18n.t('documentLine.add') }}
 </button>
+
+@if (summary(); as totals) {
+<dl class="mobile-summary ds-panel">
+  <div>
+    <dt>{{ i18n.t('documentLine.subtotal') }}</dt>
+    <dd>{{ money(totals.netTotalCents) }}</dd>
+  </div>
+  <div>
+    <dt>{{ i18n.t('documentLine.vatTotal') }}</dt>
+    <dd>{{ money(totals.vatTotalCents) }}</dd>
+  </div>
+  <div class="grand-total">
+    <dt>{{ i18n.t('documentLine.totalWithTax') }}</dt>
+    <dd>{{ money(totals.totalCents) }}</dd>
+  </div>
+</dl>
+}

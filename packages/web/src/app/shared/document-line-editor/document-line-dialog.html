@@ -4,7 +4,11 @@
   </h2>
   <label class="field">
     {{ i18n.t('documentLine.description') }}
-    <input class="input" [formField]="lineForm.description" />
+    <input
+      class="input"
+      [placeholder]="i18n.t('documentLine.descriptionPlaceholder')"
+      [formField]="lineForm.description"
+    />
   </label>
   <label class="field">
     {{ i18n.t('documentLine.quantity') }}

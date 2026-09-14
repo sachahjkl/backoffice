@@ -18,6 +18,7 @@ const request = (): IntegrationSubmissionValue => ({
   recipient: 'test@example.test',
   subject: 'Test',
   body: 'Not sent.',
+  bodyFormat: 'plain',
 });
 
 describe('integration persistence', () => {

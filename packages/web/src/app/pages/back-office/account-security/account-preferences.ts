@@ -1,3 +1,4 @@
+import { FilterSelect } from '@shared/filter-select/filter-select';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -17,7 +18,7 @@ import { PageHeader } from '@shared/page-header/page-header';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { '(window:beforeunload)': 'beforeUnload($event)' },
-  imports: [Button, FormField, Notice, PageHeader],
+  imports: [FilterSelect, Button, FormField, Notice, PageHeader],
   selector: 'app-account-preferences',
   styleUrl: './account-preferences.scss',
   templateUrl: './account-preferences.html',

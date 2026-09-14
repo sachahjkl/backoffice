@@ -38,7 +38,13 @@ describe('integration simulations HTTP', () => {
       expect((await fetch(`${url}/operations`, { headers: clientHeaders })).status).toBe(403);
       expect((await fetch(`${url}/retries`, { headers: clientHeaders })).status).toBe(403);
       const requests = [
-        { kind: 'email', recipient: 'test@example.test', subject: 'Test', body: 'Not sent.' },
+        {
+          kind: 'email',
+          recipient: 'test@example.test',
+          subject: 'Test',
+          body: 'Not sent.',
+          bodyFormat: 'plain',
+        },
         { kind: 'signature', artifactId: client.id, signerEmail: 'test@example.test' },
         { kind: 'payment', amountCents: 100, currency: 'EUR', customerEmail: 'test@example.test' },
         { kind: 'banking', accountReference: 'SIMULATION', from: '2026-01-01', to: '2026-01-31' },
@@ -118,6 +124,7 @@ describe('integration simulations HTTP', () => {
         recipient: 'test@example.test',
         subject: 'Test',
         body: 'Not sent.',
+        bodyFormat: 'plain',
         expectedMode: 'simulation',
       };
       const post = (body: SubmissionBody, headers = server.jsonHeaders) =>

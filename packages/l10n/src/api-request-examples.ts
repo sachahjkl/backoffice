@@ -45,5 +45,6 @@ export const apiRequestExamples = {
     recipient: 'client@example.test',
     subject: 'Payment reminder',
     body: 'The remaining invoice balance is EUR 125.00.',
+    bodyFormat: 'plain',
   },
 };

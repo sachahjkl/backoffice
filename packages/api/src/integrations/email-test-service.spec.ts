@@ -91,8 +91,8 @@ it('persists before sending, reuses requests after reconstruction, retries once,
       yield* TestClock.adjust('2 minutes');
       yield* run;
       expect(calls).toEqual([
-        { ...input, ...EmailTestAddress, subject: '[Test] Connection test' },
-        { ...input, ...EmailTestAddress, subject: '[Test] Connection test' },
+        { ...input, ...EmailTestAddress, subject: '[Test] Connection test', bodyFormat: 'plain' },
+        { ...input, ...EmailTestAddress, subject: '[Test] Connection test', bodyFormat: 'plain' },
       ]);
       expect(yield* list).toMatchObject([{ status: 'accepted', providerId, attempts: 2 }]);
       yield* create;

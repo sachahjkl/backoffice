@@ -1,3 +1,4 @@
+import { FilterSelect } from '@shared/filter-select/filter-select';
 import { afterNextRender, ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { form, FormField, required, submit } from '@angular/forms/signals';
 import { Router } from '@angular/router';
@@ -39,7 +40,7 @@ const readBase64 = (file: File): Promise<string> =>
 @Component({
   host: { class: 'page-container' },
   selector: 'app-supplier-invoice-analysis',
-  imports: [Breadcrumbs, Button, FormField, Notice, PageHeader],
+  imports: [FilterSelect, Breadcrumbs, Button, FormField, Notice, PageHeader],
   templateUrl: './supplier-invoice-analysis.html',
   styleUrl: './supplier-invoice-analysis.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

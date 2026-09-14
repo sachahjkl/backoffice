@@ -40,6 +40,7 @@ export {
   serializeDocumentText,
   isDocumentText,
   documentTextContent,
+  documentTextHtml,
 } from './documents/document-text.js';
 export {
   InvoiceNumber,
@@ -530,6 +531,7 @@ export * from './banking/ledger.js';
 export * from './integrations/email-drafts.js';
 export * from './integrations/provider-actions.js';
 export * from './integrations/email-templates.js';
+export * from './integrations/email-content.js';
 export * from './integrations/retries.js';
 export * from './integrations/reminders.js';
 export * from './integrations/connections.js';

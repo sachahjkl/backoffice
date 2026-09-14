@@ -44,7 +44,7 @@ export const emailTemplateDocumentation = {
     group: {
       title: 'Modèles de courriels',
       description:
-        'Modèles partagés, versionnés et archivables. Texte brut sans exécution de variables.',
+        'Modèles partagés, versionnés et archivables. Texte brut ou formaté sans exécution de variables.',
     },
     operations: {
       emailTemplateList: {
@@ -68,7 +68,7 @@ export const emailTemplateDocumentation = {
     group: {
       title: 'Email templates',
       description:
-        'Shared, versioned templates with archival. Plain text without variable execution.',
+        'Shared, versioned templates with archival. Plain or formatted text without variable execution.',
     },
     operations: {
       emailTemplateList: {

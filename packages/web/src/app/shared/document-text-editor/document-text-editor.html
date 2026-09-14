@@ -10,9 +10,11 @@
     <div #editorHost></div>
   </div>
 </div>
+@if (showPlacement()) {
 <label class="field placement">
   {{ i18n.t('documentText.placement') }}
   <select
+    appFilterSelect
     class="select"
     #position
     [value]="placement()"
@@ -25,3 +27,4 @@
     }
   </select>
 </label>
+}

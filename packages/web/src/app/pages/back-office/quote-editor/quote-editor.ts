@@ -1,3 +1,4 @@
+import { FilterSelect } from '@shared/filter-select/filter-select';
 import { formatMoney } from '@froment/l10n';
 import { Can } from '@backoffice/can';
 import type { PermissionCodeValue } from '@froment/contracts';
@@ -13,6 +14,7 @@ import {
   inject,
   PendingTasks,
   signal,
+  viewChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
@@ -47,7 +49,7 @@ import { QuotesApi, type QuoteErrorCode } from '@backoffice/quotes-api';
 import { QuoteConditionPresetsApi } from '@backoffice/quote-condition-presets-api';
 import { CatalogApi } from '@backoffice/catalog-api';
 import { type CatalogItemListValue } from '@froment/contracts';
-import { formatFixedDecimal, parseFixedDecimal } from '@backoffice/quote-input';
+import { formatDecimal, formatFixedDecimal, parseFixedDecimal } from '@backoffice/quote-input';
 import { I18nService, type TranslationKey } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
@@ -81,7 +83,7 @@ interface QuoteModel {
 
 const emptyLine = (): QuoteLineModel => ({
   description: '',
-  quantity: '1.000',
+  quantity: '1',
   unitPrice: '0.00',
   vatRate: '20.00',
 });
@@ -90,6 +92,7 @@ const emptyLine = (): QuoteLineModel => ({
   host: { class: 'page-container' },
   selector: 'app-quote-editor',
   imports: [
+    FilterSelect,
     Can,
     Button,
     FormField,
@@ -106,6 +109,7 @@ const emptyLine = (): QuoteLineModel => ({
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuoteEditor {
+  private readonly lineEditor = viewChild.required(DocumentLineEditor);
   protected readonly writePermission = computed<PermissionCodeValue>(() =>
     this.isNew() ? 'quote.create' : 'quote.update',
   );
@@ -243,12 +247,6 @@ export class QuoteEditor {
       this.detail() !== undefined &&
       (this.quoteForm().dirty() || this.saving() || this.uncertain()),
   );
-  protected readonly lineTotals = computed(() =>
-    this.totalsAreStale()
-      ? []
-      : (this.detail()?.currentRevision.lines.map((line) => line.totalCents) ?? []),
-  );
-
   constructor() {
     this.destroyRef.onDestroy(() => this.referenceDialog()?.close());
     afterNextRender(() => {
@@ -283,7 +281,7 @@ export class QuoteEditor {
         ...model.lines,
         {
           description: item.description,
-          quantity: formatFixedDecimal(item.quantityMilli, 3),
+          quantity: formatDecimal(item.quantityMilli, 3),
           unitPrice: formatFixedDecimal(item.unitPriceCents, 2),
           vatRate: formatFixedDecimal(item.vatRateBasisPoints, 2),
         },
@@ -460,6 +458,7 @@ export class QuoteEditor {
     const fields = [
       this.quoteForm.clientId,
       this.quoteForm.title,
+      this.quoteForm.currency,
       ...Array.from(this.quoteForm.lines).flatMap((line) => [
         line.description,
         line.quantity,
@@ -469,11 +468,15 @@ export class QuoteEditor {
       this.quoteForm.conditions,
     ];
     for (const field of fields) field().markAsTouched();
-    const invalid = fields.find((field) => field().invalid());
-    if (invalid) {
-      invalid().focusBoundControl();
-      return;
-    }
+    const headerInvalid = [
+      this.quoteForm.clientId,
+      this.quoteForm.title,
+      this.quoteForm.currency,
+    ].find((field) => field().invalid());
+    if (headerInvalid) return headerInvalid().focusBoundControl();
+    if (this.lineEditor().focusFirstInvalid(this.model().lines)) return;
+    if (this.quoteForm.conditions().invalid())
+      return this.quoteForm.conditions().focusBoundControl();
     void submit(this.quoteForm, async () => {
       const lines = this.parseLines();
       if (lines === undefined) {
@@ -692,7 +695,7 @@ export class QuoteEditor {
       title: detail.currentRevision.title,
       lines: detail.currentRevision.lines.map((line) => ({
         description: line.description,
-        quantity: formatFixedDecimal(line.quantityMilli, 3, decimalSeparator),
+        quantity: formatDecimal(line.quantityMilli, 3, decimalSeparator),
         unitPrice: formatFixedDecimal(line.unitPriceCents, 2, decimalSeparator),
         vatRate: formatFixedDecimal(line.vatRateBasisPoints, 2, decimalSeparator),
       })),

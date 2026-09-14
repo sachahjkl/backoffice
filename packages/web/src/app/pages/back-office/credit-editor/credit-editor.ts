@@ -1,3 +1,4 @@
+import { FilterSelect } from '@shared/filter-select/filter-select';
 import { Can } from '@backoffice/can';
 import { InvoiceCreditsApi } from '@backoffice/invoice-credits-api';
 import { formatFixedDecimal, parseFixedDecimal } from '@backoffice/quote-input';
@@ -41,7 +42,16 @@ interface CreditLineModel {
 
 @Component({
   selector: 'app-credit-editor',
-  imports: [Can, Button, DataTable, Notice, FormField, TaskFeedback, InvoiceTaskHeader],
+  imports: [
+    FilterSelect,
+    Can,
+    Button,
+    DataTable,
+    Notice,
+    FormField,
+    TaskFeedback,
+    InvoiceTaskHeader,
+  ],
   providers: [InvoiceTask],
   templateUrl: './credit-editor.html',
   styleUrl: './credit-editor.scss',

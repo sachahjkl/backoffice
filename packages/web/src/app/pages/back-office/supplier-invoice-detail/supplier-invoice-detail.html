@@ -68,10 +68,9 @@
   } @if (loading()) {
   <p role="status">{{ i18n.t('supplierInvoice.loadingDetail') }}</p>
   } @if (invoice(); as current) {
-  <div class="detail-grid">
-    <section class="ds-panel">
-      <h2>{{ i18n.t('supplierInvoice.details') }}</h2>
-      <dl>
+  <div appDetailGrid class="detail-grid">
+    <app-detail-panel class="detail-panel" [heading]="i18n.t('supplierInvoice.details')">
+      <dl appDetailList>
         <div>
           <dt>{{ i18n.t('supplierInvoice.kind') }}</dt>
           <dd>{{ i18n.t(documentKind()) }}</dd>
@@ -103,10 +102,9 @@
           <dd>{{ source() }}</dd>
         </div>
       </dl>
-    </section>
-    <section class="ds-panel">
-      <h2>{{ i18n.t('supplierInvoice.totals') }}</h2>
-      <dl>
+    </app-detail-panel>
+    <app-detail-panel class="detail-panel" [heading]="i18n.t('supplierInvoice.totals')">
+      <dl appDetailList>
         <div>
           <dt>{{ i18n.t('supplierInvoice.net') }}</dt>
           <dd>{{ money(current.netTotalCents) }}</dd>
@@ -120,9 +118,9 @@
           <dd>{{ money(current.totalCents) }}</dd>
         </div>
       </dl>
-    </section>
+    </app-detail-panel>
   </div>
-  <section class="ds-panel flow" aria-labelledby="supplier-evidence-title">
+  <section class="ds-panel evidence-panel" aria-labelledby="supplier-evidence-title">
     <h2 id="supplier-evidence-title">{{ i18n.t('supplierInvoice.evidence') }}</h2>
     <label class="field" *appCan="'supplier-invoice.update'" for="supplier-evidence-file"
       >{{ i18n.t('supplierInvoice.evidenceAdd') }}<input

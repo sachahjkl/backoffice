@@ -1,3 +1,4 @@
+import { FilterSelect } from '@shared/filter-select/filter-select';
 import {
   afterRenderEffect,
   ChangeDetectionStrategy,
@@ -64,7 +65,7 @@ const actionGroups = [
 ] as const;
 
 @Component({
-  imports: [IconToolbar],
+  imports: [FilterSelect, IconToolbar],
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-document-text-editor',
   styleUrl: './document-text-editor.scss',
@@ -81,6 +82,7 @@ export class DocumentTextEditor implements FormValueControl<string> {
   readonly disabled = input(false);
   readonly invalid = input(false);
   readonly touched = input(false);
+  readonly showPlacement = input(true);
   readonly touch = output<void>();
   protected readonly i18n = inject(I18nService);
   protected readonly placements = [

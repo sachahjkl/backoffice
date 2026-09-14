@@ -6,6 +6,8 @@ import {
   inject,
   Injector,
   signal,
+  TemplateRef,
+  viewChild,
 } from '@angular/core';
 import { disabled, email, form, FormField, required, submit } from '@angular/forms/signals';
 import { Button } from '@shared/button/button';
@@ -16,7 +18,13 @@ import { DateRangeFilter, type DateRange } from '@shared/date-range-filter/date-
 import { ObjectPicker } from '@shared/object-picker/object-picker';
 import { FieldGroup } from '@shared/field-group/field-group';
 import { FieldHint } from '@shared/field-hint/field-hint';
+import { FilterSelect } from '@shared/filter-select/filter-select';
 import { InlineEdit } from '@shared/inline-edit/inline-edit';
+import {
+  SegmentedControl,
+  type SegmentedControlOption,
+} from '@shared/segmented-control/segmented-control';
+import type { ButtonSize } from '@shared/button/button';
 import { StoryPage, currentReference, type StoryDefinition } from '../story-page';
 import { referenceText } from '../reference-text';
 
@@ -47,7 +55,9 @@ interface FieldPreview {
     ObjectPicker,
     FieldGroup,
     FieldHint,
+    FilterSelect,
     InlineEdit,
+    SegmentedControl,
   ],
   templateUrl: './field-stories.html',
   styleUrl: './story.scss',
@@ -82,6 +92,41 @@ export class FieldStories {
     disabled(path, () => this.model().disabled);
   });
   protected readonly event = signal('');
+  protected readonly segment = signal('plain');
+  private readonly segmentHint = viewChild.required<TemplateRef<unknown>>('segmentHint');
+  protected readonly segmentOptions = computed<ReadonlyArray<SegmentedControlOption>>(() => [
+    {
+      value: 'plain',
+      label: this.text().plain,
+      variant: 'default',
+      hint: this.text().description,
+    },
+    {
+      value: 'blocks',
+      label: this.text().formatted,
+      variant: 'default',
+      hintContent: this.segmentHint(),
+    },
+    {
+      value: 'preview',
+      label: this.text().preview,
+      variant: 'info',
+    },
+    {
+      value: 'remove',
+      label: this.text().remove,
+      variant: 'danger',
+    },
+  ]);
+  protected readonly segmentSamples: ReadonlyArray<{
+    readonly size: ButtonSize;
+    readonly disabled: boolean;
+  }> = [
+    { size: 'small', disabled: false },
+    { size: 'default', disabled: false },
+    { size: 'large', disabled: false },
+    { size: 'default', disabled: true },
+  ];
   protected readonly inlineEditing = signal(false);
   protected readonly inlineValue = signal(this.text().examples.firstName);
   protected readonly options = computed<readonly FilterChoiceOption[]>(() =>

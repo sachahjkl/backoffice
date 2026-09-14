@@ -164,14 +164,6 @@ dd {
   color: var(--color-danger);
   font-size: var(--text-sm);
 }
-.visually-hidden {
-  position: absolute;
-  inline-size: 1px;
-  block-size: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
 @media (max-width: 48rem) {
   .detail-layout {
     grid-template-columns: minmax(0, 1fr);

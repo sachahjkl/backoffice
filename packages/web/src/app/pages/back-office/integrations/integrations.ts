@@ -1,3 +1,4 @@
+import { FilterSelect } from '@shared/filter-select/filter-select';
 import {
   afterNextRender,
   ChangeDetectionStrategy,
@@ -33,7 +34,7 @@ const labels = {
 } satisfies Record<Kind, TranslationKey>;
 
 @Component({
-  imports: [Button, Notice, LocalizedDatePipe, RouterLink, FormField, PageHeader],
+  imports: [FilterSelect, Button, Notice, LocalizedDatePipe, RouterLink, FormField, PageHeader],
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-integrations',
   styleUrl: './integrations.scss',
@@ -119,6 +120,7 @@ export class Integrations {
           recipient: email,
           subject: 'Simulation',
           body: this.i18n.t('integrations.simulated'),
+          bodyFormat: 'plain',
         };
         break;
       case 'signature':

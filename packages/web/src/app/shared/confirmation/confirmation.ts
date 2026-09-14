@@ -17,6 +17,8 @@ interface ConfirmationOptions {
   readonly variant?: 'primary' | 'danger';
 }
 interface ConfirmationData extends ConfirmationOptions {
+  readonly acknowledgementLabel?: string;
+  readonly expectedAcknowledgement?: string;
   readonly message: string;
   readonly secretLabel?: string;
 }
@@ -33,6 +35,15 @@ export class ConfirmationDialog {
   protected readonly data = inject<ConfirmationData>(DIALOG_DATA);
   protected readonly dialog = inject<DialogRef<boolean | string>>(DialogRef);
   protected readonly secret = signal('');
+
+  protected confirm(event: Event): void {
+    event.preventDefault();
+    if (this.data.expectedAcknowledgement !== undefined) {
+      if (this.secret() === this.data.expectedAcknowledgement) this.dialog.close(true);
+      return;
+    }
+    this.dialog.close(this.data.secretLabel === undefined ? true : this.secret());
+  }
 }
 
 @Injectable({ providedIn: 'root' })
@@ -100,6 +111,38 @@ export class Confirmation {
     try {
       const result = await firstValueFrom(dialog.closed, { defaultValue: false });
       return Predicate.isString(result) && result.length > 0 ? result : undefined;
+    } finally {
+      this.active = undefined;
+    }
+  }
+
+  async requestAcknowledgement(
+    message: string,
+    acknowledgementLabel: string,
+    expectedAcknowledgement: string,
+    options: ConfirmationOptions = {},
+  ): Promise<boolean> {
+    if (this.active !== undefined || this.destroyRef.destroyed) return false;
+    const dialog = this.dialogs.open<boolean | string, ConfirmationData, ConfirmationDialog>(
+      ConfirmationDialog,
+      {
+        data: { message, acknowledgementLabel, expectedAcknowledgement, ...options },
+        role: 'alertdialog',
+        ariaModal: true,
+        ariaLabelledBy: 'confirmation-title',
+        ariaDescribedBy: 'confirmation-message',
+        autoFocus: '[data-confirmation-acknowledgement]',
+        restoreFocus: true,
+        hasBackdrop: true,
+        disableClose: false,
+        disableAnimations: true,
+        width: '34rem',
+        maxWidth: 'calc(100vw - 2rem)',
+      },
+    );
+    this.active = dialog;
+    try {
+      return (await firstValueFrom(dialog.closed, { defaultValue: false })) === true;
     } finally {
       this.active = undefined;
     }

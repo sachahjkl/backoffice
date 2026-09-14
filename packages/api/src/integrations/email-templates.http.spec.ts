@@ -14,7 +14,11 @@ it('persists shared templates with version checks, idempotent retries, archival,
   const database = new Sqlite(server.databaseFilename);
   const id = randomUUID();
   const url = `${server.baseUrl}/api/email-templates/${id}`;
-  const content = { subject: 'Reminder', body: '<script>literal</script>\n{{not-evaluated}}' };
+  const content = {
+    subject: 'Reminder',
+    body: '<script>literal</script>\n{{not-evaluated}}',
+    bodyFormat: 'plain',
+  };
   const save = (request: typeof Schema.Json.Type) =>
     fetch(url, { method: 'PUT', headers: server.jsonHeaders, body: JSON.stringify(request) });
   const list = async () =>
@@ -74,7 +78,7 @@ it('persists shared templates with version checks, idempotent retries, archival,
     expect((await save({ ...content, expectedVersion: 0 })).status).toBe(409);
     expect(
       database.prepare('select content from email_templates where id = ?').pluck().get(id),
-    ).toBe(JSON.stringify({ subject: content.subject, body: 'New text' }));
+    ).toBe(JSON.stringify({ subject: content.subject, body: 'New text', bodyFormat: 'plain' }));
     expect(database.prepare('select count(*) from integration_operations').pluck().get()).toBe(0);
     const insert = database.prepare(
       'insert into email_templates (id, content, version, archived, updated_at, updated_by_user_id) select ?, content, 1, 0, updated_at, updated_by_user_id from email_templates where id = ?',

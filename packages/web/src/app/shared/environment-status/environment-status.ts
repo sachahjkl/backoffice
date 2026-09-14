@@ -32,7 +32,7 @@ const environmentStatus = (
 })
 export class EnvironmentStatus {
   readonly publicPage = input.required<boolean>();
-  readonly headerLink = input(false);
+  readonly placement = input.required<'footer' | 'header' | 'hidden'>();
   protected readonly i18n = inject(I18nService);
   private readonly runtime = inject(RuntimeConfiguration);
   protected readonly environment = this.runtime.value?.appEnvironment;

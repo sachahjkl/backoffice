@@ -405,7 +405,7 @@ describe('Catalog', () => {
       'true',
     );
     list.mockResolvedValue([]);
-    root.querySelector<HTMLButtonElement>('.notice-flow button')!.click();
+    root.querySelector<HTMLButtonElement>('.notice-flow button[appButton]')!.click();
     await harness.fixture.whenStable();
     expect(root.querySelector('[role="alert"]')).toBeNull();
     expect(root.querySelector('app-empty-state')).not.toBeNull();

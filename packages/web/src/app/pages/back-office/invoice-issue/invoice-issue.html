@@ -9,7 +9,7 @@
   <p appNotice>{{ i18n.t('billingWorkspace.unavailable') }}</p>
   } @else if (!task.completed()) { @if (preview(); as previewUrl) {
   <iframe
-    class="preview"
+    class="preview preview-surface"
     [src]="previewUrl"
     [title]="i18n.t('backOffice.invoice.preview.frameTitle')"
   ></iframe>

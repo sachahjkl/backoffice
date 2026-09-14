@@ -1,3 +1,4 @@
+import { FilterSelect } from '@shared/filter-select/filter-select';
 import { Can } from '@backoffice/can';
 import {
   ChangeDetectionStrategy,
@@ -31,7 +32,7 @@ const emptyModel = () => ({ amount: '', paidOn: '', method: 'transfer', referenc
 
 @Component({
   selector: 'app-payment-editor',
-  imports: [Can, Button, Notice, FormField, TaskFeedback, InvoiceTaskHeader],
+  imports: [FilterSelect, Can, Button, Notice, FormField, TaskFeedback, InvoiceTaskHeader],
   providers: [InvoiceTask],
   templateUrl: './payment-editor.html',
   styleUrl: './payment-editor.scss',

@@ -1,3 +1,4 @@
+import { FilterSelect } from '@shared/filter-select/filter-select';
 import { Can } from '@backoffice/can';
 import type { PermissionCodeValue } from '@froment/contracts';
 import {
@@ -39,7 +40,7 @@ import {
 import { Schema } from 'effect';
 import { InvoicesApi } from '@backoffice/invoices-api';
 import { OrdersApi } from '@backoffice/orders-api';
-import { formatFixedDecimal, parseFixedDecimal } from '@backoffice/quote-input';
+import { formatDecimal, formatFixedDecimal, parseFixedDecimal } from '@backoffice/quote-input';
 import { I18nService, type TranslationKey } from '@app/i18n.service';
 import { formatMoney } from '@froment/l10n';
 import { Button } from '@shared/button/button';
@@ -56,7 +57,7 @@ import {
 type InvoiceLineModel = DocumentLineEditValue;
 const emptyLine = (): InvoiceLineModel => ({
   description: '',
-  quantity: '1.000',
+  quantity: '1',
   unitPrice: '0.00',
   vatRate: '20.00',
 });
@@ -84,6 +85,7 @@ const emptyModel = (): InvoiceModel => ({
   host: { class: 'page-container', '(window:beforeunload)': 'beforeUnload($event)' },
   selector: 'app-invoice-editor',
   imports: [
+    FilterSelect,
     Can,
     Button,
     FormField,
@@ -206,11 +208,6 @@ export class InvoiceEditor {
   );
   protected readonly totalsAreStale = computed(
     () => this.detail() !== undefined && this.hasUnsavedChanges(),
-  );
-  protected readonly lineTotals = computed(() =>
-    this.totalsAreStale()
-      ? []
-      : (this.detail()?.currentRevision.lines.map((line) => line.totalCents) ?? []),
   );
 
   constructor() {
@@ -412,7 +409,7 @@ export class InvoiceEditor {
       paymentTermsPresentation: revision.paymentTermsPresentation,
       lines: revision.lines.map((line) => ({
         description: line.description,
-        quantity: formatFixedDecimal(line.quantityMilli, 3, separator),
+        quantity: formatDecimal(line.quantityMilli, 3, separator),
         unitPrice: formatFixedDecimal(line.unitPriceCents, 2, separator),
         vatRate: formatFixedDecimal(line.vatRateBasisPoints, 2, separator),
       })),

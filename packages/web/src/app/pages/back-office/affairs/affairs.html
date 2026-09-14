@@ -13,7 +13,7 @@
     <form class="field-grid" (submit)="create($event)">
       <label class="field"
         >{{ i18n.t('backOffice.invoices.client') }}
-        <select class="input" [formField]="createForm.clientId">
+        <select appFilterSelect class="input" [formField]="createForm.clientId">
           <option value="">{{ i18n.t('affair.selectClient') }}</option>
           @for (client of clients(); track client.id) {
           <option [value]="client.id">{{ client.displayName }}</option>

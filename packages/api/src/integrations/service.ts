@@ -146,7 +146,8 @@ const makeIntegrations = Effect.gen(function* () {
                 request.recipient !== saved.content.recipient ||
                 request.subject !== saved.content.subject ||
                 request.reference !== saved.content.reference ||
-                request.body !== saved.content.body
+                request.body !== saved.content.body ||
+                request.bodyFormat !== saved.content.bodyFormat
               ) {
                 throw new IntegrationConflict({ code: 'integration.request_conflict' });
               }

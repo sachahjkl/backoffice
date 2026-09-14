@@ -42,6 +42,26 @@
   --button-text: var(--color-button-on-color);
 }
 
+:host([data-button-size="small"]) {
+  min-height: 2rem;
+  padding: 0.25rem 0.5rem;
+  font-size: var(--text-xs);
+}
+
+:host([data-button-size="small"][data-button-icon-only]) {
+  width: 2rem;
+}
+
+:host([data-button-size="large"]) {
+  min-height: 3rem;
+  padding: 0.55rem 1rem;
+  font-size: var(--text-base);
+}
+
+:host([data-button-size="large"][data-button-icon-only]) {
+  width: 3rem;
+}
+
 :host([data-button-variant="info"]) {
   --button-color: var(--color-button-info);
   --button-highlight: var(--color-button-info-highlight);

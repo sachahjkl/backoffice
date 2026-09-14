@@ -63,6 +63,11 @@ describe('InvoiceDetail', () => {
       root.querySelector('a[href*="/backoffice/emails/reminders/new?invoice="]'),
     ).not.toBeNull();
   });
+  it('does not show payment balances before the invoice is issued', async () => {
+    const { root } = await setupInvoicePage(InvoiceDetail, { invoice: invoiceFixture('draft') });
+    expect(root.textContent).not.toMatch(/Montant enregistré|Recorded amount/);
+    expect(root.textContent).not.toMatch(/Reste à régler|Remaining balance/);
+  });
   it('shows the saved PDF and preview without changing issued revisions', async () => {
     const { root, api } = await setupInvoicePage(InvoiceDetail, { query: { tab: 'document' } });
     expect(root.querySelector('iframe')?.getAttribute('src')).toBe(

@@ -1,11 +1,18 @@
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { Button, type ButtonVariant } from './button';
+import { Button, type ButtonSize, type ButtonVariant } from './button';
 
 @Component({
   imports: [Button],
   template: `
-    <button appButton type="button" icon="plus" [variant]="variant()" [disabled]="disabled()">
+    <button
+      appButton
+      type="button"
+      icon="plus"
+      [variant]="variant()"
+      [size]="size()"
+      [disabled]="disabled()"
+    >
       Action
     </button>
     <a appLinkButton href="#target" icon="external" iconPosition="end" [variant]="variant()"
@@ -16,6 +23,7 @@ import { Button, type ButtonVariant } from './button';
 class TestHost {
   readonly variant = signal<ButtonVariant>('ghost');
   readonly disabled = signal(false);
+  readonly size = signal<ButtonSize>('small');
 }
 
 describe('Button', () => {
@@ -29,6 +37,7 @@ describe('Button', () => {
     expect(button.dataset['buttonVariant']).toBe('ghost');
     expect(link.dataset['buttonVariant']).toBe('ghost');
     expect(button.type).toBe('button');
+    expect(button.dataset['buttonSize']).toBe('small');
     expect(link.getAttribute('href')).toBe('#target');
     expect(button.firstElementChild?.tagName).toBe('APP-ICON');
     expect(link.lastElementChild?.tagName).toBe('APP-ICON');

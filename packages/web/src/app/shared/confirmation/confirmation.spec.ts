@@ -86,6 +86,32 @@ describe('Confirmation', () => {
     expect(await result).toBe('demo-secret');
   });
 
+  it('requires an exact acknowledgement for a dangerous action', async () => {
+    const { fixture, service, overlay } = await setup();
+    const result = service.requestAcknowledgement(
+      'Reopening can invalidate prior reports.',
+      'Enter the period label: 2025',
+      '2025',
+      { acceptLabel: 'Reopen', variant: 'danger' },
+    );
+    await fixture.whenStable();
+    const input = overlay.querySelector<HTMLInputElement>('[data-confirmation-acknowledgement]')!;
+    const action = overlay.querySelector<HTMLButtonElement>('[type="submit"]')!;
+    expect(document.activeElement).toBe(input);
+    expect(input.type).toBe('text');
+    expect(action.disabled).toBe(true);
+    input.value = '2024';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    await fixture.whenStable();
+    expect(action.disabled).toBe(true);
+    input.value = '2025';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    await fixture.whenStable();
+    expect(action.disabled).toBe(false);
+    action.click();
+    expect(await result).toBe(true);
+  });
+
   it('returns false for Escape and backdrop clicks', async () => {
     const { fixture, service, overlay } = await setup();
     const escaped = service.request('Discard changes?');

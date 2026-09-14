@@ -10,6 +10,7 @@
       </div>
       }
       <nav class="footer-legal" [attr.aria-label]="i18n.t('shell.legal_nav')">
+        <app-environment-status [publicPage]="false" placement="footer" />
         <a routerLink="/backoffice/login" routerLinkActive="active" ariaCurrentWhenActive="page"
           >{{ i18n.t('backOffice.title') }}</a
         >

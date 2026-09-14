@@ -1,9 +1,36 @@
 .notice {
+  position: relative;
   padding: var(--space-3) var(--space-4);
+  padding-inline-end: calc(var(--space-4) + 2.25rem);
   border: 1px solid color-mix(in oklab, var(--color-info), white 65%);
   border-radius: var(--radius-sm);
   background: var(--color-info-soft);
   color: var(--color-info);
+}
+
+.notice[hidden] {
+  display: none;
+}
+
+.notice-dismiss {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: var(--space-2);
+  display: inline-grid;
+  inline-size: 2.25rem;
+  block-size: 2.25rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  place-items: center;
+  transform: translateY(-50%);
+  background: transparent;
+  color: currentColor;
+  cursor: pointer;
+}
+
+.notice-dismiss:hover {
+  background: color-mix(in oklab, currentColor 10%, transparent);
 }
 
 .notice.success {

@@ -21,7 +21,7 @@
   } } @else if (publicPage()) {
   <app-site-header />
   } @if (!backOffice()) {
-  <app-environment-status ngSkipHydration [publicPage]="publicPage()" />
+  <app-environment-status ngSkipHydration [publicPage]="publicPage()" placement="hidden" />
   }
   <main #mainContent id="main-content" tabindex="-1" [class.startup-main]="startup() !== 'ready'">
     @if (startup() === 'loading') {

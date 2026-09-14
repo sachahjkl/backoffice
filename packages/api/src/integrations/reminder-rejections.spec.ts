@@ -37,6 +37,7 @@ const email = {
   reference: 'TEST',
   subject: 'Reminder',
   body: 'Test reminder',
+  bodyFormat: 'plain' as const,
 };
 
 it.each([

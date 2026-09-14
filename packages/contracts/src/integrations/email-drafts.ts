@@ -6,25 +6,27 @@ import {
   RequestRateLimited,
 } from '../authentication/contracts.js';
 import { IsoUtc } from '../temporal.js';
+import { EmailBody, EmailBodyFormat, emailBodyFilter } from './email-content.js';
 
 export const EmailDraftId = Schema.String.check(Schema.isUUID(4));
 export const EmailDraftContent = Schema.Struct({
   recipient: Schema.String.check(Schema.isMaxLength(254)),
   reference: Schema.String.check(Schema.isMaxLength(160)),
   subject: Schema.String.check(Schema.isMaxLength(160)),
-  body: Schema.String.check(Schema.isMaxLength(20000)),
+  body: EmailBody,
+  bodyFormat: EmailBodyFormat,
   reminder: Schema.Boolean,
-});
+}).check(emailBodyFilter);
 export const EmailDraftSave = Schema.Struct({
   ...EmailDraftContent.fields,
   expectedVersion: SafeInteger,
-});
+}).check(emailBodyFilter);
 export const EmailDraft = Schema.Struct({
   ...EmailDraftContent.fields,
   id: EmailDraftId,
   version: PositiveSafeInteger,
   updatedAt: IsoUtc,
-});
+}).check(emailBodyFilter);
 export const EmailDraftList = Schema.Array(EmailDraft);
 export const EmailDraftArchive = Schema.Struct({ expectedVersion: PositiveSafeInteger });
 export class EmailDraftConflict extends Schema.TaggedError<EmailDraftConflict>()(

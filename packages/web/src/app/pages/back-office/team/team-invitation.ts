@@ -1,3 +1,4 @@
+import { FilterSelect } from '@shared/filter-select/filter-select';
 import { Can } from '@backoffice/can';
 import {
   afterRenderEffect,
@@ -38,7 +39,7 @@ const rejectedBeforeCreation = (code: TranslationKey): boolean =>
 
 @Component({
   host: { class: 'page-container', '(window:beforeunload)': 'beforeUnload($event)' },
-  imports: [Can, FormField, RouterLink, Button, Notice, PageHeader],
+  imports: [FilterSelect, Can, FormField, RouterLink, Button, Notice, PageHeader],
   providers: [TeamNavigation],
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-team-invitation',

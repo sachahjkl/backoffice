@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { AffairsApi } from '@backoffice/affairs-api';
 import { InvoicesApi } from '@backoffice/invoices-api';
@@ -34,12 +34,20 @@ const affair = {
 describe('AffairDetail', () => {
   const update = vi.fn();
   const confirm = vi.fn();
+  const events = vi.fn();
   beforeEach(() => {
     update.mockReset().mockResolvedValue({
       success: true,
       result: { ...affair, status: 'closed', version: 2 },
     });
     confirm.mockReset().mockResolvedValue(true);
+    events.mockReset().mockResolvedValue({
+      success: true,
+      result: [
+        { id: 'later', action: 'affair.updated', occurredAt: '2026-08-21T08:00:00.000Z' },
+        { id: 'earlier', action: 'affair.created', occurredAt: '2026-08-20T08:00:00.000Z' },
+      ],
+    });
     TestBed.configureTestingModule({
       providers: [
         provideAccount(),
@@ -54,13 +62,7 @@ describe('AffairDetail', () => {
           provide: AffairsApi,
           useValue: {
             get: async () => ({ success: true, result: affair }),
-            events: async () => ({
-              success: true,
-              result: [
-                { id: 'later', action: 'affair.updated', occurredAt: '2026-08-21T08:00:00.000Z' },
-                { id: 'earlier', action: 'affair.created', occurredAt: '2026-08-20T08:00:00.000Z' },
-              ],
-            }),
+            events,
             update,
           },
         },
@@ -100,6 +102,9 @@ describe('AffairDetail', () => {
     expect(
       root.querySelector('app-page-header [appInlineEdit] app-icon[name="pencil"]'),
     ).not.toBeNull();
+    expect(root.querySelector('app-detail-panel')).toBeNull();
+    expect(root.querySelector('.affair-summary')?.textContent).toContain('Acme');
+    expect(root.querySelector('.affair-summary')?.textContent).toContain('Security review');
     expect(root.querySelector('#affair-edit-title')).toBeNull();
     expect(root.querySelector(`a[href="/backoffice/clients/${affair.clientId}"]`)).not.toBeNull();
     expect(
@@ -107,6 +112,7 @@ describe('AffairDetail', () => {
         `a[href="/backoffice/quotes/new?affairId=${affair.id}&clientId=${affair.clientId}"]`,
       ),
     ).not.toBeNull();
+    expect(events).not.toHaveBeenCalled();
   });
 
   it('archives an affair after confirmation', async () => {
@@ -129,6 +135,40 @@ describe('AffairDetail', () => {
     expect(
       Array.from(harness.routeNativeElement!.querySelectorAll('time'), (time) => time.dateTime),
     ).toEqual(['2026-08-20T08:00:00.000Z', '2026-08-21T08:00:00.000Z']);
+  });
+
+  it('reloads visible history after a successful update', async () => {
+    const harness = await RouterTestingHarness.create(`/backoffice/affairs/${affairId}/history`);
+    await harness.fixture.whenStable();
+    await vi.waitFor(() => expect(events).toHaveBeenCalledOnce());
+    events.mockResolvedValue({
+      success: true,
+      result: [
+        {
+          id: 'updated-title',
+          action: 'affair.updated-title',
+          occurredAt: '2026-08-22T08:00:00.000Z',
+        },
+      ],
+    });
+
+    await harness.routeDebugElement!.componentInstance.save('title', 'Updated review');
+
+    await vi.waitFor(() => expect(events).toHaveBeenCalledTimes(2));
+    await vi.waitFor(() =>
+      expect(harness.routeNativeElement!.textContent).toContain('affair.updated-title'),
+    );
+  });
+
+  it('loads invalidated history when its tab opens', async () => {
+    const harness = await RouterTestingHarness.create(`/backoffice/affairs/${affairId}/overview`);
+    await harness.fixture.whenStable();
+
+    await harness.routeDebugElement!.componentInstance.save('title', 'Updated review');
+    expect(events).not.toHaveBeenCalled();
+
+    await TestBed.inject(Router).navigate(['/backoffice/affairs', affairId, 'history']);
+    await vi.waitFor(() => expect(events).toHaveBeenCalledOnce());
   });
 
   it('opens editing controls only after an edit request', async () => {

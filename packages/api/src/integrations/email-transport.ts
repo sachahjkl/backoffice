@@ -1,5 +1,6 @@
 import { Context, Effect, Schema } from 'effect';
 import { EmailTestErrorCode } from '@froment/contracts';
+import { EmailBodyFormat } from '@froment/contracts';
 
 export const OutgoingEmail = Schema.Struct({
   requestId: Schema.String.check(Schema.isUUID(4)),
@@ -8,6 +9,7 @@ export const OutgoingEmail = Schema.Struct({
   recipient: Schema.String,
   subject: Schema.String,
   body: Schema.String,
+  bodyFormat: EmailBodyFormat,
 });
 export type OutgoingEmail = typeof OutgoingEmail.Type;
 export class EmailTransportError extends Schema.TaggedError<EmailTransportError>()(

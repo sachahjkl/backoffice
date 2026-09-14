@@ -183,6 +183,37 @@ it('posts, reports, reverses, and protects accounting entries with evidence', as
       ).json(),
     );
     expect(reversal).toMatchObject({ status: 'posted', reversalOfEntryId: posted.id });
+    const locked = Schema.decodeUnknownSync(AccountingPeriod)(
+      await (
+        await post(`/api/accounting/periods/${period.id}/lock`, {
+          expectedVersion: period.version,
+        })
+      ).json(),
+    );
+    const closed = Schema.decodeUnknownSync(AccountingPeriod)(
+      await (
+        await post(`/api/accounting/periods/${period.id}/close`, {
+          expectedVersion: locked.version,
+        })
+      ).json(),
+    );
+    const unsafeReopen = await post(`/api/accounting/periods/${period.id}/reopen`, {
+      expectedVersion: closed.version,
+      acknowledgement: 'wrong period',
+    });
+    expect(unsafeReopen.status).not.toBe(200);
+    expect(await unsafeReopen.json()).toMatchObject({
+      code: 'accounting.period_reopen_acknowledgement_invalid',
+    });
+    const reopened = Schema.decodeUnknownSync(AccountingPeriod)(
+      await (
+        await post(`/api/accounting/periods/${period.id}/reopen`, {
+          expectedVersion: closed.version,
+          acknowledgement: period.label,
+        })
+      ).json(),
+    );
+    expect(reopened).toMatchObject({ status: 'open', version: closed.version + 1 });
   } finally {
     await server.close();
   }

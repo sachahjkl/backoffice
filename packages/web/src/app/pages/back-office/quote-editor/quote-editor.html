@@ -61,6 +61,7 @@
       <label class="field"
         >{{ i18n.t('backOffice.quote.client') }}
         <select
+          appFilterSelect
           id="quote-client"
           class="input"
           aria-describedby="quote-client-error"
@@ -121,7 +122,6 @@
         class="document-lines"
         [lines]="quoteForm.lines().value()"
         [currency]="quoteForm.currency().value()"
-        [totals]="lineTotals()"
         [disabled]="saveDisabled() || referenceBusy()"
         (linesChange)="setLines($event)"
       />

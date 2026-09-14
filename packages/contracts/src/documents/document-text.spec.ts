@@ -5,6 +5,7 @@ import { QuoteConditionPresetWriteRequest } from '../quote-condition-presets/con
 import {
   DocumentTextPresentation,
   documentTextContent,
+  documentTextHtml,
   isDocumentText,
   parseDocumentText,
   serializeDocumentText,
@@ -94,6 +95,18 @@ describe('document text', () => {
     const source = '**Texte original**\n\n<ne pas interpréter>';
     expect(documentTextContent(source)).toBe(source);
     expect(documentTextContent(source, { format: 'plain', placement: 'new-page' })).toBe(source);
+  });
+
+  it('renders formatted email HTML with escaped text', () => {
+    const source = serializeDocumentText([
+      {
+        kind: 'paragraph',
+        spans: [{ text: '<script>literal</script>\nSuite', bold: true, italic: true }],
+      },
+    ]);
+    expect(documentTextHtml(source)).toBe(
+      '<p><strong><em>&lt;script&gt;literal&lt;/script&gt;<br>Suite</em></strong></p>',
+    );
   });
 
   it('rejects a preset with an empty formatted heading', () => {

@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { I18nService } from '@app/i18n.service';
+import { EnvironmentStatus } from '@shared/environment-status/environment-status';
 import { LanguageSelector } from '@shared/language-selector/language-selector';
 import { ThemeToggle } from '@shared/theme-toggle/theme-toggle';
 
 @Component({
   selector: 'app-site-footer',
-  imports: [LanguageSelector, RouterLink, RouterLinkActive, ThemeToggle],
+  imports: [EnvironmentStatus, LanguageSelector, RouterLink, RouterLinkActive, ThemeToggle],
   templateUrl: './site-footer.html',
   styleUrl: './site-footer.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

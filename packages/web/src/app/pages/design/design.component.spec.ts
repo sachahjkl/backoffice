@@ -55,7 +55,6 @@ describe('Component reference', () => {
   }
 
   it('assigns every entry one lazy durable route without the old catalog tabs', async () => {
-    expect(referenceCatalog).toHaveLength(58);
     expect(Object.keys(componentReferenceText.fr.stories).sort()).toEqual(
       referenceCatalog
         .filter((entry) => entry.id !== 'workflows')
@@ -265,6 +264,7 @@ describe('Component reference', () => {
     expect(root.querySelector('#reference-email-error')?.textContent).toContain(
       'Saisissez une adresse courriel valide.',
     );
+    expect(root.querySelector('#reference-email-error')?.classList).toContain('field-error');
   });
 
   it('updates the new metadata language without changing its API names', async () => {

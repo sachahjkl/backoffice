@@ -50,6 +50,7 @@ import { FilterMenu, FilterPanel } from '@shared/filter-menu/filter-menu';
 import { FilterChoice } from '@shared/filter-choice/filter-choice';
 import { FilterChip } from '@shared/filter-chip/filter-chip';
 import { DateRangeFilter, type DateRange } from '@shared/date-range-filter/date-range-filter';
+import { DetailGrid, DetailList, DetailPanel } from '@shared/detail-panel/detail-panel';
 import { formatLocalizedDate } from '@shared/localized-date/localized-date-pipe';
 import { TableSort, type SortDirection } from '@shared/table-sort/table-sort';
 import { TableExport } from '@shared/table-export/table-export';
@@ -109,6 +110,9 @@ type ClientField =
     FilterChoice,
     FilterChip,
     DateRangeFilter,
+    DetailGrid,
+    DetailList,
+    DetailPanel,
     TableSort,
     TableExport,
     SearchHighlight,

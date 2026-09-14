@@ -407,6 +407,7 @@ const make = Effect.gen(function* () {
     expectedVersion: number,
     transition: 'open' | 'locked' | 'closed' | 'final',
     actor: UlidValue,
+    acknowledgement?: string,
   ) {
     const now = yield* Clock.currentTimeMillis;
     return yield* run('accounting.period.transition', () => {
@@ -414,6 +415,8 @@ const make = Effect.gen(function* () {
       if (current.version !== expectedVersion) throw conflict('accounting.version_conflict');
       if (current.finalClosed && transition === 'open')
         throw conflict('accounting.period_final_closed');
+      if (transition === 'open' && acknowledgement !== current.label)
+        throw conflict('accounting.period_reopen_acknowledgement_invalid');
       const allowed =
         (current.status === 'open' && transition === 'locked') ||
         (current.status === 'locked' && (transition === 'open' || transition === 'closed')) ||

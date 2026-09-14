@@ -41,6 +41,28 @@ const publicQuoteRuntimeLayer = Layer.succeed(RuntimeConfiguration, {
 });
 
 describe('RequestLimiter', () => {
+  it('allows all requests when request limiting is disabled', async () => {
+    const result = await Effect.runPromise(
+      Effect.gen(function* () {
+        const limiter = yield* RequestLimiter;
+        yield* limiter.allowRequest('private', 1);
+        yield* limiter.allowPublicRequest('public', 1);
+        return {
+          privateRequest: yield* limiter.allowRequest('private', 1),
+          publicRequest: yield* limiter.allowPublicRequest('public', 1),
+        };
+      }).pipe(
+        Effect.provide(RequestLimiterLive),
+        Effect.provideService(RuntimeConfiguration, {
+          ...defaultRuntimeConfig,
+          requestLimiter: { ...defaultRuntimeConfig.requestLimiter, enabled: false },
+        }),
+      ),
+    );
+
+    expect(result).toEqual({ privateRequest: true, publicRequest: true });
+  });
+
   it('refuses new keys at capacity without evicting active counters', async () => {
     await Effect.runPromise(
       Effect.gen(function* () {

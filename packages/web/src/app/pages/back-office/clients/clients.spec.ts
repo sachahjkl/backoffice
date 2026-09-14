@@ -428,7 +428,7 @@ describe('Clients', () => {
     reject(new Error('Unavailable'));
     await fixture.whenStable();
     await vi.waitFor(() => expect(root.querySelector('[role="alert"]')).not.toBeNull());
-    root.querySelector<HTMLButtonElement>('.notice-flow button')!.click();
+    root.querySelector<HTMLButtonElement>('.notice-flow button[appButton]')!.click();
     await fixture.whenStable();
     expect(list).toHaveBeenCalledTimes(2);
     expect(root.querySelector('app-empty-state')).not.toBeNull();

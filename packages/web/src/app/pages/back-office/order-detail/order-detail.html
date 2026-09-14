@@ -46,40 +46,42 @@
   <p appNotice>{{ i18n.t('commercial.orderImmutable') }}</p>
   <label class="field version-selector"
     >{{ i18n.t('commercial.versions') }}
-    <select class="input" disabled>
+    <select appFilterSelect class="input" disabled>
       <option>
         {{ i18n.tf('commercial.revision', { version: revision.version }) }} · {{
         i18n.t('credit.readonlyVersion') }}
       </option>
     </select>
   </label>
-  <dl class="facts">
-    <div>
-      <dt>{{ i18n.t('commercial.confirmedAt') }}</dt>
-      <dd>{{ date(order.createdAt) }}</dd>
-    </div>
-    <div>
-      <dt>{{ i18n.t('commercial.acceptedQuote') }}</dt>
-      <dd>
-        <a
-          [routerLink]="['/backoffice/quotes', order.quoteId, 'document']"
-          [queryParams]="revisionQuery(revision.version)"
-          >{{ order.quoteReference }} · {{ i18n.tf('commercial.revision', { version:
-          revision.version }) }}</a
-        >
-      </dd>
-    </div>
-    @if (order.invoiceId) {
-    <div>
-      <dt>{{ i18n.t('backOffice.affair.invoice') }}</dt>
-      <dd>
-        <a [routerLink]="['/backoffice/invoices', order.invoiceId]"
-          >{{ i18n.t('backOffice.affairs.openInvoice') }}</a
-        >
-      </dd>
-    </div>
-    }
-  </dl>
+  <app-detail-panel [heading]="i18n.t('commercial.summary')">
+    <dl appDetailList class="facts">
+      <div>
+        <dt>{{ i18n.t('commercial.confirmedAt') }}</dt>
+        <dd>{{ date(order.createdAt) }}</dd>
+      </div>
+      <div>
+        <dt>{{ i18n.t('commercial.acceptedQuote') }}</dt>
+        <dd>
+          <a
+            [routerLink]="['/backoffice/quotes', order.quoteId, 'document']"
+            [queryParams]="revisionQuery(revision.version)"
+            >{{ order.quoteReference }} · {{ i18n.tf('commercial.revision', { version:
+            revision.version }) }}</a
+          >
+        </dd>
+      </div>
+      @if (order.invoiceId) {
+      <div>
+        <dt>{{ i18n.t('backOffice.affair.invoice') }}</dt>
+        <dd>
+          <a [routerLink]="['/backoffice/invoices', order.invoiceId]"
+            >{{ i18n.t('backOffice.affairs.openInvoice') }}</a
+          >
+        </dd>
+      </div>
+      }
+    </dl>
+  </app-detail-panel>
   <app-quote-lines [revision]="revision" />
   <section class="section-space" aria-labelledby="order-document-title">
     <h2 id="order-document-title">{{ i18n.t('commercial.orderPdf') }}</h2>

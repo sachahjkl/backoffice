@@ -76,6 +76,12 @@ function search(input: HTMLInputElement, query: string): void {
   input.dispatchEvent(new Event('input'));
 }
 
+function press(element: HTMLElement, key: string): KeyboardEvent {
+  const event = new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true });
+  element.dispatchEvent(event);
+  return event;
+}
+
 describe('GlobalSearch', () => {
   const clients = vi.fn();
   const quotes = vi.fn();
@@ -256,6 +262,19 @@ describe('GlobalSearch', () => {
     expect(document.activeElement).toBe(input);
     expect(input.value).toBe('Froment');
     expect(clients).toHaveBeenCalledTimes(2);
+  });
+
+  it('moves focus between the query and results with arrow keys', async () => {
+    const harness = await RouterTestingHarness.create('/');
+    const input = await openSearch(harness);
+    search(input, 'Froment');
+    await harness.fixture.whenStable();
+    const result = overlay().querySelector<HTMLAnchorElement>('.results a')!;
+
+    expect(press(input, 'ArrowDown').defaultPrevented).toBe(true);
+    expect(document.activeElement).toBe(result);
+    expect(press(result, 'ArrowUp').defaultPrevented).toBe(true);
+    expect(document.activeElement).toBe(result);
   });
 
   it.each(['fr', 'en'] as const)(

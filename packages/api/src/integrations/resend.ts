@@ -4,6 +4,7 @@ import { HttpClient, HttpClientRequest, HttpClientResponse } from 'effect/unstab
 import { RateLimiter } from 'effect/unstable/persistence';
 import { ConnectionConfig } from './connection-config.js';
 import { EmailTransport, EmailTransportError, type OutgoingEmail } from './email-transport.js';
+import { documentTextContent, documentTextHtml } from '@froment/contracts';
 
 const SentEmail = Schema.Struct({ id: Schema.String.check(Schema.isUUID()) });
 const Conflict = Schema.Struct({ name: Schema.String });
@@ -81,6 +82,13 @@ export const ResendEmailTransportLive = Layer.effect(
     });
     const send = Effect.fn('Resend.send')(
       function* (email: OutgoingEmail) {
+        const content =
+          email.bodyFormat === 'blocks'
+            ? {
+                text: documentTextContent(email.body, { format: 'blocks', placement: 'inline' }),
+                html: documentTextHtml(email.body),
+              }
+            : { text: email.body };
         const request = yield* HttpClientRequest.post('/emails').pipe(
           HttpClientRequest.setHeader('Idempotency-Key', `froment-email-test/${email.requestId}`),
           HttpClientRequest.bodyJson({
@@ -88,7 +96,7 @@ export const ResendEmailTransportLive = Layer.effect(
             reply_to: email.replyTo,
             to: [email.recipient],
             subject: email.subject,
-            text: email.body,
+            ...content,
           }),
           Effect.mapError(
             () => new EmailTransportError({ code: 'emailTest.rejected', retryable: false }),

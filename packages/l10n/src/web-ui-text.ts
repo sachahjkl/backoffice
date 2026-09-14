@@ -1,5 +1,6 @@
 export const webUiText = {
   fr: {
+    'notice.dismiss': 'Fermer le message',
     'shell.contact': 'Contact',
     'shell.contactEmail': 'contact@froment.software',
     'shell.nowLive': 'NOW LIVE!',
@@ -156,6 +157,7 @@ export const webUiText = {
     'metadata.publisher': 'Froment Software',
   },
   en: {
+    'notice.dismiss': 'Dismiss message',
     'shell.contact': 'Contact',
     'shell.contactEmail': 'contact@froment.software',
     'shell.nowLive': 'NOW LIVE!',

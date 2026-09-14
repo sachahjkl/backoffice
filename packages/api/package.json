@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@effect/platform-node": "catalog:",
+    "@faker-js/faker": "catalog:",
     "@froment/contracts": "workspace:*",
     "@froment/documents": "workspace:*",
     "@froment/l10n": "workspace:*",

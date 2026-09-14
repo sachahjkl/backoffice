@@ -128,6 +128,7 @@ describe('EmailComposer', () => {
       reference: operation.request.reference,
       subject: operation.request.subject,
       body: operation.request.body,
+      bodyFormat: operation.request.bodyFormat,
       reminder: false,
       version: 3,
       updatedAt: operation.createdAt,

@@ -1,3 +1,4 @@
+import { FilterSelect } from '@shared/filter-select/filter-select';
 import { FormsModule } from '@angular/forms';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import {
@@ -120,6 +121,7 @@ const yearRange = () => {
   selector: 'app-accounting',
   host: { class: 'page-container' },
   imports: [
+    FilterSelect,
     FieldHint,
     WorkspaceTableTools,
     Button,
@@ -509,8 +511,24 @@ export class Accounting {
     period: AccountingPeriod,
     action: 'lock' | 'close' | 'reopen' | 'final-close',
   ): Promise<void> {
+    let acknowledgement: string | undefined;
+    if (action === 'reopen') {
+      const confirmed = await this.confirmation.requestAcknowledgement(
+        this.i18n.tf('accounting.reopenWarning', { label: period.label }),
+        this.i18n.tf('accounting.reopenAcknowledgement', { label: period.label }),
+        period.label,
+        { acceptLabel: this.i18n.t('accounting.reopen'), variant: 'danger' },
+      );
+      if (!confirmed) return;
+      acknowledgement = period.label;
+    }
     await this.run(async () => {
-      const result = await this.api.transitionPeriod(period.id, action, period.version);
+      const result = await this.api.transitionPeriod(
+        period.id,
+        action,
+        period.version,
+        acknowledgement,
+      );
       if (!result.success) return false;
       this.replace(this.periods, result.result);
       return true;

@@ -56,7 +56,7 @@ describe('SignOut', () => {
     await vi.waitFor(() =>
       expect(harness.fixture.nativeElement.querySelector('[role="alert"]')).not.toBeNull(),
     );
-    harness.fixture.nativeElement.querySelector('button').click();
+    harness.fixture.nativeElement.querySelector('button[appButton]').click();
     await harness.fixture.whenStable();
     expect(signOut).toHaveBeenCalledTimes(2);
     expect(router.url).toBe('/backoffice/login');

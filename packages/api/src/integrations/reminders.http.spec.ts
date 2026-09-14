@@ -119,6 +119,7 @@ it('schedules, cancels, prepares current balances once, and skips paid invoices 
           recipient: 'test@example.test',
           subject: 'Bypass',
           body: 'Not allowed',
+          bodyFormat: 'plain',
         })
       ).status,
     ).toBe(409);

@@ -142,7 +142,7 @@
             <td>
               <label class="field"
                 >{{ i18n.t('configurationWorkspace.memberProfile') }}
-                <select class="select" [formField]="profileForm[member.id]">
+                <select appFilterSelect class="select" [formField]="profileForm[member.id]">
                   <option [value]="'accountant'">{{ i18n.t('team.accountant') }}</option>
                   <option [value]="'accounting-validator'">
                     {{ i18n.t('team.accountingValidator') }}

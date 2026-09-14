@@ -20,6 +20,7 @@ describe('RuntimeConfiguration', () => {
         AUTH_LOGIN_ATTEMPTS_PER_MINUTE: '3',
         AUTH_LOGIN_QUOTA_CAPACITY: '4',
         ARGON2_VERIFICATION_CONCURRENCY: '1',
+        REQUEST_LIMITING_ENABLED: 'false',
         REQUEST_LIMITER_PUBLIC_CAPACITY: '5',
         HTTP_MAXIMUM_BANK_IMPORT_BODY_BYTES: '600000',
         HTTP_MAXIMUM_SUPPLIER_INVOICE_ANALYSIS_BODY_BYTES: '700000',
@@ -30,6 +31,7 @@ describe('RuntimeConfiguration', () => {
     expect(config.authentication.loginAttemptsPerMinute).toBe(3);
     expect(config.authentication.loginQuotaCapacity).toBe(4);
     expect(config.password.verificationConcurrency).toBe(1);
+    expect(config.requestLimiter.enabled).toBe(false);
     expect(config.requestLimiter.publicCapacity).toBe(5);
     expect(config.http.maximumBankImportBodyBytes).toBe(600_000);
     expect(config.http.maximumRequestBodyBytes).toBe(32_768);

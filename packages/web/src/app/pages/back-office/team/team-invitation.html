@@ -46,7 +46,11 @@
     <p class="field-error" role="alert">{{ i18n.t('configurationWorkspace.invitationInvalid') }}</p>
     }
     <label
-      >{{ i18n.t('team.profile') }}<select class="select" [formField]="invitationForm.profile">
+      >{{ i18n.t('team.profile') }}<select
+        appFilterSelect
+        class="select"
+        [formField]="invitationForm.profile"
+      >
         <option value="">{{ i18n.t('configurationWorkspace.chooseProfile') }}</option>
         <option value="accountant">{{ i18n.t('team.accountant') }}</option>
         <option value="collaborator">{{ i18n.t('team.collaborator') }}</option>

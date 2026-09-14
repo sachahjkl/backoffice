@@ -1,4 +1,7 @@
 <app-story-page [entry]="entry" [definition]="definition">
+  <ng-template #buttonHintTemplate>
+    <strong>{{ text().content }}</strong><br />{{ text().description }}
+  </ng-template>
   <div storyControls class="settings">
     <label>{{ text().label }}<input class="input" [formField]="controls.label" /></label>
     @if (entry.id === 'copy-field') {
@@ -40,7 +43,15 @@
         }
       </select></label
     >
-    @if (entry.id !== 'link-button') {
+    @if (entry.id === 'button' || entry.id === 'link-button') {
+    <label
+      >{{ 'size' }}<select class="select" [formField]="controls.size">
+        @for (size of sizes; track size) {
+        <option [value]="size">{{ size }}</option>
+        }
+      </select></label
+    >
+    } @if (entry.id !== 'link-button') {
     <label><input type="checkbox" [formField]="controls.disabled" />{{ text().disabled }}</label> }
     @if (entry.id !== 'split-action') {
     <label><input type="checkbox" [formField]="controls.iconOnly" />{{ text().iconOnly }}</label> }
@@ -59,29 +70,37 @@
   </div>
   <div storyPreview class="sample">
     @switch (entry.id) { @case ('button') {
-    <button
-      appButton
-      type="button"
-      icon="check"
-      [variant]="model().variant"
-      [iconOnly]="model().iconOnly"
-      [disabled]="model().disabled"
-      [attr.aria-label]="model().label"
-      (click)="event.set('click')"
-    >
-      @if (!model().iconOnly) { {{ model().label }} }
-    </button>
+    <app-hint #buttonHint [text]="text().description">
+      <button
+        appButton
+        type="button"
+        icon="check"
+        [variant]="model().variant"
+        [size]="model().size"
+        [iconOnly]="model().iconOnly"
+        [disabled]="model().disabled"
+        [attr.aria-label]="model().label"
+        [attr.aria-describedby]="buttonHint.id"
+        (click)="event.set('click')"
+      >
+        @if (!model().iconOnly) { {{ model().label }} }
+      </button>
+    </app-hint>
     } @case ('link-button') {
-    <a
-      appLinkButton
-      routerLink="/design/button"
-      icon="external"
-      iconPosition="end"
-      [variant]="model().variant"
-      [iconOnly]="model().iconOnly"
-      [attr.aria-label]="model().label"
-      >@if (!model().iconOnly) { {{ model().label }} }</a
-    >
+    <app-hint #linkHint [text]="text().description">
+      <a
+        appLinkButton
+        routerLink="/design/button"
+        icon="external"
+        iconPosition="end"
+        [variant]="model().variant"
+        [size]="model().size"
+        [iconOnly]="model().iconOnly"
+        [attr.aria-label]="model().label"
+        [attr.aria-describedby]="linkHint.id"
+        >@if (!model().iconOnly) { {{ model().label }} }</a
+      >
+    </app-hint>
     } @case ('action-menu') {
     <app-action-menu
       [label]="model().label"
@@ -216,7 +235,34 @@
       />
       } }
     </div>
-    } } @else if (entry.id === 'icon-toolbar') { @for (disabled of [false, true]; track disabled) {
+    } @if (entry.id === 'button' || entry.id === 'link-button') { @for (size of sizes; track size) {
+    <div class="sample" data-variant>
+      <code>{{ size }}</code>
+      <app-hint #sizeHint [content]="buttonHintTemplate">
+        @if (entry.id === 'button') {
+        <button
+          appButton
+          type="button"
+          variant="primary"
+          [size]="size"
+          [attr.aria-describedby]="sizeHint.id"
+        >
+          {{ text().execute }}
+        </button>
+        } @else {
+        <a
+          appLinkButton
+          routerLink="/design/button"
+          variant="primary"
+          [size]="size"
+          [attr.aria-describedby]="sizeHint.id"
+          >Button</a
+        >
+        }
+      </app-hint>
+    </div>
+    } } } @else if (entry.id === 'icon-toolbar') { @for (disabled of [false, true]; track disabled)
+    {
     <div class="sample" data-variant>
       <code>{{ 'disabled: ' }}{{ disabled }}</code>
       <app-icon-toolbar

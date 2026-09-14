@@ -24,7 +24,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CatalogItemCreateRequest, Ulid, type CatalogItemValue } from '@froment/contracts';
 import { Option, Schema } from 'effect';
 import { CatalogApi } from '@backoffice/catalog-api';
-import { formatFixedDecimal, parseFixedDecimal } from '@backoffice/quote-input';
+import { formatDecimal, formatFixedDecimal, parseFixedDecimal } from '@backoffice/quote-input';
 import { I18nService, type TranslationKey } from '@app/i18n.service';
 import { Badge } from '@shared/badge/badge';
 import { Button } from '@shared/button/button';
@@ -39,7 +39,7 @@ import {
 
 const emptyItem = () => ({
   description: '',
-  quantity: '1.000',
+  quantity: '1',
   unitPrice: '0.00',
   vatRate: '20.00',
   archived: false,
@@ -216,7 +216,7 @@ export class CatalogEditor {
       this.item.set(item);
       this.model.set({
         description: item.description,
-        quantity: formatFixedDecimal(item.quantityMilli, 3),
+        quantity: formatDecimal(item.quantityMilli, 3),
         unitPrice: formatFixedDecimal(item.unitPriceCents, 2),
         vatRate: formatFixedDecimal(item.vatRateBasisPoints, 2),
         archived: item.archived,

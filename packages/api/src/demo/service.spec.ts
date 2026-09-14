@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { AuditLive } from '../audit/audit.js';
 import { Passwords } from '../authentication/password.js';
+import { allocateBusinessReference } from '../business/business-references.js';
 import { Database } from '../database/database.js';
 import { makeMigratedDatabaseLayer } from '../database/database.spec-helper.js';
 import { defaultRuntimeConfig, RuntimeConfiguration } from '../runtime-config.js';
@@ -42,11 +43,37 @@ describe('Demonstration reset', () => {
           { password: 'demo-secret', confirmed: true },
           '01ARZ3NDEKTSV4RRFFQ69G5FAA',
         );
+        const firstClientNames = Schema.decodeUnknownSync(Schema.Array(Schema.String))(
+          database.sqlite
+            .prepare(
+              'select users.display_name from clients join users on users.id = clients.id order by clients.id',
+            )
+            .pluck()
+            .all(),
+        );
         const second = yield* demo.reset(
           { password: 'demo-secret', confirmed: true },
           '01ARZ3NDEKTSV4RRFFQ69G5FAA',
         );
         expect(second).toEqual(first);
+        const secondClientNames = Schema.decodeUnknownSync(Schema.Array(Schema.String))(
+          database.sqlite
+            .prepare(
+              'select users.display_name from clients join users on users.id = clients.id order by clients.id',
+            )
+            .pluck()
+            .all(),
+        );
+        expect(secondClientNames).toEqual(firstClientNames);
+        expect(new Set(firstClientNames).size).toBeGreaterThan(45);
+        expect(
+          firstClientNames.every((name) => !name.toLowerCase().includes('démonstration')),
+        ).toBe(true);
+        const year = new Date().getUTCFullYear();
+        expect(allocateBusinessReference(database.sqlite, 'affair', year)).toBe(
+          `AF-${year}-000101`,
+        );
+        expect(allocateBusinessReference(database.sqlite, 'quote', year)).toBe(`DE-${year}-000181`);
         expect(database.sqlite.pragma('foreign_key_check')).toEqual([]);
         expect(
           Schema.decodeUnknownSync(Schema.Int)(

@@ -43,6 +43,7 @@ export const request = EmailSubmission.make({
   reference: 'FA-2026-000001',
   subject: 'Votre facture',
   body: '<b>Texte littéral</b>',
+  bodyFormat: 'plain',
 });
 export const operation = {
   id: operationId,
@@ -107,6 +108,7 @@ export async function setupEmailPage(path: string) {
         id: emailTemplateId,
         subject: 'Modèle de facture',
         body: '<b>Texte du modèle</b>',
+        bodyFormat: 'plain',
         version: 3,
         updatedAt: operation.createdAt,
       },
@@ -140,6 +142,7 @@ export async function setupEmailPage(path: string) {
       reference: request.reference,
       subject: request.subject,
       body: request.body,
+      bodyFormat: request.bodyFormat,
     }),
   };
   const confirmation = { request: vi.fn().mockResolvedValue(false) };

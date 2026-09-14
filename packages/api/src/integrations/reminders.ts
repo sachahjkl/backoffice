@@ -314,6 +314,7 @@ export const RemindersLive = Layer.effect(
                       ),
                       dueDate,
                     }),
+                    bodyFormat: 'plain',
                   });
                   const operation = recordOperation(
                     database,

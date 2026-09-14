@@ -16,6 +16,12 @@ export const RequestLimiterLive = Layer.effect(
   RequestLimiter,
   Effect.gen(function* () {
     const config = (yield* RuntimeConfiguration).requestLimiter;
+    if (!config.enabled) {
+      return RequestLimiter.of({
+        allowRequest: () => Effect.succeed(true),
+        allowPublicRequest: () => Effect.succeed(true),
+      });
+    }
     const reserve = yield* RequestQuota.make(config);
     const reservePublic = yield* RequestQuota.make({
       capacity: config.publicCapacity,

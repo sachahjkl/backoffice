@@ -21,6 +21,7 @@ const request: IntegrationSubmissionValue = {
   recipient: 'test@example.test',
   subject: 'Test',
   body: 'Not sent.',
+  bodyFormat: 'plain',
 };
 
 it('persists bounded retry attempts, recovers leases, preserves request keys, and rechecks account permissions', async () => {

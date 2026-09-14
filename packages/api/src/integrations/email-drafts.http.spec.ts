@@ -14,7 +14,14 @@ it('persists incomplete private drafts, rejects stale edits, and seals each subm
   const database = new Sqlite(server.databaseFilename);
   const id = randomUUID();
   const url = `${server.baseUrl}/api/email-drafts/${id}`;
-  const content = { recipient: '', subject: '', reference: '', body: 'Unfinished', reminder: true };
+  const content = {
+    recipient: '',
+    subject: '',
+    reference: '',
+    body: 'Unfinished',
+    bodyFormat: 'plain',
+    reminder: true,
+  };
   const save = (request: typeof Schema.Json.Type) =>
     fetch(url, { method: 'PUT', headers: server.jsonHeaders, body: JSON.stringify(request) });
   const list = async () =>
@@ -70,6 +77,7 @@ it('persists incomplete private drafts, rejects stale edits, and seals each subm
       subject: complete.subject,
       reference: complete.reference,
       body: complete.body,
+      bodyFormat: complete.bodyFormat,
     };
     const send = (body: string) =>
       fetch(`${server.baseUrl}/api/integrations/operations`, {

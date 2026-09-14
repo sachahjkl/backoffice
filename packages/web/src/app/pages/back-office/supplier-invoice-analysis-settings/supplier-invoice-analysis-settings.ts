@@ -1,3 +1,4 @@
+import { FilterSelect } from '@shared/filter-select/filter-select';
 import {
   afterNextRender,
   ChangeDetectionStrategy,
@@ -38,7 +39,7 @@ const isSecureUrl = (value: string): boolean => {
 @Component({
   host: { class: 'page-container' },
   selector: 'app-supplier-invoice-analysis-settings',
-  imports: [Breadcrumbs, Button, FormField, Notice, PageHeader],
+  imports: [FilterSelect, Breadcrumbs, Button, FormField, Notice, PageHeader],
   templateUrl: './supplier-invoice-analysis-settings.html',
   styleUrl: './supplier-invoice-analysis-settings.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

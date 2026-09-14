@@ -227,7 +227,7 @@ describe('ClientEditor', () => {
     expect(root.querySelector('form')).toBeNull();
     expect(root.querySelector('[role="alert"]')).not.toBeNull();
     api.get.mockResolvedValue({ success: true, result: client });
-    root.querySelector<HTMLButtonElement>('button')!.click();
+    root.querySelector<HTMLButtonElement>('button[appButton]')!.click();
     await fixture.whenStable();
     expect(root.querySelector<HTMLInputElement>('#client-displayName')?.value).toBe('Acme');
     expect(api.get).toHaveBeenCalledTimes(2);

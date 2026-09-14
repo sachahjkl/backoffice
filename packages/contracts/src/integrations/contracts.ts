@@ -9,6 +9,7 @@ import {
 import { CalendarDate, IsoUtc } from '../temporal.js';
 import { Ulid } from '../identifiers.js';
 import { PositiveSafeInteger } from '../documents/lines.js';
+import { EmailBody, EmailBodyFormat, emailBodyFilter } from './email-content.js';
 
 const Reference = Schema.String.check(Schema.isPattern(/\S/), Schema.isMaxLength(160));
 const common = {
@@ -21,8 +22,9 @@ export const EmailSubmission = Schema.Struct({
   kind: Schema.Literal('email'),
   recipient: AccountEmail,
   subject: Reference,
-  body: Schema.String.check(Schema.isPattern(/\S/), Schema.isMaxLength(20000)),
-});
+  body: EmailBody.check(Schema.isPattern(/\S/)),
+  bodyFormat: EmailBodyFormat,
+}).check(emailBodyFilter);
 export const SignatureSubmission = Schema.Struct({
   ...common,
   kind: Schema.Literal('signature'),

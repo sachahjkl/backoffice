@@ -37,7 +37,11 @@
         ></label
       >
       <label class="field"
-        >{{ i18n.t('payment.method') }}<select class="input" [formField]="paymentForm.method">
+        >{{ i18n.t('payment.method') }}<select
+          appFilterSelect
+          class="input"
+          [formField]="paymentForm.method"
+        >
           <option [value]="'transfer'">{{ i18n.t('payment.transfer') }}</option>
           <option [value]="'card'">{{ i18n.t('payment.card') }}</option>
           <option [value]="'cash'">{{ i18n.t('payment.cash') }}</option>

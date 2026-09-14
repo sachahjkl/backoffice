@@ -1,5 +1,6 @@
 import { _IdGenerator } from '@angular/cdk/a11y';
 import { DOCUMENT } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,11 +8,12 @@ import {
   ElementRef,
   inject,
   input,
+  TemplateRef,
   viewChild,
 } from '@angular/core';
 
 @Component({
-  imports: [],
+  imports: [NgTemplateOutlet],
   selector: 'app-hint',
   styleUrl: './hint.scss',
   templateUrl: './hint.html',
@@ -24,7 +26,8 @@ import {
   },
 })
 export class Hint {
-  readonly text = input.required<string>();
+  readonly text = input('');
+  readonly content = input<TemplateRef<unknown>>();
   readonly id = inject(_IdGenerator).getId('hint-');
   protected readonly anchorName = `--${this.id}`;
   private readonly document = inject(DOCUMENT);
@@ -82,7 +85,7 @@ export class Hint {
 
   private show(): void {
     clearTimeout(this.hideTimer);
-    if (this.dismissed || this.visible || !this.text()) return;
+    if (this.dismissed || this.visible || (!this.text() && !this.content())) return;
     this.bubble().nativeElement.showPopover();
     this.visible = true;
   }

@@ -9,28 +9,48 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Ulid, type SupplierSummaryValue } from '@froment/contracts';
+import {
+  SupplierUpdateRequest,
+  Ulid,
+  type SupplierInputValue,
+  type SupplierSummaryValue,
+} from '@froment/contracts';
 import { Option, Schema } from 'effect';
 
 import { Can } from '@backoffice/can';
+import { Authentication } from '@backoffice/authentication';
 import { SuppliersApi } from '@backoffice/suppliers-api';
 import { I18nService, type TranslationKey } from '@app/i18n.service';
 import { Badge } from '@shared/badge/badge';
 import { Button } from '@shared/button/button';
 import { Confirmation } from '@shared/confirmation/confirmation';
+import { DetailGrid, DetailList, DetailPanel } from '@shared/detail-panel/detail-panel';
+import { InlineEdit, type InlineEditOption } from '@shared/inline-edit/inline-edit';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
 
 @Component({
   host: { class: 'page-container' },
   selector: 'app-supplier-detail',
-  imports: [Badge, Button, Can, Notice, PageHeader, RouterLink],
+  imports: [
+    Badge,
+    Button,
+    Can,
+    DetailGrid,
+    DetailList,
+    DetailPanel,
+    InlineEdit,
+    Notice,
+    PageHeader,
+    RouterLink,
+  ],
   templateUrl: './supplier-detail.html',
   styleUrl: './supplier-detail.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SupplierDetail {
   protected readonly i18n = inject(I18nService);
+  private readonly authentication = inject(Authentication);
   private readonly api = inject(SuppliersApi);
   private readonly route = inject(ActivatedRoute);
   private readonly confirmation = inject(Confirmation);
@@ -39,6 +59,11 @@ export class SupplierDetail {
   protected readonly supplier = signal<SupplierSummaryValue | undefined>(undefined);
   protected readonly error = signal<TranslationKey | undefined>(undefined);
   protected readonly changing = signal(false);
+  protected readonly editingField = signal<keyof SupplierInputValue | undefined>(undefined);
+  protected readonly savingField = signal<keyof SupplierInputValue | undefined>(undefined);
+  protected readonly canEditProfile = computed(
+    () => this.authentication.can('supplier.update') && this.supplier()?.archived === false,
+  );
   protected readonly taxTreatmentLabel = computed<TranslationKey>(() => {
     const treatment = this.supplier()?.taxTreatment;
     if (treatment === 'eu-reverse-charge') return 'supplier.taxTreatment.eu';
@@ -46,6 +71,19 @@ export class SupplierDetail {
     if (treatment === 'foreign-local-tax') return 'supplier.taxTreatment.local';
     return 'supplier.taxTreatment.france';
   });
+  protected readonly taxTreatmentOptions = computed<ReadonlyArray<InlineEditOption>>(() => [
+    { value: 'france', label: this.i18n.t('supplier.taxTreatment.france') },
+    { value: 'eu-reverse-charge', label: this.i18n.t('supplier.taxTreatment.eu') },
+    { value: 'non-eu-import', label: this.i18n.t('supplier.taxTreatment.import') },
+    { value: 'foreign-local-tax', label: this.i18n.t('supplier.taxTreatment.local') },
+  ]);
+  protected readonly addressFields = [
+    { name: 'addressLine1', label: 'supplier.addressLine1', maximumLength: 160 },
+    { name: 'addressLine2', label: 'supplier.addressLine2', maximumLength: 160 },
+    { name: 'postalCode', label: 'supplier.postalCode', maximumLength: 32 },
+    { name: 'city', label: 'supplier.city', maximumLength: 120 },
+    { name: 'country', label: 'supplier.country', maximumLength: 120 },
+  ] as const;
   private loadGeneration = 0;
 
   constructor() {
@@ -120,6 +158,37 @@ export class SupplierDetail {
       this.error.set('supplier.error');
     } finally {
       this.changing.set(false);
+    }
+  }
+
+  protected async saveField(field: keyof SupplierInputValue, value: string): Promise<void> {
+    const supplier = this.supplier();
+    if (!supplier || !this.canEditProfile() || this.savingField() !== undefined) return;
+    const { id: _id, archived: _archived, viesValidatedAt: _vies, updatedAt, ...input } = supplier;
+    const candidate = {
+      ...input,
+      [field]: field === 'paymentTermsDays' ? Number(value) : value,
+      expectedUpdatedAt: updatedAt,
+    };
+    const request = Schema.decodeUnknownOption(SupplierUpdateRequest)(candidate);
+    if (Option.isNone(request)) {
+      this.error.set('supplier.fieldInvalid');
+      return;
+    }
+    this.savingField.set(field);
+    this.error.set(undefined);
+    try {
+      const outcome = await this.api.update(supplier.id, request.value);
+      if (!outcome.success) {
+        this.error.set(outcome.code);
+        return;
+      }
+      this.supplier.set(outcome.result);
+      this.editingField.set(undefined);
+    } catch {
+      this.error.set('supplier.error');
+    } finally {
+      this.savingField.set(undefined);
     }
   }
 }

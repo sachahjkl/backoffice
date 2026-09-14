@@ -30,7 +30,12 @@ export const defaultAuthenticationRuntimeConfig = {
 export const defaultRuntimeConfig = {
   application: { appEnvironment: 'development', sitePhase: 'live' },
   authentication: defaultAuthenticationRuntimeConfig,
-  requestLimiter: { capacity: 10_000, publicCapacity: 10_000, windowMillis: 60_000 },
+  requestLimiter: {
+    enabled: true,
+    capacity: 10_000,
+    publicCapacity: 10_000,
+    windowMillis: 60_000,
+  },
   publicQuote: {
     readPerMinute: 60,
     downloadPerMinute: 20,
@@ -159,6 +164,7 @@ export const RuntimeConfig = {
     ),
   }),
   requestLimiter: Config.all({
+    enabled: Config.boolean('REQUEST_LIMITING_ENABLED').pipe(Config.withDefault(true)),
     capacity: positiveInt('REQUEST_LIMITER_CAPACITY', 10_000),
     publicCapacity: positiveInt('REQUEST_LIMITER_PUBLIC_CAPACITY', 10_000),
     windowMillis: positiveInt('REQUEST_LIMITER_WINDOW_MILLIS', 60_000),

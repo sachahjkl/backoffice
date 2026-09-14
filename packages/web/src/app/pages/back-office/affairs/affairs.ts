@@ -1,3 +1,4 @@
+import { FilterSelect } from '@shared/filter-select/filter-select';
 import { Can } from '@backoffice/can';
 import { AffairsApi } from '@backoffice/affairs-api';
 import { ClientsApi } from '@backoffice/clients-api';
@@ -56,6 +57,7 @@ const affairTableOptions: WorkspaceTableOptions<Affair> = {
   host: { class: 'page-container' },
   selector: 'app-affairs',
   imports: [
+    FilterSelect,
     Can,
     Badge,
     Button,

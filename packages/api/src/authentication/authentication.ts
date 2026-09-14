@@ -245,6 +245,7 @@ export const AuthenticationLive = Layer.effect(
       const normalizedEmail = email.trim().toLowerCase();
       const accountKey = hmac(config.refreshHmacKey, normalizedEmail).toString('hex');
       if (
+        runtime.requestLimiter.enabled &&
         !(yield* reserveLogin(
           [`address:${clientAddress}`, `account:${accountKey}`],
           runtime.authentication.loginAttemptsPerMinute,
@@ -256,8 +257,9 @@ export const AuthenticationLive = Layer.effect(
       const addressFailureState = yield* Cache.get(addressFailures, clientAddress);
       const accountFailureState = yield* Cache.get(accountFailures, accountKey);
       if (
-        now < (yield* Ref.get(addressFailureState)).blockedUntil ||
-        now < (yield* Ref.get(accountFailureState)).blockedUntil
+        runtime.requestLimiter.enabled &&
+        (now < (yield* Ref.get(addressFailureState)).blockedUntil ||
+          now < (yield* Ref.get(accountFailureState)).blockedUntil)
       ) {
         return yield* new AuthenticationRateLimited({ code: 'authentication.rate_limited' });
       }
@@ -299,16 +301,19 @@ export const AuthenticationLive = Layer.effect(
           ),
         );
       if (credential === undefined || !passwordAccepted) {
-        if (!(yield* registerFailure(addressFailureState, now))) {
-          return yield* new AuthenticationRateLimited({ code: 'authentication.rate_limited' });
-        }
-        if (!(yield* registerFailure(accountFailureState, now))) {
-          return yield* new AuthenticationRateLimited({ code: 'authentication.rate_limited' });
+        if (runtime.requestLimiter.enabled) {
+          if (!(yield* registerFailure(addressFailureState, now))) {
+            return yield* new AuthenticationRateLimited({ code: 'authentication.rate_limited' });
+          }
+          if (!(yield* registerFailure(accountFailureState, now))) {
+            return yield* new AuthenticationRateLimited({ code: 'authentication.rate_limited' });
+          }
         }
         return yield* new AuthenticationRejected({ code: 'authentication.invalid_credentials' });
       }
 
-      yield* Ref.set(yield* Cache.get(accountFailures, accountKey), initialLoginFailureState);
+      if (runtime.requestLimiter.enabled)
+        yield* Ref.set(yield* Cache.get(accountFailures, accountKey), initialLoginFailureState);
       const session = yield* prepareSession(
         credential.userId,
         credential.mode,

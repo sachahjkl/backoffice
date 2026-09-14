@@ -61,11 +61,11 @@
       role="region"
       aria-labelledby="client-profile-tab"
       tabindex="0"
+      appDetailGrid
       class="profile"
     >
-      <div>
-        <h2>{{ i18n.t('clientsWorkspace.identity') }}</h2>
-        <dl>
+      <app-detail-panel [heading]="i18n.t('clientsWorkspace.identity')">
+        <dl appDetailList>
           <div
             appInlineEdit
             [label]="i18n.t('backOffice.clients.displayName')"
@@ -109,10 +109,9 @@
             (saveRequested)="saveField('phone', $event)"
           ></div>
         </dl>
-      </div>
-      <div>
-        <h2>{{ i18n.t('clientsWorkspace.address') }}</h2>
-        <dl>
+      </app-detail-panel>
+      <app-detail-panel [heading]="i18n.t('clientsWorkspace.address')">
+        <dl appDetailList>
           @for (field of addressFields; track field.name) {
           <div
             appInlineEdit
@@ -129,7 +128,7 @@
           ></div>
           }
         </dl>
-      </div>
+      </app-detail-panel>
     </section>
   </ng-template>
   <ng-template appTabPanel="affairs">

@@ -1,10 +1,13 @@
 <app-story-page [entry]="entry" [definition]="definition">
+  <ng-template #segmentHint>
+    <strong>{{ text().formatted }}</strong><br />{{ text().description }}
+  </ng-template>
   <div storyControls class="settings">
     @if (entry.id !== 'date-range') {
     <label>{{ text().label }}<input class="input" [formField]="controls.label" /></label> } @if
-    (entry.id === 'filter-choice' || entry.id === 'object-picker') {
+    (entry.id === 'filter-choice' || entry.id === 'filter-select' || entry.id === 'object-picker') {
     <label
-      >{{ entry.id === 'filter-choice' ? 'options[1].label' : 'options[0].label' }}<input
+      >{{ entry.id === 'object-picker' ? 'options[0].label' : 'options[1].label' }}<input
         class="input"
         [formField]="controls.optionLabel"
     /></label>
@@ -22,7 +25,8 @@
     <label
       >{{ text().description }}<input class="input" [formField]="controls.description"
     /></label>
-    } @if (entry.id === 'filter-choice' || entry.id === 'object-picker') {
+    } @if (entry.id === 'filter-choice' || entry.id === 'filter-select' || entry.id ===
+    'object-picker') {
     <label><input type="checkbox" [formField]="controls.empty" />{{ text().empty }}</label> } }
   </div>
   <div storyPreview class="sample">
@@ -37,11 +41,28 @@
           aria-describedby="reference-email-error"
           [attr.aria-invalid]="emailField().touched() && emailField().invalid()"
       /></label>
-      <p id="reference-email-error">
+      <p id="reference-email-error" class="field-error">
         @if (emailField().touched() && emailField().invalid()) { {{ text().invalid }} }
       </p>
       <button appButton type="submit">{{ text().validate }}</button>
     </form>
+    } @case ('filter-select') {
+    <label class="field"
+      >{{ model().label }}<select appFilterSelect class="select" [formField]="controls.choice">
+        @for (option of options(); track option.value) {
+        <option [value]="option.value">{{ option.label }}</option>
+        }
+      </select></label
+    >
+    } @case ('segmented-control') {
+    <app-segmented-control
+      controlId="reference-segmented-control"
+      [label]="model().label"
+      [options]="segmentOptions()"
+      [value]="segment()"
+      [disabled]="model().disabled"
+      (valueChange)="segment.set($event); event.set($event)"
+    />
     } @case ('field-hint') {
     <label class="field" for="field-hint-preview"
       >{{ model().label }}<input
@@ -58,6 +79,7 @@
         [label]="model().label"
         [value]="inlineValue()"
         [emptyValue]="text().none"
+        [disabled]="model().disabled"
         [editing]="inlineEditing()"
         (editRequested)="inlineEditing.set(true)"
         (cancelRequested)="inlineEditing.set(false)"
@@ -146,7 +168,7 @@
       >{{ 'checkbox' }}<input type="checkbox" [formField]="sampleFields.checked"
     /></label>
     <label class="sample" data-variant
-      >{{ 'select' }}<select class="select" [formField]="sampleFields.select">
+      >{{ 'select' }}<select appFilterSelect class="select" [formField]="sampleFields.select">
         <option [value]="'draft'">{{ text().draft }}</option>
         <option [value]="'ready'">{{ text().ready }}</option>
       </select></label
@@ -154,7 +176,47 @@
     <label class="sample" data-variant
       >{{ 'textarea' }}<textarea class="input" [formField]="sampleFields.note"></textarea>
     </label>
-    } @case ('field-hint') { @for (element of ['small', 'p']; track element) {
+    } @case ('filter-select') {
+    <div class="sample" data-variant>
+      <code>single</code>
+      <label class="field"
+        >{{ model().label }}<select appFilterSelect class="select">
+          <option value="all">{{ text().all }}</option>
+          <option value="draft">{{ text().draft }}</option>
+          <option value="ready">{{ text().ready }}</option>
+        </select></label
+      >
+    </div>
+    <div class="sample" data-variant>
+      <code>multiple</code>
+      <label class="field"
+        >{{ model().label }}<select appFilterSelect class="select" multiple>
+          <option value="draft" selected>{{ text().draft }}</option>
+          <option value="ready">{{ text().ready }}</option>
+        </select></label
+      >
+    </div>
+    <div class="sample" data-variant>
+      <code>disabled</code>
+      <label class="field"
+        >{{ model().label }}<select appFilterSelect class="select" disabled>
+          <option>{{ text().draft }}</option>
+        </select></label
+      >
+    </div>
+    } @case ('segmented-control') { @for (sample of segmentSamples; track $index) {
+    <div class="sample" data-variant>
+      <code>{{ sample.size }}{{ sample.disabled ? ' · disabled' : '' }}</code>
+      <app-segmented-control
+        [controlId]="'segments-' + $index"
+        [label]="model().label"
+        [options]="segmentOptions()"
+        value="plain"
+        [size]="sample.size"
+        [disabled]="sample.disabled"
+      />
+    </div>
+    } } @case ('field-hint') { @for (element of ['small', 'p']; track element) {
     <div class="sample" data-variant>
       <code>{{ element }}</code>
       @if (element === 'small') { <small appFieldHint>{{ text().description }}</small> } @else {

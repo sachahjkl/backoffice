@@ -91,7 +91,7 @@ export const BootstrapLive = Layer.effect(
           return yield* new BootstrapUnavailable({ code: 'bootstrap.unavailable' });
         }
         const now = yield* Clock.currentTimeMillis;
-        if (now < blockedUntil) {
+        if (runtime.requestLimiter.enabled && now < blockedUntil) {
           return yield* new BootstrapRateLimited({ code: 'bootstrap.rate_limited' });
         }
         if (
@@ -101,13 +101,15 @@ export const BootstrapLive = Layer.effect(
             runtime.authentication.bootstrapScryptMaximumMemoryBytes,
           ))
         ) {
-          failedAttempts += 1;
-          const delay = Math.min(
-            runtime.authentication.failureMaximumDelayMillis,
-            runtime.authentication.failureBaseDelayMillis *
-              2 ** Math.min(failedAttempts - 1, runtime.authentication.failureExponentLimit),
-          );
-          blockedUntil = now + delay;
+          if (runtime.requestLimiter.enabled) {
+            failedAttempts += 1;
+            const delay = Math.min(
+              runtime.authentication.failureMaximumDelayMillis,
+              runtime.authentication.failureBaseDelayMillis *
+                2 ** Math.min(failedAttempts - 1, runtime.authentication.failureExponentLimit),
+            );
+            blockedUntil = now + delay;
+          }
           return yield* new BootstrapRejected({ code: 'bootstrap.invalid_credentials' });
         }
         failedAttempts = 0;

@@ -83,6 +83,7 @@
     >
     <label class="field"
       >{{ i18n.t('bankWorkspace.format') }}<select
+        appFilterSelect
         id="bank-format"
         class="input"
         [formField]="importForm.format"
@@ -97,6 +98,7 @@
       <legend>{{ i18n.t('bankWorkspace.csvConfiguration') }}</legend>
       <label class="field"
         >{{ i18n.t('bankWorkspace.delimiter') }}<select
+          appFilterSelect
           class="input"
           [formField]="importForm.delimiter"
         >
@@ -132,6 +134,7 @@
       /></label>
       <label class="field"
         >{{ i18n.t('bankWorkspace.dateFormat') }}<select
+          appFilterSelect
           class="input"
           [formField]="importForm.dateFormat"
         >
@@ -141,6 +144,7 @@
       >
       <label class="field"
         >{{ i18n.t('bankWorkspace.decimalSeparator') }}<select
+          appFilterSelect
           class="input"
           [formField]="importForm.decimalSeparator"
         >

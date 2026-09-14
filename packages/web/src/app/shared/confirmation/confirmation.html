@@ -1,9 +1,4 @@
-<form
-  (submit)="
-    $event.preventDefault();
-    dialog.close(data.secretLabel === undefined ? true : secret())
-  "
->
+<form (submit)="confirm($event)">
   <h2 id="confirmation-title">{{ i18n.t('confirmation.title') }}</h2>
   <p id="confirmation-message">{{ data.message }}</p>
   @if (data.secretLabel) {
@@ -18,6 +13,18 @@
       (input)="secret.set($any($event.target).value)"
     />
   </label>
+  } @if (data.acknowledgementLabel) {
+  <label class="confirmation-secret">
+    {{ data.acknowledgementLabel }}
+    <input
+      data-confirmation-acknowledgement
+      class="input"
+      type="text"
+      autocomplete="off"
+      [value]="secret()"
+      (input)="secret.set($any($event.target).value)"
+    />
+  </label>
   }
   <div class="confirmation-actions">
     <button appButton type="button" data-confirmation-cancel (click)="dialog.close(false)">
@@ -27,7 +34,10 @@
       appButton
       type="submit"
       [variant]="data.variant ?? 'primary'"
-      [disabled]="data.secretLabel !== undefined && secret() === ''"
+      [disabled]="
+        (data.secretLabel !== undefined && secret() === '') ||
+        (data.expectedAcknowledgement !== undefined && secret() !== data.expectedAcknowledgement)
+      "
     >
       {{ data.acceptLabel ?? i18n.t('confirmation.accept') }}
     </button>

@@ -12,6 +12,7 @@ const input = {
   recipient: 'recipient@example.test',
   subject: '[Test] Subject',
   body: 'Hello\nWorld',
+  bodyFormat: 'plain' as const,
 };
 const providerId = '13d1635c-64c8-4078-b0f5-d936fb3791dd';
 const layer = (
@@ -75,6 +76,30 @@ it('sends an authenticated idempotent Resend request with the exact message and 
       text: input.body,
     }),
   );
+});
+
+it('sends safe HTML and a text alternative for formatted content', async () => {
+  const requests: HttpClientRequest.HttpClientRequest[] = [];
+  await Effect.runPromise(
+    EmailTransport.use((transport) =>
+      transport.send({
+        ...input,
+        body: JSON.stringify([
+          {
+            kind: 'paragraph',
+            spans: [{ text: '<Hello>', bold: true, italic: false }],
+          },
+        ]),
+        bodyFormat: 'blocks',
+      }),
+    ).pipe(Effect.provide(layer(200, { id: providerId }, requests))),
+  );
+  const request = requests[0];
+  if (request?.body._tag !== 'Uint8Array') throw new Error('Expected a JSON request body.');
+  expect(JSON.parse(new TextDecoder().decode(request.body.body))).toMatchObject({
+    text: '<Hello>',
+    html: '<p><strong>&lt;Hello&gt;</strong></p>',
+  });
 });
 
 it.each([200, 403])('releases HTTP resources after status %s', async (status) => {

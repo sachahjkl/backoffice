@@ -86,6 +86,29 @@ const seedAdministrator = Effect.fn('seedAdministrator')(function* (database: Da
 });
 
 describe('Authentication', () => {
+  it('does not delay login attempts when request limiting is disabled', async () => {
+    await Effect.runPromise(
+      Effect.gen(function* () {
+        yield* seedAdministrator(yield* Database);
+        const authentication = yield* Authentication;
+        for (let index = 0; index < 3; index++) {
+          expect(
+            yield* Effect.result(authentication.login(email, 'incorrect password', '192.0.2.1')),
+          ).toMatchObject({ _tag: 'Failure', failure: { _tag: 'AuthenticationRejected' } });
+        }
+        expect(yield* authentication.login(email, password, '192.0.2.1')).toMatchObject({ userId });
+      }).pipe(
+        Effect.provide(
+          authenticationLayer(PasswordsLive, {
+            ...defaultRuntimeConfig,
+            requestLimiter: { ...defaultRuntimeConfig.requestLimiter, enabled: false },
+          }),
+        ),
+        Effect.provide(TestClock.layer()),
+      ),
+    );
+  });
+
   it('refuses exhausted login quotas before password verification', async () => {
     let calls = 0;
     const passwords = Layer.succeed(

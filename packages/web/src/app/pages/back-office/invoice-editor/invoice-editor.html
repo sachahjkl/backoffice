@@ -58,6 +58,7 @@
       @if (isNew()) {
       <label class="field"
         >{{ i18n.t('backOffice.invoice.order') }}<select
+          appFilterSelect
           class="input"
           [formField]="invoiceForm.orderId"
           [attr.aria-invalid]="invoiceForm.orderId().invalid() && invoiceForm.orderId().touched()"
@@ -142,7 +143,6 @@
         class="document-lines"
         [lines]="invoiceForm.lines().value()"
         [currency]="detail()?.currentRevision?.currency ?? 'EUR'"
-        [totals]="lineTotals()"
         [disabled]="saveDisabled()"
         (linesChange)="setLines($event)"
       />

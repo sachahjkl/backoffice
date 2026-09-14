@@ -11,6 +11,7 @@
     <label class="field" for="credit-allocation-target"
       >{{ i18n.t('credit.targetInvoice') }}
       <select
+        appFilterSelect
         id="credit-allocation-target"
         required
         [ngModel]="targetInvoiceId()"

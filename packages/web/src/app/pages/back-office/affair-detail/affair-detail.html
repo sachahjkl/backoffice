@@ -32,9 +32,16 @@
       } }
     </ng-container>
     } @if (affair(); as item) {
-    <dl class="affair-inline-fields">
+    <dl class="affair-summary">
+      <div class="affair-summary-client">
+        <dt class="visually-hidden">{{ i18n.t('backOffice.affairs.client') }}</dt>
+        <dd>
+          <a [routerLink]="['/backoffice/clients', item.clientId]">{{ item.clientDisplayName }}</a>
+        </dd>
+      </div>
       <div
         appInlineEdit
+        class="inline-edit-compact"
         [label]="i18n.t('backOffice.invoice.title')"
         [value]="item.title"
         [emptyValue]="i18n.t('clientsWorkspace.notProvided')"
@@ -49,6 +56,7 @@
       ></div>
       <div
         appInlineEdit
+        class="inline-edit-compact"
         [label]="i18n.t('billingWorkspace.financialStatus')"
         [value]="item.status"
         [displayValue]="statusLabel()"
@@ -62,9 +70,6 @@
         (saveRequested)="save('status', $event)"
       ></div>
     </dl>
-    <p>
-      <a [routerLink]="['/backoffice/clients', item.clientId]">{{ item.clientDisplayName }}</a>
-    </p>
     }
   </app-page-header>
 
@@ -78,7 +83,7 @@
   <router-outlet />
   <ng-template appTabPanel="affair-detail" let-tab="tab">
     @switch (tab) { @case ('overview') {
-    <section aria-labelledby="affair-documents-title">
+    <section class="related-documents" aria-labelledby="affair-documents-title">
       <h2 id="affair-documents-title">{{ i18n.t('affair.documents') }}</h2>
       @if (linkedDocuments().length === 0) {
       <p class="hint">{{ i18n.t('affair.noDocuments') }}</p>
@@ -117,7 +122,14 @@
     } @case ('history') {
     <section aria-labelledby="affair-history-title">
       <h2 id="affair-history-title">{{ i18n.t('billingWorkspace.history') }}</h2>
-      @if (events().length === 0) {
+      @if (history.isLoading()) {
+      <p role="status">{{ i18n.t('backOffice.affair.loading') }}</p>
+      } @else if (historyFailed()) {
+      <p appNotice variant="danger" role="alert">{{ i18n.t('affair.error') }}</p>
+      <button appButton type="button" (click)="history.reload()">
+        {{ i18n.t('listControls.reload') }}
+      </button>
+      } @else if (events().length === 0) {
       <p>{{ i18n.t('affair.noHistory') }}</p>
       } @else {
       <ol class="timeline">

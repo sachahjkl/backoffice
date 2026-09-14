@@ -19,17 +19,20 @@ import { Badge } from '@shared/badge/badge';
 import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
+import { DocumentTextView } from '@shared/document-text-view/document-text-view';
+import { emailBodyPresentation } from '../email-body';
 import { emailFilterQuery, emailQuery, messageStatus } from '../emails/email-workspace';
 
 @Component({
   host: { class: 'page-container' },
   selector: 'app-email-detail',
-  imports: [Badge, Button, LocalizedDatePipe, Notice, PageHeader, RouterLink],
+  imports: [Badge, Button, DocumentTextView, LocalizedDatePipe, Notice, PageHeader, RouterLink],
   templateUrl: './email-detail.html',
   styleUrl: './email-detail.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmailDetail {
+  protected readonly bodyPresentation = emailBodyPresentation;
   protected readonly i18n = inject(I18nService);
   private readonly api = inject(IntegrationsApi);
   private readonly route = inject(ActivatedRoute);

@@ -39,6 +39,7 @@ function storyProperties(description: StoryDescriptions) {
     button: [
       ['variant', 'ButtonVariant', 'default'],
       buttonVariantProperty,
+      ['size', "'small' | 'default' | 'large'", 'default'],
       ['iconOnly', 'boolean', 'false'],
       ['icon', 'IconName | undefined', 'undefined'],
       ['iconPosition', "'start' | 'end'", 'start'],
@@ -49,6 +50,7 @@ function storyProperties(description: StoryDescriptions) {
     'link-button': [
       ['variant', 'ButtonVariant', 'default'],
       buttonVariantProperty,
+      ['size', "'small' | 'default' | 'large'", 'default'],
       ['iconOnly', 'boolean', 'false'],
       ['icon', 'IconName | undefined', 'undefined'],
       ['iconPosition', "'start' | 'end'", 'start'],
@@ -109,7 +111,8 @@ function storyProperties(description: StoryDescriptions) {
       ['<ng-content>', description.projectedContent, '—'],
     ],
     hint: [
-      ['text', 'string', 'required'],
+      ['text', 'string', "''"],
+      ['content', 'TemplateRef<unknown> | undefined', 'undefined'],
       ['id', `string · ${description.generatedReadonly}`, 'hint-*'],
     ],
     'status-block': [['variant', 'StatusBlockVariant', 'primary']],
@@ -123,6 +126,29 @@ function storyProperties(description: StoryDescriptions) {
       ['type', `string · ${description.nativeAttribute}`, 'text'],
       ['autocomplete / inputmode', `string · ${description.nativeAttribute}`, "''"],
       ['required / disabled / readonly', 'boolean', 'false'],
+    ],
+    'filter-select': [
+      ['appFilterSelect', 'Directive on a native select', 'required'],
+      ['multiple / disabled', `boolean · ${description.nativeAttribute}`, 'false'],
+      ['input / change', `Event · ${description.nativeEvent}`, '—'],
+    ],
+    'segmented-control': [
+      ['controlId / label', 'string', 'required'],
+      ['options', 'readonly SegmentedControlOption<Value>[]', 'required'],
+      ['value', 'Value', 'required'],
+      ['disabled', 'boolean', 'false'],
+      ['size', "'small' | 'default' | 'large'", 'default'],
+      [
+        'variant',
+        "'default' | 'primary' | 'info' | 'success' | 'warning' | 'danger' | 'dark' | 'ghost'",
+        'primary',
+      ],
+      [
+        'SegmentedControlOption<Value>',
+        '{ value: Value; label: string; variant?: SegmentedControlVariant; hint?: string; hintContent?: TemplateRef<unknown> }',
+        '—',
+      ],
+      ['valueChange', 'OutputEmitterRef<Value>', '—'],
     ],
     'list-search': [
       ['label', 'string', 'required'],
@@ -431,7 +457,7 @@ const frenchStories = /* @__PURE__ */ storyDefinitions(
     notice: '<p appNotice variant="warning" role="status">Vérifiez l’exemple local.</p>',
     'empty-state':
       '<app-empty-state title="Aucun exemple"><button appButton type="button" (click)="reset()">Réinitialiser</button></app-empty-state>',
-    hint: '<app-hint #hint text="Exemple local"><button appButton type="button" [attr.aria-describedby]="hint.id">Aide</button></app-hint>',
+    hint: '<ng-template #details><strong>Exemple formaté</strong></ng-template>\n<app-hint #hint [content]="details"><button appButton type="button" [attr.aria-describedby]="hint.id">Aide</button></app-hint>',
     'status-block':
       '<section appStatusBlock variant="success"><h3>Prêt</h3><p>Exemple local</p></section>',
     icon: '<button appButton type="button" aria-label="Rechercher"><app-icon name="search" /></button>',
@@ -439,6 +465,10 @@ const frenchStories = /* @__PURE__ */ storyDefinitions(
       '<span class="spacer-x-3"><app-entity-icon icon="invoice" variant="success" />Facture payée</span>',
     input:
       'value = signal(\'\');\nfield = form(this.value, (path) => { required(path); email(path); });\n\n<label>Courriel<input type="email" autocomplete="email" [formField]="field" /></label>',
+    'filter-select':
+      '<label>État<select appFilterSelect [formField]="filters.status"><option value="draft">Brouillon</option><option value="ready">Prêt</option></select></label>',
+    'segmented-control':
+      '<app-segmented-control controlId="message-format" label="Format du message" [options]="[{value: \'plain\', label: \'Texte brut\'}, {value: \'blocks\', label: \'Texte formaté\'}]" [value]="format()" (valueChange)="format.set($event)" />',
     'list-search': '<app-list-search label="Rechercher" [formField]="filters.query" />',
     'filter-menu':
       '<app-filter-menu #menu label="Filtres" closeLabel="Fermer" backLabel="Retour"><ng-template appFilterPanel label="État"><app-filter-choice label="Rechercher" emptyLabel="Aucun choix" [options]="options" [formField]="filters.status" (committed)="menu.back()" /></ng-template></app-filter-menu>',
@@ -558,7 +588,7 @@ const englishStories = /* @__PURE__ */ storyDefinitions(
     notice: '<p appNotice variant="warning" role="status">Check the local example.</p>',
     'empty-state':
       '<app-empty-state title="No examples"><button appButton type="button" (click)="reset()">Reset</button></app-empty-state>',
-    hint: '<app-hint #hint text="Local example"><button appButton type="button" [attr.aria-describedby]="hint.id">Help</button></app-hint>',
+    hint: '<ng-template #details><strong>Formatted example</strong></ng-template>\n<app-hint #hint [content]="details"><button appButton type="button" [attr.aria-describedby]="hint.id">Help</button></app-hint>',
     'status-block':
       '<section appStatusBlock variant="success"><h3>Ready</h3><p>Local example</p></section>',
     icon: '<button appButton type="button" aria-label="Search"><app-icon name="search" /></button>',
@@ -566,6 +596,10 @@ const englishStories = /* @__PURE__ */ storyDefinitions(
       '<span class="spacer-x-3"><app-entity-icon icon="invoice" variant="success" />Paid invoice</span>',
     input:
       'value = signal(\'\');\nfield = form(this.value, (path) => { required(path); email(path); });\n\n<label>Email<input type="email" autocomplete="email" [formField]="field" /></label>',
+    'filter-select':
+      '<label>Status<select appFilterSelect [formField]="filters.status"><option value="draft">Draft</option><option value="ready">Ready</option></select></label>',
+    'segmented-control':
+      '<app-segmented-control controlId="message-format" label="Message format" [options]="[{value: \'plain\', label: \'Plain text\'}, {value: \'blocks\', label: \'Formatted text\'}]" [value]="format()" (valueChange)="format.set($event)" />',
     'list-search': '<app-list-search label="Search" [formField]="filters.query" />',
     'filter-menu':
       '<app-filter-menu #menu label="Filters" closeLabel="Close" backLabel="Back"><ng-template appFilterPanel label="Status"><app-filter-choice label="Search" emptyLabel="No choices" [options]="options" [formField]="filters.status" (committed)="menu.back()" /></ng-template></app-filter-menu>',
@@ -746,6 +780,8 @@ export const componentReferenceText = {
     status: 'État',
     all: 'Tous',
     draft: 'Brouillon',
+    plain: 'Texte brut',
+    formatted: 'Texte formaté',
     ready: 'Prêt',
     period: 'Période',
     from: 'Date de début',
@@ -889,6 +925,8 @@ export const componentReferenceText = {
     status: 'Status',
     all: 'All',
     draft: 'Draft',
+    plain: 'Plain text',
+    formatted: 'Formatted text',
     ready: 'Ready',
     period: 'Period',
     from: 'Start date',

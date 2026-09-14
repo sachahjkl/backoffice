@@ -32,7 +32,7 @@
       </div>
       <div class="field">
         <label for="account-kind">{{ i18n.t('accounting.kind') }}</label
-        ><select class="select" id="account-kind" [(ngModel)]="accountForm.kind">
+        ><select appFilterSelect class="select" id="account-kind" [(ngModel)]="accountForm.kind">
           @for (kind of ['asset', 'liability', 'equity', 'income', 'expense']; track kind) {
           <option [ngValue]="kind">{{ i18n.t(accountKindLabel($any(kind))) }}</option>
           }
@@ -150,7 +150,7 @@
       </div>
       <div class="field">
         <label for="journal-kind">{{ i18n.t('accounting.kind') }}</label
-        ><select class="select" id="journal-kind" [(ngModel)]="journalForm.kind">
+        ><select appFilterSelect class="select" id="journal-kind" [(ngModel)]="journalForm.kind">
           @for (kind of ['sales', 'purchases', 'bank', 'general', 'opening']; track kind) {
           <option [ngValue]="kind">{{ i18n.t(journalKindLabel($any(kind))) }}</option>
           }
@@ -345,7 +345,12 @@
                     {{ i18n.t('accounting.close') }}
                   </button>
                   } @if (period.status !== 'open' && !period.finalClosed) {
-                  <button appButton type="button" (click)="transitionPeriod(period, 'reopen')">
+                  <button
+                    appButton
+                    variant="danger"
+                    type="button"
+                    (click)="transitionPeriod(period, 'reopen')"
+                  >
                     {{ i18n.t('accounting.reopen') }}
                   </button>
                   } @if (period.status === 'closed' && !period.finalClosed) {
@@ -379,7 +384,12 @@
       <div class="field-grid">
         <div class="field">
           <label for="entry-journal">{{ i18n.t('accounting.journal') }}</label
-          ><select class="select" id="entry-journal" [(ngModel)]="entryForm.journalId">
+          ><select
+            appFilterSelect
+            class="select"
+            id="entry-journal"
+            [(ngModel)]="entryForm.journalId"
+          >
             <option value=""></option>
             @for (journal of journals(); track journal.id) { @if (!journal.archived) {
             <option [value]="journal.id">{{ journal.code }} — {{ journal.label }}</option>
@@ -388,7 +398,12 @@
         </div>
         <div class="field">
           <label for="entry-period">{{ i18n.t('accounting.period') }}</label
-          ><select class="select" id="entry-period" [(ngModel)]="entryForm.periodId">
+          ><select
+            appFilterSelect
+            class="select"
+            id="entry-period"
+            [(ngModel)]="entryForm.periodId"
+          >
             <option value=""></option>
             @for (period of periods(); track period.id) { @if (period.status === 'open') {
             <option [value]="period.id">{{ period.label }}</option>
@@ -425,7 +440,7 @@
             @for (line of entryForm.lines; track $index) {
             <tr>
               <td>
-                <select class="select" [(ngModel)]="line.accountId">
+                <select appFilterSelect class="select" [(ngModel)]="line.accountId">
                   <option value=""></option>
                   @for (account of activeAccounts(); track account.id) {
                   <option [value]="account.id">{{ account.code }} — {{ account.label }}</option>
@@ -723,7 +738,12 @@
       <div class="field-grid">
         <div class="field">
           <label for="tax-filing-adapter">{{ i18n.t('accounting.taxFiling.adapter') }}</label>
-          <select class="select" id="tax-filing-adapter" [(ngModel)]="taxFilingForm.adapter">
+          <select
+            appFilterSelect
+            class="select"
+            id="tax-filing-adapter"
+            [(ngModel)]="taxFilingForm.adapter"
+          >
             <option value="local">{{ i18n.t('accounting.taxFiling.local') }}</option>
             <option value="http">{{ i18n.t('accounting.taxFiling.http') }}</option>
           </select>
@@ -1055,7 +1075,12 @@
         </div>
         <div class="field">
           <label for="opening-journal">{{ i18n.t('accounting.journal') }}</label
-          ><select class="select" id="opening-journal" [(ngModel)]="openingForm.journalId">
+          ><select
+            appFilterSelect
+            class="select"
+            id="opening-journal"
+            [(ngModel)]="openingForm.journalId"
+          >
             <option value=""></option>
             @for (journal of journals(); track journal.id) { @if (journal.kind === 'opening') {
             <option [value]="journal.id">{{ journal.label }}</option>
@@ -1064,7 +1089,12 @@
         </div>
         <div class="field">
           <label for="opening-period">{{ i18n.t('accounting.period') }}</label
-          ><select class="select" id="opening-period" [(ngModel)]="openingForm.periodId">
+          ><select
+            appFilterSelect
+            class="select"
+            id="opening-period"
+            [(ngModel)]="openingForm.periodId"
+          >
             <option value=""></option>
             @for (period of periods(); track period.id) { @if (period.status === 'open') {
             <option [value]="period.id">{{ period.label }}</option>
@@ -1077,7 +1107,7 @@
       </button>
     </div>
     @if (openingPreview(); as preview) {
-    <div class="ds-panel">
+    <div class="preview-surface ds-panel">
       <h2>{{ i18n.t('accounting.preview') }}</h2>
       <p [class.success-text]="preview.balanced">
         {{ i18n.t(openingStatusLabel(preview.balanced)) }}
@@ -1104,7 +1134,12 @@
       <p appFieldHint>{{ i18n.t('accounting.evidence.retention') }}</p>
       <div class="field">
         <label for="evidence-entry">{{ i18n.t('accounting.entry') }}</label
-        ><select class="select" id="evidence-entry" [(ngModel)]="evidenceForm.entryId">
+        ><select
+          appFilterSelect
+          class="select"
+          id="evidence-entry"
+          [(ngModel)]="evidenceForm.entryId"
+        >
           <option value=""></option>
           @for (entry of entries(); track entry.id) {
           <option [value]="entry.id">{{ entry.reference }} — {{ entry.description }}</option>

@@ -1,3 +1,4 @@
+import { FilterSelect } from '@shared/filter-select/filter-select';
 import { Can } from '@backoffice/can';
 import {
   afterNextRender,
@@ -25,15 +26,19 @@ import { affairContext } from '../affairs/affair-filters';
 import { commercialBreadcrumbs, commercialDocumentTitle } from '../commercial-header';
 import { Breadcrumbs } from '@shared/breadcrumbs/breadcrumbs';
 import { ClientDescription } from '../client-description/client-description';
+import { DetailList, DetailPanel } from '@shared/detail-panel/detail-panel';
 
 @Component({
   host: { class: 'page-container' },
   imports: [
+    FilterSelect,
     Can,
     Badge,
     Button,
     Breadcrumbs,
     ClientDescription,
+    DetailList,
+    DetailPanel,
     Notice,
     PageHeader,
     RouterLink,

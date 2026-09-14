@@ -20,6 +20,7 @@ import { Passwords } from '../authentication/password.js';
 import { Database, DatabaseError } from '../database/database.js';
 import { RuntimeConfiguration } from '../runtime-config.js';
 import { createHash, timingSafeEqual } from 'node:crypto';
+import { generateDemoFixtures } from './fixtures.js';
 
 /* oxlint-disable anti-slop/no-natural-language-literals -- Deterministic fixture content, not application interface prose. */
 
@@ -125,6 +126,7 @@ const make = Effect.gen(function* () {
       return yield* new DemoResetRejected({ code: 'demo.password_invalid' });
     const passwordHash = yield* passwords.hash(Redacted.value(password)).pipe(Effect.orDie);
     const now = yield* Clock.currentTimeMillis;
+    const fixtures = generateDemoFixtures();
     const result = yield* Effect.try({
       try: () => {
         sqlite.pragma('foreign_keys = OFF');
@@ -151,38 +153,10 @@ const make = Effect.gen(function* () {
                 sqlite.exec(`delete from "${table.name.replaceAll('"', '""')}"`);
 
               const administratorId = deterministicId(1);
-              const profiles = [
-                {
-                  id: administratorId,
-                  name: 'Demo Administrator',
-                  email: 'administrator@demo.invalid',
-                  profile: null,
-                },
-                {
-                  id: deterministicId(2),
-                  name: 'Demo Collaborator',
-                  email: 'collaborator@demo.invalid',
-                  profile: 'collaborator',
-                },
-                {
-                  id: deterministicId(3),
-                  name: 'Demo Accountant',
-                  email: 'accountant@demo.invalid',
-                  profile: 'accountant',
-                },
-                {
-                  id: deterministicId(4),
-                  name: 'Demo Accounting Validator',
-                  email: 'validator@demo.invalid',
-                  profile: 'accounting-validator',
-                },
-                {
-                  id: deterministicId(5),
-                  name: 'Demo Accounting Reader',
-                  email: 'reader@demo.invalid',
-                  profile: 'accounting-reader',
-                },
-              ] as const;
+              const profiles = fixtures.profiles.map((profile, index) => ({
+                ...profile,
+                id: deterministicId(index + 1),
+              }));
               const insertUser = sqlite.prepare(
                 "insert into users (id, display_name, kind, created_at, updated_at) values (?, ?, 'administrator', ?, ?)",
               );
@@ -195,7 +169,7 @@ const make = Effect.gen(function* () {
                 const roleId = deterministicId(100 + profiles.indexOf(profile));
                 sqlite
                   .prepare('insert into roles (id, name, created_at) values (?, ?, ?)')
-                  .run(roleId, `demo-${profile.email}`, now);
+                  .run(roleId, profile.roleName, now);
                 sqlite
                   .prepare('insert into user_roles (user_id, role_id) values (?, ?)')
                   .run(profile.id, roleId);
@@ -224,7 +198,7 @@ const make = Effect.gen(function* () {
                 .run(now);
               sqlite
                 .prepare(
-                  "insert into issuer_settings (id, display_name, address_line_1, address_line_2, postal_code, city, country, email, phone, registration_number, vat_number, iban, bic, version, updated_at) values (1, 'Froment Démonstration', '1 rue de la Démonstration', '', '75001', 'Paris', 'France', 'contact@demo.invalid', '+33100000000', '00000000000000', 'FR00000000000', 'FR7630006000011234567890189', 'AGRIFRPP', 1, ?)",
+                  "insert into issuer_settings (id, display_name, address_line_1, address_line_2, postal_code, city, country, email, phone, registration_number, vat_number, iban, bic, version, updated_at) values (1, 'Atelier Nébula', '18 rue des Forges', '', '44000', 'Nantes', 'France', 'bonjour@atelier-nebula.invalid', '+33251840024', '84372860100019', 'FR32843728601', 'FR7630006000011234567890189', 'AGRIFRPP', 1, ?)",
                 )
                 .run(now);
               sqlite
@@ -246,79 +220,75 @@ const make = Effect.gen(function* () {
               );
               for (let index = 0; index < DemoClientCount; index += 1) {
                 const id = deterministicId(1_000 + index);
-                const number = index + 1;
-                insertClientUser.run(id, `Client démonstration ${number}`, now, now);
+                const client = fixtures.clients[index];
+                insertClientUser.run(id, client.displayName, now, now);
                 insertClient.run(
                   id,
                   now,
                   now,
-                  `${number} rue des Clients`,
-                  `75${String(number).padStart(3, '0')}`,
-                  'Paris',
-                  `client${number}@demo.invalid`,
-                  `+331${String(number).padStart(8, '0')}`,
+                  client.addressLine1,
+                  client.postalCode,
+                  client.city,
+                  client.email,
+                  client.phone,
                 );
               }
               const insertSupplier = sqlite.prepare(
-                "insert into suppliers (id, display_name, address_line_1, postal_code, city, country, email, phone, registration_number, vat_number, default_currency, payment_terms_days, iban, bic, archived, created_at, updated_at) values (?, ?, ?, '69001', 'Lyon', 'France', ?, '+33400000000', ?, ?, ?, 30, 'FR7630006000011234567890189', 'AGRIFRPP', ?, ?, ?)",
+                "insert into suppliers (id, display_name, address_line_1, postal_code, city, country, email, phone, registration_number, vat_number, default_currency, payment_terms_days, iban, bic, archived, created_at, updated_at) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 30, 'FR7630006000011234567890189', 'AGRIFRPP', ?, ?, ?)",
               );
               for (let index = 0; index < DemoSupplierCount; index += 1) {
-                const number = index + 1;
+                const supplier = fixtures.suppliers[index];
                 const currency = demoCurrency(index, 5);
                 insertSupplier.run(
                   deterministicId(2_000 + index),
-                  `Fournisseur démonstration ${number}`,
-                  `${number} avenue des Fournisseurs`,
-                  `supplier${number}@demo.invalid`,
-                  `SIREN${String(number).padStart(9, '0')}`,
-                  `FR${String(number).padStart(11, '0')}`,
+                  supplier.displayName,
+                  supplier.addressLine1,
+                  supplier.postalCode,
+                  supplier.city,
+                  supplier.country,
+                  supplier.email,
+                  supplier.phone,
+                  supplier.registrationNumber,
+                  supplier.vatNumber,
                   currency,
                   Number(index % 11 === 0),
                   now,
                   now,
                 );
-                const taxTreatments = [
-                  ['france', 'France'],
-                  ['eu-reverse-charge', 'Allemagne'],
-                  ['non-eu-import', 'États-Unis'],
-                  ['foreign-local-tax', 'Canada'],
-                ] as const;
-                const [taxTreatment, country] =
-                  taxTreatments[index % taxTreatments.length] ?? taxTreatments[0];
                 sqlite
                   .prepare(
                     'update suppliers set tax_treatment = ?, country = ?, vies_validated_at = ? where id = ?',
                   )
                   .run(
-                    taxTreatment,
-                    country,
-                    taxTreatment === 'eu-reverse-charge' ? now : null,
+                    supplier.taxTreatment,
+                    supplier.country,
+                    supplier.taxTreatment === 'eu-reverse-charge' ? now : null,
                     deterministicId(2_000 + index),
                   );
               }
               const year = new Date(now).getUTCFullYear();
               const isoNow = DateTime.formatIso(DateTime.makeUnsafe(now));
               const issuer = {
-                displayName: 'Froment Démonstration',
-                addressLine1: '1 rue de la Démonstration',
+                displayName: 'Atelier Nébula',
+                addressLine1: '18 rue des Forges',
                 addressLine2: '',
-                postalCode: '75001',
-                city: 'Paris',
+                postalCode: '44000',
+                city: 'Nantes',
                 country: 'France',
-                email: 'contact@demo.invalid',
-                phone: '+33100000000',
-                registrationNumber: '00000000000000',
-                vatNumber: 'FR00000000000',
+                email: 'bonjour@atelier-nebula.invalid',
+                phone: '+33251840024',
+                registrationNumber: '84372860100019',
+                vatNumber: 'FR32843728601',
               };
               const clientParty = (index: number) => ({
-                displayName: `Client démonstration ${index + 1}`,
-                addressLine1: `${index + 1} rue des Clients`,
+                displayName: fixtures.clients[index].displayName,
+                addressLine1: fixtures.clients[index].addressLine1,
                 addressLine2: '',
-                postalCode: `75${String(index + 1).padStart(3, '0')}`,
-                city: 'Paris',
-                country: 'France',
-                email: `client${index + 1}@demo.invalid`,
-                phone: `+331${String(index + 1).padStart(8, '0')}`,
+                postalCode: fixtures.clients[index].postalCode,
+                city: fixtures.clients[index].city,
+                country: fixtures.clients[index].country,
+                email: fixtures.clients[index].email,
+                phone: fixtures.clients[index].phone,
               });
               const insertAffair = sqlite.prepare(
                 'insert into affairs (id, request_id, reference, client_id, title, status, version, created_at, updated_at) values (?, ?, ?, ?, ?, ?, 1, ?, ?)',
@@ -329,7 +299,7 @@ const make = Effect.gen(function* () {
                   requestId(3_000 + index),
                   `AF-${year}-${String(index + 1).padStart(6, '0')}`,
                   deterministicId(1_000 + (index % DemoClientCount)),
-                  `Affaire démonstration ${index + 1}`,
+                  fixtures.affairs[index].title,
                   affairStatus(index),
                   now,
                   now,
@@ -365,8 +335,8 @@ const make = Effect.gen(function* () {
                 insertQuoteRevision.run(
                   revisionId,
                   id,
-                  `Client démonstration ${clientIndex + 1}`,
-                  `Projet démonstration ${index + 1}`,
+                  fixtures.clients[clientIndex].displayName,
+                  fixtures.quotes[index].title,
                   currency,
                   MONEY_NET_CENTS,
                   MONEY_VAT_CENTS,
@@ -377,7 +347,7 @@ const make = Effect.gen(function* () {
                 insertQuoteLine.run(
                   deterministicId(6_000 + index),
                   revisionId,
-                  `Prestation démonstration ${index + 1}`,
+                  fixtures.quotes[index].lineDescription,
                   MONEY_NET_CENTS,
                   VAT_RATE_BASIS_POINTS,
                   MONEY_NET_CENTS,
@@ -389,8 +359,8 @@ const make = Effect.gen(function* () {
                   insertQuoteRevisionTwo.run(
                     revisedId,
                     id,
-                    `Client démonstration ${clientIndex + 1}`,
-                    `Projet démonstration ${index + 1} — version 2`,
+                    fixtures.clients[clientIndex].displayName,
+                    `${fixtures.quotes[index].title} — version 2`,
                     currency,
                     MONEY_NET_CENTS,
                     MONEY_VAT_CENTS,
@@ -401,7 +371,7 @@ const make = Effect.gen(function* () {
                   insertQuoteLine.run(
                     deterministicId(17_000 + index),
                     revisedId,
-                    `Prestation révisée ${index + 1}`,
+                    `${fixtures.quotes[index].lineDescription} — ajustement`,
                     MONEY_NET_CENTS,
                     VAT_RATE_BASIS_POINTS,
                     MONEY_NET_CENTS,
@@ -420,12 +390,12 @@ const make = Effect.gen(function* () {
                       : deterministicId(6_000 + index);
                   const title =
                     version === 2
-                      ? `Projet démonstration ${index + 1} — version 2`
-                      : `Projet démonstration ${index + 1}`;
+                      ? `${fixtures.quotes[index].title} — version 2`
+                      : fixtures.quotes[index].title;
                   const description =
                     version === 2
-                      ? `Prestation révisée ${index + 1}`
-                      : `Prestation démonstration ${index + 1}`;
+                      ? `${fixtures.quotes[index].lineDescription} — ajustement`
+                      : fixtures.quotes[index].lineDescription;
                   const snapshot = {
                     templateId: 'quote-default',
                     templateVersion: 1,
@@ -510,12 +480,12 @@ const make = Effect.gen(function* () {
                 const quoteReference = `DE-${year}-${String(quoteIndex + 1).padStart(6, '0')}`;
                 const quoteTitle =
                   quoteVersion === 2
-                    ? `Projet démonstration ${quoteIndex + 1} — version 2`
-                    : `Projet démonstration ${quoteIndex + 1}`;
+                    ? `${fixtures.quotes[quoteIndex].title} — version 2`
+                    : fixtures.quotes[quoteIndex].title;
                 const quoteLineDescription =
                   quoteVersion === 2
-                    ? `Prestation révisée ${quoteIndex + 1}`
-                    : `Prestation démonstration ${quoteIndex + 1}`;
+                    ? `${fixtures.quotes[quoteIndex].lineDescription} — ajustement`
+                    : fixtures.quotes[quoteIndex].lineDescription;
                 const quoteSnapshot = {
                   templateId: 'quote-default',
                   templateVersion: 1,
@@ -581,8 +551,8 @@ const make = Effect.gen(function* () {
                     quoteId,
                     quoteRevisionId,
                     linkId,
-                    `Client démonstration ${clientIndex + 1}`,
-                    `Client démonstration ${clientIndex + 1}`,
+                    fixtures.clients[clientIndex].displayName,
+                    fixtures.clients[clientIndex].displayName,
                     now,
                     createHash('sha256').update(JSON.stringify(quoteSnapshot)).digest('hex'),
                     pdfSha256,
@@ -663,7 +633,7 @@ const make = Effect.gen(function* () {
                     {
                       id: invoiceLineId,
                       position: 0,
-                      description: `Prestation facturée ${acceptedIndex + 1}`,
+                      description: quoteLineDescription,
                       quantityMilli: 1_000,
                       unitPriceCents: MONEY_NET_CENTS,
                       vatRateBasisPoints: VAT_RATE_BASIS_POINTS,
@@ -689,7 +659,7 @@ const make = Effect.gen(function* () {
                     invoiceId,
                     invoiceNumber,
                     issuedAt,
-                    `Client démonstration ${clientIndex + 1}`,
+                    fixtures.clients[clientIndex].displayName,
                     quoteTitle,
                     serviceDate,
                     dueDate,
@@ -715,7 +685,7 @@ const make = Effect.gen(function* () {
                   .run(
                     invoiceLineId,
                     invoiceRevisionId,
-                    `Prestation facturée ${acceptedIndex + 1}`,
+                    quoteLineDescription,
                     MONEY_NET_CENTS,
                     VAT_RATE_BASIS_POINTS,
                     MONEY_NET_CENTS,
@@ -804,7 +774,7 @@ const make = Effect.gen(function* () {
                       invoiceRevisionId,
                       invoiceNumber,
                       invoiceLineId,
-                      `Avoir démonstration ${acceptedIndex + 1}`,
+                      `Ajustement commercial — ${quoteTitle}`,
                       MONEY_NET_CENTS,
                       VAT_RATE_BASIS_POINTS,
                       MONEY_NET_CENTS / 2,
@@ -909,7 +879,7 @@ const make = Effect.gen(function* () {
                 insertSupplierLine.run(
                   deterministicId(8_000 + index),
                   id,
-                  `Achat démonstration ${index + 1}`,
+                  fixtures.supplierInvoices[index].lineDescription,
                   MONEY_NET_CENTS,
                   VAT_RATE_BASIS_POINTS,
                   MONEY_VAT_CENTS,
@@ -952,7 +922,7 @@ const make = Effect.gen(function* () {
                   bookedOn,
                   EXCHANGE_RATE_SCALE,
                   amount,
-                  `Opération bancaire démonstration ${index + 1}`,
+                  fixtures.bankTransactions[index].description,
                   importedAt,
                   administratorId,
                 );
@@ -1121,7 +1091,7 @@ const make = Effect.gen(function* () {
                     periodId,
                     dateAt(now, index - 24),
                     `OD-${index + 1}`,
-                    `Écriture démonstration ${index + 1}`,
+                    fixtures.accountingEntries[index].description,
                     'EUR',
                     status,
                     now,
@@ -1162,6 +1132,18 @@ const make = Effect.gen(function* () {
                   now,
                   administratorId,
                 );
+              const referenceCounters = [
+                ['affair', DemoAffairCount + 1],
+                ['quote', DemoQuoteCount + 1],
+                ['order', acceptedIndex + 1],
+                ['invoice', acceptedIndex + 1],
+                ['credit-note', acceptedIndex + 1],
+              ] as const;
+              const insertReferenceCounter = sqlite.prepare(
+                'insert into business_reference_counters (kind, year, next_value) values (?, ?, ?)',
+              );
+              for (const [kind, nextValue] of referenceCounters)
+                insertReferenceCounter.run(kind, year, nextValue);
               for (const trigger of triggers) sqlite.exec(trigger.sql);
               const summary: DemoResetResult = {
                 clients: DemoClientCount,

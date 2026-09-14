@@ -1,3 +1,4 @@
+import { FilterSelect } from '@shared/filter-select/filter-select';
 import { Authentication } from '@backoffice/authentication';
 import { Can } from '@backoffice/can';
 import { DOCUMENT } from '@angular/common';
@@ -56,16 +57,20 @@ import {
 import { ClientDescription } from '../client-description/client-description';
 import { Breadcrumbs } from '@shared/breadcrumbs/breadcrumbs';
 import { canCancelQuote, quoteEditAction } from './quote-actions';
+import { DetailList, DetailPanel } from '@shared/detail-panel/detail-panel';
 
 @Component({
   host: { class: 'page-container' },
   imports: [
+    FilterSelect,
     Can,
     Badge,
     ActionMenu,
     Button,
     ClientDescription,
     Breadcrumbs,
+    DetailList,
+    DetailPanel,
     FormField,
     Notice,
     PageHeader,

@@ -20,6 +20,7 @@ catalog:
   playwright-core: "1.62.1"
   "@effect/platform-node": "4.0.0-rc.112"
   "@effect/vitest": "4.0.0-rc.112"
+  "@faker-js/faker": "10.6.0"
   "@oxlint/plugins": "1.81.0"
   "@tiptap/core": "3.31.3"
   "@tiptap/starter-kit": "3.31.3"

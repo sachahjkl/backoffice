@@ -1,3 +1,4 @@
+import { FilterSelect } from '@shared/filter-select/filter-select';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -21,7 +22,7 @@ import { businessToday } from '../billing/billing-state';
 
 @Component({
   selector: 'app-credit-allocation-editor',
-  imports: [Button, FormsModule, InvoiceTaskHeader, Notice],
+  imports: [FilterSelect, Button, FormsModule, InvoiceTaskHeader, Notice],
   providers: [InvoiceTask],
   templateUrl: './credit-allocation-editor.html',
   styleUrl: './credit-allocation-editor.scss',

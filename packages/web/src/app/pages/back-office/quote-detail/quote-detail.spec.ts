@@ -183,7 +183,7 @@ describe('Quote detail', () => {
     const root: HTMLElement = harness.fixture.nativeElement;
     expect(root.querySelector('#quote-detail-title')).not.toBeNull();
     expect(root.querySelector('[role="alert"]')).not.toBeNull();
-    control<HTMLButtonElement>(root, 'button').click();
+    control<HTMLButtonElement>(root, 'button[appButton]').click();
     await harness.fixture.whenStable();
     expect(get).toHaveBeenCalledTimes(2);
     expect(root.textContent).toContain('Audit');

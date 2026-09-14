@@ -97,7 +97,13 @@ export const AccountingHandlers = HttpApiBuilder.group(Api, 'accounting', (handl
       .handle('accountingPeriodReopen', ({ params, payload }) =>
         Effect.gen(function* () {
           return yield* privateResult(
-            accounting.transitionPeriod(params.id, payload.expectedVersion, 'open', yield* actor()),
+            accounting.transitionPeriod(
+              params.id,
+              payload.expectedVersion,
+              'open',
+              yield* actor(),
+              payload.acknowledgement,
+            ),
           ).pipe(Effect.catchTag('DatabaseError', Effect.orDie));
         }),
       )

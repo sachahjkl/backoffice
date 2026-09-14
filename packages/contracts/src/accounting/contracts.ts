@@ -78,6 +78,10 @@ export const AccountingPeriodCreate = Schema.Struct({
 });
 export type AccountingPeriodCreate = typeof AccountingPeriodCreate.Type;
 export const AccountingPeriodTransition = Schema.Struct({ expectedVersion: PositiveSafeInteger });
+export const AccountingPeriodReopen = Schema.Struct({
+  expectedVersion: PositiveSafeInteger,
+  acknowledgement: AccountingPeriod.fields.label,
+});
 
 export const AccountingEntryLineInput = Schema.Struct({
   accountId: Ulid,
@@ -333,6 +337,7 @@ export class AccountingConflict extends Schema.TaggedError<AccountingConflict>()
       'accounting.period_final_closed',
       'accounting.period_transition_invalid',
       'accounting.period_has_drafts',
+      'accounting.period_reopen_acknowledgement_invalid',
       'accounting.entry_unbalanced',
       'accounting.entry_not_draft',
       'accounting.entry_not_posted',

@@ -81,6 +81,12 @@ export class GlobalSearch {
   private readonly document = inject(DOCUMENT);
   private readonly content = viewChild.required<TemplateRef<unknown>>('content');
   private readonly trigger = viewChild.required('trigger', { read: ElementRef<HTMLButtonElement> });
+  private readonly queryInput = viewChild.required('queryInput', {
+    read: ElementRef<HTMLInputElement>,
+  });
+  private readonly resultList = viewChild.required('resultList', {
+    read: ElementRef<HTMLElement>,
+  });
   private dialog: DialogRef | undefined;
   protected readonly shortcutLabel = signal('Ctrl+K');
   protected readonly opened = signal(false);
@@ -272,6 +278,22 @@ export class GlobalSearch {
     event.preventDefault();
     if (this.dialog) this.searchForm.query().focusBoundControl();
     else this.open();
+  }
+
+  protected navigateResults(event: KeyboardEvent): void {
+    if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+    const resultList: HTMLElement = this.resultList().nativeElement;
+    const links = Array.from(resultList.querySelectorAll<HTMLAnchorElement>('a'));
+    if (links.length === 0) return;
+    const activeElement = this.document.activeElement;
+    const currentIndex = links.findIndex((link) => link === activeElement);
+    if (activeElement !== this.queryInput().nativeElement && currentIndex === -1) return;
+    event.preventDefault();
+    const nextIndex =
+      event.key === 'ArrowDown'
+        ? (currentIndex + 1) % links.length
+        : (currentIndex - 1 + links.length) % links.length;
+    links[nextIndex]?.focus();
   }
 
   protected retry(): void {

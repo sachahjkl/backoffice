@@ -5,11 +5,26 @@
 .affair-panel > * + * {
   margin-top: var(--space-6);
 }
-.affair-inline-fields {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
-  gap: var(--space-4);
-  margin: var(--space-4) 0 0;
+.affair-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+  margin: 0;
+  color: var(--color-muted);
+}
+.affair-summary > div {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+.affair-summary > div + div::before {
+  color: var(--color-muted);
+  content: "·";
+}
+.affair-summary-client dd {
+  margin: 0;
 }
 .quote-amount {
   margin: 0;

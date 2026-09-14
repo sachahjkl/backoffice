@@ -29,6 +29,7 @@ import {
   AccountingPeriod,
   AccountingPeriodCreate,
   AccountingPeriodList,
+  AccountingPeriodReopen,
   AccountingPeriodTransition,
   AccountingReportQuery,
   AccountingFinancialReport,
@@ -119,7 +120,7 @@ export class AccountingApi extends HttpApiGroup.make('accounting', { topLevel: t
     .pipe(requirePermissions([Permissions.accountingClose]), authenticate, frontendSpecific),
   HttpApiEndpoint.post('accountingPeriodReopen', '/api/accounting/periods/:id/reopen', {
     params: { id: Ulid },
-    payload: AccountingPeriodTransition,
+    payload: AccountingPeriodReopen,
     success: AccountingPeriod,
     error: AccountingFailure.members,
   })

@@ -1,15 +1,16 @@
-<dt>{{ label() }}</dt>
+<dt [id]="labelId">{{ label() }}</dt>
 <dd>
   @if (editing()) {
   <form (submit)="submit($event)">
-    <label class="visually-hidden" [for]="controlId">{{ label() }}</label>
     <div class="edit-control">
       @if (options().length > 0) {
       <select
+        appFilterSelect
         class="select"
         [id]="controlId"
+        [attr.aria-labelledby]="labelId"
         [value]="draft()"
-        [disabled]="saving()"
+        [disabled]="saving() || disabled()"
         (change)="draft.set($any($event.target).value)"
       >
         @for (option of options(); track option.value) {
@@ -20,11 +21,12 @@
       <input
         class="input"
         [id]="controlId"
+        [attr.aria-labelledby]="labelId"
         [type]="inputType()"
         [value]="draft()"
         [required]="required()"
         [maxLength]="maximumLength() ?? null"
-        [disabled]="saving()"
+        [disabled]="saving() || disabled()"
         (input)="draft.set($any($event.target).value)"
       />
       }
@@ -35,7 +37,7 @@
             type="submit"
             variant="ghost"
             [iconOnly]="true"
-            [disabled]="saving()"
+            [disabled]="saving() || disabled()"
             [attr.aria-label]="i18n.t('inlineEdit.save')"
           >
             <app-icon name="check" />
@@ -47,7 +49,7 @@
             type="button"
             variant="ghost"
             [iconOnly]="true"
-            [disabled]="saving()"
+            [disabled]="saving() || disabled()"
             [attr.aria-label]="i18n.t('inlineEdit.cancel')"
             (click)="cancelRequested.emit()"
           >
@@ -65,6 +67,7 @@
     type="button"
     variant="ghost"
     [iconOnly]="true"
+    [disabled]="disabled()"
     [attr.aria-label]="i18n.tf('inlineEdit.editField', { field: label() })"
     (click)="editRequested.emit()"
   >

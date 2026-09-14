@@ -18,6 +18,8 @@ export const accountingText = {
     'accounting.period_transition_invalid': 'Cette transition de période n’est pas autorisée.',
     'accounting.period_has_drafts':
       'Validez ou supprimez les brouillons avant de verrouiller la période.',
+    'accounting.period_reopen_acknowledgement_invalid':
+      'Saisissez le libellé exact de l’exercice pour autoriser sa réouverture.',
     'accounting.tax_filing_configuration_invalid': 'Configurez le prestataire de télédéclaration.',
     'accounting.tax_filing_failed': 'La télédéclaration a échoué.',
     'accounting.encryption_unavailable': 'Le chiffrement des secrets n’est pas configuré.',
@@ -63,6 +65,9 @@ export const accountingText = {
     'accounting.lock': 'Verrouiller',
     'accounting.close': 'Clôturer',
     'accounting.reopen': 'Réouvrir',
+    'accounting.reopenWarning':
+      'Réouvrir l’exercice « {label} » autorise de nouvelles écritures. Cette action peut rendre incohérents les états, déclarations et exports déjà produits.',
+    'accounting.reopenAcknowledgement': 'Saisissez « {label} » pour confirmer la réouverture.',
     'accounting.finalClose': 'Clôturer définitivement',
     'accounting.journal': 'Journal',
     'accounting.date': 'Date',
@@ -166,6 +171,8 @@ export const accountingText = {
     'accounting.error': 'The accounting operation failed.',
     'accounting.period_transition_invalid': 'This period transition is not allowed.',
     'accounting.period_has_drafts': 'Post or remove drafts before you lock the period.',
+    'accounting.period_reopen_acknowledgement_invalid':
+      'Enter the exact period label to authorize reopening.',
     'accounting.tax_filing_configuration_invalid': 'Configure the tax filing provider.',
     'accounting.tax_filing_failed': 'The tax filing failed.',
     'accounting.encryption_unavailable': 'Secret encryption is not configured.',
@@ -211,6 +218,9 @@ export const accountingText = {
     'accounting.lock': 'Lock',
     'accounting.close': 'Close',
     'accounting.reopen': 'Reopen',
+    'accounting.reopenWarning':
+      'Reopening “{label}” allows new entries. This action can make existing reports, filings, and exports inconsistent.',
+    'accounting.reopenAcknowledgement': 'Enter “{label}” to confirm reopening.',
     'accounting.finalClose': 'Close finally',
     'accounting.journal': 'Journal',
     'accounting.date': 'Date',

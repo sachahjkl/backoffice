@@ -117,64 +117,70 @@
     <p appNotice>{{ i18n.t('billingWorkspace.readonly') }}</p>
     }
     <div class="summary-layout">
-      <dl class="summary">
-        <div>
-          <dt>{{ i18n.t('backOffice.invoice.order') }}</dt>
-          <dd>
-            <a [routerLink]="['/backoffice/orders', invoice.orderId]"
-              >{{ invoice.orderReference }}</a
-            >
-          </dd>
-        </div>
-        @if (order(); as order) {
-        <div>
-          <dt>{{ i18n.t('billingWorkspace.quote') }}</dt>
-          <dd>
-            <a [routerLink]="['/backoffice/quotes', order.quoteId]">{{ order.quoteReference }}</a>
-          </dd>
-        </div>
-        }
-        <div>
-          <dt>{{ i18n.t('backOffice.invoice.serviceDate') }}</dt>
-          <dd>
-            {{ invoice.currentRevision.serviceDate | localizedDate: i18n.language(): { dateStyle:
-            'medium' } }}
-          </dd>
-        </div>
-        <div>
-          <dt>{{ i18n.t('backOffice.invoice.dueDate') }}</dt>
-          <dd>
-            {{ invoice.currentRevision.dueDate | localizedDate: i18n.language(): { dateStyle:
-            'medium' } }}
-          </dd>
-        </div>
-      </dl>
-      <dl class="summary ds-panel">
-        <div>
-          <dt>{{ i18n.t('backOffice.invoice.subtotal') }}</dt>
-          <dd class="amount">{{ task.money(invoice.currentRevision.netTotalCents) }}</dd>
-        </div>
-        <div>
-          <dt>{{ i18n.t('backOffice.invoice.tax') }}</dt>
-          <dd class="amount">{{ task.money(invoice.currentRevision.vatTotalCents) }}</dd>
-        </div>
-        <div>
-          <dt>{{ i18n.t('backOffice.invoice.total') }}</dt>
-          <dd class="amount">{{ task.money(invoice.currentRevision.totalCents) }}</dd>
-        </div>
-        <div>
-          <dt>{{ i18n.t('payment.recorded') }}</dt>
-          <dd class="amount">{{ task.money(paid()) }}</dd>
-        </div>
-        <div>
-          <dt>{{ i18n.t('credit.credited') }}</dt>
-          <dd class="amount">{{ task.money(invoice.creditedCents) }}</dd>
-        </div>
-        <div class="summary-total">
-          <dt>{{ i18n.t('payment.remaining') }}</dt>
-          <dd class="amount">{{ task.money(balance()) }}</dd>
-        </div>
-      </dl>
+      <app-detail-panel [heading]="i18n.t('billingWorkspace.summary')">
+        <dl appDetailList class="summary">
+          <div>
+            <dt>{{ i18n.t('backOffice.invoice.order') }}</dt>
+            <dd>
+              <a [routerLink]="['/backoffice/orders', invoice.orderId]"
+                >{{ invoice.orderReference }}</a
+              >
+            </dd>
+          </div>
+          @if (order(); as order) {
+          <div>
+            <dt>{{ i18n.t('billingWorkspace.quote') }}</dt>
+            <dd>
+              <a [routerLink]="['/backoffice/quotes', order.quoteId]">{{ order.quoteReference }}</a>
+            </dd>
+          </div>
+          }
+          <div>
+            <dt>{{ i18n.t('backOffice.invoice.serviceDate') }}</dt>
+            <dd>
+              {{ invoice.currentRevision.serviceDate | localizedDate: i18n.language(): { dateStyle:
+              'medium' } }}
+            </dd>
+          </div>
+          <div>
+            <dt>{{ i18n.t('backOffice.invoice.dueDate') }}</dt>
+            <dd>
+              {{ invoice.currentRevision.dueDate | localizedDate: i18n.language(): { dateStyle:
+              'medium' } }}
+            </dd>
+          </div>
+        </dl>
+      </app-detail-panel>
+      <app-detail-panel [heading]="i18n.t('supplierInvoice.totals')">
+        <dl appDetailList class="summary">
+          <div>
+            <dt>{{ i18n.t('backOffice.invoice.subtotal') }}</dt>
+            <dd class="amount">{{ task.money(invoice.currentRevision.netTotalCents) }}</dd>
+          </div>
+          <div>
+            <dt>{{ i18n.t('backOffice.invoice.tax') }}</dt>
+            <dd class="amount">{{ task.money(invoice.currentRevision.vatTotalCents) }}</dd>
+          </div>
+          <div>
+            <dt>{{ i18n.t('backOffice.invoice.total') }}</dt>
+            <dd class="amount">{{ task.money(invoice.currentRevision.totalCents) }}</dd>
+          </div>
+          @if (paymentTrackingApplies()) {
+          <div>
+            <dt>{{ i18n.t('payment.recorded') }}</dt>
+            <dd class="amount">{{ task.money(paid()) }}</dd>
+          </div>
+          <div>
+            <dt>{{ i18n.t('credit.credited') }}</dt>
+            <dd class="amount">{{ task.money(invoice.creditedCents) }}</dd>
+          </div>
+          <div class="summary-total">
+            <dt>{{ i18n.t('payment.remaining') }}</dt>
+            <dd class="amount">{{ task.money(balance()) }}</dd>
+          </div>
+          }
+        </dl>
+      </app-detail-panel>
     </div>
     <section class="payment-terms">
       <h2>{{ i18n.t('backOffice.invoice.paymentTerms') }}</h2>
@@ -186,7 +192,11 @@
     } @case ('document') {
     <div class="document-toolbar">
       <label class="field version"
-        >{{ i18n.t('backOffice.invoice.history') }}<select class="input" [formField]="versionForm">
+        >{{ i18n.t('backOffice.invoice.history') }}<select
+          appFilterSelect
+          class="input"
+          [formField]="versionForm"
+        >
           @for (revision of invoice.revisions; track revision.id) {
           <option [value]="'' + revision.version">
             {{ i18n.tf('billingWorkspace.version', { version: revision.version }) }} · {{
@@ -220,7 +230,7 @@
     <p appNotice variant="warning">{{ i18n.t('billingWorkspace.pdfFailed') }}</p>
     } @if (preview(); as url) {
     <iframe
-      class="preview"
+      class="preview preview-surface"
       [src]="url"
       [title]="i18n.t('backOffice.invoice.preview.frameTitle')"
     ></iframe>

@@ -131,7 +131,7 @@ describe('Quote publication', () => {
     expect(control<HTMLButtonElement>(root, 'button[type="submit"]').disabled).toBe(true);
     expect(root.querySelector('app-copy-field')).toBeNull();
     get.mockResolvedValue({ success: true, result: { ...quoteFixture, status: 'sent' } });
-    control<HTMLButtonElement>(root, 'form button[type="button"]').click();
+    control<HTMLButtonElement>(root, 'form button[appButton][type="button"]').click();
     await harness.fixture.whenStable();
     expect(root.querySelector('form')).toBeNull();
     expect(root.textContent).toMatch(/remplacez|replace/);
@@ -234,7 +234,7 @@ describe('Quote publication', () => {
     expect(confirm).toHaveBeenCalledOnce();
     expect(TestBed.inject(Router).url).toContain('/publication');
     get.mockResolvedValueOnce({ success: false, code: 'quote.error' });
-    control<HTMLButtonElement>(root, 'form button[type="button"]').click();
+    control<HTMLButtonElement>(root, 'form button[appButton][type="button"]').click();
     await harness.fixture.whenStable();
     expect(root.querySelector('form')).toBeNull();
     const event = new Event('beforeunload', { cancelable: true });
@@ -245,7 +245,7 @@ describe('Quote publication', () => {
       resolve = done;
     });
     get.mockReturnValueOnce(loading);
-    control<HTMLButtonElement>(root, 'button').click();
+    control<HTMLButtonElement>(root, 'button[appButton]').click();
     try {
       await vi.waitFor(() => expect(root.querySelector('[role="status"]')).not.toBeNull());
       expect(harness.fixture.isStable()).toBe(false);
