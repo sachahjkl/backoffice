@@ -535,6 +535,10 @@ export const apiDocumentation = {
         summary: 'Consulter le compte courant',
         description: 'Retourne le compte authentifié.',
       },
+      updatePreferences: {
+        summary: 'Modifier les préférences du compte',
+        description: 'Modifie le thème, la langue et le mode des messages du compte connecté.',
+      },
       accountSessionList: {
         summary: 'Lister les sessions actives',
         description:
@@ -1010,6 +1014,10 @@ export const apiDocumentation = {
       currentAccount: {
         summary: 'Get current account',
         description: 'Returns the authenticated account.',
+      },
+      updatePreferences: {
+        summary: 'Update account preferences',
+        description: 'Updates the theme, language, and message mode for the signed-in account.',
       },
       accountSessionList: {
         summary: 'List active sessions',

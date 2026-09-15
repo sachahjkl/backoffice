@@ -223,8 +223,9 @@ describe('Emails', () => {
     const { root, harness, router } = await setupEmailPage('/backoffice/emails/messages?q=facture');
     root.querySelector<HTMLAnchorElement>('tbody a')!.click();
     await harness.fixture.whenStable();
-    expect(root.querySelector('.message-body')?.textContent).toContain('<b>Texte littéral</b>');
-    expect(root.querySelector('.message-body b')).toBeNull();
+    const messageBody = root.querySelector('app-document-text-view');
+    expect(messageBody?.textContent).toContain('<b>Texte littéral</b>');
+    expect(messageBody?.querySelector('b')).toBeNull();
     root.querySelector<HTMLAnchorElement>('a[pageBack]')!.click();
     await harness.fixture.whenStable();
     expect(router.url).toContain('/messages?q=facture');

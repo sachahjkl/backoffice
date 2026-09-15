@@ -41,9 +41,9 @@ describe('IconToolbar', () => {
     expect(root.querySelector('[role="toolbar"]')?.getAttribute('aria-label')).toBe(
       'Mise en forme',
     );
-    expect(document.getElementById(second.getAttribute('aria-labelledby')!)?.textContent).toBe(
-      'Italique',
-    );
+    expect(
+      document.getElementById(second.getAttribute('aria-labelledby')!)?.textContent?.trim(),
+    ).toBe('Italique');
   });
 
   it('emits enabled actions and blocks disabled actions', async () => {

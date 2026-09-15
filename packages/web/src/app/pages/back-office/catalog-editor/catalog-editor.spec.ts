@@ -173,7 +173,7 @@ describe('CatalogEditor', () => {
     await harness.fixture.whenStable();
     expect(root.querySelector('form')).toBeNull();
     api.list.mockResolvedValue([]);
-    root.querySelector<HTMLButtonElement>('button')!.click();
+    root.querySelector<HTMLButtonElement>('[role="alert"] + button')!.click();
     await harness.fixture.whenStable();
     expect(root.querySelector('form')).toBeNull();
     expect(root.querySelector('[role="alert"]')).not.toBeNull();

@@ -248,6 +248,7 @@ describe('Database', () => {
       createdAt: new Date(1),
       updatedAt: new Date(1),
       disabledAt: null,
+      preferences: { theme: 'light', language: 'fr', flashMode: 'inline' },
     });
     expect(user.id).toBe(userId);
     expect(() =>
