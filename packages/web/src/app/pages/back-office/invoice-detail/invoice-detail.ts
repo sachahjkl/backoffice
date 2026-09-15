@@ -13,7 +13,6 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormField, form } from '@angular/forms/signals';
-import { DomSanitizer } from '@angular/platform-browser';
 import { Router, RouterLink } from '@angular/router';
 import { type AuditEventValue, type CreditNote } from '@froment/contracts';
 import { type TranslationKey } from '@app/i18n.service';
@@ -24,6 +23,7 @@ import { Badge } from '@shared/badge/badge';
 import { DataTable } from '@shared/data-table/data-table';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
+import { DocumentPreview } from '@shared/document-preview/document-preview';
 import { DocumentTextView } from '@shared/document-text-view/document-text-view';
 import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
 import { Tabs, type TabItem } from '@shared/tabs/tabs';
@@ -55,6 +55,7 @@ import { createEventHistoryResource } from '@shared/event-history/event-history-
     DetailPanel,
     Notice,
     PageHeader,
+    DocumentPreview,
     DocumentTextView,
     RouterLink,
     FormField,
@@ -74,7 +75,6 @@ export class InvoiceDetail {
   protected readonly i18n = this.task.i18n;
   private readonly creditsApi = inject(InvoiceCreditsApi);
   private readonly ordersApi = inject(OrdersApi);
-  private readonly sanitizer = inject(DomSanitizer);
   private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
   private readonly query = toSignal(this.task.route.queryParamMap, {
@@ -227,10 +227,6 @@ export class InvoiceDetail {
     return !this.authentication.can('document.render') || !invoice || !revision
       ? undefined
       : `/api/invoices/${invoice.id}/revisions/${revision.version}/preview`;
-  });
-  protected readonly preview = computed(() => {
-    const url = this.previewUrl();
-    return url === undefined ? undefined : this.sanitizer.bypassSecurityTrustResourceUrl(url);
   });
   protected readonly generated = signal<ReadonlySet<string>>(new Set());
   protected readonly pdfPending = signal(false);

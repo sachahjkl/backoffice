@@ -27,6 +27,7 @@ import { commercialBreadcrumbs, commercialDocumentTitle } from '../commercial-he
 import { Breadcrumbs } from '@shared/breadcrumbs/breadcrumbs';
 import { ClientDescription } from '../client-description/client-description';
 import { DetailList, DetailPanel } from '@shared/detail-panel/detail-panel';
+import { DocumentPreview } from '@shared/document-preview/document-preview';
 
 @Component({
   host: { class: 'page-container' },
@@ -39,6 +40,7 @@ import { DetailList, DetailPanel } from '@shared/detail-panel/detail-panel';
     ClientDescription,
     DetailList,
     DetailPanel,
+    DocumentPreview,
     Notice,
     PageHeader,
     RouterLink,

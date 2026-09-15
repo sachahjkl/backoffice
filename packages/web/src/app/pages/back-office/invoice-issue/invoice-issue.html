@@ -8,11 +8,12 @@
   @if (task.invoice()) { @if (!eligible() && !task.completed()) {
   <p appNotice>{{ i18n.t('billingWorkspace.unavailable') }}</p>
   } @else if (!task.completed()) { @if (preview(); as previewUrl) {
-  <iframe
-    class="preview preview-surface"
-    [src]="previewUrl"
+  <app-document-preview
+    [url]="previewUrl"
     [title]="i18n.t('backOffice.invoice.preview.frameTitle')"
-  ></iframe>
+    [loadingLabel]="i18n.t('documentPreview.loading')"
+    [errorLabel]="i18n.t('documentPreview.error')"
+  />
   }
   <form *appCan="'invoice.issue'" class="task-form ds-panel form-panel" (submit)="save($event)">
     <label

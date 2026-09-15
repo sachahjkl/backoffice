@@ -12,7 +12,6 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import {
   type DocumentArtifactValue,
   type DocumentIssueValue,
@@ -24,9 +23,10 @@ import { I18nService, type TranslationKey } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
 import { DocumentIssues } from '@shared/document-issues/document-issues';
+import { DocumentPreview } from '@shared/document-preview/document-preview';
 
 @Component({
-  imports: [Can, Button, Notice, DocumentIssues],
+  imports: [Can, Button, Notice, DocumentIssues, DocumentPreview],
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-quote-document',
   styleUrl: './quote-document.scss',
@@ -44,7 +44,6 @@ export class QuoteDocument {
   readonly prepared = output<DocumentArtifactValue>();
   protected readonly i18n = inject(I18nService);
   private readonly api = inject(QuotesApi);
-  private readonly sanitizer = inject(DomSanitizer);
   private readonly destroyRef = inject(DestroyRef);
   protected readonly pending = signal(false);
   protected readonly prepareLabel = computed(() =>
@@ -67,9 +66,6 @@ export class QuoteDocument {
   );
   protected readonly preview = computed(
     () => `/api/quotes/${this.quoteId()}/revisions/${this.revision().version}/preview`,
-  );
-  protected readonly frame = computed(() =>
-    this.sanitizer.bypassSecurityTrustResourceUrl(this.preview()),
   );
   protected readonly pdf = computed(
     () => `/api/quotes/${this.quoteId()}/revisions/${this.revision().version}/pdf`,

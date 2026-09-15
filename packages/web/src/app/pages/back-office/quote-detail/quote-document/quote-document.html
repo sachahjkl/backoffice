@@ -1,14 +1,6 @@
 <h2>{{ i18n.tf('backOffice.quote.preview.title', { version: revision().version }) }}</h2>
 <div class="actions">
   @if (revision().previewAvailable) {
-  <a
-    *appCan="'document.render'"
-    appLinkButton
-    [href]="preview()"
-    target="_blank"
-    rel="noopener noreferrer"
-    >{{ i18n.t('backOffice.quote.preview.open') }}</a
-  >
   <button
     *appCan="'document.render'"
     #prepare
@@ -32,12 +24,14 @@
 } @if (issues().length) {
 <app-document-issues [issues]="issues()" [clientId]="clientId()" kind="quote" /> } @if
 (revision().previewAvailable) {
-<iframe
+<app-document-preview
   *appCan="'document.render'"
-  class="preview-surface"
-  [src]="frame()"
+  [url]="preview()"
   [title]="i18n.t('backOffice.quote.preview.frameTitle')"
-></iframe>
+  [loadingLabel]="i18n.t('documentPreview.loading')"
+  [errorLabel]="i18n.t('documentPreview.error')"
+  [openLabel]="i18n.t('backOffice.quote.preview.open')"
+/>
 } @else {
 <p #unavailable appNotice variant="warning" tabindex="-1">
   {{ i18n.t('commercial.previewUnavailable') }}

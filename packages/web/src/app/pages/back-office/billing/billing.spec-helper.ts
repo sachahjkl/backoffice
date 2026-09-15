@@ -14,6 +14,7 @@ import { vi } from 'vitest';
 import { InvoicesApi } from '@backoffice/invoices-api';
 import { InvoiceCreditsApi } from '@backoffice/invoice-credits-api';
 import { OrdersApi } from '@backoffice/orders-api';
+import { DocumentPreviewLoader } from '@shared/document-preview/document-preview';
 
 export const invoiceId = '01ARZ3NDEKTSV4RRFFQ69G5FAY';
 export const orderId = '01ARZ3NDEKTSV4RRFFQ69G5FAZ';
@@ -220,6 +221,7 @@ export async function setupInvoicePage<T>(
   const params = convertToParamMap(options.params ?? { invoiceId });
   const query = convertToParamMap(options.query ?? {});
   const queryParams = new BehaviorSubject(query);
+  const previewLoad = vi.fn().mockResolvedValue(new Blob(['pdf']));
   TestBed.configureTestingModule({
     providers: [
       provideAccount(options.permissions),
@@ -235,10 +237,14 @@ export async function setupInvoicePage<T>(
       { provide: InvoicesApi, useValue: api },
       { provide: InvoiceCreditsApi, useValue: credits },
       { provide: OrdersApi, useValue: { list: vi.fn().mockResolvedValue(options.orders ?? []) } },
+      {
+        provide: DocumentPreviewLoader,
+        useValue: { load: previewLoad },
+      },
     ],
   });
   const fixture = TestBed.createComponent(component);
   await fixture.whenStable();
   const root: HTMLElement = fixture.nativeElement;
-  return { api, credits, fixture, root, queryParams };
+  return { api, credits, fixture, root, previewLoad, queryParams };
 }

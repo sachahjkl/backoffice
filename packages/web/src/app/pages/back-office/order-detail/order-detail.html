@@ -86,14 +86,6 @@
   <section class="section-space" aria-labelledby="order-document-title">
     <h2 id="order-document-title">{{ i18n.t('commercial.orderPdf') }}</h2>
     <div class="actions">
-      <a
-        appLinkButton
-        [href]="'/api/orders/' + order.id + '/preview'"
-        *appCan="'document.render'"
-        target="_blank"
-        rel="noopener noreferrer"
-        >{{ i18n.t('backOffice.quote.preview.open') }}</a
-      >
       <button
         *appCan="'document.render'"
         appButton
@@ -112,6 +104,14 @@
     @if (pdfError()) {
     <p appNotice variant="danger" role="alert">{{ i18n.t('commercial.orderUnavailable') }}</p>
     }
+    <app-document-preview
+      *appCan="'document.render'"
+      [url]="'/api/orders/' + order.id + '/preview'"
+      [title]="i18n.t('commercial.orderPdf')"
+      [loadingLabel]="i18n.t('documentPreview.loading')"
+      [errorLabel]="i18n.t('documentPreview.error')"
+      [openLabel]="i18n.t('backOffice.quote.preview.open')"
+    />
   </section>
   } } } }
 </section>

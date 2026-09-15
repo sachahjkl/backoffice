@@ -872,6 +872,8 @@ export const translations = {
     'publicQuote.error':
       'Le devis est indisponible. Rechargez la page pour vérifier son état avant de réessayer.',
     'publicQuote.pdfError': 'Le PDF est indisponible. Rechargez la page pour réessayer.',
+    'documentPreview.loading': 'Chargement de l’aperçu…',
+    'documentPreview.error': 'L’aperçu du document est indisponible.',
     'publicQuote.summary': 'Résumé du devis',
     'publicQuote.tabs': 'Contenu du devis',
     'publicQuote.tab.summary': 'Proposition',
@@ -2421,6 +2423,8 @@ export const translations = {
     'publicQuote.error':
       'The quote is unavailable. Reload the page to check its status before trying again.',
     'publicQuote.pdfError': 'The PDF is unavailable. Reload the page to try again.',
+    'documentPreview.loading': 'Loading preview…',
+    'documentPreview.error': 'The document preview is unavailable.',
     'publicQuote.summary': 'Quote summary',
     'publicQuote.tabs': 'Quote content',
     'publicQuote.tab.summary': 'Proposal',

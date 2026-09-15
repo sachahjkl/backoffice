@@ -228,12 +228,13 @@
     <p role="status">{{ i18n.t('billingWorkspace.pdfPending') }}</p>
     } @if (invoice.pdf?.status === 'failed') {
     <p appNotice variant="warning">{{ i18n.t('billingWorkspace.pdfFailed') }}</p>
-    } @if (preview(); as url) {
-    <iframe
-      class="preview preview-surface"
-      [src]="url"
+    } @if (previewUrl(); as url) {
+    <app-document-preview
+      [url]="url"
       [title]="i18n.t('backOffice.invoice.preview.frameTitle')"
-    ></iframe>
+      [loadingLabel]="i18n.t('documentPreview.loading')"
+      [errorLabel]="i18n.t('documentPreview.error')"
+    />
     } } @case ('receipts') {
     <p *appCan="'invoice.mark-paid'" appNotice>{{ i18n.t('billingWorkspace.receiptHint') }}</p>
     <p>{{ i18n.t('payment.recorded') }} : {{ task.money(paid()) }}</p>

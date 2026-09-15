@@ -94,14 +94,6 @@ dd {
   margin: 0;
   overflow-wrap: anywhere;
 }
-.preview {
-  width: 100%;
-  height: clamp(28rem, 80dvh, 65rem);
-  border: 1px dashed var(--color-line-strong);
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-panel);
-  background: white;
-}
 ol {
   display: grid;
   gap: var(--space-4);

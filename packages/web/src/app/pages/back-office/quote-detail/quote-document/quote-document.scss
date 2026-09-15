@@ -13,11 +13,3 @@ h2 {
   gap: var(--space-3);
   align-items: center;
 }
-iframe {
-  display: block;
-  width: 100%;
-  height: clamp(28rem, 75dvh, 65rem);
-  border: 1px dashed var(--color-line-strong);
-  border-radius: var(--radius-sm);
-  background: white;
-}

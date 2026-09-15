@@ -69,10 +69,10 @@ describe('InvoiceDetail', () => {
     expect(root.textContent).not.toMatch(/Reste à régler|Remaining balance/);
   });
   it('shows the saved PDF and preview without changing issued revisions', async () => {
-    const { root, api } = await setupInvoicePage(InvoiceDetail, { query: { tab: 'document' } });
-    expect(root.querySelector('iframe')?.getAttribute('src')).toBe(
-      `/api/invoices/${invoiceId}/revisions/2/preview`,
-    );
+    const { root, api, previewLoad } = await setupInvoicePage(InvoiceDetail, {
+      query: { tab: 'document' },
+    });
+    expect(previewLoad).toHaveBeenCalledWith(`/api/invoices/${invoiceId}/revisions/2/preview`);
     expect(root.querySelector('iframe')?.hasAttribute('sandbox')).toBe(false);
     expect(
       root.querySelector(`a[href="/api/invoices/${invoiceId}/revisions/2/pdf"]`),
