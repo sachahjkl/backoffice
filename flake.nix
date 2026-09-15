@@ -30,22 +30,28 @@
         secretspec = pkgs.secretspec;
         lib = pkgs.lib;
         packageJson = builtins.fromJSON (builtins.readFile ./package.json);
-        packageDirectories = builtins.attrNames (
-          lib.filterAttrs (_name: type: type == "directory") (builtins.readDir ./packages)
-        );
-        workspacePackages =
+        packageDirectories =
+          lib.filter (
+            directory: builtins.pathExists (./packages + "/${directory}/package.json")
+          ) (
+            builtins.attrNames (
+              lib.filterAttrs (_name: type: type == "directory") (builtins.readDir ./packages)
+            )
+          );
+        workspaceManifests =
           map (
             directory: builtins.fromJSON (builtins.readFile (./packages + "/${directory}/package.json"))
           )
           packageDirectories;
+        deploymentPackages = builtins.sort (left: right: left.name < right.name) (
+          map (manifest: {
+            inherit (manifest) name version;
+          }) ([packageJson] ++ workspaceManifests)
+        );
         deploymentMetadata = commit:
           builtins.toJSON {
             inherit commit;
-            packages = builtins.sort (left: right: left.name < right.name) (
-              map (manifest: {
-                inherit (manifest) name version;
-              }) ([packageJson] ++ workspacePackages)
-            );
+            packages = deploymentPackages;
           };
         localCommit =
           if self ? rev
@@ -55,9 +61,10 @@
           else "unversioned";
         inherit (packageJson) version;
         pname = packageJson.name;
+        buildNode = pkgs.nodejs_26;
         runtimeNode = pkgs.nodejs-slim_26;
         caBundle = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
-        pnpm = pkgs.pnpm.override {nodejs-slim = runtimeNode;};
+        pnpm = pkgs.pnpm.override {nodejs-slim = buildNode;};
         cousineFonts = pkgs.google-fonts.override {fonts = ["Cousine"];};
         documentFonts = pkgs.symlinkJoin {
           name = "froment-document-fonts";
@@ -108,112 +115,110 @@
           inherit pname version src;
           inherit pnpm;
           fetcherVersion = 4;
-          hash = "sha256-TsTeD16QQIwPP/MRqgP4CBWZTJ62EequkPA/QT9eEbM=";
+          hash = "sha256-nHIMQBQN3lsIIYbNyi1w21j+S4V7N+9MB3rUB8eqCmI=";
+        };
+        commonPnpmAttrs = {
+          inherit pname version src pnpmDeps;
+          nativeBuildInputs = [
+            buildNode
+            pnpm
+            pkgs.pnpmConfigHook
+          ];
         };
 
         mkApplication = commit:
-          pkgs.stdenv.mkDerivation {
-            inherit
-              pname
-              version
-              src
-              pnpmDeps
-              ;
-            nativeBuildInputs = [
-              pkgs.nodejs_26
-              pnpm
-              pkgs.pnpmConfigHook
-              pkgs.makeWrapper
-            ];
-            buildPhase = ''
-              runHook preBuild
-              pnpm build
-              runHook postBuild
-            '';
-            installPhase = ''
-              runHook preInstall
-              mkdir -p $out/bin $out/lib/froment-software/node_modules $out/share/froment-software
-              cp packages/api/dist/main.cjs $out/lib/froment-software/server.cjs
-              cp packages/api/dist/migrate.cjs $out/lib/froment-software/migrate.cjs
-              cp packages/api/dist/backup.cjs $out/lib/froment-software/backup.cjs
-              cp -r packages/api/drizzle $out/share/froment-software/drizzle
-              argon2Modules=$(dirname $(readlink -f packages/api/node_modules/argon2))
-              mkdir -p $out/lib/froment-software/node_modules/@phc
-              cp -rL $argon2Modules/argon2 $out/lib/froment-software/node_modules/
-              cp -rL $argon2Modules/@phc/format $out/lib/froment-software/node_modules/@phc/
-              cp -rL $argon2Modules/node-gyp-build $out/lib/froment-software/node_modules/
-              cp -rL packages/api/node_modules/better-sqlite3 $out/lib/froment-software/node_modules/
-              cp -r packages/documents/templates $out/share/froment-software/templates
-              cp -r packages/web/dist/froment-software/browser $out/share/froment-software/web
-              makeWrapper ${runtimeNode}/bin/node $out/bin/${pname} \
-                --add-flags $out/lib/froment-software/server.cjs \
-                --set SSL_CERT_FILE ${caBundle} \
-                --set NIX_SSL_CERT_FILE ${caBundle} \
-                --set BUSINESS_TIME_ZONE Europe/Paris \
-                --set TYPST_PATH ${pkgs.typst}/bin/typst \
-                --set DOCUMENT_TEMPLATES_PATH $out/share/froment-software/templates \
-                --set DOCUMENT_FONTS_PATH ${documentFonts}/share/fonts \
-                --set-default DATABASE_PATH data/froment.sqlite \
-                --set DEPLOYMENT_METADATA ${lib.escapeShellArg (deploymentMetadata commit)} \
-                --set STATIC_ROOT $out/share/froment-software/web \
-                --set-default PORT 3000
-              makeWrapper ${runtimeNode}/bin/node $out/bin/${pname}-migrate \
-                --add-flags $out/lib/froment-software/migrate.cjs \
-                --set BUSINESS_TIME_ZONE Europe/Paris \
-                --set-default DATABASE_PATH data/froment.sqlite \
-                --set MIGRATIONS_ROOT $out/share/froment-software/drizzle
-              cp tools/deploy.sh $out/bin/${pname}-deploy
-              cp tools/prepare.sh $out/bin/${pname}-prepare
-              makeWrapper ${runtimeNode}/bin/node $out/bin/${pname}-backup \
-                --add-flags $out/lib/froment-software/backup.cjs \
-                --set MIGRATIONS_ROOT $out/share/froment-software/drizzle
-              chmod +x $out/bin/${pname}-deploy $out/bin/${pname}-prepare
-              wrapProgram $out/bin/${pname}-prepare \
-                --prefix PATH : $out/bin:${
-                lib.makeBinPath [
-                  pkgs.coreutils
-                  pkgs.findutils
-                  pkgs.sqlite
-                ]
-              }
-              runHook postInstall
-            '';
-          };
+          pkgs.stdenv.mkDerivation (commonPnpmAttrs
+            // {
+              nativeBuildInputs = commonPnpmAttrs.nativeBuildInputs ++ [pkgs.makeWrapper];
+              buildPhase = ''
+                runHook preBuild
+                pnpm build
+                runHook postBuild
+              '';
+              installPhase = ''
+                runHook preInstall
+                libDir="$out/lib/${pname}"
+                shareDir="$out/share/${pname}"
+                mkdir -p "$out/bin" "$libDir/node_modules/@phc" "$shareDir"
+                cp packages/api/dist/main.cjs "$libDir/server.cjs"
+                cp packages/api/dist/migrate.cjs "$libDir/migrate.cjs"
+                cp packages/api/dist/backup.cjs "$libDir/backup.cjs"
+                cp -r packages/api/drizzle "$shareDir/drizzle"
+                argon2Modules=$(dirname $(readlink -f packages/api/node_modules/argon2))
+                cp -rL "$argon2Modules/argon2" "$libDir/node_modules/"
+                cp -rL "$argon2Modules/@phc/format" "$libDir/node_modules/@phc/"
+                cp -rL "$argon2Modules/node-gyp-build" "$libDir/node_modules/"
+                cp -rL packages/api/node_modules/better-sqlite3 "$libDir/node_modules/"
+                cp -r packages/documents/templates "$shareDir/templates"
+                cp -r packages/web/dist/froment-software/browser "$shareDir/web"
+                makeWrapper ${runtimeNode}/bin/node $out/bin/${pname} \
+                  --add-flags "$libDir/server.cjs" \
+                  --set SSL_CERT_FILE ${caBundle} \
+                  --set NIX_SSL_CERT_FILE ${caBundle} \
+                  --set BUSINESS_TIME_ZONE Europe/Paris \
+                  --set TYPST_PATH ${pkgs.typst}/bin/typst \
+                  --set DOCUMENT_TEMPLATES_PATH "$shareDir/templates" \
+                  --set DOCUMENT_FONTS_PATH ${documentFonts}/share/fonts \
+                  --set-default DATABASE_PATH data/froment.sqlite \
+                  --set DEPLOYMENT_METADATA ${lib.escapeShellArg (deploymentMetadata commit)} \
+                  --set STATIC_ROOT "$shareDir/web" \
+                  --set-default PORT 3000
+                makeWrapper ${runtimeNode}/bin/node $out/bin/${pname}-migrate \
+                  --add-flags "$libDir/migrate.cjs" \
+                  --set BUSINESS_TIME_ZONE Europe/Paris \
+                  --set-default DATABASE_PATH data/froment.sqlite \
+                  --set MIGRATIONS_ROOT "$shareDir/drizzle"
+                cp tools/deploy.sh $out/bin/${pname}-deploy
+                cp tools/prepare.sh $out/bin/${pname}-prepare
+                makeWrapper ${runtimeNode}/bin/node $out/bin/${pname}-backup \
+                  --add-flags "$libDir/backup.cjs" \
+                  --set-default DATABASE_PATH data/froment.sqlite \
+                  --set MIGRATIONS_ROOT "$shareDir/drizzle"
+                chmod +x $out/bin/${pname}-deploy $out/bin/${pname}-prepare
+                wrapProgram $out/bin/${pname}-prepare \
+                  --prefix PATH : $out/bin:${
+                  lib.makeBinPath [
+                    pkgs.coreutils
+                    pkgs.findutils
+                    pkgs.sqlite
+                  ]
+                }
+                runHook postInstall
+              '';
+            });
 
-        mkCheck = name: command:
-          pkgs.stdenv.mkDerivation {
-            inherit
-              pname
-              version
-              src
-              pnpmDeps
-              ;
-            name = "${pname}-${name}";
-            CI = "true";
-            PNPM_CONFIG_REPORTER = "append-only";
-            nativeBuildInputs =
-              [
-                pkgs.nodejs_26
-                pnpm
-                pkgs.pnpmConfigHook
-              ]
-              ++ lib.optionals (name == "test") [
-                cousineFonts
-                pkgs.liberation_ttf
-                pkgs.poppler-utils
-                pkgs.typst
-              ];
-            TYPST_PATH = lib.optionalString (name == "test") "${pkgs.typst}/bin/typst";
-            DOCUMENT_TEMPLATES_PATH = lib.optionalString (name == "test") "${./packages/documents/templates}";
-            DOCUMENT_FONTS_PATH = lib.optionalString (name == "test") "${documentFonts}/share/fonts";
-            dontBuild = true;
-            installPhase = ''
-              runHook preInstall
-              ${command}
-              touch $out
-              runHook postInstall
-            '';
-          };
+        mkCheck = {
+          name,
+          command,
+          extraBuildInputs ? [],
+          environment ? {},
+        }:
+          pkgs.stdenv.mkDerivation (commonPnpmAttrs
+            // environment
+            // {
+              name = "${pname}-${name}";
+              CI = "true";
+              PNPM_CONFIG_REPORTER = "append-only";
+              nativeBuildInputs = commonPnpmAttrs.nativeBuildInputs ++ extraBuildInputs;
+              dontBuild = true;
+              installPhase = ''
+                runHook preInstall
+                ${command}
+                touch "$out"
+                runHook postInstall
+              '';
+            });
+        testBuildInputs = [
+          cousineFonts
+          pkgs.liberation_ttf
+          pkgs.poppler-utils
+          pkgs.typst
+        ];
+        testEnvironment = {
+          TYPST_PATH = "${pkgs.typst}/bin/typst";
+          DOCUMENT_TEMPLATES_PATH = "${./packages/documents/templates}";
+          DOCUMENT_FONTS_PATH = "${documentFonts}/share/fonts";
+        };
 
         application = mkApplication localCommit;
         mkDockerImage = imageApplication:
@@ -299,11 +304,14 @@
           closure = pkgs.closureInfo {rootPaths = [application];};
         in
           pkgs.runCommand "${pname}-production-closure" {} ''
-            if grep -E -i '/[^/]*(chromium|playwright)' ${closure}/store-paths; then
+            if grep --quiet --extended-regexp --ignore-case \
+              '/[^/]*(chromium|playwright)' \
+              ${closure}/store-paths
+            then
               echo "The production closure contains Chromium or Playwright." >&2
               exit 1
             fi
-            touch $out
+            touch "$out"
           '';
         secretContract =
           pkgs.runCommand "${pname}-secret-contract"
@@ -358,11 +366,22 @@
           '';
           inherit dockerImage productionClosure;
           build = application;
-          format = mkCheck "format" "pnpm format:check";
-          lint = mkCheck "lint" "pnpm lint";
+          format = mkCheck {
+            name = "format";
+            command = "pnpm format:check";
+          };
+          lint = mkCheck {
+            name = "lint";
+            command = "pnpm lint";
+          };
           pre-commit = preCommitCheck;
           secret-contract = secretContract;
-          test = mkCheck "test" "pnpm test";
+          test = mkCheck {
+            name = "test";
+            command = "pnpm test";
+            extraBuildInputs = testBuildInputs;
+            environment = testEnvironment;
+          };
         };
 
         devShells.default = pkgs.mkShell {
@@ -375,7 +394,7 @@
             ++ [
               cousineFonts
               pkgs.liberation_ttf
-              pkgs.nodejs_26
+              buildNode
               pkgs.poppler-utils
               pnpm
               pkgs.sops
