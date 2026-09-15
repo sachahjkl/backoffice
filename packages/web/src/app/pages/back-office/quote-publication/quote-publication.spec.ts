@@ -9,7 +9,6 @@ import { accountFixture } from '@backoffice/account.spec-helper';
 import { QuotePublication } from './quote-publication';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { TextCopy } from '@shared/text-copy';
-import { DocumentPreviewLoader } from '@shared/document-preview/document-preview';
 import {
   artifactFixture,
   commercialTestRoutes,
@@ -27,7 +26,6 @@ describe('Quote publication', () => {
   const replaceLink = vi.fn();
   const copy = vi.fn();
   const confirm = vi.fn();
-  const previewLoad = vi.fn();
   const sent = {
     quoteId,
     revisionId: quoteFixture.currentRevision.id,
@@ -50,14 +48,12 @@ describe('Quote publication', () => {
     replaceLink.mockReset().mockResolvedValue({ success: true, result: sent });
     copy.mockReset().mockResolvedValue(true);
     confirm.mockReset().mockResolvedValue(false);
-    previewLoad.mockReset().mockResolvedValue(new Blob(['pdf']));
     TestBed.configureTestingModule({
       providers: [
         provideRouter(commercialTestRoutes),
         { provide: QuotesApi, useValue: { get, renderPdf, send, linkState, replaceLink } },
         { provide: TextCopy, useValue: { copy } },
         { provide: Confirmation, useValue: { request: confirm } },
-        { provide: DocumentPreviewLoader, useValue: { load: previewLoad } },
       ],
     });
   });
@@ -74,8 +70,9 @@ describe('Quote publication', () => {
   }
   it('requires the exact revision PDF and a review confirmation', async () => {
     const { harness, root } = await open();
-    expect(previewLoad).toHaveBeenCalledWith(`/api/quotes/${quoteId}/revisions/2/preview`);
-    expect(control<HTMLIFrameElement>(root, 'iframe').getAttribute('src')).toMatch(/^blob:/);
+    expect(control<HTMLIFrameElement>(root, 'iframe').getAttribute('src')).toBe(
+      `/api/quotes/${quoteId}/revisions/2/preview`,
+    );
     expect(root.querySelector('iframe')?.hasAttribute('sandbox')).toBe(false);
     const publish = control<HTMLButtonElement>(root, 'button[type="submit"]');
     expect(publish.disabled).toBe(false);

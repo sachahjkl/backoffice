@@ -4,7 +4,7 @@
 <p appNotice variant="danger" role="alert">{{ errorLabel() }}</p>
 } @else if (frameUrl(); as frame) { @if (openLabel(); as label) {
 <div class="actions">
-  <a appLinkButton [href]="objectUrl()" target="_blank" rel="noopener noreferrer">{{ label }}</a>
+  <a appLinkButton [href]="url()" target="_blank" rel="noopener noreferrer">{{ label }}</a>
 </div>
 }
 <iframe class="preview-surface" [src]="frame" [title]="title()"></iframe>

@@ -1,10 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
   inject,
-  Injectable,
   input,
   OnChanges,
   PendingTasks,
@@ -12,18 +10,9 @@ import {
   signal,
 } from '@angular/core';
 import { DomSanitizer, type SafeResourceUrl } from '@angular/platform-browser';
-import { firstValueFrom } from 'rxjs';
+import { Authentication } from '@backoffice/authentication';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
-
-@Injectable({ providedIn: 'root' })
-export class DocumentPreviewLoader {
-  private readonly http = inject(HttpClient);
-
-  load(url: string): Promise<Blob> {
-    return firstValueFrom(this.http.get(url, { responseType: 'blob' }));
-  }
-}
 
 @Component({
   selector: 'app-document-preview',
@@ -41,8 +30,7 @@ export class DocumentPreview implements OnChanges {
   protected readonly loading = signal(true);
   protected readonly failed = signal(false);
   protected readonly frameUrl = signal<SafeResourceUrl | undefined>(undefined);
-  protected readonly objectUrl = signal<string | undefined>(undefined);
-  private readonly loader = inject(DocumentPreviewLoader);
+  private readonly authentication = inject(Authentication);
   private readonly sanitizer = inject(DomSanitizer);
   private readonly pendingTasks = inject(PendingTasks);
   private readonly destroyRef = inject(DestroyRef);
@@ -51,7 +39,6 @@ export class DocumentPreview implements OnChanges {
   constructor() {
     this.destroyRef.onDestroy(() => {
       this.generation++;
-      this.release();
     });
   }
 
@@ -63,26 +50,21 @@ export class DocumentPreview implements OnChanges {
 
   private async load(): Promise<void> {
     const generation = ++this.generation;
-    this.release();
     this.frameUrl.set(undefined);
     this.failed.set(false);
     this.loading.set(true);
     try {
-      const pdf = await this.loader.load(this.url());
+      const mode = await this.authentication.refreshSession();
       if (this.destroyRef.destroyed || generation !== this.generation) return;
-      const objectUrl = URL.createObjectURL(pdf);
-      this.objectUrl.set(objectUrl);
-      this.frameUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(objectUrl));
+      if (mode === undefined) {
+        this.failed.set(true);
+        return;
+      }
+      this.frameUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(this.url()));
     } catch {
       if (!this.destroyRef.destroyed && generation === this.generation) this.failed.set(true);
     } finally {
       if (!this.destroyRef.destroyed && generation === this.generation) this.loading.set(false);
     }
-  }
-
-  private release(): void {
-    const objectUrl = this.objectUrl();
-    if (objectUrl !== undefined) URL.revokeObjectURL(objectUrl);
-    this.objectUrl.set(undefined);
   }
 }

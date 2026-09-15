@@ -8,6 +8,7 @@ import { Database } from '../database/database.js';
 import { makeMigratedDatabaseLayer } from '../database/database.spec-helper.js';
 import { defaultRuntimeConfig, RuntimeConfiguration } from '../runtime-config.js';
 import { Demo, DemoLive } from './service.js';
+import { CurrentOrderConfirmationEvidence } from '../orders/confirmation-evidence.js';
 
 const layer = (appEnvironment: 'development' | 'staging' | 'production' = 'staging') => {
   const database = makeMigratedDatabaseLayer({
@@ -86,6 +87,17 @@ describe('Demonstration reset', () => {
             .pluck()
             .get(),
         ).toBe('local');
+        const confirmationEvidence = Schema.decodeUnknownSync(Schema.Uint8Array)(
+          database.sqlite
+            .prepare('select evidence_content from quote_signatures order by id limit 1')
+            .pluck()
+            .get(),
+        );
+        expect(
+          Schema.decodeUnknownSync(Schema.fromJsonString(CurrentOrderConfirmationEvidence))(
+            Buffer.from(confirmationEvidence).toString('utf8'),
+          ),
+        ).toEqual({ version: 2, orderCalendar: { timeZone: 'Europe/Paris' } });
       }).pipe(Effect.provide(layer())),
     );
   });

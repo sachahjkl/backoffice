@@ -6,7 +6,6 @@ import { vi } from 'vitest';
 import { QuotesApi } from '@backoffice/quotes-api';
 import { OrdersApi } from '@backoffice/orders-api';
 import { Confirmation } from '@shared/confirmation/confirmation';
-import { DocumentPreviewLoader } from '@shared/document-preview/document-preview';
 import {
   commercialTestRoutes,
   control,
@@ -29,21 +28,18 @@ describe('Quote detail', () => {
   const get = vi.fn();
   const cancel = vi.fn();
   const confirm = vi.fn();
-  const previewLoad = vi.fn();
   beforeEach(() => {
     get.mockReset().mockResolvedValue({ success: true, result: quoteFixture });
     cancel
       .mockReset()
       .mockResolvedValue({ success: true, result: { ...quoteFixture, status: 'cancelled' } });
     confirm.mockReset().mockResolvedValue(true);
-    previewLoad.mockReset().mockResolvedValue(new Blob(['pdf']));
     TestBed.configureTestingModule({
       providers: [
         provideRouter(commercialTestRoutes),
         { provide: QuotesApi, useValue: { get, cancel } },
         { provide: OrdersApi, useValue: { list: async () => [] } },
         { provide: Confirmation, useValue: { request: confirm } },
-        { provide: DocumentPreviewLoader, useValue: { load: previewLoad } },
       ],
     });
   });
@@ -63,8 +59,9 @@ describe('Quote detail', () => {
     control<HTMLAnchorElement>(root, '#quote-document-tab').click();
     await harness.fixture.whenStable();
     expect(TestBed.inject(Router).url).toContain('/document?version=1');
-    expect(previewLoad).toHaveBeenCalledWith(`/api/quotes/${quoteId}/revisions/1/preview`);
-    expect(control<HTMLIFrameElement>(root, 'iframe').getAttribute('src')).toMatch(/^blob:/);
+    expect(control<HTMLIFrameElement>(root, 'iframe').getAttribute('src')).toBe(
+      `/api/quotes/${quoteId}/revisions/1/preview`,
+    );
   });
   it('does not offer signature link management without send permission', async () => {
     TestBed.configureTestingModule({ providers: [provideAccount(['quote.read'])] });

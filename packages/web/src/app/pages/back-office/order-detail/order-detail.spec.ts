@@ -4,7 +4,6 @@ import { provideRouter, Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { OrdersApi } from '@backoffice/orders-api';
 import { QuotesApi } from '@backoffice/quotes-api';
-import { DocumentPreviewLoader } from '@shared/document-preview/document-preview';
 import {
   commercialTestRoutes,
   control,
@@ -22,10 +21,6 @@ describe('Order detail', () => {
         {
           provide: QuotesApi,
           useValue: { get: async () => ({ success: true, result: quoteFixture }) },
-        },
-        {
-          provide: DocumentPreviewLoader,
-          useValue: { load: vi.fn().mockResolvedValue(new Blob(['pdf'])) },
         },
       ],
     }),
@@ -109,7 +104,9 @@ describe('Order detail', () => {
       sort: 'updated-asc',
       version: '2',
     });
-    expect(root.querySelector('iframe')?.getAttribute('src')).toMatch(/^blob:/);
+    expect(root.querySelector('iframe')?.getAttribute('src')).toBe(
+      `/api/quotes/${quoteFixture.id}/revisions/2/preview`,
+    );
   });
   it('does not substitute another revision when the accepted revision is missing', async () => {
     TestBed.overrideProvider(QuotesApi, {

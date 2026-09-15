@@ -1,14 +1,13 @@
 import { TestBed } from '@angular/core/testing';
+import { Authentication } from '@backoffice/authentication';
 import { vi } from 'vitest';
-import { DocumentPreview, DocumentPreviewLoader } from './document-preview';
+import { DocumentPreview } from './document-preview';
 
 describe('DocumentPreview', () => {
-  it('loads an authenticated PDF into a disposable object URL', async () => {
-    const load = vi.fn().mockResolvedValue(new Blob(['pdf'], { type: 'application/pdf' }));
-    const createObjectUrl = vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:preview');
-    const revokeObjectUrl = vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => undefined);
+  it('refreshes the session before it loads the protected PDF URL', async () => {
+    const refreshSession = vi.fn().mockResolvedValue('administrator');
     TestBed.configureTestingModule({
-      providers: [{ provide: DocumentPreviewLoader, useValue: { load } }],
+      providers: [{ provide: Authentication, useValue: { refreshSession } }],
     });
     const fixture = TestBed.createComponent(DocumentPreview);
     fixture.componentRef.setInput('url', '/api/documents/preview');
@@ -18,11 +17,8 @@ describe('DocumentPreview', () => {
     fixture.componentRef.setInput('openLabel', 'Open preview');
     await fixture.whenStable();
     const root: HTMLElement = fixture.nativeElement;
-    expect(load).toHaveBeenCalledExactlyOnceWith('/api/documents/preview');
-    expect(createObjectUrl).toHaveBeenCalledOnce();
-    expect(root.querySelector('iframe')?.getAttribute('src')).toBe('blob:preview');
-    expect(root.querySelector('a')?.getAttribute('href')).toBe('blob:preview');
-    fixture.destroy();
-    expect(revokeObjectUrl).toHaveBeenCalledExactlyOnceWith('blob:preview');
+    expect(refreshSession).toHaveBeenCalledOnce();
+    expect(root.querySelector('iframe')?.getAttribute('src')).toBe('/api/documents/preview');
+    expect(root.querySelector('a')?.getAttribute('href')).toBe('/api/documents/preview');
   });
 });

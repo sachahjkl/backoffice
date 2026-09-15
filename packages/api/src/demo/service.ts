@@ -457,7 +457,12 @@ const make = Effect.gen(function* () {
                   );
               }
 
-              const evidenceContent = Buffer.from('{}');
+              const evidenceContent = Buffer.from(
+                JSON.stringify({
+                  version: 2,
+                  orderCalendar: { timeZone: 'Europe/Paris' },
+                }),
+              );
               const evidenceSha256 = createHash('sha256').update(evidenceContent).digest('hex');
               const debtInvoices: Array<{ invoiceId: UlidValue; clientId: UlidValue }> = [];
               const targetInvoices = new Map<string, UlidValue>();
