@@ -10,9 +10,9 @@
     [current]="mode() === 'list' ? text().list : mode() === 'editor' ? text().editor : text().detail"
   />
 
-  <p class="feedback" role="status">@if (notice(); as message) { {{ text()[message] }} }</p>
-
-  @switch (mode()) { @case ('list') {
+  @if (notice(); as message) {
+  <p class="feedback" role="status">{{ text()[message] }}</p>
+  } @switch (mode()) { @case ('list') {
   <header class="view-header">
     <h2 #viewHeading tabindex="-1">{{ text().list }}</h2>
     <app-split-action

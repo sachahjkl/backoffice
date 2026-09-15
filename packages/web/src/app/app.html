@@ -34,7 +34,7 @@
       <p role="alert">{{ i18n.t('shell.loadError') }}</p>
       <button appButton type="button" (click)="reload()">{{ i18n.t('shell.reload') }}</button>
     </div>
-    }
+    } @defer (when backOffice()) { <app-flash-outlet /> }
     <router-outlet />
   </main>
   @if (publicPage()) { <app-site-footer /> }

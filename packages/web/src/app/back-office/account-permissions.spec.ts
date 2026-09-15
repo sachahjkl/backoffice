@@ -12,6 +12,7 @@ const administrator = {
   mode: 'administrator',
   permissions: ['client.read', 'client.create'],
   enabledModules: ['sales', 'purchasing', 'banking', 'accounting', 'tax', 'ai', 'demonstration'],
+  preferences: { theme: 'light', language: 'fr', flashMode: 'inline' },
 };
 const accountant = {
   ...administrator,
@@ -46,6 +47,22 @@ describe('effective account permissions', () => {
     expect(auth.can('client.create')).toBe(false);
     await auth.currentAccount();
     http.expectNone('/api/auth/account');
+    http.verify();
+  });
+
+  it('stores preferences on the account and updates the cached value', async () => {
+    const { auth, http } = setup();
+    const account = auth.currentAccount();
+    http.expectOne('/api/auth/account').flush(administrator);
+    await account;
+    const preferences = { theme: 'dark', language: 'en', flashMode: 'snack' } as const;
+    const update = auth.updatePreferences(preferences);
+    const request = http.expectOne('/api/auth/preferences');
+    expect(request.request.method).toBe('PUT');
+    expect(request.request.body).toEqual(preferences);
+    request.flush(preferences);
+    await expect(update).resolves.toBe(true);
+    expect(auth.account()?.preferences).toEqual(preferences);
     http.verify();
   });
 

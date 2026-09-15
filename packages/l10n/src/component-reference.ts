@@ -105,6 +105,12 @@ function storyProperties(description: StoryDescriptions) {
       ['variant', 'NoticeVariant', 'info'],
       ['role', `string | null · ${description.ariaAttribute}`, 'null'],
     ],
+    flash: [
+      ['Flash.show', '(text: string, variant?: FlashVariant) => string', 'info'],
+      ['Flash.dismiss', '(id: string) => void', '—'],
+      ['FlashVariant', "'info' | 'success' | 'warning' | 'danger'", '—'],
+      ['FlashMode', "'inline' | 'toast' | 'snack'", 'inline'],
+    ],
     'empty-state': [
       ['title', 'string', 'required'],
       ['icon', 'IconName', 'folder'],
@@ -455,6 +461,8 @@ const frenchStories = /* @__PURE__ */ storyDefinitions(
     'anchor-link': '<h2 id="example">Exemple <app-anchor-link fragment="example" /></h2>',
     badge: '<span appBadge variant="success">Prêt</span>',
     notice: '<p appNotice variant="warning" role="status">Vérifiez l’exemple local.</p>',
+    flash:
+      "flash = inject(Flash);\n\nthis.flash.show('Modification enregistrée.', 'success');\n<!-- Le shell contient déjà <app-flash-outlet />. -->",
     'empty-state':
       '<app-empty-state title="Aucun exemple"><button appButton type="button" (click)="reset()">Réinitialiser</button></app-empty-state>',
     hint: '<ng-template #details><strong>Exemple formaté</strong></ng-template>\n<app-hint #hint [content]="details"><button appButton type="button" [attr.aria-describedby]="hint.id">Aide</button></app-hint>',
@@ -586,6 +594,8 @@ const englishStories = /* @__PURE__ */ storyDefinitions(
     'anchor-link': '<h2 id="example">Example <app-anchor-link fragment="example" /></h2>',
     badge: '<span appBadge variant="success">Ready</span>',
     notice: '<p appNotice variant="warning" role="status">Check the local example.</p>',
+    flash:
+      "flash = inject(Flash);\n\nthis.flash.show('Changes saved.', 'success');\n<!-- The shell already contains <app-flash-outlet />. -->",
     'empty-state':
       '<app-empty-state title="No examples"><button appButton type="button" (click)="reset()">Reset</button></app-empty-state>',
     hint: '<ng-template #details><strong>Formatted example</strong></ng-template>\n<app-hint #hint [content]="details"><button appButton type="button" [attr.aria-describedby]="hint.id">Help</button></app-hint>',

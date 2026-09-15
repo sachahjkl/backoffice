@@ -15,6 +15,7 @@ import {
   SepaMaximumIdentifierLength,
   SupplierPaymentBatchMaximumAmountCents,
   SupplierPaymentBatchMaximumInvoiceCount,
+  type UserPreferencesValue,
 } from '@froment/contracts';
 
 export const users = sqliteTable(
@@ -26,6 +27,10 @@ export const users = sqliteTable(
     createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
     updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),
     disabledAt: integer('disabled_at', { mode: 'timestamp_ms' }),
+    preferences: text({ mode: 'json' })
+      .$type<UserPreferencesValue>()
+      .notNull()
+      .default({ theme: 'light', language: 'fr', flashMode: 'inline' }),
   },
   (table) => [
     check(

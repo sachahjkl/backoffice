@@ -33,9 +33,11 @@
   <p>{{ i18n.t(webhookLabel(state)) }}</p>
   } @if (completed()) {
   <p appNotice variant="success">{{ i18n.t('configurationWorkspace.testComplete') }}</p>
+  @if (current(); as item) {
   <p #progress role="status" tabindex="-1">
-    @if (current(); as item) { {{ item.invoiceNumber }} — {{ i18n.t(statusLabel(item.status)) }} }
+    {{ item.invoiceNumber }} — {{ i18n.t(statusLabel(item.status)) }}
   </p>
+  }
   <a
     appLinkButton
     variant="primary"

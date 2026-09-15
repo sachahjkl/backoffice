@@ -13,6 +13,7 @@ export const accountFixture = (permissions: readonly PermissionCodeValue[] = Per
     mode: 'administrator',
     permissions,
     enabledModules: ['sales', 'purchasing', 'banking', 'accounting', 'tax', 'ai', 'demonstration'],
+    preferences: { theme: 'light', language: 'fr', flashMode: 'inline' },
   });
   const authentication = {
     account: account.asReadonly(),

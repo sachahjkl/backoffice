@@ -30,9 +30,9 @@
   <p appNotice variant="danger" role="alert">{{ i18n.t(code) }}</p>
   } @if (completed()) {
   <p appNotice variant="success">{{ i18n.t('configurationWorkspace.testComplete') }}</p>
-  <p #progress role="status" tabindex="-1">
-    @if (current(); as item) { {{ i18n.t(statusLabel(item.status)) }} }
-  </p>
+  @if (current(); as item) {
+  <p #progress role="status" tabindex="-1">{{ i18n.t(statusLabel(item.status)) }}</p>
+  }
   <a
     appLinkButton
     variant="primary"

@@ -45,4 +45,6 @@
     }
   </div>
 </ng-template>
-<p class="empty" role="status">{{ matches().length === 0 ? emptyLabel() : '' }}</p>
+@if (matches().length === 0) {
+<p class="empty" role="status">{{ emptyLabel() }}</p>
+}

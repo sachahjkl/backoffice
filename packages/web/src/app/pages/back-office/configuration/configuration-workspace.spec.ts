@@ -91,6 +91,7 @@ describe('ConfigurationIndex', () => {
     const fixture = TestBed.createComponent(ConfigurationIndex);
     await fixture.whenStable();
     const root: HTMLElement = fixture.nativeElement;
+    expect(root.querySelector('a[href="/backoffice/account/preferences"]')).not.toBeNull();
     expect(root.querySelector('a[href$="business-card"]')).not.toBeNull();
     expect(root.querySelector('a[href$="company"]')).not.toBeNull();
     expect(root.querySelector('a[href$="supplier-invoice-analysis"]')).not.toBeNull();

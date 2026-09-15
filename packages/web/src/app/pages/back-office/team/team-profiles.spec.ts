@@ -201,7 +201,6 @@ describe('team profile drafts', () => {
       [secondId]: 'collaborator',
     });
     expect(member(firstId).version).toBe(1);
-    expect(component['saved']()).toBe(false);
     expect(component['busy']()).toBe(false);
   });
 });

@@ -7,10 +7,8 @@ import {
   Component,
   computed,
   DestroyRef,
-  ElementRef,
   inject,
   signal,
-  viewChild,
 } from '@angular/core';
 import { disabled, form, FormField } from '@angular/forms/signals';
 import { RouterLink } from '@angular/router';
@@ -20,7 +18,7 @@ import { TeamList, TeamMember, TeamProfile } from '@froment/contracts';
 import { Option, Schema } from 'effect';
 import { TeamApi } from '@backoffice/team-api';
 import { I18nService, type TranslationKey } from '@app/i18n.service';
-import { Button } from '@shared/button/button';
+import { Button, type ButtonVariant } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
 import { Confirmation } from '@shared/confirmation/confirmation';
@@ -38,6 +36,7 @@ import { createWorkspaceTable } from '../configuration/workspace-table';
 import { memberTableOptions, invitationTableOptions } from '../configuration/workspace-tables';
 import { TeamNavigation } from './team-navigation';
 import { teamErrorMessage, type TeamOperation } from './team-error-message';
+import { Flash } from '@shared/flash/flash';
 
 @Component({
   imports: [
@@ -75,6 +74,10 @@ export class Team {
     return member.disabledAt === null ? 'success' : 'default';
   }
 
+  protected memberAccessVariant(member: typeof TeamMember.Type): ButtonVariant {
+    return member.disabledAt === null ? 'danger' : 'success';
+  }
+
   protected invitationIconVariant(
     invitation: (typeof TeamList.Type)['invitations'][number],
   ): EntityIconVariant {
@@ -89,7 +92,7 @@ export class Team {
   private readonly api = inject(TeamApi);
   private readonly confirmation = inject(Confirmation);
   private readonly destroyRef = inject(DestroyRef);
-  private readonly result = viewChild<ElementRef<HTMLElement>>('result');
+  private readonly flash = inject(Flash);
   protected readonly data = signal<typeof TeamList.Type>({
     members: [],
     invitations: [],
@@ -141,7 +144,6 @@ export class Team {
   protected readonly errorMessage = computed(() =>
     teamErrorMessage(this.error(), this.errorOperation()),
   );
-  protected readonly saved = signal(false);
   protected readonly now = signal(Date.now());
   private readonly profiles = signal<Record<string, string>>({});
   protected readonly hasUnsavedChanges = computed(() =>
@@ -196,7 +198,6 @@ export class Team {
       )
         return;
       if (this.destroyRef.destroyed) return;
-      this.saved.set(false);
       await this.load();
     } catch {
       if (!this.destroyRef.destroyed) {
@@ -213,7 +214,6 @@ export class Team {
     try {
       if (!(await this.confirmation.request(this.i18n.t('team.confirmCancel')))) return;
       if (this.destroyRef.destroyed) return;
-      this.saved.set(false);
       const outcome = await this.api.cancel(id);
       if (this.destroyRef.destroyed) return;
       if (!outcome.success) {
@@ -224,8 +224,7 @@ export class Team {
       const data = await this.readTeam();
       if (!data) return;
       this.data.update((current) => ({ ...current, invitations: data.invitations }));
-      this.saved.set(true);
-      this.result()?.nativeElement.focus();
+      this.showSaved();
     } catch {
       if (!this.destroyRef.destroyed) {
         this.errorOperation.set('cancel');
@@ -246,7 +245,6 @@ export class Team {
     try {
       if (!(await this.confirmation.request(this.i18n.t('team.confirmUpdate')))) return;
       if (this.destroyRef.destroyed) return;
-      this.saved.set(false);
       const outcome = await this.api.update(member.id, {
         expectedVersion: member.version,
         profile,
@@ -271,8 +269,7 @@ export class Team {
         members: current.members.map((item) => (item.id === member.id ? updated : item)),
       }));
       if (submittedProfile) this.profileForm[member.id]().reset(updated.profile);
-      this.saved.set(true);
-      this.result()?.nativeElement.focus();
+      this.showSaved();
     } catch {
       if (!this.destroyRef.destroyed) {
         this.errorOperation.set('update');
@@ -286,6 +283,10 @@ export class Team {
     const profile = Schema.decodeUnknownOption(TeamProfile)(this.profiles()[member.id]);
     if (Option.isSome(profile))
       await this.update(member, profile.value, member.disabledAt !== null);
+  }
+
+  private showSaved(): void {
+    this.flash.show(this.i18n.t('team.saved'), 'success');
   }
   protected profileLabel(profile: typeof TeamProfile.Type): string {
     if (profile === 'accountant') return this.i18n.t('team.accountant');

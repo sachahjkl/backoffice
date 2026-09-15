@@ -35,7 +35,7 @@ export const designRoutes: Routes = [
     'copy-field',
     'anchor-link',
   ].map((path) => ({ path, loadComponent: action })),
-  ...['badge', 'notice', 'empty-state', 'hint', 'status-block', 'icon', 'entity-icon'].map(
+  ...['badge', 'notice', 'flash', 'empty-state', 'hint', 'status-block', 'icon', 'entity-icon'].map(
     (path) => ({
       path,
       loadComponent: feedback,

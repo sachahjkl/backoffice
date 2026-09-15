@@ -484,7 +484,10 @@ export const translations = {
     'backOffice.apiTokens.cancel': 'Annuler',
     'backOffice.apiTokens.loading': 'Chargement des jetons…',
     'backOffice.apiTokens.loadMore': 'Charger plus de jetons',
-    'backOffice.apiTokens.empty': 'Aucun jeton d’API.',
+    'backOffice.apiTokens.empty': 'Aucun jeton d’API',
+    'backOffice.apiTokens.emptyIntro':
+      'Créez un jeton pour connecter un logiciel externe avec des permissions limitées.',
+    'flash.messages': 'Messages de l’application',
     'backOffice.apiTokens.name': 'Nom',
     'backOffice.apiTokens.permissions': 'Permissions',
     'backOffice.apiTokens.permissionSearch': 'Rechercher une permission',
@@ -2044,7 +2047,10 @@ export const translations = {
     'backOffice.apiTokens.cancel': 'Cancel',
     'backOffice.apiTokens.loading': 'Loading tokens…',
     'backOffice.apiTokens.loadMore': 'Load more tokens',
-    'backOffice.apiTokens.empty': 'No API tokens.',
+    'backOffice.apiTokens.empty': 'No API tokens',
+    'backOffice.apiTokens.emptyIntro':
+      'Create a token to connect external software with limited permissions.',
+    'flash.messages': 'Application messages',
     'backOffice.apiTokens.name': 'Name',
     'backOffice.apiTokens.permissions': 'Permissions',
     'backOffice.apiTokens.permissionSearch': 'Search permissions',

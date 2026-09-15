@@ -2,6 +2,13 @@
   <h1 id="configuration-title">{{ i18n.t('backOffice.configuration.title') }}</h1>
   <div class="groups">
     <section class="ds-panel">
+      <h2>{{ i18n.t('configurationWorkspace.account') }}</h2>
+      <p>{{ i18n.t('configurationWorkspace.accountHint') }}</p>
+      <a routerLink="/backoffice/account/preferences">
+        {{ i18n.t('configurationWorkspace.preferences') }}
+      </a>
+    </section>
+    <section class="ds-panel">
       <h2>{{ i18n.t('configurationWorkspace.company') }}</h2>
       <p>{{ i18n.t('configurationWorkspace.companyHint') }}</p>
       <a *appCan="'issuer.read'" routerLink="issuer"

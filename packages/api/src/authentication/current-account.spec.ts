@@ -6,6 +6,7 @@ import {
   ApiTelemetry,
   CurrentAccount,
   type ApiCredentialsValue,
+  type UserPreferencesValue,
 } from '@froment/contracts';
 import { Effect, Layer, Schema } from 'effect';
 import { HttpRouter, HttpServer } from 'effect/unstable/http';
@@ -15,7 +16,7 @@ import { AuthenticationApi } from '../../../contracts/src/authentication/api.js'
 import { RuntimeConfigurationDefaults } from '../runtime-config.js';
 import { RequestLimiter } from '../server/request-limiter.js';
 import { Company } from '../company/service.js';
-import { Authentication } from './authentication.js';
+import { Authentication, type Principal } from './authentication.js';
 import { AuthenticationConfig } from './authentication-config.js';
 import { AuthenticationHandlers } from './handlers.js';
 
@@ -25,13 +26,24 @@ const account = {
   mode: 'administrator' as const,
   permissions: ['client.read', 'invoice.read'] as const,
   enabledModules: ['sales', 'accounting'] as const,
+  preferences: { theme: 'light', language: 'fr', flashMode: 'inline' } as const,
 };
 
-const requestAccount = async (credentials: ApiCredentialsValue) => {
+const requestAccount = async (
+  credentials: ApiCredentialsValue,
+  options: { readonly method?: string; readonly body?: unknown } = {},
+) => {
   const authenticate = vi.fn(() => Effect.succeed({ ...account, sessionId: 'private-session' }));
+  const updatePreferences = vi.fn((_principal: Principal, preferences: UserPreferencesValue) =>
+    Effect.succeed(preferences),
+  );
   const api = HttpApi.make('froment-api').add(AuthenticationApi).middleware(ApiTelemetry);
   const services = Layer.mergeAll(
-    Layer.mock(Authentication, { authenticate }),
+    Layer.mock(Authentication, {
+      authenticate,
+      preferences: () => Effect.succeed(account.preferences),
+      updatePreferences,
+    }),
     Layer.succeed(AuthenticationConfig, {
       bootstrapPasswordHash: {
         cost: 16384,
@@ -98,11 +110,22 @@ const requestAccount = async (credentials: ApiCredentialsValue) => {
       Effect.gen(function* () {
         const context = yield* Layer.build(services);
         return yield* Effect.promise(() =>
-          server.handler(new Request('http://localhost/api/auth/account'), context),
+          server.handler(
+            new Request(
+              `http://localhost/api/auth/${options.method === 'PUT' ? 'preferences' : 'account'}`,
+              {
+                method: options.method,
+                headers:
+                  options.body === undefined ? undefined : { 'content-type': 'application/json' },
+                body: options.body === undefined ? undefined : JSON.stringify(options.body),
+              },
+            ),
+            context,
+          ),
         );
       }).pipe(Effect.scoped),
     );
-    return { response, authenticate };
+    return { response, authenticate, updatePreferences };
   } finally {
     await server.dispose();
   }
@@ -127,5 +150,19 @@ describe('current account HTTP boundary', () => {
     });
     expect(response.status).toBe(401);
     expect(authenticate).not.toHaveBeenCalled();
+  });
+
+  it('updates the authenticated user preferences', async () => {
+    const preferences = { theme: 'dark', language: 'en', flashMode: 'snack' } as const;
+    const { response, updatePreferences } = await requestAccount(
+      { kind: 'access-token', token: 'test-token' },
+      { method: 'PUT', body: preferences },
+    );
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual(preferences);
+    expect(updatePreferences).toHaveBeenCalledWith(
+      expect.objectContaining({ userId: account.userId }),
+      preferences,
+    );
   });
 });

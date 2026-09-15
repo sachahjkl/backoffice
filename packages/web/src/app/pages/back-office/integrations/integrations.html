@@ -16,10 +16,9 @@
   </app-page-header>
   <p appNotice variant="info">{{ i18n.t('integrations.info') }}</p>
   <p appNotice variant="info">{{ i18n.t('integrationRetry.info') }}</p>
-  <p #result tabindex="-1" role="status">
-    @if (completed()) { {{ i18n.t('integrations.completed') }} }
-  </p>
-  @if (error()) {
+  @if (completed()) {
+  <p #result tabindex="-1" role="status">{{ i18n.t('integrations.completed') }}</p>
+  } @if (error()) {
   <p appNotice variant="danger" role="alert">{{ i18n.t('integrations.error') }}</p>
   } @if (loading()) {
   <p role="status">{{ i18n.t('integrations.loading') }}</p>

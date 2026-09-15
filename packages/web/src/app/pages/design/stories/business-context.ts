@@ -80,6 +80,7 @@ export class BusinessContext {
         'ai',
         'demonstration',
       ],
+      preferences: { theme: 'light', language: 'fr', flashMode: 'inline' },
     };
   }
 

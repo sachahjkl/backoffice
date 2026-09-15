@@ -1,3 +1,3 @@
-<div class="copy-notice" [class.visible]="anchorCopy.message()" role="status" aria-live="polite">
-  {{ anchorCopy.message() }}
-</div>
+@if (anchorCopy.message(); as message) {
+<div class="copy-notice visible" role="status" aria-live="polite">{{ message }}</div>
+}

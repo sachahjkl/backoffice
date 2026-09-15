@@ -6,12 +6,11 @@
     <h1 id="match-title">{{ i18n.t(titleLabel()) }}</h1>
     <p>{{ i18n.t('bank.noTransfer') }}</p>
   </app-page-header>
+  @if (saved()) {
   <div #result tabindex="-1" role="status">
-    @if (saved()) {
     <p appNotice variant="success">{{ i18n.t('bank.saved') }}</p>
-    }
   </div>
-  @if (error(); as error) {
+  } @if (error(); as error) {
   <p appNotice variant="danger" role="alert">{{ i18n.t(error) }}</p>
   @if (state() === 'ready' && !pendingMatch() && !pendingCancellation()) {
   <div>

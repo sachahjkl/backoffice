@@ -22,6 +22,7 @@ import { Badge, type BadgeVariant } from '@shared/badge/badge';
 import { Button } from '@shared/button/button';
 import { DataTable } from '@shared/data-table/data-table';
 import { EntityIcon } from '@shared/entity-icon/entity-icon';
+import { EmptyState } from '@shared/empty-state/empty-state';
 import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
@@ -46,6 +47,7 @@ import { apiTokenErrorMessage, type ApiTokenOperation } from './api-token-error-
     Button,
     DataTable,
     EntityIcon,
+    EmptyState,
     LocalizedDatePipe,
     Notice,
     PageHeader,

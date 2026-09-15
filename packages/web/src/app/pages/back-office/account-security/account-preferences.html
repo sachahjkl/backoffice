@@ -12,6 +12,14 @@
       </select>
     </label>
     <label class="field">
+      {{ i18n.t('adminPages.flashMode') }}
+      <select appFilterSelect class="select" [formField]="preferencesForm.flashMode">
+        <option [value]="'inline'">{{ i18n.t('adminPages.flashInline') }}</option>
+        <option [value]="'toast'">{{ i18n.t('adminPages.flashToast') }}</option>
+        <option [value]="'snack'">{{ i18n.t('adminPages.flashSnack') }}</option>
+      </select>
+    </label>
+    <label class="field">
       {{ i18n.t('configurationWorkspace.language') }}
       <select appFilterSelect class="select" [formField]="preferencesForm.language">
         <option [value]="'fr'" lang="fr">{{ i18n.t('lang.fr') }}</option>
@@ -26,8 +34,5 @@
         {{ i18n.t('adminPages.applyPreferences') }}
       </button>
     </div>
-    <p role="status">
-      @if (applied() && !hasChanges()) { {{ i18n.t('adminPages.preferencesApplied') }} }
-    </p>
   </form>
 </section>

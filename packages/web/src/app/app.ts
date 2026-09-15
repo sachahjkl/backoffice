@@ -30,6 +30,7 @@ import { BackOfficeHeader } from './shared/back-office-header/back-office-header
 import { BackOfficeHeaderPlaceholder } from './shared/back-office-header/back-office-header-placeholder';
 import { Button } from './shared/button/button';
 import { EnvironmentStatus } from './shared/environment-status/environment-status';
+import { FlashOutlet } from './shared/flash/flash-outlet';
 
 @Component({
   selector: 'app-root',
@@ -40,6 +41,7 @@ import { EnvironmentStatus } from './shared/environment-status/environment-statu
     Button,
     CopyNotice,
     EnvironmentStatus,
+    FlashOutlet,
     RouterOutlet,
     SiteFooter,
     SiteHeader,

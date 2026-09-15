@@ -90,6 +90,14 @@ export const referenceCatalog: readonly ReferenceEntry[] = [
     variants: 4,
   },
   {
+    id: 'flash',
+    name: 'Flash',
+    group: 'feedback',
+    selectors: 'app-flash-outlet',
+    source: 'flash/flash.ts',
+    variants: 3,
+  },
+  {
     id: 'empty-state',
     name: 'EmptyState',
     group: 'feedback',

@@ -43,10 +43,13 @@
         [attr.aria-controls]="id + '-results'"
       />
     </label>
+    @if (state() === 'loading') {
+    <p class="status" role="status">{{ i18n.t('backOffice.search.loading') }}</p>
+    } @else if (state() === 'ready') {
     <p class="status" role="status">
-      @if (state() === 'loading') { {{ i18n.t('backOffice.search.loading') }} } @else if (state()
-      === 'ready') { {{ i18n.plural('globalSearch.count', { count: displayedCount() }) }} }
+      {{ i18n.plural('globalSearch.count', { count: displayedCount() }) }}
     </p>
+    }
     <div #resultList [id]="id + '-results'" class="results">
       @switch (state()) { @case ('error') {
       <p role="alert">{{ i18n.t('backOffice.search.error') }}</p>

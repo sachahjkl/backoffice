@@ -27,7 +27,6 @@
     </div>
   </app-page-header>
   <p appNotice variant="info">{{ i18n.t('team.profiles') }}</p>
-  <p #result tabindex="-1" role="status">@if (saved()) { {{ i18n.t('team.saved') }} }</p>
   @if (errorMessage(); as code) {
   <p appNotice variant="danger" role="alert">{{ i18n.t(code) }}</p>
   }
@@ -172,6 +171,7 @@
                 <button
                   appButton
                   type="button"
+                  [variant]="memberAccessVariant(member)"
                   [disabled]="busy() || loading()"
                   (click)="update(member, member.profile, member.disabledAt === null)"
                   *appCan="'user.update'"
@@ -189,12 +189,14 @@
         </tbody>
       </table>
     </div>
+    @if (!loading()) {
     <footer class="list-summary spacer-y-2">
       <p role="status">
-        @if (!loading()) { {{ i18n.plural('adminPages.membersCount', { count:
-        members.results().length, total: data().members.length }) }} }
+        {{ i18n.plural('adminPages.membersCount', { count: members.results().length, total:
+        data().members.length }) }}
       </p>
     </footer>
+    }
   </section>
   <section appListWorkspace aria-labelledby="invitations-title">
     <h2 id="invitations-title">{{ i18n.t('team.invitations') }}</h2>
@@ -348,11 +350,13 @@
         </tbody>
       </table>
     </div>
+    @if (!loading()) {
     <footer class="list-summary spacer-y-2">
       <p role="status">
-        @if (!loading()) { {{ i18n.plural('adminPages.invitationsCount', { count:
-        invitations.results().length, total: data().invitations.length }) }} }
+        {{ i18n.plural('adminPages.invitationsCount', { count: invitations.results().length, total:
+        data().invitations.length }) }}
       </p>
     </footer>
+    }
   </section>
 </section>

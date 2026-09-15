@@ -1,15 +1,12 @@
 import { FilterSelect } from '@shared/filter-select/filter-select';
 import { Can } from '@backoffice/can';
 import {
-  afterRenderEffect,
   afterNextRender,
   ChangeDetectionStrategy,
   Component,
   computed,
-  ElementRef,
   inject,
   signal,
-  viewChild,
 } from '@angular/core';
 import {
   disabled,
@@ -31,6 +28,7 @@ import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
 import { TeamNavigation } from './team-navigation';
 import { teamErrorMessage } from './team-error-message';
+import { Flash } from '@shared/flash/flash';
 
 const rejectedBeforeCreation = (code: TranslationKey): boolean =>
   code === 'team.email_exists' ||
@@ -51,12 +49,11 @@ export class TeamInvitation {
   protected readonly navigation = inject(TeamNavigation);
   private readonly api = inject(TeamApi);
   private readonly confirmation = inject(Confirmation);
-  private readonly result = viewChild<ElementRef<HTMLElement>>('result');
+  private readonly flash = inject(Flash);
   protected readonly busy = signal(false);
   protected readonly error = signal<TranslationKey | undefined>(undefined);
   protected readonly errorMessage = computed(() => teamErrorMessage(this.error(), 'invite'));
   protected readonly link = signal('');
-  protected readonly saved = signal(false);
   protected readonly pending = signal<typeof TeamInvite.Type | undefined>(undefined);
   protected readonly roles = signal<ReadonlyArray<CustomRole>>([]);
   protected readonly submitLabel = computed(() =>
@@ -78,9 +75,6 @@ export class TeamInvitation {
 
   constructor() {
     afterNextRender(() => void this.loadRoles());
-    afterRenderEffect(() => {
-      if (this.saved()) this.result()?.nativeElement.focus();
-    });
   }
 
   protected profileLabel(profile: typeof TeamProfile.Type): string {
@@ -112,7 +106,6 @@ export class TeamInvitation {
       request = decoded.value;
     }
     this.busy.set(true);
-    this.saved.set(false);
     this.error.set(undefined);
     try {
       if (
@@ -136,12 +129,16 @@ export class TeamInvitation {
       this.link.set(outcome.result.url);
       this.pending.set(undefined);
       this.invitationForm().reset({ displayName: '', email: '', profile: '' });
-      this.saved.set(true);
+      this.showSaved();
     } catch {
       this.error.set('team.error');
     } finally {
       this.busy.set(false);
     }
+  }
+
+  private showSaved(): void {
+    this.flash.show(this.i18n.t('team.saved'), 'success');
   }
 
   protected dismissLink(): void {

@@ -15,11 +15,9 @@
       </button>
       <a routerLink="/">{{ text().back }}</a>
     </header>
-    <p class="loading" role="status">
-      @if (loading()) {
-        {{ text().loading }}
-      }
-    </p>
+    @if (loading()) {
+      <p class="loading" role="status">{{ text().loading }}</p>
+    }
     @if (failedUrl()) {
       <div class="load-error" role="alert">
         <p>{{ text().failed }}</p>

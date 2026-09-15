@@ -22,6 +22,8 @@ import {
   AccountSessionFailure,
   type PasswordChangeRequestValue,
   type PermissionCodeValue,
+  UserPreferences,
+  type UserPreferencesValue,
 } from '@froment/contracts';
 import { Schema } from 'effect';
 import { firstValueFrom } from 'rxjs';
@@ -30,6 +32,8 @@ import { decodeApiFailure, requestOutcome, type ApiFailure } from '@shared/api-o
 import { BrowserSessionStore } from './browser-session-store';
 import { AuthCookieLock } from './auth-cookie-lock';
 import type { AuthenticationResponseJSON } from '@simplewebauthn/browser';
+import { I18nService } from '@app/i18n.service';
+import { Theme } from '@app/theme';
 
 export type AuthenticationOutcome =
   | { readonly success: true; readonly mode: LoginModeValue }
@@ -47,6 +51,8 @@ export class Authentication {
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly sessions = inject(BrowserSessionStore);
   private readonly cookieLock = inject(AuthCookieLock);
+  private readonly i18n = inject(I18nService);
+  private readonly theme = inject(Theme);
   private readonly accountObserved = signal(false);
   private readonly accountRefresh = signal(0);
   private readonly accountKey = computed<AccountKey>(() => ({
@@ -171,6 +177,8 @@ export class Authentication {
           return undefined;
         }
         this.accountCache.set({ key, value });
+        this.theme.set(value.preferences.theme);
+        this.i18n.setLanguage(value.preferences.language);
         return value;
       }
       return undefined;
@@ -179,6 +187,26 @@ export class Authentication {
     } finally {
       if (this.sessions.identity() === identity) this.settledAccountKey = this.accountKey();
       if (this.accountRequest?.identity === identity) this.accountRequest = undefined;
+    }
+  }
+
+  async updatePreferences(preferences: UserPreferencesValue): Promise<boolean> {
+    const account = this.account();
+    if (account === undefined) return false;
+    try {
+      const response = await firstValueFrom(
+        this.http.put<unknown>('/api/auth/preferences', preferences),
+      );
+      const saved = Schema.decodeUnknownSync(UserPreferences)(response);
+      const cached = this.accountCache();
+      if (cached !== undefined) {
+        this.accountCache.set({ ...cached, value: { ...cached.value, preferences: saved } });
+      }
+      this.theme.set(saved.theme);
+      this.i18n.setLanguage(saved.language);
+      return true;
+    } catch {
+      return false;
     }
   }
 

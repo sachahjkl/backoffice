@@ -633,6 +633,25 @@ describe('API token pages', () => {
     expect(root.querySelector('form')).toBeNull();
   });
 
+  it('uses the shared empty state with a token creation action', async () => {
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: ApiTokensApi,
+          useValue: { list: async () => ({ items: [], nextCursor: null }) },
+        },
+      ],
+    });
+    const fixture = TestBed.createComponent(ApiTokens);
+    await fixture.whenStable();
+    const emptyState: HTMLElement | null = fixture.nativeElement.querySelector('app-empty-state');
+    expect(emptyState?.textContent).toMatch(/Aucun jeton d’API|No API tokens/);
+    expect(emptyState?.querySelector('app-icon')).not.toBeNull();
+    expect(emptyState?.querySelector('a[href="/new"]')?.textContent).toMatch(
+      /Créer un jeton|Create token/,
+    );
+  });
+
   it('merges list pages without duplicate tokens', async () => {
     const next = { ...token, id: '01ARZ3NDEKTSV4RRFFQ69G5FAW', name: 'Next token' };
     const list = vi

@@ -25,6 +25,7 @@ const accountResponse = (permissions: readonly PermissionCodeValue[]) => ({
   mode: 'administrator',
   permissions,
   enabledModules: ['sales', 'purchasing', 'banking', 'accounting', 'tax', 'ai', 'demonstration'],
+  preferences: { theme: 'light', language: 'fr', flashMode: 'inline' },
 });
 
 @Component({ template: '' })

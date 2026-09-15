@@ -30,6 +30,7 @@ describe('Notice', () => {
     expect(dismiss.getAttribute('aria-label')).toMatch(/Fermer|Dismiss/);
     dismiss.click();
     await fixture.whenStable();
-    expect(notice.hidden).toBe(true);
+    expect(notice.isConnected).toBe(false);
+    expect(root.querySelector('.notice.success')).toBeNull();
   });
 });

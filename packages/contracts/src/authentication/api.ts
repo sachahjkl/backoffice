@@ -8,6 +8,7 @@ import {
   AuthenticationRateLimited,
   AuthenticationRejected,
   CurrentAccount,
+  UserPreferences,
   LoginRequest,
   RequestRateLimited,
   SessionRejected,
@@ -70,6 +71,15 @@ export class AuthenticationApi extends HttpApiGroup.make('authentication', { top
     success: CurrentAccount,
     error: AuthenticationRequired.pipe(HttpApiSchema.status(401)),
   })
+    .middleware(ApiAuthentication)
+    .pipe(frontendSpecific),
+  HttpApiEndpoint.put('updatePreferences', '/api/auth/preferences', {
+    payload: UserPreferences,
+    success: UserPreferences,
+    error: [AuthenticationRequired, RequestRateLimited],
+  })
+    .middleware(ApiRequestBody)
+    .middleware(ApiBrowserRequest)
     .middleware(ApiAuthentication)
     .pipe(frontendSpecific),
   HttpApiEndpoint.post('logout', '/api/auth/logout', {

@@ -6,12 +6,11 @@
     <h1 id="post-title">{{ i18n.t('bankWorkspace.postTitle') }}</h1>
     <p>{{ i18n.t('bankWorkspace.ledgerScope') }}</p>
   </app-page-header>
+  @if (completed()) {
   <div #result tabindex="-1" role="status">
-    @if (completed()) {
     <p appNotice variant="success">{{ i18n.t('ledger.saved') }}</p>
-    }
   </div>
-  @if (errorMessage(); as error) {
+  } @if (errorMessage(); as error) {
   <p appNotice variant="danger" role="alert">{{ i18n.t(error) }}</p>
   @if (state() === 'ready' && !pending()) {
   <div>

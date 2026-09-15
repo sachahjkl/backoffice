@@ -75,6 +75,8 @@ export const configurationWorkspaceText = {
     'configurationWorkspace.chooseDomain': 'Choisir un domaine',
     'configurationWorkspace.domainRequired': 'Choisissez un domaine.',
     'configurationWorkspace.account': 'Compte',
+    'configurationWorkspace.accountHint':
+      'Thème, langue et présentation des messages de votre compte.',
     'configurationWorkspace.security': 'Sécurité',
     'configurationWorkspace.passkeys': 'Passkeys',
     'configurationWorkspace.sessions': 'Sessions',
@@ -154,6 +156,8 @@ export const configurationWorkspaceText = {
     'configurationWorkspace.chooseDomain': 'Choose a domain',
     'configurationWorkspace.domainRequired': 'Choose a domain.',
     'configurationWorkspace.account': 'Account',
+    'configurationWorkspace.accountHint':
+      'Theme, language, and message presentation for your account.',
     'configurationWorkspace.security': 'Security',
     'configurationWorkspace.passkeys': 'Passkeys',
     'configurationWorkspace.sessions': 'Sessions',

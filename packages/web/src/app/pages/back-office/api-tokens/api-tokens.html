@@ -73,7 +73,12 @@
     } @if (loading()) {
     <p role="status">{{ i18n.t('backOffice.apiTokens.loading') }}</p>
     } @else if (table.results().length === 0 && !pageError()) {
-    <p class="ds-panel">{{ i18n.t('backOffice.apiTokens.empty') }}</p>
+    <app-empty-state icon="secrets" [title]="i18n.t('backOffice.apiTokens.empty')">
+      <p>{{ i18n.t('backOffice.apiTokens.emptyIntro') }}</p>
+      <a emptyActions appLinkButton icon="plus" routerLink="new" [queryParams]="navigation.params()"
+        >{{ i18n.t('backOffice.apiTokens.create') }}</a
+      >
+    </app-empty-state>
     } @else {
     <div appDataTable>
       <table>
@@ -208,14 +213,14 @@
         </tbody>
       </table>
     </div>
-    }
+    } @if (!loading()) {
     <footer class="list-summary spacer-y-2">
       <p role="status">
-        @if (!loading()) { {{ i18n.plural('adminPages.tokensCount', { count: table.results().length,
-        total: tokens().length }) }} }
+        {{ i18n.plural('adminPages.tokensCount', { count: table.results().length, total:
+        tokens().length }) }}
       </p>
     </footer>
-    @if (nextCursor() !== null) {
+    } @if (nextCursor() !== null) {
     <button appButton type="button" [disabled]="loadingMore()" (click)="loadMore()">
       {{ i18n.t('backOffice.apiTokens.loadMore') }}
     </button>

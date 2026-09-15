@@ -1,9 +1,10 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   inject,
   input,
-  signal,
+  Renderer2,
   ViewEncapsulation,
 } from '@angular/core';
 import { I18nService } from '@app/i18n.service';
@@ -30,15 +31,17 @@ export type NoticeVariant = 'info' | 'success' | 'warning' | 'danger';
     '[class.success]': "variant() === 'success'",
     '[class.warning]': "variant() === 'warning'",
     '[class.danger]': "variant() === 'danger'",
-    '[hidden]': 'dismissed()',
   },
 })
 export class Notice {
   protected readonly i18n = inject(I18nService);
-  protected readonly dismissed = signal(false);
+  private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly renderer = inject(Renderer2);
   readonly variant = input<NoticeVariant>('info');
 
   protected dismiss(): void {
-    this.dismissed.set(true);
+    const element = this.element.nativeElement;
+    const parent = element.parentNode;
+    if (parent) this.renderer.removeChild(parent, element);
   }
 }

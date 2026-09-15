@@ -41,12 +41,23 @@ export const BrowserSession = Schema.Struct({
 });
 export type BrowserSession = typeof BrowserSession.Type;
 
+export const FlashMode = Schema.Literals(['inline', 'toast', 'snack']);
+export type FlashMode = typeof FlashMode.Type;
+
+export const UserPreferences = Schema.Struct({
+  theme: Schema.Literals(['light', 'dark']),
+  language: Schema.Literals(['fr', 'en']),
+  flashMode: FlashMode,
+});
+export type UserPreferences = typeof UserPreferences.Type;
+
 export const CurrentAccount = Schema.Struct({
   userId: Ulid,
   email: AccountEmail,
   mode: LoginMode,
   permissions: Schema.UniqueArray(PermissionCode),
   enabledModules: Schema.UniqueArray(CompanyModule),
+  preferences: UserPreferences,
 });
 export type CurrentAccount = typeof CurrentAccount.Type;
 

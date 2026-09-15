@@ -158,8 +158,12 @@ export const AuthenticationHandlers = HttpApiBuilder.group(Api, 'authentication'
           if (credentials.kind !== 'access-token') {
             return yield* new AuthenticationRequired({ code: 'authentication.required' });
           }
-          const principal = yield* (yield* Authentication)
+          const authentication = yield* Authentication;
+          const principal = yield* authentication
             .authenticate(credentials.token)
+            .pipe(Effect.catchTag('DatabaseError', Effect.orDie));
+          const preferences = yield* authentication
+            .preferences(principal)
             .pipe(Effect.catchTag('DatabaseError', Effect.orDie));
           const company = yield* (yield* Company).get.pipe(
             Effect.catchTag('DatabaseError', Effect.orDie),
@@ -170,7 +174,25 @@ export const AuthenticationHandlers = HttpApiBuilder.group(Api, 'authentication'
             mode: principal.mode,
             permissions: principal.permissions,
             enabledModules: company.enabledModules,
+            preferences,
           };
+        }),
+      )
+      .handle(
+        'updatePreferences',
+        Effect.fn('updatePreferences')(function* ({ payload }) {
+          yield* setPrivateResponseHeaders;
+          const credentials = yield* ApiCredentials;
+          if (credentials.kind !== 'access-token') {
+            return yield* new AuthenticationRequired({ code: 'authentication.required' });
+          }
+          const authentication = yield* Authentication;
+          const principal = yield* authentication
+            .authenticate(credentials.token)
+            .pipe(Effect.catchTag('DatabaseError', Effect.orDie));
+          return yield* authentication
+            .updatePreferences(principal, payload)
+            .pipe(Effect.catchTag('DatabaseError', Effect.orDie));
         }),
       )
       .handle(

@@ -17,6 +17,8 @@ import {
   type AccountPasswordValue,
   type LoginModeValue,
   type PermissionCodeValue,
+  UserPreferences,
+  type UserPreferencesValue,
 } from '@froment/contracts';
 import { Cache, Clock, Context, DateTime, Effect, Layer, Ref, Schema } from 'effect';
 import { randomBytes } from 'node:crypto';
@@ -68,6 +70,13 @@ export interface Principal {
 }
 
 export interface AuthenticationService {
+  readonly preferences: (
+    principal: Principal,
+  ) => Effect.Effect<UserPreferencesValue, DatabaseError>;
+  readonly updatePreferences: (
+    principal: Principal,
+    preferences: UserPreferencesValue,
+  ) => Effect.Effect<UserPreferencesValue, DatabaseError>;
   readonly listSessions: (
     principal: Principal,
   ) => Effect.Effect<AccountSessionListValue, DatabaseError>;
@@ -817,7 +826,37 @@ export const AuthenticationLive = Layer.effect(
             : new DatabaseError({ operation: 'revoke.account.session', cause }),
       });
     });
+    const preferences = Effect.fn('Authentication.preferences')(function* (principal: Principal) {
+      return yield* Effect.try({
+        try: () => {
+          const row = database.sqlite
+            .prepare('select preferences from users where id = ? and disabled_at is null')
+            .get(principal.userId);
+          const value = Schema.decodeUnknownSync(Schema.Struct({ preferences: Schema.String }))(
+            row,
+          );
+          return Schema.decodeUnknownSync(UserPreferences)(JSON.parse(value.preferences));
+        },
+        catch: (cause) => new DatabaseError({ operation: 'read.user.preferences', cause }),
+      });
+    });
+    const updatePreferences = Effect.fn('Authentication.updatePreferences')(function* (
+      principal: Principal,
+      value: UserPreferencesValue,
+    ) {
+      const now = yield* Clock.currentTimeMillis;
+      yield* Effect.try({
+        try: () =>
+          database.sqlite
+            .prepare('update users set preferences = ?, updated_at = ? where id = ?')
+            .run(JSON.stringify(value), now, principal.userId),
+        catch: (cause) => new DatabaseError({ operation: 'update.user.preferences', cause }),
+      });
+      return value;
+    });
     return Authentication.of({
+      preferences,
+      updatePreferences,
       listSessions,
       revokeSession,
       changePassword,

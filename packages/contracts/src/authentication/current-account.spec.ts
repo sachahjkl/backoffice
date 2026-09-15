@@ -7,6 +7,7 @@ const account = {
   email: 'accountant@example.test',
   mode: 'administrator',
   enabledModules: ['sales'],
+  preferences: { theme: 'light', language: 'fr', flashMode: 'inline' },
 };
 
 describe('CurrentAccount', () => {
@@ -25,6 +26,17 @@ describe('CurrentAccount', () => {
     expect(Schema.is(CurrentAccount)({ ...account, permissions: ['client.write'] })).toBe(false);
     expect(
       Schema.is(CurrentAccount)({ ...account, permissions: ['client.read', 'client.read'] }),
+    ).toBe(false);
+  });
+
+  it('accepts only supported account preferences', () => {
+    expect(Schema.is(CurrentAccount)({ ...account, permissions: [] })).toBe(true);
+    expect(
+      Schema.is(CurrentAccount)({
+        ...account,
+        permissions: [],
+        preferences: { ...account.preferences, flashMode: 'banner' },
+      }),
     ).toBe(false);
   });
 });

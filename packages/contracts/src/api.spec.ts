@@ -24,6 +24,7 @@ describe('API contracts', () => {
       'refresh',
       'logout',
       'currentAccount',
+      'updatePreferences',
       'passwordChange',
       'passkeyList',
       'passkeyRegisterOptions',

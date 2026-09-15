@@ -5,6 +5,7 @@ import {
   Component,
   ElementRef,
   inject,
+  Injector,
   signal,
   viewChild,
 } from '@angular/core';
@@ -45,6 +46,7 @@ export class Integrations {
   protected readonly i18n = inject(I18nService);
   private readonly api = inject(IntegrationsApi);
   private readonly confirmation = inject(Confirmation);
+  private readonly injector = inject(Injector);
   protected readonly domainForm = form(signal({ kind: '' }), (path) => {
     required(path.kind);
     disabled(path, () => this.loading() || this.saving());
@@ -165,7 +167,7 @@ export class Integrations {
         ].slice(0, 100),
       );
       this.completed.set(true);
-      this.result()?.nativeElement.focus();
+      afterNextRender(() => this.result()?.nativeElement.focus(), { injector: this.injector });
     } finally {
       this.saving.set(false);
     }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { form, FormField } from '@angular/forms/signals';
 import { Badge, type BadgeVariant } from '@shared/badge/badge';
 import { Notice, type NoticeVariant } from '@shared/notice/notice';
@@ -8,6 +8,9 @@ import { StatusBlock, type StatusBlockVariant } from '@shared/status-block/statu
 import { Icon, type IconName } from '@shared/icon/icon';
 import { EntityIcon } from '@shared/entity-icon/entity-icon';
 import { Button } from '@shared/button/button';
+import { Flash, type FlashVariant } from '@shared/flash/flash';
+import { FlashOutlet } from '@shared/flash/flash-outlet';
+import type { FlashModeValue } from '@froment/contracts';
 import { StoryPage, currentReference, type StoryDefinition } from '../story-page';
 import { referenceText } from '../reference-text';
 
@@ -17,6 +20,7 @@ interface FeedbackPreview {
   icon: IconName;
   badge: BadgeVariant;
   notice: NoticeVariant;
+  flashMode: FlashModeValue;
   status: StatusBlockVariant;
   entity: 'default' | 'info' | 'success' | 'warning' | 'danger';
 }
@@ -80,12 +84,15 @@ export const iconNames: readonly IconName[] = [
     Icon,
     EntityIcon,
     Button,
+    FlashOutlet,
   ],
+  providers: [Flash],
   templateUrl: './feedback-stories.html',
   styleUrl: './story.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeedbackStories {
+  private readonly flash = inject(Flash);
   protected readonly entry = currentReference();
   protected readonly text = referenceText();
   protected get definition(): StoryDefinition {
@@ -94,6 +101,13 @@ export class FeedbackStories {
   protected readonly icons = iconNames;
   protected readonly badges: readonly BadgeVariant[] = ['default', 'success', 'warning', 'danger'];
   protected readonly notices: readonly NoticeVariant[] = ['info', 'success', 'warning', 'danger'];
+  protected readonly flashModes: readonly FlashModeValue[] = ['inline', 'toast', 'snack'];
+  protected readonly flashVariants: readonly FlashVariant[] = [
+    'info',
+    'success',
+    'warning',
+    'danger',
+  ];
   protected readonly statuses: readonly StatusBlockVariant[] = ['primary', 'success', 'danger'];
   protected readonly entityVariants = ['default', 'info', 'success', 'warning', 'danger'] as const;
   protected readonly model = signal<FeedbackPreview>({
@@ -102,9 +116,18 @@ export class FeedbackStories {
     icon: 'folder',
     badge: 'default',
     notice: 'info',
+    flashMode: 'inline',
     status: 'primary',
     entity: 'info',
   });
   protected readonly controls = form(this.model);
   protected readonly event = signal('');
+
+  protected showFlash(variant: FlashVariant): void {
+    this.flash.show(this.model().label, variant);
+  }
+
+  protected setFlashMode(flashMode: FlashModeValue): void {
+    this.model.update((value) => ({ ...value, flashMode }));
+  }
 }

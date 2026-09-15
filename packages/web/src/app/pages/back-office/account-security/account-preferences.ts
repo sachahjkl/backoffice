@@ -1,19 +1,15 @@
 import { FilterSelect } from '@shared/filter-select/filter-select';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  linkedSignal,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, linkedSignal } from '@angular/core';
 import { disabled, form, FormField, pattern, required, submit } from '@angular/forms/signals';
 import { I18nService } from '@app/i18n.service';
 import { Theme } from '@app/theme';
+import { Authentication } from '@backoffice/authentication';
+import type { FlashModeValue } from '@froment/contracts';
 import { Button } from '@shared/button/button';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
+import { Flash } from '@shared/flash/flash';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -26,10 +22,14 @@ import { PageHeader } from '@shared/page-header/page-header';
 export class AccountPreferences {
   protected readonly i18n = inject(I18nService);
   private readonly theme = inject(Theme);
+  private readonly authentication = inject(Authentication);
   private readonly confirmation = inject(Confirmation);
+  private readonly flash = inject(Flash);
   private readonly model = linkedSignal(() => ({
-    theme: this.theme.current(),
-    language: this.i18n.language(),
+    theme: this.authentication.account()?.preferences.theme ?? this.theme.current(),
+    language: this.authentication.account()?.preferences.language ?? this.i18n.language(),
+    flashMode:
+      this.authentication.account()?.preferences.flashMode ?? ('inline' satisfies FlashModeValue),
   }));
   protected readonly preferencesForm = form(this.model, (path) => {
     disabled(path, ({ state }) => state.submitting());
@@ -37,12 +37,18 @@ export class AccountPreferences {
     pattern(path.theme, /^(light|dark)$/);
     required(path.language);
     pattern(path.language, /^(fr|en)$/);
+    required(path.flashMode);
+    pattern(path.flashMode, /^(inline|toast|snack)$/);
   });
-  protected readonly applied = signal(false);
-  protected readonly hasChanges = computed(
-    () =>
-      this.model().theme !== this.theme.current() || this.model().language !== this.i18n.language(),
-  );
+  protected readonly hasChanges = computed(() => {
+    const saved = this.authentication.account()?.preferences;
+    return saved !== undefined &&
+      (this.model().theme !== saved.theme ||
+        this.model().language !== saved.language ||
+        this.model().flashMode !== saved.flashMode)
+      ? true
+      : false;
+  });
 
   protected apply(event: SubmitEvent): void {
     event.preventDefault();
@@ -53,11 +59,13 @@ export class AccountPreferences {
       return;
     }
     void submit(this.preferencesForm, async () => {
-      const { theme, language } = this.model();
-      if (theme !== this.theme.current()) this.theme.toggle();
-      this.i18n.setLanguage(language);
+      const saved = await this.authentication.updatePreferences(this.model());
+      if (!saved) {
+        this.flash.show(this.i18n.t('adminPages.preferencesError'), 'danger');
+        return;
+      }
       this.preferencesForm().reset();
-      this.applied.set(true);
+      this.flash.show(this.i18n.t('adminPages.preferencesApplied'), 'success');
     });
   }
 

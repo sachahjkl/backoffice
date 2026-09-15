@@ -240,7 +240,6 @@ describe('GlobalSearch', () => {
     expect(overlay().querySelector('[role="alert"]')?.textContent).toContain(
       TestBed.inject(I18nService).t('backOffice.search.error'),
     );
-    const status = overlay().querySelector('[role="status"]')!;
     const retry = overlay().querySelector<HTMLButtonElement>('.results > button')!;
     retry.focus();
     retry.click();
@@ -252,8 +251,7 @@ describe('GlobalSearch', () => {
       await harness.fixture.whenStable();
       expect(overlay().querySelectorAll('.results li')).toHaveLength(1);
     });
-    expect(overlay().querySelector('[role="status"]')).toBe(status);
-    expect(status.textContent).toContain(
+    expect(overlay().querySelector('[role="status"]')?.textContent).toContain(
       TestBed.inject(I18nService).plural('globalSearch.count', { count: 1 }),
     );
     expect(overlay().querySelector('.results a')?.getAttribute('href')).toBe(

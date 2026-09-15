@@ -2,7 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { afterNextRender, inject, Injectable, Injector, signal } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
 
-type ThemeName = 'light' | 'dark';
+export type ThemeName = 'light' | 'dark';
 const storageKey = 'froment.software.theme';
 
 @Injectable({ providedIn: 'root' })
@@ -17,7 +17,11 @@ export class Theme {
   }
 
   toggle(): void {
-    this.apply(this.current() === 'dark' ? 'light' : 'dark');
+    this.set(this.current() === 'dark' ? 'light' : 'dark');
+  }
+
+  set(theme: ThemeName): void {
+    this.apply(theme);
   }
 
   private detect(): ThemeName {
