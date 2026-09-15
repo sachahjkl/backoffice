@@ -87,6 +87,13 @@ describe('Dashboard', () => {
     );
   });
 
+  it('shows an icon on each quick creation action', async () => {
+    const { root } = await configure([]);
+    const actions = root.querySelectorAll('.quick-actions a');
+    expect(actions).toHaveLength(2);
+    for (const action of actions) expect(action.querySelector('app-icon')).not.toBeNull();
+  });
+
   it('counts partially credited overdue balances and excludes settled invoices', async () => {
     const overdue = {
       ...invoice,

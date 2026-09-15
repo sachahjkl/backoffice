@@ -19,6 +19,9 @@ h2 {
 section.summary > * + * {
   margin-block-start: var(--space-3);
 }
+.credit-note-panel {
+  padding: var(--panel-padding);
+}
 .summary-total {
   border-block-start: 1px solid var(--color-line);
   padding-block-start: var(--space-3);

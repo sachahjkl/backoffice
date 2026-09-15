@@ -581,6 +581,7 @@
       } @if (!archived()) {
       <a
         appLinkButton
+        icon="plus"
         variant="primary"
         [routerLink]="['/backoffice/clients', current.id, 'access', 'new']"
         *appCan="'client.access.manage'"

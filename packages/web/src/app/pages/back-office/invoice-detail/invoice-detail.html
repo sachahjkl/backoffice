@@ -297,7 +297,7 @@
     } @case ('credit') { @if (credits.isLoading()) {
     <p role="status">{{ i18n.t('backOffice.invoices.loading') }}</p>
     } @else if (creditState(); as state) { @for (note of state.creditNotes; track note.id) {
-    <section class="summary ds-panel">
+    <section class="summary ds-panel credit-note-panel">
       <h2>{{ note.number ?? i18n.t('credit.draft') }}</h2>
       <p>{{ note.reason }}</p>
       <p>
@@ -327,6 +327,7 @@
     @if (state.refundableCents > 0) {
     <a
       appLinkButton
+      icon="plus"
       [routerLink]="['/backoffice/invoices', invoice.id, 'refunds', 'new']"
       *appCan="'invoice.refund'"
       [queryParams]="task.navigation.detailQuery()"
@@ -334,6 +335,7 @@
     >
     <a
       appLinkButton
+      icon="plus"
       [routerLink]="['/backoffice/invoices', invoice.id, 'credit-allocations', 'new']"
       *appCan="'invoice.refund'"
       [queryParams]="task.navigation.detailQuery()"

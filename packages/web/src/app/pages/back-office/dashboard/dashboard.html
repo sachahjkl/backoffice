@@ -8,11 +8,12 @@
       <a
         *appCan="'quote.create'"
         appLinkButton
+        icon="file-plus"
         variant="primary"
         routerLink="/backoffice/quotes/new"
         >{{ i18n.t('backOffice.dashboard.createQuote') }}</a
       >
-      <a *appCan="'client.create'" appLinkButton routerLink="/backoffice/clients/new"
+      <a *appCan="'client.create'" appLinkButton icon="plus" routerLink="/backoffice/clients/new"
         >{{ i18n.t('backOffice.dashboard.createClient') }}</a
       >
     </nav>

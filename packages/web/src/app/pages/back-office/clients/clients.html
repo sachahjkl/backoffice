@@ -126,7 +126,12 @@
           {{ i18n.t('clientsWorkspace.resetFilters') }}
         </button>
         } @else {
-        <a *appCan="'client.create'" emptyActions appLinkButton routerLink="/backoffice/clients/new"
+        <a
+          *appCan="'client.create'"
+          emptyActions
+          appLinkButton
+          icon="plus"
+          routerLink="/backoffice/clients/new"
           >{{ i18n.t('backOffice.clients.create') }}</a
         >
         }
