@@ -15,15 +15,24 @@
   <app-back-office-header-placeholder [administrator]="administrator()" />
   } @error {
   <div class="header-error">
+    <app-navigation-progress />
     <p role="alert">{{ i18n.t('shell.navigationUnavailable') }}</p>
     <button appButton type="button" (click)="reload()">{{ i18n.t('shell.reload') }}</button>
   </div>
   } } @else if (publicPage()) {
   <app-site-header />
+  } @else if (standalonePage()) {
+  <app-navigation-progress class="standalone-progress" />
   } @if (!backOffice()) {
   <app-environment-status ngSkipHydration [publicPage]="publicPage()" placement="hidden" />
   }
-  <main #mainContent id="main-content" tabindex="-1" [class.startup-main]="startup() !== 'ready'">
+  <main
+    #mainContent
+    id="main-content"
+    tabindex="-1"
+    [class.startup-main]="startup() !== 'ready'"
+    [attr.aria-busy]="navigating()"
+  >
     @if (startup() === 'loading') {
     <div class="startup-status" role="status">
       <span class="loading-spinner" aria-hidden="true"></span>

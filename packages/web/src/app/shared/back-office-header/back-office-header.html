@@ -3,6 +3,7 @@
   <ng-container *ngTemplateOutlet="navigation" />
 </aside>
 <header class="workspace-header">
+  <app-navigation-progress />
   @if (administrator()) {
   <app-global-search [shortcutEnabled]="searchShortcut()" />
   } @else {

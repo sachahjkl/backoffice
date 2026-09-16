@@ -24,6 +24,7 @@ import { LanguageSelector } from '@shared/language-selector/language-selector';
 import { ThemeToggle } from '@shared/theme-toggle/theme-toggle';
 import { GlobalSearch } from '@shared/global-search/global-search';
 import { EnvironmentStatus } from '@shared/environment-status/environment-status';
+import { NavigationProgress } from '@shared/navigation-progress/navigation-progress';
 
 @Component({
   selector: 'app-back-office-header',
@@ -41,6 +42,7 @@ import { EnvironmentStatus } from '@shared/environment-status/environment-status
     ThemeToggle,
     GlobalSearch,
     EnvironmentStatus,
+    NavigationProgress,
   ],
   templateUrl: './back-office-header.html',
   styleUrl: './back-office-header.scss',

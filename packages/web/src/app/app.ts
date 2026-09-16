@@ -31,6 +31,7 @@ import { BackOfficeHeaderPlaceholder } from './shared/back-office-header/back-of
 import { Button } from './shared/button/button';
 import { EnvironmentStatus } from './shared/environment-status/environment-status';
 import { FlashOutlet } from './shared/flash/flash-outlet';
+import { NavigationProgress } from './shared/navigation-progress/navigation-progress';
 
 @Component({
   selector: 'app-root',
@@ -42,6 +43,7 @@ import { FlashOutlet } from './shared/flash/flash-outlet';
     CopyNotice,
     EnvironmentStatus,
     FlashOutlet,
+    NavigationProgress,
     RouterOutlet,
     SiteFooter,
     SiteHeader,
@@ -53,6 +55,7 @@ import { FlashOutlet } from './shared/flash/flash-outlet';
 export class App {
   protected readonly i18n = inject(I18nService);
   private readonly router = inject(Router);
+  protected readonly navigating = computed(() => this.router.currentNavigation() !== null);
   private readonly document = inject(DOCUMENT);
   private readonly transferState = inject(TransferState);
   private readonly initialShell = this.router.navigated

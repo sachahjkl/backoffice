@@ -12,8 +12,8 @@
   position: absolute;
   inset: 0;
   visibility: hidden;
-  background: var(--color-info);
-  box-shadow: 0 1px 7px color-mix(in oklab, var(--color-info) 35%, transparent);
+  background: var(--color-link);
+  box-shadow: 0 1px 7px color-mix(in oklab, var(--color-link) 35%, transparent);
   animation: navigation-reveal 0s 150ms forwards;
 }
 

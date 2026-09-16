@@ -54,7 +54,12 @@
   text-align: center;
 }
 .header-error {
+  position: relative;
   grid-area: header;
+}
+.standalone-progress {
+  position: fixed;
+  inset-block-start: 0;
 }
 .loading-spinner {
   flex: none;

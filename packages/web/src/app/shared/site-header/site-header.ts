@@ -9,6 +9,7 @@ import {
 import { NewLabel } from '../new-label/new-label';
 import { ThemeToggle } from '../theme-toggle/theme-toggle';
 import { LanguageSelector } from '../language-selector/language-selector';
+import { NavigationProgress } from '../navigation-progress/navigation-progress';
 
 @Component({
   selector: 'app-site-header',
@@ -16,6 +17,7 @@ import { LanguageSelector } from '../language-selector/language-selector';
     LanguageSelector,
     MobileNavigation,
     NewLabel,
+    NavigationProgress,
     RouterLink,
     RouterLinkActive,
     ThemeToggle,
