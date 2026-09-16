@@ -137,6 +137,10 @@ app-global-search {
   font-size: var(--text-xs);
   color: var(--color-muted);
 }
+.sidebar-bottom app-environment-status {
+  display: block;
+  margin-block-start: var(--space-3);
+}
 .navigation-trigger {
   display: none;
 }

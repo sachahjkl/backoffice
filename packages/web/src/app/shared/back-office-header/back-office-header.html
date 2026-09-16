@@ -27,7 +27,6 @@
       [attr.aria-label]="i18n.t('backOfficeShell.apiNewTab')"
       ><app-icon name="book" />{{ i18n.t('backOfficeShell.api') }}<app-icon name="external"
     /></a>
-    <app-environment-status [publicPage]="false" placement="header" />
   </nav>
 </header>
 <app-drawer
@@ -116,5 +115,6 @@
       <a routerLink="/legal">{{ i18n.t('nav.legal') }}</a>
       <a routerLink="/privacy">{{ i18n.t('nav.privacy') }}</a>
     </nav>
+    <app-environment-status [publicPage]="false" placement="sidebar" />
   </div>
 </ng-template>
