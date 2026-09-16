@@ -54,12 +54,11 @@ export class DocumentPreview implements OnChanges {
     this.failed.set(false);
     this.loading.set(true);
     try {
-      const mode = await this.authentication.sessionMode();
-      if (this.destroyRef.destroyed || generation !== this.generation) return;
-      if (mode === undefined) {
+      if (!(await this.authentication.confirmDocumentSession())) {
         this.failed.set(true);
         return;
       }
+      if (this.destroyRef.destroyed || generation !== this.generation) return;
       this.frameUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(this.url()));
     } catch {
       if (!this.destroyRef.destroyed && generation === this.generation) this.failed.set(true);

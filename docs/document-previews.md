@@ -19,6 +19,20 @@ Les deux identifient l’aperçu au lieu d’afficher seulement le dernier segme
 
 Les aperçus appliquent la [mise en forme et l’emplacement des conditions](document-conditions.md) enregistrés dans la version.
 
+## Authentification de l’aperçu
+
+Le navigateur charge l’URL d’aperçu directement, sans passer par l’intercepteur HTTP d’Angular.
+
+L’interface vérifie donc la session avant d’afficher l’aperçu.
+
+`Authentication.confirmDocumentSession` envoie une requête `HEAD /api/auth/account`.
+
+Si le serveur refuse le cookie d’accès, l’interface renouvelle la session une fois, puis vérifie de nouveau.
+
+Une session non confirmée affiche le message d’erreur de l’aperçu.
+
+L’interface ne montre jamais la réponse JSON d’erreur de l’API dans le cadre.
+
 ## Séparation des documents définitifs
 
 Le serveur applique le filigrane uniquement aux routes d’aperçu.
