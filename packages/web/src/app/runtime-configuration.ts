@@ -9,6 +9,8 @@ declare global {
 const developmentConfig: PublicRuntimeConfigValue = {
   appEnvironment: 'development',
   sitePhase: 'live',
+  commit: null,
+  githubRepositoryUrl: null,
 };
 
 const readBrowserConfig = (): PublicRuntimeConfigValue =>
@@ -20,4 +22,10 @@ export class RuntimeConfiguration {
   readonly value = this.browser ? readBrowserConfig() : undefined;
   readonly productionConstruction =
     this.value?.appEnvironment === 'production' && this.value.sitePhase === 'construction';
+
+  commitUrl(commit: string | null | undefined): string | undefined {
+    const repositoryUrl = this.value?.githubRepositoryUrl;
+    if (!repositoryUrl || !commit) return undefined;
+    return `${repositoryUrl.replace(/\/$/, '').replace(/\.git$/, '')}/commit/${commit}`;
+  }
 }

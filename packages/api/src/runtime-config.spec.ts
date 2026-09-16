@@ -41,13 +41,24 @@ describe('RuntimeConfiguration', () => {
   });
   it('loads the application environment and site phase', async () => {
     const config = await Effect.runPromise(
-      load({ APP_ENV: 'staging', SITE_PHASE: 'construction' }),
+      load({
+        APP_ENV: 'staging',
+        SITE_PHASE: 'construction',
+        GITHUB_REPOSITORY_URL: 'https://github.com/example/application/',
+      }),
     );
-    expect(config.application).toEqual({ appEnvironment: 'staging', sitePhase: 'construction' });
+    expect(config.application).toEqual({
+      appEnvironment: 'staging',
+      sitePhase: 'construction',
+      githubRepositoryUrl: 'https://github.com/example/application/',
+    });
   });
   it.each([
     ['APP_ENV', 'preview'],
     ['SITE_PHASE', 'staging'],
+    ['GITHUB_REPOSITORY_URL', 'javascript:alert(1)'],
+    ['GITHUB_REPOSITORY_URL', 'https://github.com/example'],
+    ['GITHUB_REPOSITORY_URL', 'https://github.com/example/application?token=private'],
   ])('rejects unsupported application configuration %s=%s', async (name, value) => {
     expect((await Effect.runPromise(load({ [name]: value }).pipe(Effect.flip)))._tag).toBe(
       'ConfigError',

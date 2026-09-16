@@ -28,7 +28,11 @@ export const defaultAuthenticationRuntimeConfig = {
 } as const;
 
 export const defaultRuntimeConfig = {
-  application: { appEnvironment: 'development', sitePhase: 'live' },
+  application: {
+    appEnvironment: 'development',
+    sitePhase: 'live',
+    githubRepositoryUrl: 'https://github.com/sachahjkl/froment.software',
+  },
   authentication: defaultAuthenticationRuntimeConfig,
   requestLimiter: {
     enabled: true,
@@ -88,6 +92,12 @@ export const RuntimeConfig = {
     sitePhase: Config.schema(SitePhase, 'SITE_PHASE').pipe(
       Config.withDefault(defaultRuntimeConfig.application.sitePhase),
     ),
+    githubRepositoryUrl: Config.schema(
+      Schema.String.check(
+        Schema.isPattern(/^https:\/\/github\.com\/[A-Za-z0-9-]+\/[A-Za-z0-9._-]+\/?$/),
+      ),
+      'GITHUB_REPOSITORY_URL',
+    ).pipe(Config.withDefault(defaultRuntimeConfig.application.githubRepositoryUrl)),
   }),
   authentication: Config.all({
     accessTokenLifetimeMillis: positiveInt(

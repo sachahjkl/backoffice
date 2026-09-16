@@ -135,6 +135,7 @@ Runtime presentation uses these variables:
 
 - `APP_ENV` accepts `development`, `staging`, or `production`;
 - `SITE_PHASE` accepts `construction` or `live`;
+- `GITHUB_REPOSITORY_URL` sets the HTTPS GitHub repository URL for commit links;
 - `NODE_ENV` remains `production` in staging and production.
 
 Development displays a red environment ribbon. Staging displays an amber ribbon. Production displays the construction notice only during the `construction` phase.

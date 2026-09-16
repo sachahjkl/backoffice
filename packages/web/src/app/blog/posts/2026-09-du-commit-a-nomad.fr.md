@@ -118,7 +118,7 @@ Les valeurs secrètes peuvent être identiques pendant une transition. Leur stoc
 
 Nomad injecte les secrets au démarrage. L’image OCI et le dépôt ne les contiennent pas.
 
-Angular reçoit seulement deux valeurs publiques dans `/runtime-config.js` : `APP_ENV` et `SITE_PHASE`.
+Angular reçoit `APP_ENV`, `SITE_PHASE`, `GITHUB_REPOSITORY_URL` et le commit déployé dans `/runtime-config.js`.
 
 `SITE_PHASE` contrôle le message commercial. Il reste indépendant de l’environnement technique.
 

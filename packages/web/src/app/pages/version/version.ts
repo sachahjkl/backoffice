@@ -1,16 +1,25 @@
-import { afterNextRender, ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { type DeploymentMetadataValue } from '@froment/contracts';
 import { RouterLink } from '@angular/router';
 
 import { I18nService } from '@app/i18n.service';
 import { Notice } from '@shared/notice/notice';
+import { EnvironmentStatus } from '@shared/environment-status/environment-status';
+import { RuntimeConfiguration } from '@app/runtime-configuration';
 import { VersionApi } from './version-api';
 
 type VersionState = 'loading' | 'ready' | 'error';
 
 @Component({
   selector: 'app-version',
-  imports: [Notice, RouterLink],
+  imports: [EnvironmentStatus, Notice, RouterLink],
   templateUrl: './version.html',
   styleUrl: './version.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,6 +29,8 @@ export class Version {
   private readonly api = inject(VersionApi);
   protected readonly state = signal<VersionState>('loading');
   protected readonly metadata = signal<DeploymentMetadataValue | undefined>(undefined);
+  private readonly runtime = inject(RuntimeConfiguration);
+  protected readonly commitUrl = computed(() => this.runtime.commitUrl(this.metadata()?.commit));
 
   constructor() {
     afterNextRender(() => void this.load());

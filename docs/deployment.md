@@ -107,7 +107,7 @@ Les chemins, droits et cycles de rotation restent séparés.
 
 Nomad injecte les secrets au démarrage avec un bloc `template`.
 
-Angular reçoit uniquement `APP_ENV` et `SITE_PHASE` dans `/runtime-config.js`.
+Angular reçoit `APP_ENV`, `SITE_PHASE`, `GITHUB_REPOSITORY_URL` et le commit déployé dans `/runtime-config.js`.
 
 N’ajoutez jamais un secret applicatif dans cette ressource publique.
 

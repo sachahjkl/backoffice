@@ -13,7 +13,12 @@ Les services utilisent la configuration injectée avec `yield* RuntimeConfigurat
 
 La valeur de `SITE_PHASE` ne dépend pas de `APP_ENV`.
 
-L’API expose ces deux valeurs publiques dans `/runtime-config.js`.
+`GITHUB_REPOSITORY_URL` contient l’URL HTTPS du dépôt GitHub.
+La valeur par défaut est `https://github.com/sachahjkl/froment.software`.
+Le badge d’environnement affiche les huit premiers caractères du commit sous le nom de l’environnement.
+Le hash ouvre le commit dans le dépôt configuré.
+
+L’API expose ces valeurs publiques et le commit de `DEPLOYMENT_METADATA` dans `/runtime-config.js`.
 
 Angular charge cette ressource avant son démarrage.
 

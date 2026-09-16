@@ -118,7 +118,7 @@ Secret values can match during a transition. Their storage and permissions remai
 
 Nomad injects secrets at startup. The OCI image and repository do not contain them.
 
-Angular receives only two public values in `/runtime-config.js`: `APP_ENV` and `SITE_PHASE`.
+Angular receives `APP_ENV`, `SITE_PHASE`, `GITHUB_REPOSITORY_URL`, and the deployed commit in `/runtime-config.js`.
 
 `SITE_PHASE` controls the commercial message. It remains independent from the technical environment.
 

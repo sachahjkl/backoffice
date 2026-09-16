@@ -1,6 +1,7 @@
       env {
         APP_ENV                     = "production"
         SITE_PHASE                  = "construction"
+        GITHUB_REPOSITORY_URL        = "https://github.com/sachahjkl/froment.software"
         NODE_ENV                    = "production"
         PUBLIC_ORIGIN               = "https://froment.software"
         DATABASE_PATH               = "/var/lib/froment-software/froment.sqlite"

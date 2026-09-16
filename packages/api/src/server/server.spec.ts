@@ -89,6 +89,7 @@ describe('HTTP server', () => {
       BOOTSTRAP_PASSWORD_SCRYPT:
         'scrypt$16384$8$1$ABEiM0RVZneImaq7zN3u_w$bDQwYDYiQ_8HCiJ3-qXFtXFeV9FhIOa7E8VSgT__uegLrk4vqD6U920ImYTwk5RABOZsIk96bUNH1G9wbCXf1Q',
       BUSINESS_TIME_ZONE: 'Europe/Paris',
+      GITHUB_REPOSITORY_URL: 'https://github.com/example/application',
       DATABASE_PATH: databaseFilename,
       DEPLOYMENT_METADATA: JSON.stringify({
         commit: '6c9757782e249d4db6ffb804349b7da620494565',
@@ -172,7 +173,7 @@ describe('HTTP server', () => {
     const runtimeConfig = await fetch(`${baseUrl}/runtime-config.js`);
     expect(runtimeConfig.headers.get('cache-control')).toBe('no-store');
     await expect(runtimeConfig.text()).resolves.toBe(
-      'globalThis.fromentRuntimeConfig={"appEnvironment":"development","sitePhase":"live"};document.documentElement.dataset.appEnvironment=globalThis.fromentRuntimeConfig.appEnvironment;document.documentElement.dataset.sitePhase=globalThis.fromentRuntimeConfig.sitePhase;',
+      'globalThis.fromentRuntimeConfig={"appEnvironment":"development","sitePhase":"live","githubRepositoryUrl":"https://github.com/example/application","commit":"6c9757782e249d4db6ffb804349b7da620494565"};document.documentElement.dataset.appEnvironment=globalThis.fromentRuntimeConfig.appEnvironment;document.documentElement.dataset.sitePhase=globalThis.fromentRuntimeConfig.sitePhase;',
     );
     const shell = await fetch(`${baseUrl}/backoffice/login`, { headers: { accept: 'text/html' } });
     expect(await shell.text()).toContain('<app-root></app-root>');

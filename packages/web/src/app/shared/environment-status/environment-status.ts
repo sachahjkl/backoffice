@@ -32,9 +32,11 @@ const environmentStatus = (
 })
 export class EnvironmentStatus {
   readonly publicPage = input.required<boolean>();
-  readonly placement = input.required<'footer' | 'header' | 'hidden'>();
+  readonly placement = input.required<'footer' | 'header' | 'hidden' | 'page'>();
   protected readonly i18n = inject(I18nService);
   private readonly runtime = inject(RuntimeConfiguration);
   protected readonly environment = this.runtime.value?.appEnvironment;
   protected readonly environmentStatus = environmentStatus(this.environment);
+  protected readonly shortCommit = this.runtime.value?.commit?.slice(0, 8);
+  protected readonly commitUrl = this.runtime.commitUrl(this.runtime.value?.commit);
 }

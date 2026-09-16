@@ -1,9 +1,12 @@
 <section class="version-page" aria-labelledby="version-title">
   <div class="version-panel">
-    <a class="back-link" routerLink="/">
-      <span aria-hidden="true">←</span>
-      {{ i18n.t("not_found.cta") }}
-    </a>
+    <div class="version-navigation">
+      <a class="back-link" routerLink="/">
+        <span aria-hidden="true">←</span>
+        {{ i18n.t("not_found.cta") }}
+      </a>
+      <app-environment-status ngSkipHydration [publicPage]="false" placement="page" />
+    </div>
 
     <header class="identity">
       <img src="/brand/favicon.png" alt="" width="72" height="72" />
@@ -23,7 +26,11 @@
       <section class="commit" aria-labelledby="commit-title">
         <h2 id="commit-title">{{ i18n.t("version.commit") }}</h2>
         <div class="commit-scroll" role="region" aria-labelledby="commit-title" tabindex="0">
+          @if (commitUrl(); as url) {
+          <a [href]="url"><code>{{ deployment.commit }}</code></a>
+          } @else {
           <code>{{ deployment.commit }}</code>
+          }
         </div>
       </section>
 

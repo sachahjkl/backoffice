@@ -1,4 +1,5 @@
 import { NodeHttpServer } from '@effect/platform-node';
+import type { PublicRuntimeConfigValue } from '@froment/contracts';
 import { Config, Effect, FileSystem, Layer, Schema } from 'effect';
 import {
   HttpRouter,
@@ -49,7 +50,8 @@ import { StripeWebhookRoute } from './integrations/stripe-webhook.js';
 import { BankingHandlers } from './banking/handlers.js';
 import { QuoteLinkHandlers } from './quote-links/handlers.js';
 import { RequestLimiterLive } from './server/request-limiter.js';
-import { RuntimeConfiguration, type RuntimeConfigValue } from './runtime-config.js';
+import { RuntimeConfiguration } from './runtime-config.js';
+import { Deployment } from './deployment/deployment.js';
 import { apiCatalog, apiCatalogContentType } from './server/api-catalog.js';
 import { StatusHandlers } from './status/handlers.js';
 import { blogHandlers } from './blog/handlers.js';
@@ -164,7 +166,7 @@ export const makeServerLayer = (options: {
   readonly port: number;
   readonly publicOrigin: string;
   readonly staticRoot: string;
-  readonly runtimeConfig: RuntimeConfigValue['application'];
+  readonly runtimeConfig: PublicRuntimeConfigValue;
 }) => {
   const ApiCatalogRoute = HttpRouter.add(
     'GET',
@@ -244,6 +246,7 @@ export const ServerLive = Layer.unwrap(
     const publicUrl = yield* Config.schema(Schema.URL, 'PUBLIC_ORIGIN');
     const staticRoot = yield* Config.string('STATIC_ROOT');
     const runtime = yield* RuntimeConfiguration;
+    const deployment = yield* Deployment;
     const trustedProxyText = yield* Config.string('TRUSTED_PROXY_ADDRESSES').pipe(
       Config.withDefault(''),
     );
@@ -257,7 +260,7 @@ export const ServerLive = Layer.unwrap(
       port,
       publicOrigin: publicUrl.origin,
       staticRoot,
-      runtimeConfig: runtime.application,
+      runtimeConfig: { ...runtime.application, commit: deployment.metadata.commit },
     }).pipe(Layer.provide(Layer.succeed(TrustedProxyAddresses, new Set(trustedProxyAddresses))));
   }),
 );

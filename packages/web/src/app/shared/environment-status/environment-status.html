@@ -1,14 +1,23 @@
 @if (environmentStatus; as status) { @if (placement() !== 'hidden') {
-<a
+<span
   class="environment-ribbon"
   [class.footer-link]="placement() === 'footer'"
   [class.header-link]="placement() === 'header'"
   [class.staging]="environment === 'staging'"
-  routerLink="/version"
-  [attr.aria-label]="i18n.t(status.nameKey)"
 >
-  {{ i18n.t(status.labelKey) }}
-</a>
+  <a class="environment-name" routerLink="/version" [attr.aria-label]="i18n.t(status.nameKey)">
+    {{ i18n.t(status.labelKey) }}
+  </a>
+  @if (shortCommit) {
+  <a
+    class="environment-commit"
+    [href]="commitUrl"
+    [attr.aria-label]="i18n.t('version.commit') + ' ' + shortCommit"
+  >
+    {{ shortCommit }}
+  </a>
+  }
+</span>
 } } @else if (placement() === 'header') {
 <a class="version-link" routerLink="/version">{{ i18n.t('nav.version') }}</a>
 } @if (publicPage()) {

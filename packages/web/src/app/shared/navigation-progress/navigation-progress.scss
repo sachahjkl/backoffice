@@ -1,0 +1,48 @@
+:host {
+  position: absolute;
+  inset-block-start: 100%;
+  inset-inline: 0;
+  z-index: var(--z-header);
+  display: block;
+  block-size: 3px;
+  pointer-events: none;
+}
+
+.navigation-bar {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+  background: var(--color-info);
+  box-shadow: 0 1px 7px color-mix(in oklab, var(--color-info) 35%, transparent);
+  animation: navigation-reveal 0s 150ms forwards;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .navigation-bar {
+    animation:
+      navigation-reveal 0s 150ms forwards,
+      navigation-pulse 1.2s ease-in-out 150ms infinite;
+  }
+}
+
+@keyframes navigation-reveal {
+  to {
+    visibility: visible;
+  }
+}
+
+@keyframes navigation-pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media print {
+  :host {
+    display: none;
+  }
+}
