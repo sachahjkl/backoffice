@@ -4,6 +4,7 @@ import { provideRouter, Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { OrdersApi } from '@backoffice/orders-api';
 import { QuotesApi } from '@backoffice/quotes-api';
+import { previewUrl } from '@shared/document-preview/document-preview.spec-helper';
 import {
   commercialTestRoutes,
   control,
@@ -104,9 +105,7 @@ describe('Order detail', () => {
       sort: 'updated-asc',
       version: '2',
     });
-    expect(root.querySelector('iframe')?.getAttribute('src')).toBe(
-      `/api/quotes/${quoteFixture.id}/revisions/2/preview`,
-    );
+    expect(previewUrl(harness.fixture)).toBe(`/api/quotes/${quoteFixture.id}/revisions/2/preview`);
   });
   it('does not substitute another revision when the accepted revision is missing', async () => {
     TestBed.overrideProvider(QuotesApi, {

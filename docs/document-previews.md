@@ -14,24 +14,28 @@ Exemples :
 - `preview-facture-FA-2026-000001-v3.pdf` ;
 - `preview-commande-CO-2026-000001.pdf`.
 
-Selon le navigateur, l’onglet affiche le titre PDF ou le nom du fichier.
-Les deux identifient l’aperçu au lieu d’afficher seulement le dernier segment `/preview` de l’URL.
+Lorsqu’il est ouvert ou téléchargé, le fichier porte un nom distinct.
+Ce nom identifie l’aperçu au lieu du dernier segment `/preview` de l’URL.
 
 Les aperçus appliquent la [mise en forme et l’emplacement des conditions](document-conditions.md) enregistrés dans la version.
 
-## Authentification de l’aperçu
+## Affichage dans le navigateur
 
-Le navigateur charge l’URL d’aperçu directement, sans passer par l’intercepteur HTTP d’Angular.
+L’application rend l’aperçu dans une surface intégrée avec `pdf.js`.
 
-L’interface vérifie donc la session avant d’afficher l’aperçu.
+Elle ne dépend pas du lecteur PDF du navigateur.
 
-`Authentication.confirmDocumentSession` envoie une requête `HEAD /api/auth/account`.
+Un poste qui télécharge les PDF affiche donc quand même l’aperçu.
 
-Si le serveur refuse le cookie d’accès, l’interface renouvelle la session une fois, puis vérifie de nouveau.
+L’application télécharge les octets avec `HttpClient`, puis rend chaque page sur un canevas.
 
-Une session non confirmée affiche le message d’erreur de l’aperçu.
+L’intercepteur HTTP renouvelle la session avant la lecture.
 
-L’interface ne montre jamais la réponse JSON d’erreur de l’API dans le cadre.
+Le message d’erreur localisé remplace la réponse JSON de l’API.
+
+Les boutons de zoom restent entre 50 % et 200 %.
+
+Le fichier worker `pdf.worker.min.mjs` est publié sous `/pdfjs/`.
 
 ## Séparation des documents définitifs
 

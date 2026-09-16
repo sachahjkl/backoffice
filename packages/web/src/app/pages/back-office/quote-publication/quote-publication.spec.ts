@@ -6,6 +6,7 @@ import { vi } from 'vitest';
 import { QuotesApi } from '@backoffice/quotes-api';
 import { Authentication } from '@backoffice/authentication';
 import { accountFixture } from '@backoffice/account.spec-helper';
+import { previewUrl } from '@shared/document-preview/document-preview.spec-helper';
 import { QuotePublication } from './quote-publication';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { TextCopy } from '@shared/text-copy';
@@ -70,10 +71,7 @@ describe('Quote publication', () => {
   }
   it('requires the exact revision PDF and a review confirmation', async () => {
     const { harness, root } = await open();
-    expect(control<HTMLIFrameElement>(root, 'iframe').getAttribute('src')).toBe(
-      `/api/quotes/${quoteId}/revisions/2/preview`,
-    );
-    expect(root.querySelector('iframe')?.hasAttribute('sandbox')).toBe(false);
+    expect(previewUrl(harness.fixture)).toBe(`/api/quotes/${quoteId}/revisions/2/preview`);
     const publish = control<HTMLButtonElement>(root, 'button[type="submit"]');
     expect(publish.disabled).toBe(false);
     publish.click();
@@ -260,6 +258,10 @@ describe('Quote publication', () => {
     control<HTMLButtonElement>(root, 'button[type="submit"]').click();
     await harness.fixture.whenStable();
     expect(send).toHaveBeenCalledOnce();
-    expect(root.querySelector('[role="alert"]')?.textContent).toMatch(/PDF/);
+    expect(
+      Array.from(root.querySelectorAll('[role="alert"]')).some((node) =>
+        /PDF/.test(node.textContent ?? ''),
+      ),
+    ).toBe(true);
   });
 });

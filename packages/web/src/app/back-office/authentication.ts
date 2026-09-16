@@ -128,29 +128,6 @@ export class Authentication {
     }
   }
 
-  // The browser loads document URLs directly, outside the HTTP interceptor.
-  // Confirm the access cookie on the server and renew it once before exposing a document URL.
-  async confirmDocumentSession(): Promise<boolean> {
-    if (!this.isBrowser) return false;
-    if (this.sessions.mode() === undefined && (await this.sessions.refresh()) === undefined)
-      return false;
-    for (let attempt = 0; attempt < 2; attempt += 1) {
-      try {
-        await firstValueFrom(this.http.head('/api/auth/account'));
-        return true;
-      } catch (error) {
-        if (
-          attempt !== 0 ||
-          !(error instanceof HttpErrorResponse) ||
-          error.status !== 401 ||
-          (await this.sessions.refresh()) === undefined
-        )
-          return false;
-      }
-    }
-    return false;
-  }
-
   currentAccount(): Promise<CurrentAccountValue | undefined> {
     if (!this.isBrowser) return Promise.resolve(undefined);
     this.accountObserved.set(true);
