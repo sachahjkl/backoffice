@@ -8,16 +8,6 @@
     @if (current(); as item) {
     <span appBadge pageBadges role="status">{{ i18n.t(statusLabel(item.status)) }}</span>
     }
-    <button
-      appButton
-      pageActions
-      icon="redo"
-      type="button"
-      [disabled]="history.loading()"
-      (click)="history.refresh()"
-    >
-      {{ i18n.t('checkout.refresh') }}
-    </button>
   </app-page-header>
   <app-tabs
     [label]="i18n.t('configurationWorkspace.services')"

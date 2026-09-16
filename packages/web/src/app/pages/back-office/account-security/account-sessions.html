@@ -2,19 +2,17 @@
   <app-page-header>
     <h2 id="account-sessions-title">{{ i18n.t('account.sessions_title') }}</h2>
     <p class="muted">{{ i18n.t('account.sessions_hint') }}</p>
-    <button
-      pageActions
-      appButton
-      icon="redo"
-      type="button"
-      [disabled]="loading() || revoking() !== undefined || disabled()"
-      (click)="reload()"
-    >
-      {{ i18n.t('account.sessions_reload') }}
-    </button>
   </app-page-header>
   @if (errorMessage(); as message) {
   <p appNotice variant="danger" role="alert">{{ i18n.t(message) }}</p>
+  <button
+    appButton
+    type="button"
+    [disabled]="loading() || revoking() !== undefined || disabled()"
+    (click)="reload()"
+  >
+    {{ i18n.t('account.sessions_reload') }}
+  </button>
   <p>{{ i18n.t('account.sessions_retry') }}</p>
   } @if (revoked()) {
   <p #revokeStatus appNotice variant="success" role="status" tabindex="-1">

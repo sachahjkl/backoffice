@@ -67,14 +67,6 @@
         </ng-template>
       </app-filter-menu>
       <div listActions class="actions">
-        <button
-          appButton
-          type="button"
-          [disabled]="state() === 'loading' || query() === undefined"
-          (click)="reload()"
-        >
-          {{ i18n.t('audit.reload') }}
-        </button>
         <app-table-export
           [columns]="['id', 'action', 'resourceType', 'resourceId', 'occurredAt']"
           [rows]="auditExport()"
@@ -88,6 +80,14 @@
     </app-list-toolbar>
     @if (errorMessage(); as code) {
     <p appNotice variant="danger" role="alert">{{ i18n.t(code) }}</p>
+    <button
+      appButton
+      type="button"
+      [disabled]="state() === 'loading' || query() === undefined"
+      (click)="reload()"
+    >
+      {{ i18n.t('audit.reload') }}
+    </button>
     } @if (state() === 'loading') {
     <p role="status">{{ i18n.t('audit.loading') }}</p>
     } @if (state() === 'ready') { @if (table.results().length === 0) {

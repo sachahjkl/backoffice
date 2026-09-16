@@ -93,17 +93,7 @@
         [queryParams]="task.navigation.detailQuery()"
         >{{ i18n.t('backOffice.invoice.void') }}</a
       >
-      }
-      <button
-        appButton
-        icon="redo"
-        type="button"
-        [disabled]="reloadDisabled()"
-        (click)="task.load()"
-      >
-        {{ i18n.t('listControls.reload') }}
-      </button>
-      }
+      } }
     </ng-container>
   </app-page-header>
   @if (task.loading()) {
@@ -469,7 +459,7 @@
     <button appButton (click)="history.reload()">{{ i18n.t('listControls.reload') }}</button>
     } } }
   </div>
-  } @else {
+  } @else if (task.error()) {
   <button appButton type="button" [disabled]="reloadDisabled()" (click)="task.load()">
     {{ i18n.t('listControls.reload') }}
   </button>

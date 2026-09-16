@@ -7,16 +7,6 @@
       {{ i18n.t('connections.stripe') }} — {{ i18n.t('configurationWorkspace.newTest') }}
     </h1>
     <p>{{ i18n.t('checkout.invoiceHint') }}</p>
-    <button
-      appButton
-      pageActions
-      icon="redo"
-      type="button"
-      [disabled]="loading() || saving()"
-      (click)="load()"
-    >
-      {{ i18n.t('checkout.refresh') }}
-    </button>
   </app-page-header>
   <app-tabs
     [label]="i18n.t('configurationWorkspace.services')"
@@ -28,6 +18,9 @@
   <p appNotice variant="warning">{{ i18n.t('checkout.safety') }}</p>
   @if (error(); as code) {
   <p appNotice variant="danger" role="alert">{{ i18n.t(code) }}</p>
+  <button appButton type="button" [disabled]="loading() || saving()" (click)="load()">
+    {{ i18n.t('checkout.refresh') }}
+  </button>
   } @if (connection(); as state) {
   <p>{{ i18n.t(keyLabel(state)) }}</p>
   <p>{{ i18n.t(webhookLabel(state)) }}</p>

@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { vi } from 'vitest';
 import { Authentication } from '@backoffice/authentication';
+import { I18nService } from '@app/i18n.service';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { AccountSessions } from './account-sessions';
 
@@ -59,8 +60,14 @@ describe('AccountSessions', () => {
     await fixture.whenStable();
     const root: HTMLElement = fixture.nativeElement;
     expect(root.querySelector('[role="alert"]')).not.toBeNull();
-    root.querySelector('button')?.click();
+    const retryLabel = TestBed.inject(I18nService).t('account.sessions_reload');
+    const retry = Array.from(root.querySelectorAll('button')).find((button) =>
+      button.textContent?.includes(retryLabel),
+    );
+    if (!retry) throw new Error('session.retry.missing');
+    retry.click();
     await fixture.whenStable();
+    expect(listSessions).toHaveBeenCalledTimes(2);
     expect(root.querySelector('[role="alert"]')).toBeNull();
     expect(root.querySelectorAll('li')).toHaveLength(1);
   });

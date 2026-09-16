@@ -3,9 +3,6 @@
     <h1 id="connections-title">{{ i18n.t('connections.title') }}</h1>
     <p>{{ i18n.t('connections.intro') }}</p>
     <div pageActions class="spacer-x-3">
-      <button appButton icon="redo" type="button" [disabled]="data.loading()" (click)="data.load()">
-        {{ i18n.t('connections.reload') }}
-      </button>
       <a appLinkButton icon="tests" routerLink="/backoffice/services/simulations"
         >{{ i18n.t('connections.simulations') }}</a
       >
@@ -14,6 +11,9 @@
   <p appNotice variant="info">{{ i18n.t('connections.safety') }}</p>
   @if (data.error()) {
   <p appNotice variant="danger" role="alert">{{ i18n.t('connections.error') }}</p>
+  <button appButton type="button" [disabled]="data.loading()" (click)="data.load()">
+    {{ i18n.t('connections.reload') }}
+  </button>
   } @if (data.loading()) {
   <p role="status">{{ i18n.t('connections.loading') }}</p>
   }

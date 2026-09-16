@@ -3,9 +3,6 @@
     <a pageBack routerLink="/backoffice/services">{{ i18n.t('connections.back') }}</a>
     <h1>{{ i18n.t(providerName(provider)) }}</h1>
     <p>{{ i18n.t('configurationWorkspace.providerSetup') }}</p>
-    <button appButton pageActions icon="redo" type="button" [disabled]="loading()" (click)="load()">
-      {{ i18n.t('connections.reload') }}
-    </button>
   </app-page-header>
   @if (tabs().length > 0) {
   <app-tabs
@@ -55,6 +52,9 @@
   >
   } } @if (error()) {
   <p appNotice variant="danger" role="alert">{{ i18n.t('connections.error') }}</p>
+  <button appButton type="button" [disabled]="loading()" (click)="load()">
+    {{ i18n.t('connections.reload') }}
+  </button>
   } @if (loading()) {
   <p role="status">{{ i18n.t('connections.loading') }}</p>
   }

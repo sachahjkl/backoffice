@@ -29,7 +29,7 @@
       }
     </div>
   </form>
-  } } @if (!task.completed() && !task.uncertain()) {
+  } } @if (task.error() && !task.completed() && !task.uncertain()) {
   <button appButton [disabled]="task.busy() || task.loading()" (click)="reload()">
     {{ i18n.t('listControls.reload') }}
   </button>

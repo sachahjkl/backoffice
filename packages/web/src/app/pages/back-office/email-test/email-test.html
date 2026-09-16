@@ -7,16 +7,6 @@
       {{ i18n.t('connections.resend') }} — {{ i18n.t('configurationWorkspace.newTest') }}
     </h1>
     <p>{{ i18n.t('emailTest.intro') }}</p>
-    <button
-      appButton
-      pageActions
-      icon="redo"
-      type="button"
-      [disabled]="saving()"
-      (click)="refresh()"
-    >
-      {{ i18n.t('emailTest.refresh') }}
-    </button>
   </app-page-header>
   <app-tabs
     [label]="i18n.t('configurationWorkspace.services')"
@@ -28,6 +18,9 @@
   <p appNotice variant="warning">{{ i18n.t('emailTest.safety') }}</p>
   @if (error(); as code) {
   <p appNotice variant="danger" role="alert">{{ i18n.t(code) }}</p>
+  <button appButton type="button" [disabled]="saving()" (click)="refresh()">
+    {{ i18n.t('emailTest.refresh') }}
+  </button>
   } @if (completed()) {
   <p appNotice variant="success">{{ i18n.t('configurationWorkspace.testComplete') }}</p>
   @if (current(); as item) {

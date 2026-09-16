@@ -10,15 +10,7 @@
         routerLink="/backoffice/services/stripe/tests/new"
         [queryParams]="table.params()"
         >{{ i18n.t('configurationWorkspace.newTest') }}</a
-      ><button
-        appButton
-        icon="redo"
-        type="button"
-        [disabled]="history.loading()"
-        (click)="history.refresh()"
       >
-        {{ i18n.t('checkout.refresh') }}
-      </button>
     </div>
   </app-page-header>
   <app-tabs

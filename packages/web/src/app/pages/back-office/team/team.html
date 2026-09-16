@@ -15,20 +15,14 @@
       <a appLinkButton icon="user" routerLink="roles" *appCan="'role.read'"
         >{{ i18n.t('role.title') }}</a
       >
-      <button
-        appButton
-        icon="redo"
-        type="button"
-        [disabled]="busy() || loading()"
-        (click)="reload()"
-      >
-        {{ i18n.t('team.reload') }}
-      </button>
     </div>
   </app-page-header>
   <p appNotice variant="info">{{ i18n.t('team.profiles') }}</p>
   @if (errorMessage(); as code) {
   <p appNotice variant="danger" role="alert">{{ i18n.t(code) }}</p>
+  <button appButton type="button" [disabled]="busy() || loading()" (click)="reload()">
+    {{ i18n.t('team.reload') }}
+  </button>
   }
   <section appListWorkspace aria-labelledby="members-title">
     <h2 id="members-title">{{ i18n.t('team.members') }}</h2>
