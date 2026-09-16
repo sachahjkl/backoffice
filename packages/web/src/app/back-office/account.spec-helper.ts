@@ -19,12 +19,11 @@ export const accountFixture = (permissions: readonly PermissionCodeValue[] = Per
     account: account.asReadonly(),
     can: (permission: PermissionCodeValue) => account()?.permissions.includes(permission) === true,
     sessionMode: async () => account()?.mode,
-    refreshSession: async () => account()?.mode,
     currentAccount: async () => account(),
     refreshAccount: async () => account(),
   } satisfies Pick<
     Authentication,
-    'account' | 'can' | 'sessionMode' | 'refreshSession' | 'currentAccount' | 'refreshAccount'
+    'account' | 'can' | 'sessionMode' | 'currentAccount' | 'refreshAccount'
   >;
   return {
     account,

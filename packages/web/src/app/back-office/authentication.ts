@@ -128,10 +128,6 @@ export class Authentication {
     }
   }
 
-  refreshSession(): Promise<LoginModeValue | undefined> {
-    return this.sessions.refresh();
-  }
-
   currentAccount(): Promise<CurrentAccountValue | undefined> {
     if (!this.isBrowser) return Promise.resolve(undefined);
     this.accountObserved.set(true);
