@@ -196,11 +196,7 @@
         </select></label
       >
       <div class="actions">
-        @if (previewUrl(); as url) {
-        <a appLinkButton [href]="url" target="_blank" rel="noopener noreferrer"
-          >{{ i18n.t('backOffice.invoice.preview.open') }}</a
-        >
-        } @if (pdfUrl(); as url) {
+        @if (pdfUrl(); as url) {
         <a appLinkButton [href]="url" download>{{ i18n.t('backOffice.invoice.pdf.download') }}</a> }
         @else if (revision()?.invoiceNumber) {
         <button
