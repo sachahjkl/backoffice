@@ -32,7 +32,6 @@
     "fuse.js": "catalog:",
     "marked": "catalog:",
     "mermaid": "catalog:",
-    "pdfjs-dist": "6.3.289",
     "rxjs": "catalog:",
     "tslib": "catalog:"
   },

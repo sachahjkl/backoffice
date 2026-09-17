@@ -1,6 +1,5 @@
 import { InvoiceDetail } from './invoice-detail';
 import { convertToParamMap } from '@angular/router';
-import { previewUrl } from '@shared/document-preview/document-preview.spec-helper';
 import {
   invoiceFixture,
   invoiceId,
@@ -18,7 +17,7 @@ describe('InvoiceDetail', () => {
     expect(root.querySelector('a[href$="/payments/new"]')).toBeNull();
     queryParams.next(convertToParamMap({ tab: 'document' }));
     await fixture.whenStable();
-    expect(root.querySelector('app-document-preview')).toBeNull();
+    expect(root.querySelector('iframe')).toBeNull();
     expect(root.querySelector('a[download]')).not.toBeNull();
     expect(api.renderPdf).not.toHaveBeenCalled();
   });
@@ -70,10 +69,13 @@ describe('InvoiceDetail', () => {
     expect(root.textContent).not.toMatch(/Reste à régler|Remaining balance/);
   });
   it('shows the saved PDF and preview without changing issued revisions', async () => {
-    const { root, api, fixture } = await setupInvoicePage(InvoiceDetail, {
+    const { root, api } = await setupInvoicePage(InvoiceDetail, {
       query: { tab: 'document' },
     });
-    expect(previewUrl(fixture)).toBe(`/api/invoices/${invoiceId}/revisions/2/preview`);
+    expect(root.querySelector('iframe')?.getAttribute('src')).toBe(
+      `/api/invoices/${invoiceId}/revisions/2/preview`,
+    );
+    expect(root.querySelector('iframe')?.hasAttribute('sandbox')).toBe(false);
     expect(
       root.querySelector(`a[href="/api/invoices/${invoiceId}/revisions/2/pdf"]`),
     ).not.toBeNull();

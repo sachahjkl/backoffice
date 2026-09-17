@@ -1,46 +1,18 @@
 :host {
   display: grid;
-  gap: var(--space-3);
+  gap: var(--space-4);
   width: 100%;
 }
 
-.viewer {
-  display: grid;
+.actions {
+  display: flex;
   gap: var(--space-3);
 }
 
-.controls {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.zoom-value {
-  min-inline-size: 3.5rem;
-  color: var(--color-muted);
-  font-size: var(--text-xs);
-  font-variant-numeric: tabular-nums;
-  text-align: center;
-}
-
-.pages {
-  overflow: auto;
-  max-block-size: clamp(28rem, 80dvh, 65rem);
-  padding: var(--space-3);
-  background: var(--color-surface-sunken);
-  box-shadow: var(--shadow-panel);
-}
-
-.preview-page {
+iframe {
   display: block;
   width: 100%;
-  height: auto;
-  margin-inline: auto;
+  height: clamp(28rem, 80dvh, 65rem);
   background: white;
-  box-shadow: var(--shadow-xs);
-}
-
-.preview-page + .preview-page {
-  margin-block-start: var(--space-4);
+  box-shadow: var(--shadow-panel);
 }

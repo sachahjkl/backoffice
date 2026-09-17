@@ -1,77 +1,149 @@
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-
+import { accountFixture } from '@backoffice/account.spec-helper';
+import { AUTH_COOKIE_LOCK_MANAGER } from '@backoffice/auth-cookie-lock';
+import { Authentication } from '@backoffice/authentication';
+import { BrowserSessionStore } from '@backoffice/browser-session-store';
+import { Can } from '@backoffice/can';
 import { DocumentPreview } from './document-preview';
-import { PdfDocuments, type PreviewDocument } from './pdf-documents';
 
-class FakePdfDocuments {
-  readonly calls: Array<{ readonly url: string; readonly zoom: number }> = [];
-  readonly open = vi.fn(async (url: string): Promise<PreviewDocument> => {
-    this.calls.push({ url, zoom: 0 });
-    return {
-      pages: [1, 2].map(() => ({
-        render: async (_canvas: HTMLCanvasElement, zoom: number) => {
-          this.calls.push({ url, zoom });
-        },
-      })),
-      destroy: async () => undefined,
-    };
-  });
-}
+const session = () => ({ mode: 'administrator' as const, expiresAt: Date.now() + 600_000 });
+const confirmation = (http: HttpTestingController) =>
+  vi.waitFor(() => http.expectOne({ method: 'HEAD', url: '/api/auth/account' }));
 
-function create() {
-  const fixture = TestBed.createComponent(DocumentPreview);
-  fixture.componentRef.setInput('url', '/api/invoices/01HF7YAT000000000000000NFN/preview');
-  fixture.componentRef.setInput('title', 'Aperçu de la facture');
-  fixture.componentRef.setInput('loadingLabel', 'Loading preview');
-  fixture.componentRef.setInput('errorLabel', 'Preview unavailable');
-  return fixture;
-}
+@Component({
+  imports: [Can, DocumentPreview],
+  template: `
+    <app-document-preview
+      *appCan="'document.render'"
+      url="/api/documents/preview"
+      title="Document preview"
+      loadingLabel="Loading preview"
+      errorLabel="Preview unavailable"
+    />
+  `,
+})
+class PreviewHost {}
 
 describe('DocumentPreview', () => {
-  let documents: FakePdfDocuments;
-
   beforeEach(() => {
-    documents = new FakePdfDocuments();
     TestBed.configureTestingModule({
-      providers: [{ provide: PdfDocuments, useValue: documents }],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        { provide: AUTH_COOKIE_LOCK_MANAGER, useValue: undefined },
+      ],
     });
   });
 
-  it('renders every page of the previewed document', async () => {
-    const fixture = create();
-    await vi.waitFor(() => expect(documents.calls.length).toBe(3));
+  it.each([true, false])(
+    'does not start a refresh loop when document permission after renewal is %s',
+    async (allowed) => {
+      const authentication = TestBed.inject(Authentication);
+      const sessions = TestBed.inject(BrowserSessionStore);
+      const http = TestBed.inject(HttpTestingController);
+      const account = accountFixture(['document.render']).account();
+      if (account === undefined) throw new Error('The test account is missing.');
+      sessions.set({ mode: 'administrator', expiresAt: Date.now() + 600_000 });
+      const initial = authentication.currentAccount();
+      http.expectOne('/api/auth/account').flush(account);
+      await initial;
+      const fixture = TestBed.createComponent(PreviewHost);
+      const root: HTMLElement = fixture.nativeElement;
+      (await confirmation(http)).flush(null, { status: 200, statusText: 'OK' });
+      await vi.waitFor(() => {
+        expect(root.querySelector('iframe')?.getAttribute('src')).toBe('/api/documents/preview');
+      });
+      http.expectNone('/api/auth/refresh');
+      http.verify();
+
+      const refresh = sessions.refresh();
+      const reloaded = authentication.currentAccount();
+      http.expectOne('/api/auth/refresh').flush(session());
+      await refresh;
+      http.expectOne('/api/auth/account').flush({
+        ...account,
+        permissions: allowed ? ['document.render'] : [],
+      });
+      await reloaded;
+      await vi.waitFor(() => {
+        const pending = http.match({ method: 'HEAD', url: '/api/auth/account' });
+        if (!allowed) {
+          expect(pending).toHaveLength(0);
+          expect(root.querySelector('iframe')).toBeNull();
+          return;
+        }
+        if (pending.length > 0) {
+          for (const request of pending) request.flush(null, { status: 200, statusText: 'OK' });
+        }
+        expect(root.querySelector('iframe')?.getAttribute('src')).toBe('/api/documents/preview');
+      });
+      http.expectNone('/api/auth/refresh');
+      http.expectNone('/api/auth/account');
+      http.verify();
+      await fixture.whenStable();
+    },
+  );
+
+  it('restores a missing session once before opening the protected PDF URL', async () => {
+    const http = TestBed.inject(HttpTestingController);
+    const fixture = TestBed.createComponent(DocumentPreview);
+    fixture.componentRef.setInput('url', '/api/documents/preview');
+    fixture.componentRef.setInput('title', 'Document preview');
+    fixture.componentRef.setInput('loadingLabel', 'Loading preview');
+    fixture.componentRef.setInput('errorLabel', 'Preview unavailable');
+    const refresh = await vi.waitFor(() => http.expectOne('/api/auth/refresh'));
+    expect(fixture.nativeElement.querySelector('iframe')).toBeNull();
+    refresh.flush(session());
+    (await confirmation(http)).flush(null, { status: 200, statusText: 'OK' });
+    await fixture.whenStable();
     const root: HTMLElement = fixture.nativeElement;
-    expect(documents.open).toHaveBeenCalledWith('/api/invoices/01HF7YAT000000000000000NFN/preview');
-    expect(root.querySelector('[role="status"]')).toBeNull();
-    expect(root.querySelectorAll('canvas')).toHaveLength(2);
-    expect(documents.calls.slice(1).map(({ zoom }) => zoom)).toEqual([1, 1]);
+    expect(root.querySelector('iframe')?.getAttribute('src')).toBe('/api/documents/preview');
+    http.verify();
   });
 
-  it('reports an unavailable preview without rendering a page', async () => {
-    documents.open.mockRejectedValueOnce(new Error('preview.failed'));
-    const fixture = create();
-    const root: HTMLElement = fixture.nativeElement;
-    await vi.waitFor(() =>
-      expect(root.querySelector('[role="alert"]')?.textContent).toContain('Preview unavailable'),
+  it('renews the session once when the server rejects the access cookie', async () => {
+    const sessions = TestBed.inject(BrowserSessionStore);
+    const http = TestBed.inject(HttpTestingController);
+    sessions.set({ mode: 'administrator', expiresAt: Date.now() + 600_000 });
+    const fixture = TestBed.createComponent(DocumentPreview);
+    fixture.componentRef.setInput('url', '/api/documents/preview');
+    fixture.componentRef.setInput('title', 'Document preview');
+    fixture.componentRef.setInput('loadingLabel', 'Loading preview');
+    fixture.componentRef.setInput('errorLabel', 'Preview unavailable');
+    const rejected = await confirmation(http);
+    rejected.flush(
+      { _tag: 'AuthenticationRequired', code: 'authentication.required' },
+      { status: 401, statusText: 'Unauthorized' },
     );
-    expect(root.querySelector('canvas')).toBeNull();
+    const refresh = await vi.waitFor(() => http.expectOne('/api/auth/refresh'));
+    refresh.flush(session());
+    (await confirmation(http)).flush(null, { status: 200, statusText: 'OK' });
+    await fixture.whenStable();
+    const root: HTMLElement = fixture.nativeElement;
+    expect(root.querySelector('iframe')?.getAttribute('src')).toBe('/api/documents/preview');
+    expect(root.querySelector('[role="alert"]')).toBeNull();
+    http.verify();
   });
 
-  it('zooms the rendered pages within the supported bounds', async () => {
-    const fixture = create();
-    await vi.waitFor(() => expect(documents.calls.length).toBe(3));
+  it('reports an unavailable preview without exposing the document URL', async () => {
+    const http = TestBed.inject(HttpTestingController);
+    const fixture = TestBed.createComponent(DocumentPreview);
+    fixture.componentRef.setInput('url', '/api/documents/preview');
+    fixture.componentRef.setInput('title', 'Document preview');
+    fixture.componentRef.setInput('loadingLabel', 'Loading preview');
+    fixture.componentRef.setInput('errorLabel', 'Preview unavailable');
+    const refresh = await vi.waitFor(() => http.expectOne('/api/auth/refresh'));
+    refresh.flush(
+      { _tag: 'SessionRejected', code: 'authentication.invalid_session' },
+      { status: 401, statusText: 'Unauthorized' },
+    );
+    await fixture.whenStable();
     const root: HTMLElement = fixture.nativeElement;
-    const [zoomOut, zoomIn] = Array.from(root.querySelectorAll('button'));
-    if (zoomOut === undefined || zoomIn === undefined) throw new Error('preview.zoom.missing');
-    expect(root.querySelector('.zoom-value')?.textContent).toContain('100');
-    zoomIn.click();
-    await vi.waitFor(() => expect(root.querySelector('.zoom-value')?.textContent).toContain('125'));
-    expect(documents.calls.at(-1)?.zoom).toBe(1.25);
-    zoomOut.click();
-    zoomOut.click();
-    await vi.waitFor(() => expect(root.querySelector('.zoom-value')?.textContent).toContain('75'));
-    zoomOut.click();
-    await vi.waitFor(() => expect(zoomOut.disabled).toBe(true));
-    expect(zoomIn.disabled).toBe(false);
+    expect(root.querySelector('[role="alert"]')?.textContent).toContain('Preview unavailable');
+    expect(root.querySelector('iframe')).toBeNull();
+    http.verify();
   });
 });

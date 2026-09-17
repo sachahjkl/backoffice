@@ -6,7 +6,6 @@ import { vi } from 'vitest';
 import { QuotesApi } from '@backoffice/quotes-api';
 import { OrdersApi } from '@backoffice/orders-api';
 import { Confirmation } from '@shared/confirmation/confirmation';
-import { previewUrl } from '@shared/document-preview/document-preview.spec-helper';
 import {
   commercialTestRoutes,
   control,
@@ -49,7 +48,7 @@ describe('Quote detail', () => {
     await harness.fixture.whenStable();
     const root: HTMLElement = harness.fixture.nativeElement;
     expect(root.querySelector('#quote-name')).toBeNull();
-    expect(root.querySelector('app-document-preview')).toBeNull();
+    expect(root.querySelector('iframe')).toBeNull();
     expect(root.querySelector(`a[href="/backoffice/quotes/${quoteId}/edit"]`)).not.toBeNull();
     expect(
       root.querySelector(`a[href="/backoffice/quotes/${quoteId}/publication"]`),
@@ -60,7 +59,9 @@ describe('Quote detail', () => {
     control<HTMLAnchorElement>(root, '#quote-document-tab').click();
     await harness.fixture.whenStable();
     expect(TestBed.inject(Router).url).toContain('/document?version=1');
-    expect(previewUrl(harness.fixture)).toBe(`/api/quotes/${quoteId}/revisions/1/preview`);
+    expect(control<HTMLIFrameElement>(root, 'iframe').getAttribute('src')).toBe(
+      `/api/quotes/${quoteId}/revisions/1/preview`,
+    );
   });
   it('does not offer signature link management without send permission', async () => {
     TestBed.configureTestingModule({ providers: [provideAccount(['quote.read'])] });

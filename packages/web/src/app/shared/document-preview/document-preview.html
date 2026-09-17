@@ -1,30 +1,7 @@
-@if (state() === 'loading') {
+@if (loading()) {
 <p role="status">{{ loadingLabel() }}</p>
-} @else if (state() === 'error') {
+} @else if (failed()) {
 <p appNotice variant="danger" role="alert">{{ errorLabel() }}</p>
-} @else {
-<div class="viewer" role="group" [attr.aria-label]="title()">
-  <div class="controls">
-    <button
-      appButton
-      type="button"
-      [disabled]="!canZoomOut()"
-      [attr.aria-label]="i18n.t('documentPreview.zoomOut')"
-      (click)="zoomOut()"
-    >
-      <span aria-hidden="true">−</span>
-    </button>
-    <span class="zoom-value">{{ zoomPercent() }} %</span>
-    <button
-      appButton
-      type="button"
-      [disabled]="!canZoomIn()"
-      [attr.aria-label]="i18n.t('documentPreview.zoomIn')"
-      (click)="zoomIn()"
-    >
-      <span aria-hidden="true">+</span>
-    </button>
-  </div>
-  <div #surface class="pages"></div>
-</div>
+} @else if (frameUrl(); as frame) {
+<iframe class="preview-surface" [src]="frame" [title]="title()"></iframe>
 }
