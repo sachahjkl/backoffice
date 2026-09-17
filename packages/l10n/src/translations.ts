@@ -1104,6 +1104,7 @@ export const translations = {
     'version.intro':
       'Cette page identifie précisément le code et les packages utilisés par ce déploiement.',
     'version.commit': 'Commit Git',
+    'version.commitLink': 'Commit {commit} — nouvel onglet',
     'version.package': 'Package',
     'version.packageVersion': 'Version',
     'version.loading': 'Chargement des informations de version…',
@@ -2643,6 +2644,7 @@ export const translations = {
     'version.title': 'Deployed version',
     'version.intro': 'This page identifies the exact code and packages used by this deployment.',
     'version.commit': 'Git commit',
+    'version.commitLink': 'Commit {commit} — new tab',
     'version.package': 'Package',
     'version.packageVersion': 'Version',
     'version.loading': 'Loading version information…',

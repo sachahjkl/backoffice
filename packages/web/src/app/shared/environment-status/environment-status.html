@@ -7,7 +7,9 @@
   <a
     class="environment-commit"
     [href]="commitUrl"
-    [attr.aria-label]="i18n.t('version.commit') + ' ' + shortCommit"
+    target="_blank"
+    rel="noopener noreferrer"
+    [attr.aria-label]="i18n.tf('version.commitLink', { commit: shortCommit })"
   >
     {{ shortCommit }}
   </a>

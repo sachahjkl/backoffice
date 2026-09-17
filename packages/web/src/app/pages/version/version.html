@@ -27,7 +27,13 @@
         <h2 id="commit-title">{{ i18n.t("version.commit") }}</h2>
         <div class="commit-scroll" role="region" aria-labelledby="commit-title" tabindex="0">
           @if (commitUrl(); as url) {
-          <a [href]="url"><code>{{ deployment.commit }}</code></a>
+          <a
+            [href]="url"
+            target="_blank"
+            rel="noopener noreferrer"
+            [attr.aria-label]="i18n.tf('version.commitLink', { commit: deployment.commit })"
+            ><code>{{ deployment.commit }}</code></a
+          >
           } @else {
           <code>{{ deployment.commit }}</code>
           }
