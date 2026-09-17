@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { Tabs, type TabItem } from '@shared/tabs/tabs';
 import { Authentication } from '@backoffice/authentication';
 

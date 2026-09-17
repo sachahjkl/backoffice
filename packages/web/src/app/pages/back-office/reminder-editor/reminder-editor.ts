@@ -23,10 +23,10 @@ import {
   type PendingRequestStore,
 } from '@backoffice/pending-provider-requests';
 import { formatMoney } from '@froment/l10n';
-import { I18nService, type TranslationKey } from '@froment/ui';
+import { I18nService, type TranslationKey } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
 import { Confirmation } from '@shared/confirmation/confirmation';
-import { LocalizedDatePipe } from '@froment/ui/localized-date';
+import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
 import { Notice } from '@shared/notice/notice';
 import { ObjectPicker } from '@shared/object-picker/object-picker';
 import { PageHeader } from '@shared/page-header/page-header';

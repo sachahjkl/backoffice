@@ -25,13 +25,13 @@ import type {
 
 import { Can } from '@backoffice/can';
 import { CompanyApi } from '@backoffice/company-api';
-import { I18nService, type TranslationKey } from '@froment/ui';
+import { I18nService, type TranslationKey } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
-import { FieldHint } from '@froment/ui/field-hint';
-import { Hint } from '@froment/ui/hint';
+import { FieldHint } from '@shared/field-hint/field-hint';
+import { Hint } from '@shared/hint/hint';
 import { formatFixedDecimal, parseFixedDecimal } from '@backoffice/quote-input';
 
 type CompanyModel = Omit<CompanySettingsUpdateRequestValue, 'expectedVersion'>;

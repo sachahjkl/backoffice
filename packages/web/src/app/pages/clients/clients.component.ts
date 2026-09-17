@@ -1,5 +1,5 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
-import { I18nService, TranslationKey } from '@froment/ui';
+import { I18nService, TranslationKey } from '@app/i18n.service';
 import { AnchorLink } from '@shared/anchor-link/anchor-link';
 
 @Component({

@@ -8,10 +8,11 @@ import {
   linkedSignal,
   output,
 } from '@angular/core';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
-import { Hint } from '@froment/ui/hint';
-import { Icon } from '@froment/ui/icon';
+import { Hint } from '@shared/hint/hint';
+import { Icon } from '@shared/icon/icon';
+
 export interface InlineEditOption {
   readonly value: string;
   readonly label: string;

@@ -35,8 +35,8 @@ import { Option, Schema } from 'effect';
 import { formatMoney } from '@froment/l10n';
 import { QuotesApi } from '@backoffice/quotes-api';
 import { OrdersApi } from '@backoffice/orders-api';
-import { I18nService, type TranslationKey } from '@froment/ui';
-import { Badge } from '@froment/ui/badge';
+import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { Badge } from '@shared/badge/badge';
 import { Button } from '@shared/button/button';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { ActionMenu, type MenuAction } from '@shared/action-menu/action-menu';
@@ -55,9 +55,10 @@ import {
   quoteStatusBadge,
 } from '../commercial-header';
 import { ClientDescription } from '../client-description/client-description';
-import { Breadcrumbs } from '@froment/ui/breadcrumbs';
+import { Breadcrumbs } from '@shared/breadcrumbs/breadcrumbs';
 import { canCancelQuote, quoteEditAction } from './quote-actions';
-import { DetailList, DetailPanel } from '@froment/ui/detail-panel';
+import { DetailList, DetailPanel } from '@shared/detail-panel/detail-panel';
+
 @Component({
   host: { class: 'page-container' },
   imports: [

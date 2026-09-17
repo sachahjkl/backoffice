@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { Button } from '../button/button';
-import { Icon } from '@froment/ui/icon';
+import { Icon } from '../icon/icon';
 import { contactMailto } from './contact-mailto';
 
 @Component({

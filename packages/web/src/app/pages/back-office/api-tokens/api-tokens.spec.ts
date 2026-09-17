@@ -4,7 +4,7 @@ import { BehaviorSubject, of } from 'rxjs';
 import { ApiTokenPermissionCodes } from '@froment/contracts';
 import { vi } from 'vitest';
 import { ApiTokensApi } from '@backoffice/api-tokens-api';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { installScrollIntoView } from '@shared/filter-choice/filter-choice.spec-helper';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { TextCopy } from '@shared/text-copy';

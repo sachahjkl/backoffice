@@ -4,7 +4,7 @@ import { ActivatedRoute, convertToParamMap, provideRouter, Router } from '@angul
 import { BehaviorSubject } from 'rxjs';
 import { vi } from 'vitest';
 import { type TeamMember } from '@froment/contracts';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import {
   createWorkspaceTable,
   sortWorkspaceRows,

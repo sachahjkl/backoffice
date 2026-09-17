@@ -12,7 +12,7 @@ import {
   type PermissionCodeValue,
 } from '@froment/contracts';
 import { Schema } from 'effect';
-import { type I18nService, type TranslationKey } from '@froment/ui';
+import { type I18nService, type TranslationKey } from '@app/i18n.service';
 import { bankTableSort, type BankTableColumn } from './bank-table-sort';
 
 export const bankStatuses = [

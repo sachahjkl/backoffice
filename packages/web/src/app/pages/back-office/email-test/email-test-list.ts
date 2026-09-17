@@ -9,11 +9,11 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
-import { I18nService, type TranslationKey } from '@froment/ui';
+import { I18nService, type TranslationKey } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
 import { DataTable } from '@shared/data-table/data-table';
-import { LocalizedDatePipe } from '@froment/ui/localized-date';
+import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
 import { EmailTestHistory } from './email-test-history';
 import { emailTestStatusLabel } from './email-test-view';
 import { createWorkspaceTable } from '../configuration/workspace-table';

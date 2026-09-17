@@ -1,6 +1,0 @@
-{
-  "name": "@froment/ui/environment-status",
-  "private": true,
-  "main": "../dist/fesm2022/froment-ui-environment-status.mjs",
-  "types": "../dist/types/froment-ui-environment-status.d.ts"
-}

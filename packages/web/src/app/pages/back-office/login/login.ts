@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { ActivatedRoute, Router, RouterLink, UrlSerializer } from '@angular/router';
 import { type LoginModeValue } from '@froment/contracts';
 import { Authentication } from '@backoffice/authentication';
-import { I18nService, TranslationKey } from '@froment/ui';
+import { I18nService, TranslationKey } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
 import { Passkeys } from '@backoffice/passkeys';

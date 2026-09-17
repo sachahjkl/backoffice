@@ -13,9 +13,9 @@ import {
   viewChild,
 } from '@angular/core';
 import { FormField, form } from '@angular/forms/signals';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
-import { Icon } from '@froment/ui/icon';
+import { Icon } from '@shared/icon/icon';
 import { createFuzzySearch } from '@shared/fuzzy-search';
 import { SearchHighlight, SearchHighlightRegistry } from '@shared/search-highlight';
 

@@ -23,10 +23,10 @@ import { QuotesApi } from '@backoffice/quotes-api';
 import { OrdersApi } from '@backoffice/orders-api';
 import { InvoicesApi } from '@backoffice/invoices-api';
 import { Authentication } from '@backoffice/authentication';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import type { PermissionCodeValue } from '@froment/contracts';
 import { Button } from '@shared/button/button';
-import { Icon } from '@froment/ui/icon';
+import { Icon } from '@shared/icon/icon';
 import { createFuzzySearch } from '@shared/fuzzy-search';
 import { SearchHighlight, SearchHighlightRegistry } from '@shared/search-highlight';
 

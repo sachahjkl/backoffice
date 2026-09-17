@@ -50,11 +50,11 @@ import { QuoteConditionPresetsApi } from '@backoffice/quote-condition-presets-ap
 import { CatalogApi } from '@backoffice/catalog-api';
 import { type CatalogItemListValue } from '@froment/contracts';
 import { formatDecimal, formatFixedDecimal, parseFixedDecimal } from '@backoffice/quote-input';
-import { I18nService, type TranslationKey } from '@froment/ui';
+import { I18nService, type TranslationKey } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
-import { OutcomePanel } from '@froment/ui/outcome-panel';
+import { OutcomePanel } from '@shared/outcome-panel/outcome-panel';
 import { ObjectPicker } from '@shared/object-picker/object-picker';
 import { affairContext } from '../affairs/affair-filters';
 import { CatalogEditor } from '../catalog-editor/catalog-editor';

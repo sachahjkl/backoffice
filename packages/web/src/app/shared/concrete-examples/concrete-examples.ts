@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { AnchorLink } from '../anchor-link/anchor-link';
-import { Icon } from '@froment/ui/icon';
+import { Icon } from '../icon/icon';
+
 @Component({
   selector: 'app-concrete-examples',
   imports: [AnchorLink, Icon],

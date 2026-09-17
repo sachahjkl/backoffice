@@ -1,6 +1,0 @@
-{
-  "name": "@froment/ui/badge",
-  "private": true,
-  "main": "../dist/fesm2022/froment-ui-badge.mjs",
-  "types": "../dist/types/froment-ui-badge.d.ts"
-}

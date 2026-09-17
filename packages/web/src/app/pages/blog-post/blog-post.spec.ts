@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { Blog } from '../../blog/blog';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { BlogPost } from './blog-post';
 
 describe('BlogPost context', () => {

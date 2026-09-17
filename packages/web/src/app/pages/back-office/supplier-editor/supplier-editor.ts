@@ -24,7 +24,7 @@ import { Ulid, type SupplierInputValue, type SupplierSummaryValue } from '@frome
 import { Option, Schema } from 'effect';
 
 import { SuppliersApi } from '@backoffice/suppliers-api';
-import { I18nService, type TranslationKey } from '@froment/ui';
+import { I18nService, type TranslationKey } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { Notice } from '@shared/notice/notice';

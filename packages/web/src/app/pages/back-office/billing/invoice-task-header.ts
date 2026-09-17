@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PageHeader } from '@shared/page-header/page-header';
-import { Badge } from '@froment/ui/badge';
-import { Breadcrumbs, type BreadcrumbItem } from '@froment/ui/breadcrumbs';
+import { Badge } from '@shared/badge/badge';
+import { Breadcrumbs, type BreadcrumbItem } from '@shared/breadcrumbs/breadcrumbs';
 import { InvoiceTask } from './invoice-task';
 
 @Component({

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { I18nService, TranslationKey } from '@froment/ui';
+import { I18nService, TranslationKey } from '@app/i18n.service';
 import { AnchorLink } from '@shared/anchor-link/anchor-link';
 import { ContactActions } from '@shared/contact-actions/contact-actions';
 

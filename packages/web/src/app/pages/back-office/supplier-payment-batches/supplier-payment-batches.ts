@@ -11,9 +11,9 @@ import type { SupplierInvoice, SupplierPaymentBatch } from '@froment/contracts';
 import { formatMoney } from '@froment/l10n';
 
 import { SupplierInvoicesApi } from '@backoffice/supplier-invoices-api';
-import { I18nService, type TranslationKey } from '@froment/ui';
+import { I18nService, type TranslationKey } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
-import { Breadcrumbs } from '@froment/ui/breadcrumbs';
+import { Breadcrumbs } from '@shared/breadcrumbs/breadcrumbs';
 import { DataTable } from '@shared/data-table/data-table';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';

@@ -2,7 +2,7 @@ import { PLATFORM_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import mermaid from 'mermaid';
 import { componentReferenceText } from '@froment/l10n/component-reference';

@@ -11,7 +11,7 @@ import {
 import { form, FormField, submit, validate } from '@angular/forms/signals';
 import { CalendarDate } from '@froment/contracts';
 import { Schema } from 'effect';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
 
 export interface DateRange {

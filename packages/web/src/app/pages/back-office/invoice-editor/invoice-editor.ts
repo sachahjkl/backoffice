@@ -41,7 +41,7 @@ import { Schema } from 'effect';
 import { InvoicesApi } from '@backoffice/invoices-api';
 import { OrdersApi } from '@backoffice/orders-api';
 import { formatDecimal, formatFixedDecimal, parseFixedDecimal } from '@backoffice/quote-input';
-import { I18nService, type TranslationKey } from '@froment/ui';
+import { I18nService, type TranslationKey } from '@app/i18n.service';
 import { formatMoney } from '@froment/l10n';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';

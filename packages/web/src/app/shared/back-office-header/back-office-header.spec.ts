@@ -7,7 +7,7 @@ import { afterEach, beforeEach, vi } from 'vitest';
 
 import { Authentication } from '@backoffice/authentication';
 import { accountFixture } from '@backoffice/account.spec-helper';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { BackOfficeHeader } from './back-office-header';
 
 describe('BackOfficeHeader', () => {

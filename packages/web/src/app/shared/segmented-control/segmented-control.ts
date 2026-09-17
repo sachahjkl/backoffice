@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, input, output, TemplateRef } from '@angular/core';
 import type { ButtonVariant } from '@shared/button/button';
 import type { ButtonSize } from '@shared/button/button';
-import { Hint } from '@froment/ui/hint';
+import { Hint } from '@shared/hint/hint';
+
 export type SegmentedControlVariant = Exclude<ButtonVariant, 'link'>;
 
 export interface SegmentedControlOption<Value extends string = string> {

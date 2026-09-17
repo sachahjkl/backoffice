@@ -1,5 +1,5 @@
 import { type InvoiceDetailValue } from '@froment/contracts';
-import { type TranslationKey } from '@froment/ui';
+import { type TranslationKey } from '@app/i18n.service';
 import { detailBalance } from '../billing/billing-state';
 
 interface InvoiceActions {

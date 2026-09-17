@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/c
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter, map } from 'rxjs';
-import { I18nService, type TranslationKey } from '@froment/ui';
-import { Icon, type IconName } from '@froment/ui/icon';
+import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { Icon, type IconName } from '@shared/icon/icon';
 import { Authentication } from '@backoffice/authentication';
 import type { CompanyModuleValue, PermissionCodeValue } from '@froment/contracts';
 

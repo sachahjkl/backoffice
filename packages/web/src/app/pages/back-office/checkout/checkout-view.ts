@@ -1,5 +1,6 @@
 import { type CheckoutConnection, type CheckoutOperation } from '@froment/contracts';
-import { type TranslationKey } from '@froment/ui';
+import { type TranslationKey } from '@app/i18n.service';
+
 export function checkoutStatusLabel(status: CheckoutOperation['status']): TranslationKey {
   return `checkout.${status}`;
 }

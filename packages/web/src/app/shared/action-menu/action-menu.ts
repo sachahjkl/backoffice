@@ -9,7 +9,8 @@ import {
   viewChild,
 } from '@angular/core';
 import { Button, type ButtonVariant } from '@shared/button/button';
-import { Icon } from '@froment/ui/icon';
+import { Icon } from '@shared/icon/icon';
+
 export interface MenuAction {
   readonly id: string;
   readonly label: string;

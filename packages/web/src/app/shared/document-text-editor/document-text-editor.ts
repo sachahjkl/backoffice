@@ -18,7 +18,7 @@ import type { FormValueControl } from '@angular/forms/signals';
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
 import type { DocumentTextPresentationValue } from '@froment/contracts';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { IconToolbar, type IconToolbarGroup } from '@shared/icon-toolbar/icon-toolbar';
 import { documentTextContent, serializeEditorDocument } from './document-text-content';
 

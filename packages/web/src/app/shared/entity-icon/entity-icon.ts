@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { Icon, type IconName } from '@froment/ui/icon';
+import { Icon, type IconName } from '@shared/icon/icon';
+
 export type EntityIconVariant = 'default' | 'info' | 'success' | 'warning' | 'danger';
 
 @Component({

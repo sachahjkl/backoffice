@@ -27,14 +27,14 @@ import {
   type DocumentTextPresentationValue,
 } from '@froment/contracts';
 import { DocumentTextEditor } from '@shared/document-text-editor/document-text-editor';
-import { DocumentTextView } from '@froment/ui/document-text-view';
-import { I18nService, type TranslationKey } from '@froment/ui';
+import { DocumentTextView } from '@shared/document-text-view/document-text-view';
+import { I18nService, type TranslationKey } from '@app/i18n.service';
 import { QuoteConditionPresetsApi } from '@backoffice/quote-condition-presets-api';
 import { Button } from '@shared/button/button';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
-import { Breadcrumbs, type BreadcrumbItem } from '@froment/ui/breadcrumbs';
+import { Breadcrumbs, type BreadcrumbItem } from '@shared/breadcrumbs/breadcrumbs';
 import { workspaceTableParams, workspaceTableQuery } from '../configuration/workspace-table';
 import { conditionTableOptions } from '../configuration/workspace-tables';
 

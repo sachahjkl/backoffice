@@ -12,7 +12,8 @@ import {
   viewChild,
 } from '@angular/core';
 import { Button } from '@shared/button/button';
-import { Icon } from '@froment/ui/icon';
+import { Icon } from '@shared/icon/icon';
+
 @Component({
   imports: [Button, Icon],
   changeDetection: ChangeDetectionStrategy.OnPush,

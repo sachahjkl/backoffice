@@ -1,5 +1,5 @@
 import { type QuoteStatusValue } from '@froment/contracts';
-import { type TranslationKey } from '@froment/ui';
+import { type TranslationKey } from '@app/i18n.service';
 import { type ButtonVariant } from '@shared/button/button';
 
 interface QuoteEditAction {

@@ -1,6 +1,0 @@
-{
-  "name": "@froment/ui/status-block",
-  "private": true,
-  "main": "../dist/fesm2022/froment-ui-status-block.mjs",
-  "types": "../dist/types/froment-ui-status-block.d.ts"
-}

@@ -27,14 +27,14 @@ import {
 } from '@froment/contracts';
 import { Option, Schema } from 'effect';
 import { EmailTemplatesApi } from '@backoffice/email-templates-api';
-import { I18nService, type TranslationKey } from '@froment/ui';
+import { I18nService, type TranslationKey } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
 import { ActionMenu } from '@shared/action-menu/action-menu';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
 import { DocumentTextEditor } from '@shared/document-text-editor/document-text-editor';
-import { DocumentTextView } from '@froment/ui/document-text-view';
+import { DocumentTextView } from '@shared/document-text-view/document-text-view';
 import { SegmentedControl } from '@shared/segmented-control/segmented-control';
 import { emailFilterQuery, emailQuery } from '../emails/email-workspace';
 import { convertEmailBody, emailBodyPresentation } from '../email-body';

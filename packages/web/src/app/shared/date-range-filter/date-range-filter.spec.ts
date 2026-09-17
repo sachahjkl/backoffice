@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { vi } from 'vitest';
 import { DateRangeFilter, type DateRange } from './date-range-filter';
 

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { I18nService } from '@froment/ui';
-import { Theme } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
+import { Theme } from '../../theme';
+
 @Component({
   selector: 'app-theme-toggle',
   imports: [],

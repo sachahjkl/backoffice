@@ -5,7 +5,7 @@ import { RouterTestingHarness } from '@angular/router/testing';
 import { filter, firstValueFrom } from 'rxjs';
 import { vi } from 'vitest';
 import { ClientPortalApi } from '@backoffice/client-portal-api';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { TableExport } from '@shared/table-export/table-export';
 import { installScrollIntoView, pressKey } from '@shared/filter-choice/filter-choice.spec-helper';
 import { CustomerDocumentDetail } from '../customer-document-detail/customer-document-detail';

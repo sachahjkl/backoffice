@@ -1,7 +1,8 @@
 import { type ParamMap } from '@angular/router';
 import { Schema, Option } from 'effect';
 import { CalendarDate, type IntegrationOperationValue, type Reminder } from '@froment/contracts';
-import { type TranslationKey } from '@froment/ui';
+import { type TranslationKey } from '@app/i18n.service';
+
 export const emailViews = ['messages', 'drafts', 'reminders', 'templates'] as const;
 export type EmailView = (typeof emailViews)[number];
 const EmailView = Schema.Literals(emailViews);

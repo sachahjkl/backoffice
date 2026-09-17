@@ -20,7 +20,7 @@ import {
 } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { APP_SHELL_STATE, routeShell } from './app-shell';
-import { I18nService } from '@froment/ui';
+import { I18nService } from './i18n.service';
 import { NavigationFocus } from './navigation-focus';
 import { PageMetadata } from './page-metadata';
 import { CopyNotice } from './shared/copy-notice/copy-notice';
@@ -29,7 +29,7 @@ import { SiteHeader } from './shared/site-header/site-header';
 import { BackOfficeHeader } from './shared/back-office-header/back-office-header';
 import { BackOfficeHeaderPlaceholder } from './shared/back-office-header/back-office-header-placeholder';
 import { Button } from './shared/button/button';
-import { EnvironmentStatus } from '@froment/ui/environment-status';
+import { EnvironmentStatus } from './shared/environment-status/environment-status';
 import { FlashOutlet } from './shared/flash/flash-outlet';
 import { NavigationProgress } from './shared/navigation-progress/navigation-progress';
 

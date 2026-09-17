@@ -14,7 +14,7 @@ import { BankingApi } from '@backoffice/banking-api';
 import { BankLedgerApi } from '@backoffice/bank-ledger-api';
 import { InvoicesApi } from '@backoffice/invoices-api';
 import { Confirmation } from '@shared/confirmation/confirmation';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { vi } from 'vitest';
 import { bankWorkspaceRoutes } from './bank-workspace.routes';
 

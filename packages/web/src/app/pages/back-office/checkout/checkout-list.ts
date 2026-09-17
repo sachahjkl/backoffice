@@ -10,11 +10,11 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { formatMoney } from '@froment/l10n';
-import { I18nService, type TranslationKey } from '@froment/ui';
+import { I18nService, type TranslationKey } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
 import { DataTable } from '@shared/data-table/data-table';
-import { LocalizedDatePipe } from '@froment/ui/localized-date';
+import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
 import { CheckoutHistory } from './checkout-history';
 import { checkoutStatusLabel } from './checkout-view';
 import { createWorkspaceTable } from '../configuration/workspace-table';

@@ -2,7 +2,7 @@ import { provideAccount } from '@backoffice/account.spec-helper';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { type BankPaymentList } from '@froment/contracts';
 import { BankReconciliation } from './bank-reconciliation';
 import {

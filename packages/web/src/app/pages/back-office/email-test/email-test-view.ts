@@ -1,5 +1,6 @@
 import { type EmailTestOperation } from '@froment/contracts';
-import { type TranslationKey } from '@froment/ui';
+import { type TranslationKey } from '@app/i18n.service';
+
 export function emailTestStatusLabel(status: EmailTestOperation['status']): TranslationKey {
   return `emailTest.${status}`;
 }

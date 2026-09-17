@@ -1,6 +1,0 @@
-{
-  "name": "@froment/ui/detail-panel",
-  "private": true,
-  "main": "../dist/fesm2022/froment-ui-detail-panel.mjs",
-  "types": "../dist/types/froment-ui-detail-panel.d.ts"
-}

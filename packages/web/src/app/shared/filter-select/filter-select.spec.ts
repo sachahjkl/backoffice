@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { FormField, form } from '@angular/forms/signals';
 import { pressKey } from '@shared/filter-choice/filter-choice.spec-helper';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { FilterSelect } from './filter-select';
 
 @Component({

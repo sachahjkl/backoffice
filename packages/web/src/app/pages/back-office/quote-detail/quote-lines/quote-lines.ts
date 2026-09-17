@@ -2,9 +2,10 @@ import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core
 import { type QuoteRevisionValue } from '@froment/contracts';
 import { formatMoney } from '@froment/l10n';
 import { formatFixedDecimal } from '@backoffice/quote-input';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { DataTable } from '@shared/data-table/data-table';
-import { DocumentTextView } from '@froment/ui/document-text-view';
+import { DocumentTextView } from '@shared/document-text-view/document-text-view';
+
 @Component({
   imports: [DataTable, DocumentTextView],
   changeDetection: ChangeDetectionStrategy.OnPush,

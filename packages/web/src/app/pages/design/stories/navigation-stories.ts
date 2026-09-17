@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { form, FormField, min, max } from '@angular/forms/signals';
 import { RouterOutlet } from '@angular/router';
 import { Button } from '@shared/button/button';
-import { Breadcrumbs } from '@froment/ui/breadcrumbs';
+import { Breadcrumbs } from '@shared/breadcrumbs/breadcrumbs';
 import { Tabs } from '@shared/tabs/tabs';
 import { TabLayout, TabPanel, TabPanelOutlet } from '@shared/tabs/tab-panel';
 import { Drawer } from '@shared/drawer/drawer';

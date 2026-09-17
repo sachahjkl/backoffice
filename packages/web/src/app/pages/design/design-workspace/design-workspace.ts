@@ -20,23 +20,23 @@ import {
   submit,
   validate,
 } from '@angular/forms/signals';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { formatFixedDecimal } from '@backoffice/quote-input';
 import { ActionMenu, type MenuAction } from '@shared/action-menu/action-menu';
 import { EntityIcon } from '@shared/entity-icon/entity-icon';
-import { Badge, type BadgeVariant } from '@froment/ui/badge';
-import { Breadcrumbs } from '@froment/ui/breadcrumbs';
+import { Badge, type BadgeVariant } from '@shared/badge/badge';
+import { Breadcrumbs } from '@shared/breadcrumbs/breadcrumbs';
 import { BulkSelection } from '@shared/bulk-selection/bulk-selection';
 import { Button } from '@shared/button/button';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { DataTable } from '@shared/data-table/data-table';
 import { EmptyState } from '@shared/empty-state/empty-state';
 import { EventHistory, type HistoryEvent } from '@shared/event-history/event-history';
-import { FieldGroup } from '@froment/ui/field-group';
+import { FieldGroup } from '@shared/field-group/field-group';
 import { FilterChip } from '@shared/filter-chip/filter-chip';
 import { FilterMenu, FilterPanel } from '@shared/filter-menu/filter-menu';
 import { FilterChoice, type FilterChoiceOption } from '@shared/filter-choice/filter-choice';
-import { Hint } from '@froment/ui/hint';
+import { Hint } from '@shared/hint/hint';
 import { createFuzzySearch } from '@shared/fuzzy-search';
 import { ListToolbar } from '@shared/list-toolbar/list-toolbar';
 import { ListWorkspace } from '@shared/list-toolbar/list-workspace';

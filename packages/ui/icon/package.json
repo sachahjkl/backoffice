@@ -1,6 +1,0 @@
-{
-  "name": "@froment/ui/icon",
-  "private": true,
-  "main": "../dist/fesm2022/froment-ui-icon.mjs",
-  "types": "../dist/types/froment-ui-icon.d.ts"
-}

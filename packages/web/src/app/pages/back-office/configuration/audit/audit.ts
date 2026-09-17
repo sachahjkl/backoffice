@@ -20,10 +20,10 @@ import {
 } from '@froment/contracts';
 import { Schema } from 'effect';
 import { AuditApi } from '@backoffice/audit-api';
-import { I18nService, type TranslationKey } from '@froment/ui';
+import { I18nService, type TranslationKey } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
 import { DataTable } from '@shared/data-table/data-table';
-import { LocalizedDatePipe } from '@froment/ui/localized-date';
+import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
 import { Notice } from '@shared/notice/notice';
 import { ResultNavigation } from '@shared/result-navigation/result-navigation';
 import { auditQuery } from './audit-query';

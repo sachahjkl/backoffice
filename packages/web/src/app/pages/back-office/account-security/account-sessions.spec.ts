@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { vi } from 'vitest';
 import { Authentication } from '@backoffice/authentication';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { AccountSessions } from './account-sessions';
 

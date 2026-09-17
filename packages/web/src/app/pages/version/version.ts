@@ -9,10 +9,10 @@ import {
 import { type DeploymentMetadataValue } from '@froment/contracts';
 import { RouterLink } from '@angular/router';
 
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { Notice } from '@shared/notice/notice';
-import { EnvironmentStatus } from '@froment/ui/environment-status';
-import { RuntimeConfiguration } from '@froment/ui';
+import { EnvironmentStatus } from '@shared/environment-status/environment-status';
+import { RuntimeConfiguration } from '@app/runtime-configuration';
 import { VersionApi } from './version-api';
 
 type VersionState = 'loading' | 'ready' | 'error';

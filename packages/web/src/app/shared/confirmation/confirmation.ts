@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Predicate } from 'effect';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
 
 interface ConfirmationOptions {

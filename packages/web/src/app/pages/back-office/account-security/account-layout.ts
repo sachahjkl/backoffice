@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
 import { PageHeader } from '@shared/page-header/page-header';
 import { Tabs, type TabItem } from '@shared/tabs/tabs';

@@ -15,17 +15,17 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { FormField, form } from '@angular/forms/signals';
 import { Router, RouterLink } from '@angular/router';
 import { type AuditEventValue, type CreditNote } from '@froment/contracts';
-import { type TranslationKey } from '@froment/ui';
+import { type TranslationKey } from '@app/i18n.service';
 import { InvoiceCreditsApi } from '@backoffice/invoice-credits-api';
 import { OrdersApi } from '@backoffice/orders-api';
 import { Button } from '@shared/button/button';
-import { Badge } from '@froment/ui/badge';
+import { Badge } from '@shared/badge/badge';
 import { DataTable } from '@shared/data-table/data-table';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
 import { DocumentPreview } from '@shared/document-preview/document-preview';
-import { DocumentTextView } from '@froment/ui/document-text-view';
-import { LocalizedDatePipe } from '@froment/ui/localized-date';
+import { DocumentTextView } from '@shared/document-text-view/document-text-view';
+import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
 import { Tabs, type TabItem } from '@shared/tabs/tabs';
 import { SplitAction } from '@shared/split-action/split-action';
 import { type MenuAction } from '@shared/action-menu/action-menu';
@@ -39,7 +39,7 @@ import {
 import { canCancelPayment } from '../billing/receipt-cancellation';
 import { invoiceActions, recordedEntryStatus } from './invoice-actions';
 import { ClientDescription } from '../client-description/client-description';
-import { DetailList, DetailPanel } from '@froment/ui/detail-panel';
+import { DetailList, DetailPanel } from '@shared/detail-panel/detail-panel';
 import { createEventHistoryResource } from '@shared/event-history/event-history-resource';
 
 @Component({

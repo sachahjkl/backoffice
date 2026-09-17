@@ -1,5 +1,5 @@
 import { computed, inject } from '@angular/core';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { formatPluralText, type Language, type PluralForms } from '@froment/l10n';
 // Gardez ce point d’entrée hors du dictionnaire global et des imports publics immédiats.
 import { componentReferenceText } from '@froment/l10n/component-reference';

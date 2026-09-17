@@ -1,5 +1,5 @@
 import { type QuoteSummaryValue } from '@froment/contracts';
-import { type TranslationKey } from '@froment/ui';
+import { type TranslationKey } from '@app/i18n.service';
 import { type SortDirection } from '@shared/table-sort/table-sort';
 import { nextTableSort } from '@shared/table-sort/sort-state';
 import { type AffairSort } from './affair-filters';

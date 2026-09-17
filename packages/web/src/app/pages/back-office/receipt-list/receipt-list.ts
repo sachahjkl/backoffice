@@ -15,7 +15,7 @@ import { CalendarDate, InvoiceReceiptList } from '@froment/contracts';
 import { Schema } from 'effect';
 import { formatMoney } from '@froment/l10n';
 import { InvoicesApi } from '@backoffice/invoices-api';
-import { I18nService, type TranslationKey } from '@froment/ui';
+import { I18nService, type TranslationKey } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
 import { DataTable } from '@shared/data-table/data-table';
@@ -26,8 +26,8 @@ import { createFuzzySearch } from '@shared/fuzzy-search';
 import { SearchHighlight, SearchHighlightRegistry } from '@shared/search-highlight';
 import { ListWorkspace } from '@shared/list-toolbar/list-workspace';
 import { TableExport } from '@shared/table-export/table-export';
-import { Hint } from '@froment/ui/hint';
-import { Icon } from '@froment/ui/icon';
+import { Hint } from '@shared/hint/hint';
+import { Icon } from '@shared/icon/icon';
 import { matchIndices, nextBillingSort, sortDirection } from '../billing/billing-list';
 import {
   compareEntries,

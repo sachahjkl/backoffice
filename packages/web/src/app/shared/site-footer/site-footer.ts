@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { I18nService } from '@froment/ui';
-import { EnvironmentStatus } from '@froment/ui/environment-status';
+import { I18nService } from '@app/i18n.service';
+import { EnvironmentStatus } from '@shared/environment-status/environment-status';
 import { LanguageSelector } from '@shared/language-selector/language-selector';
 import { ThemeToggle } from '@shared/theme-toggle/theme-toggle';
 

@@ -12,7 +12,7 @@ import { CreditNoteList } from '@froment/contracts';
 import { formatMoney } from '@froment/l10n';
 import { InvoicesApi } from '@backoffice/invoices-api';
 import { Can } from '@backoffice/can';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
 import { DataTable } from '@shared/data-table/data-table';
@@ -31,7 +31,7 @@ import {
   entryExportEmptyKey,
   entryEmptyKey,
 } from '../billing/entry-list';
-import { LocalizedDatePipe } from '@froment/ui/localized-date';
+import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
 import { BillingNav } from '../billing/billing-nav';
 import { businessDate } from '../billing/billing-state';
 import { billingDetailQuery } from '../billing/billing-navigation';

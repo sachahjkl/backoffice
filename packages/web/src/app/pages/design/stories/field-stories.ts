@@ -16,8 +16,8 @@ import { FilterMenu, FilterPanel } from '@shared/filter-menu/filter-menu';
 import { FilterChoice, type FilterChoiceOption } from '@shared/filter-choice/filter-choice';
 import { DateRangeFilter, type DateRange } from '@shared/date-range-filter/date-range-filter';
 import { ObjectPicker } from '@shared/object-picker/object-picker';
-import { FieldGroup } from '@froment/ui/field-group';
-import { FieldHint } from '@froment/ui/field-hint';
+import { FieldGroup } from '@shared/field-group/field-group';
+import { FieldHint } from '@shared/field-hint/field-hint';
 import { FilterSelect } from '@shared/filter-select/filter-select';
 import { InlineEdit } from '@shared/inline-edit/inline-edit';
 import {

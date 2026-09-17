@@ -15,18 +15,18 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { type OrderSummaryValue, type QuoteRevisionValue } from '@froment/contracts';
 import { OrdersApi } from '@backoffice/orders-api';
 import { QuotesApi } from '@backoffice/quotes-api';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
-import { Badge } from '@froment/ui/badge';
+import { Badge } from '@shared/badge/badge';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
 import { QuoteLines } from '../quote-detail/quote-lines/quote-lines';
 import { quoteIdentifier } from '../quote-detail/quote-values';
 import { affairContext } from '../affairs/affair-filters';
 import { commercialBreadcrumbs, commercialDocumentTitle } from '../commercial-header';
-import { Breadcrumbs } from '@froment/ui/breadcrumbs';
+import { Breadcrumbs } from '@shared/breadcrumbs/breadcrumbs';
 import { ClientDescription } from '../client-description/client-description';
-import { DetailList, DetailPanel } from '@froment/ui/detail-panel';
+import { DetailList, DetailPanel } from '@shared/detail-panel/detail-panel';
 import { DocumentPreview } from '@shared/document-preview/document-preview';
 
 @Component({

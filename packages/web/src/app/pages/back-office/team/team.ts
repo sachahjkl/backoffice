@@ -17,12 +17,12 @@ import { EntityIcon, type EntityIconVariant } from '@shared/entity-icon/entity-i
 import { TeamList, TeamMember, TeamProfile } from '@froment/contracts';
 import { Option, Schema } from 'effect';
 import { TeamApi } from '@backoffice/team-api';
-import { I18nService, type TranslationKey } from '@froment/ui';
+import { I18nService, type TranslationKey } from '@app/i18n.service';
 import { Button, type ButtonVariant } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
 import { Confirmation } from '@shared/confirmation/confirmation';
-import { LocalizedDatePipe } from '@froment/ui/localized-date';
+import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
 import { TableSort } from '@shared/table-sort/table-sort';
 import { ListToolbar } from '@shared/list-toolbar/list-toolbar';
 import { ListWorkspace } from '@shared/list-toolbar/list-workspace';

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { convertToParamMap } from '@angular/router';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { providerTabs, providerTestParams } from './provider-navigation';
 
 describe('Provider navigation', () => {

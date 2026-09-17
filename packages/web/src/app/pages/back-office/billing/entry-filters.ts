@@ -10,7 +10,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormField, form } from '@angular/forms/signals';
 import { ActivatedRoute, type ParamMap, Router } from '@angular/router';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
 import { ListToolbar } from '@shared/list-toolbar/list-toolbar';
 import { ListSearch } from '@shared/list-search/list-search';

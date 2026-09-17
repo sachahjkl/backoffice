@@ -11,7 +11,7 @@ import { OrdersApi } from '@backoffice/orders-api';
 import { InvoicesApi } from '@backoffice/invoices-api';
 import { unsavedChangesGuard } from '@backoffice/unsaved-changes-guard';
 import { ClientEditor } from '@app/pages/back-office/client-editor/client-editor';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { GlobalSearch } from './global-search';
 import { accountFixture, provideAccount } from '@backoffice/account.spec-helper';
 

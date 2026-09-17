@@ -29,12 +29,12 @@ import { Schema } from 'effect';
 import { formatMoney } from '@froment/l10n';
 import { BankLedgerApi } from '@backoffice/bank-ledger-api';
 import { Authentication } from '@backoffice/authentication';
-import { I18nService, type TranslationKey } from '@froment/ui';
+import { I18nService, type TranslationKey } from '@app/i18n.service';
 import { ledgerErrorMessage } from '../bank-ledger/ledger-error-message';
-import { Badge } from '@froment/ui/badge';
+import { Badge } from '@shared/badge/badge';
 import { Button } from '@shared/button/button';
 import { Confirmation } from '@shared/confirmation/confirmation';
-import { LocalizedDatePipe } from '@froment/ui/localized-date';
+import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
 import {

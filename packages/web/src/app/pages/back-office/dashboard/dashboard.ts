@@ -23,12 +23,12 @@ import { ClientsApi } from '@backoffice/clients-api';
 import { InvoicesApi } from '@backoffice/invoices-api';
 import { OrdersApi } from '@backoffice/orders-api';
 import { QuotesApi } from '@backoffice/quotes-api';
-import { I18nService } from '@froment/ui';
-import { Badge, type BadgeVariant } from '@froment/ui/badge';
+import { I18nService } from '@app/i18n.service';
+import { Badge, type BadgeVariant } from '@shared/badge/badge';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
 import { DataTable } from '@shared/data-table/data-table';
-import { formatLocalizedDate } from '@froment/ui/localized-date';
+import { formatLocalizedDate } from '@shared/localized-date/localized-date-pipe';
 import { clientContactIncomplete } from '../clients/client-contact';
 
 type PageState = 'loading' | 'ready' | 'error';

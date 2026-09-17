@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { FormField, disabled, form, required } from '@angular/forms/signals';
 import { Confirmation } from '@shared/confirmation/confirmation';
-import { LocalizedDatePipe } from '@froment/ui/localized-date';
+import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
 import {
   IntegrationStatusList,
   IntegrationRetryList,
@@ -19,7 +19,7 @@ import {
   type IntegrationSubmissionValue,
 } from '@froment/contracts';
 import { IntegrationsApi } from '@backoffice/integrations-api';
-import { I18nService, type TranslationKey } from '@froment/ui';
+import { I18nService, type TranslationKey } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';

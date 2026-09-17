@@ -11,8 +11,8 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import type { SupplierSummaryValue } from '@froment/contracts';
 
 import { SuppliersApi } from '@backoffice/suppliers-api';
-import { I18nService } from '@froment/ui';
-import { Badge, type BadgeVariant } from '@froment/ui/badge';
+import { I18nService } from '@app/i18n.service';
+import { Badge, type BadgeVariant } from '@shared/badge/badge';
 import { Button } from '@shared/button/button';
 import { Can } from '@backoffice/can';
 import { DataTable } from '@shared/data-table/data-table';

@@ -20,7 +20,7 @@ import { formatMoney } from '@froment/l10n';
 import { AccountingApi } from '@backoffice/accounting-api';
 import { Authentication } from '@backoffice/authentication';
 import { Can } from '@backoffice/can';
-import { I18nService, type TranslationKey } from '@froment/ui';
+import { I18nService, type TranslationKey } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
 import { DataTable } from '@shared/data-table/data-table';
 import { Notice } from '@shared/notice/notice';
@@ -30,7 +30,7 @@ import { ListWorkspace } from '@shared/list-toolbar/list-workspace';
 import { WorkspaceTableTools } from '@shared/list-toolbar/workspace-table-tools';
 import { Tabs } from '@shared/tabs/tabs';
 import { TableSort } from '@shared/table-sort/table-sort';
-import { FieldHint } from '@froment/ui/field-hint';
+import { FieldHint } from '@shared/field-hint/field-hint';
 import { createWorkspaceTable } from '../configuration/workspace-table';
 import {
   accountTableOptions,

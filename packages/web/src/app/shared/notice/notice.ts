@@ -7,8 +7,9 @@ import {
   Renderer2,
   ViewEncapsulation,
 } from '@angular/core';
-import { I18nService } from '@froment/ui';
-import { Icon } from '@froment/ui/icon';
+import { I18nService } from '@app/i18n.service';
+import { Icon } from '@shared/icon/icon';
+
 export type NoticeVariant = 'info' | 'success' | 'warning' | 'danger';
 
 @Component({

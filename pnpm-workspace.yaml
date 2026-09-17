@@ -36,7 +36,6 @@ catalog:
   jsdom: "^30.0.1"
   marked: "^18.0.11"
   mermaid: "11.17.2"
-  ng-packagr: "22.1.1"
   oxfmt: "^0.66.0"
   oxlint: "1.81.0"
   rxjs: "~7.8.2"

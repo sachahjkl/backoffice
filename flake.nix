@@ -61,8 +61,8 @@
           else "unversioned";
         inherit (packageJson) version;
         pname = packageJson.name;
-        buildNode = pkgs.nodejs_24;
-        runtimeNode = pkgs.nodejs-slim_24;
+        buildNode = pkgs.nodejs_26;
+        runtimeNode = pkgs.nodejs-slim_26;
         caBundle = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
         pnpm = pkgs.pnpm.override {nodejs-slim = buildNode;};
         cousineFonts = pkgs.google-fonts.override {fonts = ["Cousine"];};
@@ -97,28 +97,6 @@
             ./packages/l10n/package.json
             ./packages/l10n/src
             ./packages/l10n/tsconfig.json
-            ./packages/ui/angular.json
-            ./packages/ui/badge
-            ./packages/ui/breadcrumbs
-            ./packages/ui/detail-panel
-            ./packages/ui/detail-row
-            ./packages/ui/document-text-view
-            ./packages/ui/environment-status
-            ./packages/ui/field-group
-            ./packages/ui/field-hint
-            ./packages/ui/hint
-            ./packages/ui/icon
-            ./packages/ui/localized-date
-            ./packages/ui/ng-package.json
-            ./packages/ui/outcome-panel
-            ./packages/ui/package.json
-            ./packages/ui/process-timeline
-            ./packages/ui/src
-            ./packages/ui/status-block
-            ./packages/ui/tsconfig.json
-            ./packages/ui/tsconfig.lib.json
-            ./packages/ui/tsconfig.lib.prod.json
-            ./packages/ui/tsconfig.spec.json
             ./packages/web/angular.json
             ./packages/web/package.json
             ./packages/web/public
@@ -137,7 +115,7 @@
           inherit pname version src;
           inherit pnpm;
           fetcherVersion = 4;
-          hash = "sha256-mzYZf75HY2aH4DaDeMjoIM/0i8GydaeQ4529A6BBy/0=";
+          hash = "sha256-nHIMQBQN3lsIIYbNyi1w21j+S4V7N+9MB3rUB8eqCmI=";
         };
         commonPnpmAttrs = {
           inherit pname version src pnpmDeps;
@@ -381,7 +359,8 @@
           node-runtime = pkgs.runCommand "node-runtime-check" {nativeBuildInputs = [runtimeNode];} ''
             node --input-type=module -e '
               import assert from "node:assert/strict";
-              assert.equal(process.versions.node.split(".")[0], "24");
+              assert.equal(process.versions.node.split(".")[0], "26");
+              assert.equal(Temporal.PlainDate.from("2026-09-06").add({ days: 1 }).toString(), "2026-09-07");
             '
             touch "$out"
           '';

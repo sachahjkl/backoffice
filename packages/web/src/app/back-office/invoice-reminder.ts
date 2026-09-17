@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { type InvoiceDetailValue, type UlidValue } from '@froment/contracts';
 import { formatMoney } from '@froment/l10n';
-import { I18nService } from '@froment/ui';
-import { formatLocalizedDate } from '@froment/ui/localized-date';
+import { I18nService } from '@app/i18n.service';
+import { formatLocalizedDate } from '@shared/localized-date/localized-date-pipe';
 import { ClientsApi } from './clients-api';
 import { InvoicesApi } from './invoices-api';
 

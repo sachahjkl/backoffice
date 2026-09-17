@@ -6,7 +6,7 @@
     "start": "pnpm --filter @froment/web start",
     "build": "pnpm --recursive --if-present build",
     "watch": "pnpm --filter @froment/web watch",
-    "test": "pnpm --filter @froment/ui build && pnpm --filter @froment/web build && pnpm --recursive --if-present test",
+    "test": "pnpm --filter @froment/web build && pnpm --recursive --if-present test",
     "test:watch": "pnpm --filter @froment/web test:watch",
     "test:interface": "playwright test --config tools/interface/playwright.config.mjs",
     "lint": "tsc -p tools/oxlint/tsconfig.json --noEmit && oxlint . && pnpm --filter @froment/web lint:templates",
@@ -24,7 +24,7 @@
     "typescript": "catalog:"
   },
   "engines": {
-    "node": ">=24.0.0 <25"
+    "node": ">=26.7.0 <27"
   },
   "packageManager": "pnpm@11.25.0"
 }

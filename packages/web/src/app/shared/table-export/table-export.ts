@@ -8,8 +8,8 @@ import {
   input,
 } from '@angular/core';
 import { Button } from '@shared/button/button';
-import { Hint } from '@froment/ui/hint';
-import { Icon } from '@froment/ui/icon';
+import { Hint } from '@shared/hint/hint';
+import { Icon } from '@shared/icon/icon';
 import { serializeCsv, type CsvCell } from './csv';
 
 @Component({

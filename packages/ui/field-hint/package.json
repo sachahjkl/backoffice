@@ -1,6 +1,0 @@
-{
-  "name": "@froment/ui/field-hint",
-  "private": true,
-  "main": "../dist/fesm2022/froment-ui-field-hint.mjs",
-  "types": "../dist/types/froment-ui-field-hint.d.ts"
-}

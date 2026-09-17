@@ -28,7 +28,7 @@ import {
   type EmailTestOperation,
   type EmailTestRequest,
 } from '@froment/contracts';
-import { I18nService, type TranslationKey } from '@froment/ui';
+import { I18nService, type TranslationKey } from '@app/i18n.service';
 import { ConnectionsApi } from '@backoffice/connections-api';
 import {
   PendingProviderRequests,

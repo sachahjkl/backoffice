@@ -3,7 +3,7 @@ import { ActivatedRoute, convertToParamMap, provideRouter, Router } from '@angul
 import { BehaviorSubject } from 'rxjs';
 import { vi } from 'vitest';
 import { AuditApi } from '@backoffice/audit-api';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { type GlobalAuditPage } from '@froment/contracts';
 import { Audit } from './audit';
 

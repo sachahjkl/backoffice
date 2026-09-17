@@ -1,5 +1,5 @@
 import { type ProviderConnection } from '@froment/contracts';
-import { type I18nService } from '@froment/ui';
+import { type I18nService } from '@app/i18n.service';
 import { type TabItem } from '@shared/tabs/tabs';
 import { type ParamMap } from '@angular/router';
 import {

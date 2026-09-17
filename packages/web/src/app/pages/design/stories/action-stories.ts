@@ -2,15 +2,15 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { form, FormField } from '@angular/forms/signals';
 import { RouterLink } from '@angular/router';
 import { Button, type ButtonSize, type ButtonVariant } from '@shared/button/button';
-import { Icon } from '@froment/ui/icon';
+import { Icon } from '@shared/icon/icon';
 import { IconToolbar, type IconToolbarGroup } from '@shared/icon-toolbar/icon-toolbar';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { ActionMenu, type MenuAction } from '@shared/action-menu/action-menu';
 import { SplitAction } from '@shared/split-action/split-action';
 import { CopyField } from '@shared/copy-field/copy-field';
 import { AnchorLink } from '@shared/anchor-link/anchor-link';
 import { AnchorCopy } from '@shared/anchor-copy';
-import { Hint } from '@froment/ui/hint';
+import { Hint } from '@shared/hint/hint';
 import { currentReference, StoryPage, type StoryDefinition } from '../story-page';
 import { referenceText } from '../reference-text';
 

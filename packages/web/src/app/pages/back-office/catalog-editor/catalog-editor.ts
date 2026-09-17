@@ -25,8 +25,8 @@ import { CatalogItemCreateRequest, Ulid, type CatalogItemValue } from '@froment/
 import { Option, Schema } from 'effect';
 import { CatalogApi } from '@backoffice/catalog-api';
 import { formatDecimal, formatFixedDecimal, parseFixedDecimal } from '@backoffice/quote-input';
-import { I18nService, type TranslationKey } from '@froment/ui';
-import { Badge } from '@froment/ui/badge';
+import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { Badge } from '@shared/badge/badge';
 import { Button } from '@shared/button/button';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { Notice } from '@shared/notice/notice';

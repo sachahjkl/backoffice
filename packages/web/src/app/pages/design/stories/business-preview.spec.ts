@@ -10,7 +10,7 @@ import { ClientsApi } from '@backoffice/clients-api';
 import { QuotesApi } from '@backoffice/quotes-api';
 import { OrdersApi } from '@backoffice/orders-api';
 import { InvoicesApi } from '@backoffice/invoices-api';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { BusinessContext, type BusinessSettings } from './business-context';
 import { BusinessPreview } from './business-preview';

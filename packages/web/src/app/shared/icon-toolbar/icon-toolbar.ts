@@ -7,8 +7,9 @@ import {
   output,
   viewChildren,
 } from '@angular/core';
-import { Hint } from '@froment/ui/hint';
-import { Icon, type IconName } from '@froment/ui/icon';
+import { Hint } from '@shared/hint/hint';
+import { Icon, type IconName } from '@shared/icon/icon';
+
 export interface IconToolbarItem<Value extends string> {
   readonly value: Value;
   readonly label: string;

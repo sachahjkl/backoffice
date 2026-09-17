@@ -11,7 +11,7 @@ import { RouterLink } from '@angular/router';
 import { InvoiceRefundList } from '@froment/contracts';
 import { formatMoney } from '@froment/l10n';
 import { InvoicesApi } from '@backoffice/invoices-api';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
 import { DataTable } from '@shared/data-table/data-table';

@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { form, FormField } from '@angular/forms/signals';
 import { PageHeader } from '@shared/page-header/page-header';
-import { OutcomePanel } from '@froment/ui/outcome-panel';
+import { OutcomePanel } from '@shared/outcome-panel/outcome-panel';
 import { VisualSample } from '@shared/visual-sample/visual-sample';
-import { ProcessTimeline } from '@froment/ui/process-timeline';
+import { ProcessTimeline } from '@shared/process-timeline/process-timeline';
 import { ConcreteExamples } from '@shared/concrete-examples/concrete-examples';
 import { ContactActions } from '@shared/contact-actions/contact-actions';
 import { SiteHeader } from '@shared/site-header/site-header';
@@ -17,7 +17,7 @@ import { LanguageSelector } from '@shared/language-selector/language-selector';
 import { ThemeToggle } from '@shared/theme-toggle/theme-toggle';
 import { NewLabel } from '@shared/new-label/new-label';
 import { Button } from '@shared/button/button';
-import { Badge } from '@froment/ui/badge';
+import { Badge } from '@shared/badge/badge';
 import { StoryPage, currentReference, type StoryDefinition } from '../story-page';
 import { referenceText } from '../reference-text';
 

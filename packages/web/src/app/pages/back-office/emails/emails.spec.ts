@@ -2,7 +2,8 @@ import { invoiceId, operation, setupEmailPage } from './email-workspace.spec-hel
 import { Emails } from './emails';
 import { installScrollIntoView } from '@shared/filter-choice/filter-choice.spec-helper';
 import { TestBed } from '@angular/core/testing';
-import { I18nService } from '@froment/ui';
+import { I18nService } from '@app/i18n.service';
+
 describe('Emails', () => {
   it.each([
     { view: 'messages', state: 'simulated', columns: ['subject', 'recipient', 'state', 'date'] },
