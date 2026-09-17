@@ -20,7 +20,7 @@ import {
   submit,
   validate,
 } from '@angular/forms/signals';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import { formatFixedDecimal } from '@backoffice/quote-input';
 import { ActionMenu, type MenuAction } from '@shared/action-menu/action-menu';
 import { EntityIcon } from '@shared/entity-icon/entity-icon';

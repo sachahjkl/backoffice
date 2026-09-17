@@ -31,7 +31,7 @@ import { InvoicesApi } from '@backoffice/invoices-api';
 import { OrdersApi } from '@backoffice/orders-api';
 import { QuotesApi } from '@backoffice/quotes-api';
 import { AffairsApi } from '@backoffice/affairs-api';
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { Badge, type BadgeVariant } from '@froment/ui';
 import { ActionMenu } from '@shared/action-menu/action-menu';
 import { Button } from '@shared/button/button';

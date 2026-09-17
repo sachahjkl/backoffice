@@ -17,7 +17,7 @@ import { EntityIcon, type EntityIconVariant } from '@shared/entity-icon/entity-i
 import { TeamList, TeamMember, TeamProfile } from '@froment/contracts';
 import { Option, Schema } from 'effect';
 import { TeamApi } from '@backoffice/team-api';
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { Button, type ButtonVariant } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';

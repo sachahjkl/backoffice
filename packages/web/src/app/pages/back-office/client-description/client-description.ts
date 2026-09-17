@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { translationParts, type ParameterizedTranslationKey } from '@froment/l10n';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 
 export const clientDescriptionKeys = {
   quote: 'commercialHeader.quoteDescription',

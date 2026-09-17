@@ -28,7 +28,7 @@ import {
 } from '@froment/contracts';
 import { DocumentTextEditor } from '@shared/document-text-editor/document-text-editor';
 import { DocumentTextView } from '@shared/document-text-view/document-text-view';
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { QuoteConditionPresetsApi } from '@backoffice/quote-condition-presets-api';
 import { Button } from '@shared/button/button';
 import { Confirmation } from '@shared/confirmation/confirmation';

@@ -1,8 +1,8 @@
 import { FilterSelect } from '@shared/filter-select/filter-select';
 import { ChangeDetectionStrategy, Component, computed, inject, linkedSignal } from '@angular/core';
 import { disabled, form, FormField, pattern, required, submit } from '@angular/forms/signals';
-import { I18nService } from '@app/i18n.service';
-import { Theme } from '@app/theme';
+import { I18nService } from '@froment/ui';
+import { Theme } from '@froment/ui';
 import { Authentication } from '@backoffice/authentication';
 import type { FlashModeValue } from '@froment/contracts';
 import { Button } from '@shared/button/button';

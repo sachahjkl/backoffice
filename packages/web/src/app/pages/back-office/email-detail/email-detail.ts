@@ -13,7 +13,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { type IntegrationOperationValue } from '@froment/contracts';
 import { IntegrationsApi } from '@backoffice/integrations-api';
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { Badge } from '@froment/ui';
 import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';

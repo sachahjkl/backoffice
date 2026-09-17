@@ -5,7 +5,7 @@ import {
   input,
   ViewEncapsulation,
 } from '@angular/core';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 
 @Component({
   selector: 'div[appDataTable]',

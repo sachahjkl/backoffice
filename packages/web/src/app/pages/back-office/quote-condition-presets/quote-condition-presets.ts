@@ -17,7 +17,7 @@ import {
 } from '@froment/contracts';
 
 import { QuoteConditionPresetsApi } from '@backoffice/quote-condition-presets-api';
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { DataTable } from '@shared/data-table/data-table';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';

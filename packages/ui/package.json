@@ -13,7 +13,9 @@
   },
   "scripts": {
     "build": "ng build",
-    "watch": "ng build --watch --configuration development"
+    "watch": "ng build --watch --configuration development",
+    "test": "NODE_OPTIONS=--no-experimental-webstorage ng test --watch=false",
+    "test:watch": "NODE_OPTIONS=--no-experimental-webstorage ng test"
   },
   "dependencies": {
     "tslib": "catalog:"
@@ -22,13 +24,16 @@
     "@angular/build": "catalog:",
     "@angular/cli": "catalog:",
     "@angular/compiler-cli": "catalog:",
+    "jsdom": "catalog:",
     "ng-packagr": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "peerDependencies": {
     "@angular/common": "catalog:",
     "@angular/core": "catalog:",
     "@angular/forms": "catalog:",
+    "@angular/platform-browser": "catalog:",
     "@froment/contracts": "workspace:*",
     "@froment/l10n": "workspace:*",
     "rxjs": "catalog:"

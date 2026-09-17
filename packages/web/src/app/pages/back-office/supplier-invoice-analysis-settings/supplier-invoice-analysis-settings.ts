@@ -14,7 +14,7 @@ import type {
 } from '@froment/contracts';
 
 import { SupplierInvoicesApi } from '@backoffice/supplier-invoices-api';
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { Breadcrumbs } from '@shared/breadcrumbs/breadcrumbs';
 import { Button } from '@shared/button/button';
 import { Confirmation } from '@shared/confirmation/confirmation';

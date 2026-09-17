@@ -17,7 +17,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { type BankTransactionValue } from '@froment/contracts';
 import { formatMoney } from '@froment/l10n';
 import { BankingApi } from '@backoffice/banking-api';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { Badge } from '@froment/ui';
 import { DataTable } from '@shared/data-table/data-table';

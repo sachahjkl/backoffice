@@ -4,7 +4,7 @@ import {
   type CreditNoteList,
   type InvoiceRefundList,
 } from '@froment/contracts';
-import { type TranslationKey } from '@app/i18n.service';
+import { type TranslationKey } from '@froment/ui';
 import { paymentMethodKey } from './billing-state';
 import { type BillingSort, readBillingSort } from './billing-list';
 

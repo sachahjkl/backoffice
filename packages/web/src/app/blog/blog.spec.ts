@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { Blog, blogPostSlugs } from './blog';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 
 describe('Blog', () => {
   it('renders the localized Markdown article by slug', () => {

@@ -11,7 +11,7 @@ import type { CustomRole } from '@froment/contracts';
 
 import { Can } from '@backoffice/can';
 import { RolesApi } from '@backoffice/roles-api';
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { Breadcrumbs } from '@shared/breadcrumbs/breadcrumbs';
 import { Confirmation } from '@shared/confirmation/confirmation';

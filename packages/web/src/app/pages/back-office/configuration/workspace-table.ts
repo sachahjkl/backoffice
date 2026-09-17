@@ -3,7 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, type ParamMap } from '@angular/router';
 import { Option, Schema } from 'effect';
 import { type FuseResult, type IFuseOptions } from 'fuse.js';
-import { I18nService, type Language, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type Language, type TranslationKey } from '@froment/ui';
 import { createFuzzySearch } from '@shared/fuzzy-search';
 import { type SortDirection } from '@shared/table-sort/table-sort';
 import { nextTableSort } from '@shared/table-sort/sort-state';

@@ -4,7 +4,7 @@ import {
   type InvoiceSummaryValue,
   type InvoicePaymentValue,
 } from '@froment/contracts';
-import { type TranslationKey } from '@app/i18n.service';
+import { type TranslationKey } from '@froment/ui';
 import { type BillingSort, readBillingSort } from './billing-list';
 import { readBillingPeriod } from './billing-period';
 

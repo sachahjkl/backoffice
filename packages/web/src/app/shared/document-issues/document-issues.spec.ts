@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import { DocumentIssues } from './document-issues';
 
 describe('DocumentIssues', () => {

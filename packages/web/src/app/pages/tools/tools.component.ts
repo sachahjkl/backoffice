@@ -1,5 +1,5 @@
 import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/core';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import { AnchorLink } from '@shared/anchor-link/anchor-link';
 
 type LabEntry = {

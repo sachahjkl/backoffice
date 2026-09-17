@@ -45,7 +45,7 @@ import { BankingApi } from '@backoffice/banking-api';
 import { Authentication } from '@backoffice/authentication';
 import { InvoicesApi } from '@backoffice/invoices-api';
 import { formatFixedDecimal, parseFixedDecimal } from '@backoffice/quote-input';
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { Badge } from '@froment/ui';
 import { Confirmation } from '@shared/confirmation/confirmation';

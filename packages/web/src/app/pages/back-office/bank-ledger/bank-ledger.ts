@@ -19,7 +19,7 @@ import { LedgerPeriod, type LedgerList } from '@froment/contracts';
 import { Schema } from 'effect';
 import { formatMoney } from '@froment/l10n';
 import { BankLedgerApi } from '@backoffice/bank-ledger-api';
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { ledgerErrorMessage } from './ledger-error-message';
 import { Badge } from '@froment/ui';
 import { Button } from '@shared/button/button';

@@ -27,7 +27,7 @@ import {
 } from '@froment/contracts';
 import { Option, Schema } from 'effect';
 import { EmailTemplatesApi } from '@backoffice/email-templates-api';
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { ActionMenu } from '@shared/action-menu/action-menu';
 import { Confirmation } from '@shared/confirmation/confirmation';

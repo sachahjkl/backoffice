@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Blog as BlogService } from '../../blog/blog';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import { Icon } from '@shared/icon/icon';
 import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
 

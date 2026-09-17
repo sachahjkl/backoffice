@@ -21,7 +21,7 @@ import {
   type InvoiceSummary,
 } from '@froment/contracts';
 import { formatMoney } from '@froment/l10n';
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { CheckoutApi } from '@backoffice/checkout-api';
 import { InvoicesApi } from '@backoffice/invoices-api';
 import {

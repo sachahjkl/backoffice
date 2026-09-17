@@ -6,7 +6,7 @@ import type { SupplierInvoiceAnalysisStatus, SupplierSummaryValue } from '@frome
 
 import { SupplierInvoicesApi } from '@backoffice/supplier-invoices-api';
 import { SuppliersApi } from '@backoffice/suppliers-api';
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { Breadcrumbs } from '@shared/breadcrumbs/breadcrumbs';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';

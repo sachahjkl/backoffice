@@ -3,7 +3,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router, withComponentInputBinding } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import { installScrollIntoView } from '@shared/filter-choice/filter-choice.spec-helper';
 import { AnchorCopy } from '@shared/anchor-copy';
 import { CopyNotice } from '@shared/copy-notice/copy-notice';

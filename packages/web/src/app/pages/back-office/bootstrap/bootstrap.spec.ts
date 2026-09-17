@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { BootstrapApi, type BootstrapOutcome } from '@backoffice/bootstrap-api';
-import { I18nService } from '../../../i18n.service';
+import { I18nService } from '@froment/ui';
 import { Bootstrap } from './bootstrap';
 
 class BootstrapApiStub {

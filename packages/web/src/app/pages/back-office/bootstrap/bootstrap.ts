@@ -2,7 +2,7 @@ import { afterNextRender, ChangeDetectionStrategy, Component, inject, signal } f
 import { FormField, form, required, submit } from '@angular/forms/signals';
 import { RouterLink } from '@angular/router';
 import { BootstrapApi } from '@backoffice/bootstrap-api';
-import { I18nService, TranslationKey } from '@app/i18n.service';
+import { I18nService, TranslationKey } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
 

@@ -50,7 +50,7 @@ import { QuoteConditionPresetsApi } from '@backoffice/quote-condition-presets-ap
 import { CatalogApi } from '@backoffice/catalog-api';
 import { type CatalogItemListValue } from '@froment/contracts';
 import { formatDecimal, formatFixedDecimal, parseFixedDecimal } from '@backoffice/quote-input';
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';

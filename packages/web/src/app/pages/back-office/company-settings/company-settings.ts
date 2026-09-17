@@ -25,7 +25,7 @@ import type {
 
 import { Can } from '@backoffice/can';
 import { CompanyApi } from '@backoffice/company-api';
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { Notice } from '@shared/notice/notice';

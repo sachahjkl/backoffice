@@ -13,7 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 import { type DocumentIssueValue, type InvoiceDetailValue, Ulid } from '@froment/contracts';
 import { Schema } from 'effect';
 import { InvoicesApi } from '@backoffice/invoices-api';
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { formatMoney } from '@froment/l10n';
 import { BillingNavigation } from './billing-navigation';

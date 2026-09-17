@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, inject, PLATFORM_ID, signal } from 
 import { email, form, FormField, required } from '@angular/forms/signals';
 import { RouterLink } from '@angular/router';
 import { translate } from '@froment/l10n';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { PageHeader } from '@shared/page-header/page-header';

@@ -1,4 +1,4 @@
-import { TranslationKey } from '@app/i18n.service';
+import { TranslationKey } from '@froment/ui';
 
 export interface PolicyLink {
   href?: string;

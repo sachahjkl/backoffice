@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import { Button, type ButtonSize, type ButtonVariant } from '@shared/button/button';
 import { Icon } from '@shared/icon/icon';
 import { IconToolbar, type IconToolbarGroup } from '@shared/icon-toolbar/icon-toolbar';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import { ActionMenu, type MenuAction } from '@shared/action-menu/action-menu';
 import { SplitAction } from '@shared/split-action/split-action';
 import { CopyField } from '@shared/copy-field/copy-field';

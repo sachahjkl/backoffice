@@ -13,7 +13,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { PublicQuoteApi } from '../../public-quote/public-quote-api';
 import { publicQuoteContextChanged } from '../../public-quote/public-quote-navigation';
 import { PublicQuote } from './public-quote';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import { TabPanelOutlet } from '@shared/tabs/tab-panel';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { unsavedChangesGuard } from '@backoffice/unsaved-changes-guard';

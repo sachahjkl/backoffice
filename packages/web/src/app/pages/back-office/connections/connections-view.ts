@@ -1,5 +1,5 @@
 import { type ProviderConnection } from '@froment/contracts';
-import { type TranslationKey } from '@app/i18n.service';
+import { type TranslationKey } from '@froment/ui';
 import { type ConnectionProvider } from './provider-navigation';
 
 export function providerName(provider: ConnectionProvider): TranslationKey {

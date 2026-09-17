@@ -31,7 +31,7 @@ import {
 import { Option, Schema } from 'effect';
 import { ClientsApi, type ClientOutcome } from '@backoffice/clients-api';
 import { ClientCreationStore, type PendingClientCreation } from '@backoffice/client-creation-store';
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { Notice } from '@shared/notice/notice';

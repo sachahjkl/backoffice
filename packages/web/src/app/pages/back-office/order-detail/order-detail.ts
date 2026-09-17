@@ -15,7 +15,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { type OrderSummaryValue, type QuoteRevisionValue } from '@froment/contracts';
 import { OrdersApi } from '@backoffice/orders-api';
 import { QuotesApi } from '@backoffice/quotes-api';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { Badge } from '@froment/ui';
 import { Notice } from '@shared/notice/notice';

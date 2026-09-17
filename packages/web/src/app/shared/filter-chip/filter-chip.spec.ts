@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import { FilterChip } from './filter-chip';
 
 describe('FilterChip', () => {

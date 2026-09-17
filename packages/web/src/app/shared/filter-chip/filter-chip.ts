@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import { Icon } from '@shared/icon/icon';
 
 @Component({

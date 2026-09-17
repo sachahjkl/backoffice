@@ -21,7 +21,7 @@ import {
 } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
 import { formatMoney } from '@froment/l10n';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import {
   calculateLineAmounts,
   calculateLineSummary,

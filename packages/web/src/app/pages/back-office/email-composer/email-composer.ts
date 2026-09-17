@@ -40,7 +40,7 @@ import {
   PendingProviderRequests,
   type PendingRequestStore,
 } from '@backoffice/pending-provider-requests';
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { ActionMenu } from '@shared/action-menu/action-menu';
 import { FieldGroup } from '@shared/field-group/field-group';

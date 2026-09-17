@@ -3,7 +3,7 @@ import {
   type InvoiceStatusValue,
   type QuoteStatusValue,
 } from '@froment/contracts';
-import { type TranslationKey } from '@app/i18n.service';
+import { type TranslationKey } from '@froment/ui';
 import { type BadgeVariant } from '@froment/ui';
 import { activePaidCents, documentStatusKey, financialStatus } from './billing/billing-state';
 import { type affairContext } from './affairs/affair-filters';

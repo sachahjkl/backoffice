@@ -2,7 +2,7 @@ import { computed, inject, Injectable } from '@angular/core';
 import { SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { marked } from 'marked';
-import { I18nService, Language } from '@app/i18n.service';
+import { I18nService, Language } from '@froment/ui';
 import { blogPosts, type BlogPostMetadata } from '@froment/l10n/blog-posts';
 import deploymentEn from './posts/2026-09-du-commit-a-nomad.en.md';
 import deploymentFr from './posts/2026-09-du-commit-a-nomad.fr.md';

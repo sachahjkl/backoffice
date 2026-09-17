@@ -8,7 +8,7 @@ import { QuotesApi } from '@backoffice/quotes-api';
 import { provideAccount } from '@backoffice/account.spec-helper';
 import { formatMoney } from '@froment/l10n';
 import { vi } from 'vitest';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import { AffairDetail } from './affair-detail';
 import { detailTabs } from '../quote-detail/commercial.spec-helper';
 import { Confirmation } from '@shared/confirmation/confirmation';

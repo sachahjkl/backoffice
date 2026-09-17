@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import { FilterChoice, type FilterChoiceOption } from '@shared/filter-choice/filter-choice';
 import { FilterMenu, FilterPanel } from '@shared/filter-menu/filter-menu';
 import { ListSearch } from '@shared/list-search/list-search';

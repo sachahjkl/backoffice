@@ -30,7 +30,7 @@ import {
 } from '@froment/contracts';
 import { formatMoney } from '@froment/l10n';
 import { BankingApi } from '@backoffice/banking-api';
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { DataTable } from '@shared/data-table/data-table';

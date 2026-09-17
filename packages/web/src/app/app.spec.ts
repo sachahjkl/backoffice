@@ -3,7 +3,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideRouter, Router } from '@angular/router';
 import { App } from './app';
 import { routes } from './app.routes';
-import { I18nService } from './i18n.service';
+import { I18nService } from '@froment/ui';
 
 async function navigate(
   fixture: ComponentFixture<App>,

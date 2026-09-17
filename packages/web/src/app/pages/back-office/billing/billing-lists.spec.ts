@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 import { Router, RouterLink, provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { InvoicesApi } from '@backoffice/invoices-api';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import { installScrollIntoView, pressKey } from '@shared/filter-choice/filter-choice.spec-helper';
 import { TableExport } from '@shared/table-export/table-export';
 import { SearchHighlight } from '@shared/search-highlight';

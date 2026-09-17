@@ -10,7 +10,7 @@ import {
 } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { routes } from '@app/app.routes';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { installScrollIntoView } from '@shared/filter-choice/filter-choice.spec-helper';
 import { serializeCsv } from '@shared/table-export/csv';

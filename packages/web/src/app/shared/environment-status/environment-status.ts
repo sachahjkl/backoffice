@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core
 import { RouterLink } from '@angular/router';
 import type { AppEnvironmentValue } from '@froment/contracts';
 
-import { I18nService, type TranslationKey } from '../../i18n.service';
-import { RuntimeConfiguration } from '../../runtime-configuration';
+import { I18nService, type TranslationKey } from '@froment/ui';
+import { RuntimeConfiguration } from '@froment/ui';
 
 const environmentStatus = (
   environment: AppEnvironmentValue | undefined,

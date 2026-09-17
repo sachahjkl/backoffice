@@ -32,8 +32,8 @@ import { decodeApiFailure, requestOutcome, type ApiFailure } from '@shared/api-o
 import { BrowserSessionStore } from './browser-session-store';
 import { AuthCookieLock } from './auth-cookie-lock';
 import type { AuthenticationResponseJSON } from '@simplewebauthn/browser';
-import { I18nService } from '@app/i18n.service';
-import { Theme } from '@app/theme';
+import { I18nService } from '@froment/ui';
+import { Theme } from '@froment/ui';
 
 export type AuthenticationOutcome =
   | { readonly success: true; readonly mode: LoginModeValue }

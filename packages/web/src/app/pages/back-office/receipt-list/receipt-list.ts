@@ -15,7 +15,7 @@ import { CalendarDate, InvoiceReceiptList } from '@froment/contracts';
 import { Schema } from 'effect';
 import { formatMoney } from '@froment/l10n';
 import { InvoicesApi } from '@backoffice/invoices-api';
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
 import { DataTable } from '@shared/data-table/data-table';

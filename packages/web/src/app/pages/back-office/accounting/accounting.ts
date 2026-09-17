@@ -20,7 +20,7 @@ import { formatMoney } from '@froment/l10n';
 import { AccountingApi } from '@backoffice/accounting-api';
 import { Authentication } from '@backoffice/authentication';
 import { Can } from '@backoffice/can';
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { DataTable } from '@shared/data-table/data-table';
 import { Notice } from '@shared/notice/notice';

@@ -15,7 +15,7 @@ import { CheckoutApi } from '@backoffice/checkout-api';
 import { Authentication } from '@backoffice/authentication';
 import { Can } from '@backoffice/can';
 import { Confirmation } from '@shared/confirmation/confirmation';
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { Badge } from '@froment/ui';
 import { Notice } from '@shared/notice/notice';

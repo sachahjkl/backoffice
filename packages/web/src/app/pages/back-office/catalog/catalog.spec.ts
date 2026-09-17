@@ -5,7 +5,7 @@ import { provideRouter, Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { vi } from 'vitest';
 import { CatalogApi } from '@backoffice/catalog-api';
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { installScrollIntoView, pressKey } from '@shared/filter-choice/filter-choice.spec-helper';
 import { TableExport } from '@shared/table-export/table-export';
 import { TabPanelOutlet } from '@shared/tabs/tab-panel';

@@ -14,7 +14,7 @@ import {
 import { disabled, form, FormField, maxLength, required } from '@angular/forms/signals';
 import { Passkey, PasskeyList, accountPasswordConfig } from '@froment/contracts';
 import { Passkeys } from '@backoffice/passkeys';
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 import type { FlashModeValue } from '@froment/contracts';
 import { Icon } from '@shared/icon/icon';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import { Flash, type FlashMessage } from './flash';
 
 @Component({

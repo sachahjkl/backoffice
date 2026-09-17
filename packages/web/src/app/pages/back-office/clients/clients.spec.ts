@@ -9,7 +9,7 @@ import { ClientsApi } from '@backoffice/clients-api';
 import { QuotesApi } from '@backoffice/quotes-api';
 import { OrdersApi } from '@backoffice/orders-api';
 import { InvoicesApi } from '@backoffice/invoices-api';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import { TableExport } from '@shared/table-export/table-export';
 import { installScrollIntoView, pressKey } from '@shared/filter-choice/filter-choice.spec-helper';
 import { ClientDetail } from '../client-detail/client-detail';

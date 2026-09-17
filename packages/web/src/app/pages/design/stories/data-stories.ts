@@ -1,7 +1,7 @@
 import { NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { form, FormField, min, max } from '@angular/forms/signals';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { DataTable } from '@shared/data-table/data-table';
 import { TableSort, type SortDirection } from '@shared/table-sort/table-sort';

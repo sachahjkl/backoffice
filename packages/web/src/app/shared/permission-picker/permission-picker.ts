@@ -16,7 +16,7 @@ import {
   AccordionTrigger,
 } from '@angular/aria/accordion';
 import type { FuseResultMatch } from 'fuse.js';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { createFuzzySearch } from '@shared/fuzzy-search';
 import { Icon } from '@shared/icon/icon';

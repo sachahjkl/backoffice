@@ -16,7 +16,7 @@ import {
   ProviderConnection as ProviderConnectionSchema,
 } from '@froment/contracts';
 import { Schema } from 'effect';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import { CheckoutApi } from '@backoffice/checkout-api';
 import { ConnectionsData } from './connections-data';
 import { providerTabs, providerTestParams } from './provider-navigation';

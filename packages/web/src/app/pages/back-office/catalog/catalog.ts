@@ -16,7 +16,7 @@ import { type CatalogItemListValue } from '@froment/contracts';
 import { formatMoney } from '@froment/l10n';
 import { CatalogApi } from '@backoffice/catalog-api';
 import { formatFixedDecimal } from '@backoffice/quote-input';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import { Badge } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { DataTable } from '@shared/data-table/data-table';

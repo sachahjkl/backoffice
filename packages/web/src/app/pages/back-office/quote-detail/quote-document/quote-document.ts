@@ -19,7 +19,7 @@ import {
   type UlidValue,
 } from '@froment/contracts';
 import { QuotesApi } from '@backoffice/quotes-api';
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
 import { DocumentIssues } from '@shared/document-issues/document-issues';

@@ -20,7 +20,7 @@ import {
 } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { APP_SHELL_STATE, routeShell } from './app-shell';
-import { I18nService } from './i18n.service';
+import { I18nService } from '@froment/ui';
 import { NavigationFocus } from './navigation-focus';
 import { PageMetadata } from './page-metadata';
 import { CopyNotice } from './shared/copy-notice/copy-notice';

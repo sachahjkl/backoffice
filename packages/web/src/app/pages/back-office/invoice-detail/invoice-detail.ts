@@ -15,7 +15,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { FormField, form } from '@angular/forms/signals';
 import { Router, RouterLink } from '@angular/router';
 import { type AuditEventValue, type CreditNote } from '@froment/contracts';
-import { type TranslationKey } from '@app/i18n.service';
+import { type TranslationKey } from '@froment/ui';
 import { InvoiceCreditsApi } from '@backoffice/invoice-credits-api';
 import { OrdersApi } from '@backoffice/orders-api';
 import { Button } from '@shared/button/button';

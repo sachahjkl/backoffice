@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/c
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Blog, RenderedBlogPost } from '../../blog/blog';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
 import { MermaidDiagrams } from '@shared/mermaid-diagrams';
 

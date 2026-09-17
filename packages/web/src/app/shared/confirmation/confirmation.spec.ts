@@ -2,7 +2,7 @@ import { Dialog } from '@angular/cdk/dialog';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import { Confirmation } from './confirmation';
 
 @Component({ template: '<button type="button">Open</button>' })

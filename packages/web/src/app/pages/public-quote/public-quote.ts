@@ -31,7 +31,7 @@ import {
 import { Option, Schema } from 'effect';
 import { distinctUntilChanged } from 'rxjs';
 
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { PublicQuoteApi } from '../../public-quote/public-quote-api';
 import { Button } from '@shared/button/button';
 import { DocumentTextView } from '@shared/document-text-view/document-text-view';

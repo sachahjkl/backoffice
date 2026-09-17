@@ -12,7 +12,7 @@ import { QuotesApi } from '@backoffice/quotes-api';
 import { AffairsApi } from '@backoffice/affairs-api';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { ClientDetail } from './client-detail';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import { TabPanelOutlet } from '@shared/tabs/tab-panel';
 
 const client = {

@@ -19,7 +19,7 @@ import {
   type IntegrationSubmissionValue,
 } from '@froment/contracts';
 import { IntegrationsApi } from '@backoffice/integrations-api';
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';

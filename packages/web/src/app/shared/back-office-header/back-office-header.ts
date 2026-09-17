@@ -15,7 +15,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { filter } from 'rxjs';
 
 import { Authentication } from '@backoffice/authentication';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import { BackOfficeNav } from '@shared/back-office-nav/back-office-nav';
 import { Button } from '@shared/button/button';
 import { Icon } from '@shared/icon/icon';

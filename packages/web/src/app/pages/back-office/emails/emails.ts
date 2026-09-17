@@ -24,7 +24,7 @@ import { IntegrationsApi } from '@backoffice/integrations-api';
 import { EmailDraftsApi } from '@backoffice/email-drafts-api';
 import { EmailTemplatesApi } from '@backoffice/email-templates-api';
 import { RemindersApi } from '@backoffice/reminders-api';
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { reminderErrorMessage } from '../reminder-editor/reminder-error-message';
 import { Button } from '@shared/button/button';
 import { Badge } from '@froment/ui';

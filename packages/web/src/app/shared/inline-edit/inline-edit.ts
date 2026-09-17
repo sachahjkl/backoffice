@@ -8,7 +8,7 @@ import {
   linkedSignal,
   output,
 } from '@angular/core';
-import { I18nService } from '@app/i18n.service';
+import { I18nService } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { Hint } from '@shared/hint/hint';
 import { Icon } from '@shared/icon/icon';

@@ -103,6 +103,7 @@
             ./packages/ui/src
             ./packages/ui/tsconfig.json
             ./packages/ui/tsconfig.lib.json
+            ./packages/ui/tsconfig.spec.json
             ./packages/web/angular.json
             ./packages/web/package.json
             ./packages/web/public

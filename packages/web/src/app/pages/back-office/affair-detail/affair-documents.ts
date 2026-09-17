@@ -4,7 +4,7 @@ import {
   type OrderSummaryValue,
   type QuoteDetailValue,
 } from '@froment/contracts';
-import { type TranslationKey } from '@app/i18n.service';
+import { type TranslationKey } from '@froment/ui';
 import { translate, type Language } from '@froment/l10n';
 import { type IconName } from '@shared/icon/icon';
 import { type affairContext } from '../affairs/affair-filters';

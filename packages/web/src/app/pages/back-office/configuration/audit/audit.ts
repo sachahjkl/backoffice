@@ -20,7 +20,7 @@ import {
 } from '@froment/contracts';
 import { Schema } from 'effect';
 import { AuditApi } from '@backoffice/audit-api';
-import { I18nService, type TranslationKey } from '@app/i18n.service';
+import { I18nService, type TranslationKey } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { DataTable } from '@shared/data-table/data-table';
 import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
