@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { form, FormField } from '@angular/forms/signals';
-import { Badge, type BadgeVariant } from '@shared/badge/badge';
+import { Badge, type BadgeVariant } from '@froment/ui';
 import { Notice, type NoticeVariant } from '@shared/notice/notice';
 import { EmptyState } from '@shared/empty-state/empty-state';
 import { Hint } from '@shared/hint/hint';

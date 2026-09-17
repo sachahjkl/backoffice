@@ -24,6 +24,7 @@
     "@angular/ssr": "catalog:",
     "@froment/contracts": "workspace:*",
     "@froment/l10n": "workspace:*",
+    "@froment/ui": "workspace:*",
     "@simplewebauthn/browser": "14.0.0",
     "@tiptap/core": "catalog:",
     "@tiptap/starter-kit": "catalog:",

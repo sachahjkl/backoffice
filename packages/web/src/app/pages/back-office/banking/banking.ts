@@ -19,7 +19,7 @@ import { formatMoney } from '@froment/l10n';
 import { BankingApi } from '@backoffice/banking-api';
 import { I18nService } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
-import { Badge } from '@shared/badge/badge';
+import { Badge } from '@froment/ui';
 import { DataTable } from '@shared/data-table/data-table';
 import { EmptyState } from '@shared/empty-state/empty-state';
 import { EntityIcon, type EntityIconVariant } from '@shared/entity-icon/entity-icon';

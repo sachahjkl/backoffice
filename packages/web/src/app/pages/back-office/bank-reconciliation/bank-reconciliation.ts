@@ -47,7 +47,7 @@ import { InvoicesApi } from '@backoffice/invoices-api';
 import { formatFixedDecimal, parseFixedDecimal } from '@backoffice/quote-input';
 import { I18nService, type TranslationKey } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
-import { Badge } from '@shared/badge/badge';
+import { Badge } from '@froment/ui';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { DataTable } from '@shared/data-table/data-table';
 import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';

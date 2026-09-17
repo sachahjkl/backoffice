@@ -4,7 +4,7 @@ import {
   type QuoteStatusValue,
 } from '@froment/contracts';
 import { type TranslationKey } from '@app/i18n.service';
-import { type BadgeVariant } from '@shared/badge/badge';
+import { type BadgeVariant } from '@froment/ui';
 import { activePaidCents, documentStatusKey, financialStatus } from './billing/billing-state';
 import { type affairContext } from './affairs/affair-filters';
 import { type BreadcrumbItem } from '@shared/breadcrumbs/breadcrumbs';

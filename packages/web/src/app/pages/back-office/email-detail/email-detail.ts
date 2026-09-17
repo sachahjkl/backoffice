@@ -15,7 +15,7 @@ import { type IntegrationOperationValue } from '@froment/contracts';
 import { IntegrationsApi } from '@backoffice/integrations-api';
 import { I18nService, type TranslationKey } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
-import { Badge } from '@shared/badge/badge';
+import { Badge } from '@froment/ui';
 import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';

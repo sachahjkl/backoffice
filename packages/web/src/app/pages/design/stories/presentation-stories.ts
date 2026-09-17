@@ -17,7 +17,7 @@ import { LanguageSelector } from '@shared/language-selector/language-selector';
 import { ThemeToggle } from '@shared/theme-toggle/theme-toggle';
 import { NewLabel } from '@shared/new-label/new-label';
 import { Button } from '@shared/button/button';
-import { Badge } from '@shared/badge/badge';
+import { Badge } from '@froment/ui';
 import { StoryPage, currentReference, type StoryDefinition } from '../story-page';
 import { referenceText } from '../reference-text';
 

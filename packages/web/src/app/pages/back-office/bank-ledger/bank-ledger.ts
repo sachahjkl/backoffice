@@ -21,7 +21,7 @@ import { formatMoney } from '@froment/l10n';
 import { BankLedgerApi } from '@backoffice/bank-ledger-api';
 import { I18nService, type TranslationKey } from '@app/i18n.service';
 import { ledgerErrorMessage } from './ledger-error-message';
-import { Badge } from '@shared/badge/badge';
+import { Badge } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { DataTable } from '@shared/data-table/data-table';
 import { EmptyState } from '@shared/empty-state/empty-state';

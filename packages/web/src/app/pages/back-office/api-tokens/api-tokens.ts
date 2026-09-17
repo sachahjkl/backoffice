@@ -18,7 +18,7 @@ import {
 import { ApiTokensApi } from '@backoffice/api-tokens-api';
 import { RouterLink } from '@angular/router';
 import { I18nService, type TranslationKey } from '@app/i18n.service';
-import { Badge, type BadgeVariant } from '@shared/badge/badge';
+import { Badge, type BadgeVariant } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { DataTable } from '@shared/data-table/data-table';
 import { EntityIcon } from '@shared/entity-icon/entity-icon';

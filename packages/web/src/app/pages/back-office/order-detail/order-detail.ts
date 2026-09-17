@@ -17,7 +17,7 @@ import { OrdersApi } from '@backoffice/orders-api';
 import { QuotesApi } from '@backoffice/quotes-api';
 import { I18nService } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
-import { Badge } from '@shared/badge/badge';
+import { Badge } from '@froment/ui';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
 import { QuoteLines } from '../quote-detail/quote-lines/quote-lines';

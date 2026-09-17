@@ -27,7 +27,7 @@ import { RemindersApi } from '@backoffice/reminders-api';
 import { I18nService, type TranslationKey } from '@app/i18n.service';
 import { reminderErrorMessage } from '../reminder-editor/reminder-error-message';
 import { Button } from '@shared/button/button';
-import { Badge } from '@shared/badge/badge';
+import { Badge } from '@froment/ui';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { DataTable } from '@shared/data-table/data-table';
 import { EntityIcon, type EntityIconVariant } from '@shared/entity-icon/entity-icon';

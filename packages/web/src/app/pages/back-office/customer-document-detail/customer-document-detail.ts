@@ -14,7 +14,7 @@ import { formatMoney } from '@froment/l10n';
 import { Option, Schema } from 'effect';
 import { ClientPortalApi } from '@backoffice/client-portal-api';
 import { I18nService } from '@app/i18n.service';
-import { Badge } from '@shared/badge/badge';
+import { Badge } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';

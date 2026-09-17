@@ -24,7 +24,7 @@ import { I18nService } from '@app/i18n.service';
 import { formatFixedDecimal } from '@backoffice/quote-input';
 import { ActionMenu, type MenuAction } from '@shared/action-menu/action-menu';
 import { EntityIcon } from '@shared/entity-icon/entity-icon';
-import { Badge, type BadgeVariant } from '@shared/badge/badge';
+import { Badge, type BadgeVariant } from '@froment/ui';
 import { Breadcrumbs } from '@shared/breadcrumbs/breadcrumbs';
 import { BulkSelection } from '@shared/bulk-selection/bulk-selection';
 import { Button } from '@shared/button/button';

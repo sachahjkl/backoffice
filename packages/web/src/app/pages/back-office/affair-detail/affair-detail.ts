@@ -24,7 +24,7 @@ import {
 import { formatMoney } from '@froment/l10n';
 import { Option, Schema } from 'effect';
 import { I18nService, type TranslationKey } from '@app/i18n.service';
-import { Badge, type BadgeVariant } from '@shared/badge/badge';
+import { Badge, type BadgeVariant } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';

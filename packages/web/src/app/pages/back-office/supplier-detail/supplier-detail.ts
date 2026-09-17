@@ -21,7 +21,7 @@ import { Can } from '@backoffice/can';
 import { Authentication } from '@backoffice/authentication';
 import { SuppliersApi } from '@backoffice/suppliers-api';
 import { I18nService, type TranslationKey } from '@app/i18n.service';
-import { Badge } from '@shared/badge/badge';
+import { Badge } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { DetailGrid, DetailList, DetailPanel } from '@shared/detail-panel/detail-panel';

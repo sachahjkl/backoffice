@@ -31,7 +31,7 @@ import { BankLedgerApi } from '@backoffice/bank-ledger-api';
 import { Authentication } from '@backoffice/authentication';
 import { I18nService, type TranslationKey } from '@app/i18n.service';
 import { ledgerErrorMessage } from '../bank-ledger/ledger-error-message';
-import { Badge } from '@shared/badge/badge';
+import { Badge } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';

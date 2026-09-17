@@ -97,6 +97,12 @@
             ./packages/l10n/package.json
             ./packages/l10n/src
             ./packages/l10n/tsconfig.json
+            ./packages/ui/angular.json
+            ./packages/ui/ng-package.json
+            ./packages/ui/package.json
+            ./packages/ui/src
+            ./packages/ui/tsconfig.json
+            ./packages/ui/tsconfig.lib.json
             ./packages/web/angular.json
             ./packages/web/package.json
             ./packages/web/public
@@ -115,7 +121,7 @@
           inherit pname version src;
           inherit pnpm;
           fetcherVersion = 4;
-          hash = "sha256-nHIMQBQN3lsIIYbNyi1w21j+S4V7N+9MB3rUB8eqCmI=";
+          hash = "sha256-mzYZf75HY2aH4DaDeMjoIM/0i8GydaeQ4529A6BBy/0=";
         };
         commonPnpmAttrs = {
           inherit pname version src pnpmDeps;

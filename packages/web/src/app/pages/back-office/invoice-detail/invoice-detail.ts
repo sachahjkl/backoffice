@@ -19,7 +19,7 @@ import { type TranslationKey } from '@app/i18n.service';
 import { InvoiceCreditsApi } from '@backoffice/invoice-credits-api';
 import { OrdersApi } from '@backoffice/orders-api';
 import { Button } from '@shared/button/button';
-import { Badge } from '@shared/badge/badge';
+import { Badge } from '@froment/ui';
 import { DataTable } from '@shared/data-table/data-table';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';

@@ -9,7 +9,7 @@ import {
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { I18nService, type TranslationKey } from '@app/i18n.service';
-import { Badge } from '@shared/badge/badge';
+import { Badge } from '@froment/ui';
 import { Notice } from '@shared/notice/notice';
 import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
 import { EmailTestHistory } from './email-test-history';
