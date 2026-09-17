@@ -18,12 +18,12 @@ import { Authentication } from '@backoffice/authentication';
 import { I18nService } from '@froment/ui';
 import { BackOfficeNav } from '@shared/back-office-nav/back-office-nav';
 import { Button } from '@shared/button/button';
-import { Icon } from '@shared/icon/icon';
+import { Icon } from '@froment/ui/icon';
 import { Drawer } from '@shared/drawer/drawer';
 import { LanguageSelector } from '@shared/language-selector/language-selector';
 import { ThemeToggle } from '@shared/theme-toggle/theme-toggle';
 import { GlobalSearch } from '@shared/global-search/global-search';
-import { EnvironmentStatus } from '@shared/environment-status/environment-status';
+import { EnvironmentStatus } from '@froment/ui/environment-status';
 import { NavigationProgress } from '@shared/navigation-progress/navigation-progress';
 
 @Component({

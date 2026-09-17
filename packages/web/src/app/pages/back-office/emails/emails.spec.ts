@@ -3,7 +3,6 @@ import { Emails } from './emails';
 import { installScrollIntoView } from '@shared/filter-choice/filter-choice.spec-helper';
 import { TestBed } from '@angular/core/testing';
 import { I18nService } from '@froment/ui';
-
 describe('Emails', () => {
   it.each([
     { view: 'messages', state: 'simulated', columns: ['subject', 'recipient', 'state', 'date'] },

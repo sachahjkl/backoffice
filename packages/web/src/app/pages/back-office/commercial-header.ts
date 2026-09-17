@@ -4,10 +4,10 @@ import {
   type QuoteStatusValue,
 } from '@froment/contracts';
 import { type TranslationKey } from '@froment/ui';
-import { type BadgeVariant } from '@froment/ui';
+import { type BadgeVariant } from '@froment/ui/badge';
 import { activePaidCents, documentStatusKey, financialStatus } from './billing/billing-state';
 import { type affairContext } from './affairs/affair-filters';
-import { type BreadcrumbItem } from '@shared/breadcrumbs/breadcrumbs';
+import { type BreadcrumbItem } from '@froment/ui/breadcrumbs';
 import { translate, type Language } from '@froment/l10n';
 
 export interface DocumentBadge {

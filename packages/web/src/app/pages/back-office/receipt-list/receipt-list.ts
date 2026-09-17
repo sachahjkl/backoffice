@@ -26,8 +26,8 @@ import { createFuzzySearch } from '@shared/fuzzy-search';
 import { SearchHighlight, SearchHighlightRegistry } from '@shared/search-highlight';
 import { ListWorkspace } from '@shared/list-toolbar/list-workspace';
 import { TableExport } from '@shared/table-export/table-export';
-import { Hint } from '@shared/hint/hint';
-import { Icon } from '@shared/icon/icon';
+import { Hint } from '@froment/ui/hint';
+import { Icon } from '@froment/ui/icon';
 import { matchIndices, nextBillingSort, sortDirection } from '../billing/billing-list';
 import {
   compareEntries,

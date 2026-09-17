@@ -17,7 +17,7 @@ import { formatMoney } from '@froment/l10n';
 import { CatalogApi } from '@backoffice/catalog-api';
 import { formatFixedDecimal } from '@backoffice/quote-input';
 import { I18nService } from '@froment/ui';
-import { Badge } from '@froment/ui';
+import { Badge } from '@froment/ui/badge';
 import { Button } from '@shared/button/button';
 import { DataTable } from '@shared/data-table/data-table';
 import { EntityIcon, type EntityIconVariant } from '@shared/entity-icon/entity-icon';

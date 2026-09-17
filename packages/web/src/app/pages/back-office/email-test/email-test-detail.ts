@@ -9,9 +9,9 @@ import {
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { I18nService, type TranslationKey } from '@froment/ui';
-import { Badge } from '@froment/ui';
+import { Badge } from '@froment/ui/badge';
 import { Notice } from '@shared/notice/notice';
-import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
+import { LocalizedDatePipe } from '@froment/ui/localized-date';
 import { EmailTestHistory } from './email-test-history';
 import { emailTestOutcomeHint, emailTestStatusLabel } from './email-test-view';
 import { PageHeader } from '@shared/page-header/page-header';

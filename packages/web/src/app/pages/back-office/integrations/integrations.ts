@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { FormField, disabled, form, required } from '@angular/forms/signals';
 import { Confirmation } from '@shared/confirmation/confirmation';
-import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
+import { LocalizedDatePipe } from '@froment/ui/localized-date';
 import {
   IntegrationStatusList,
   IntegrationRetryList,

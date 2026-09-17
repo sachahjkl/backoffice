@@ -3,7 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter, map } from 'rxjs';
 import { I18nService, type TranslationKey } from '@froment/ui';
-import { Icon, type IconName } from '@shared/icon/icon';
+import { Icon, type IconName } from '@froment/ui/icon';
 import { Authentication } from '@backoffice/authentication';
 import type { CompanyModuleValue, PermissionCodeValue } from '@froment/contracts';
 

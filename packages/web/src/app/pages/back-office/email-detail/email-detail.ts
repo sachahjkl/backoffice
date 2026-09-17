@@ -15,11 +15,11 @@ import { type IntegrationOperationValue } from '@froment/contracts';
 import { IntegrationsApi } from '@backoffice/integrations-api';
 import { I18nService, type TranslationKey } from '@froment/ui';
 import { Button } from '@shared/button/button';
-import { Badge } from '@froment/ui';
-import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
+import { Badge } from '@froment/ui/badge';
+import { LocalizedDatePipe } from '@froment/ui/localized-date';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
-import { DocumentTextView } from '@shared/document-text-view/document-text-view';
+import { DocumentTextView } from '@froment/ui/document-text-view';
 import { emailBodyPresentation } from '../email-body';
 import { emailFilterQuery, emailQuery, messageStatus } from '../emails/email-workspace';
 

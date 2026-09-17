@@ -1,0 +1,6 @@
+{
+  "name": "@froment/ui/outcome-panel",
+  "private": true,
+  "main": "../dist/fesm2022/froment-ui-outcome-panel.mjs",
+  "types": "../dist/types/froment-ui-outcome-panel.d.ts"
+}

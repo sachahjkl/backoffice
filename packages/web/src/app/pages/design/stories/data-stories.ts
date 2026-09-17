@@ -15,8 +15,8 @@ import { ListSearch } from '@shared/list-search/list-search';
 import { SearchHighlight, SearchHighlightRegistry } from '@shared/search-highlight';
 import { createFuzzySearch } from '@shared/fuzzy-search';
 import { EventHistory, type HistoryEvent } from '@shared/event-history/event-history';
-import { formatLocalizedDate, LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
-import { DetailRow } from '@shared/detail-row/detail-row';
+import { formatLocalizedDate, LocalizedDatePipe } from '@froment/ui/localized-date';
+import { DetailRow } from '@froment/ui/detail-row';
 import { StoryPage, currentReference, type StoryDefinition } from '../story-page';
 import { formatReferenceCount, referenceText } from '../reference-text';
 

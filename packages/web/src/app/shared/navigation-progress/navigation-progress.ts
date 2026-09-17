@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { I18nService } from '@froment/ui';
-
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-navigation-progress',

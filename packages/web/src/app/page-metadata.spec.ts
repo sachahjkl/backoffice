@@ -5,7 +5,6 @@ import { RouterTestingHarness } from '@angular/router/testing';
 import { PageMetadata, siteIdentityGraph } from './page-metadata';
 import { blogPosts } from '@froment/l10n/blog-posts';
 import { I18nService } from '@froment/ui';
-
 @Component({ template: '' })
 class MetadataPage {}
 

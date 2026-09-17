@@ -1,5 +1,5 @@
 import { type InvoiceStatusValue, type QuoteStatusValue } from '@froment/contracts';
-import { type BadgeVariant } from '@froment/ui';
+import { type BadgeVariant } from '@froment/ui/badge';
 import { invoiceFixture, paymentFixture } from './billing/billing.spec-helper';
 import {
   commercialDocumentTitle,

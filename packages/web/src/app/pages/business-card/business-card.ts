@@ -8,7 +8,7 @@ import { Button } from '@shared/button/button';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { PageHeader } from '@shared/page-header/page-header';
 import { Notice } from '@shared/notice/notice';
-import { formatLocalizedDate, LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
+import { formatLocalizedDate, LocalizedDatePipe } from '@froment/ui/localized-date';
 import {
   BusinessCardContent,
   BusinessCardVersion,

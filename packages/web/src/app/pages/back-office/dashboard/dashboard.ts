@@ -24,11 +24,11 @@ import { InvoicesApi } from '@backoffice/invoices-api';
 import { OrdersApi } from '@backoffice/orders-api';
 import { QuotesApi } from '@backoffice/quotes-api';
 import { I18nService } from '@froment/ui';
-import { Badge, type BadgeVariant } from '@froment/ui';
+import { Badge, type BadgeVariant } from '@froment/ui/badge';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
 import { DataTable } from '@shared/data-table/data-table';
-import { formatLocalizedDate } from '@shared/localized-date/localized-date-pipe';
+import { formatLocalizedDate } from '@froment/ui/localized-date';
 import { clientContactIncomplete } from '../clients/client-contact';
 
 type PageState = 'loading' | 'ready' | 'error';

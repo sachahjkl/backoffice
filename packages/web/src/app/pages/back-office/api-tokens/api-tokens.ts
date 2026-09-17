@@ -18,12 +18,12 @@ import {
 import { ApiTokensApi } from '@backoffice/api-tokens-api';
 import { RouterLink } from '@angular/router';
 import { I18nService, type TranslationKey } from '@froment/ui';
-import { Badge, type BadgeVariant } from '@froment/ui';
+import { Badge, type BadgeVariant } from '@froment/ui/badge';
 import { Button } from '@shared/button/button';
 import { DataTable } from '@shared/data-table/data-table';
 import { EntityIcon } from '@shared/entity-icon/entity-icon';
 import { EmptyState } from '@shared/empty-state/empty-state';
-import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
+import { LocalizedDatePipe } from '@froment/ui/localized-date';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
 import { SearchHighlight, SearchHighlightRegistry } from '@shared/search-highlight';

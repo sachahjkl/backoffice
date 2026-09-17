@@ -26,7 +26,7 @@ import { formatMoney } from '@froment/l10n';
 import { I18nService, type TranslationKey } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { Confirmation } from '@shared/confirmation/confirmation';
-import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
+import { LocalizedDatePipe } from '@froment/ui/localized-date';
 import { Notice } from '@shared/notice/notice';
 import { ObjectPicker } from '@shared/object-picker/object-picker';
 import { PageHeader } from '@shared/page-header/page-header';

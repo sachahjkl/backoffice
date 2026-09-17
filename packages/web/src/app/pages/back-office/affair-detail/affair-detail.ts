@@ -24,17 +24,17 @@ import {
 import { formatMoney } from '@froment/l10n';
 import { Option, Schema } from 'effect';
 import { I18nService, type TranslationKey } from '@froment/ui';
-import { Badge, type BadgeVariant } from '@froment/ui';
+import { Badge, type BadgeVariant } from '@froment/ui/badge';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
 import { Tabs, type TabItem } from '@shared/tabs/tabs';
 import { TabLayout, TabPanel } from '@shared/tabs/tab-panel';
 import { InlineEdit } from '@shared/inline-edit/inline-edit';
-import { Icon, type IconName } from '@shared/icon/icon';
+import { Icon, type IconName } from '@froment/ui/icon';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { createEventHistoryResource } from '@shared/event-history/event-history-resource';
-import { formatLocalizedDate } from '@shared/localized-date/localized-date-pipe';
+import { formatLocalizedDate } from '@froment/ui/localized-date';
 import { filter } from 'rxjs';
 import { invoiceStatusBadge, quoteStatusBadge } from '../commercial-header';
 

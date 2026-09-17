@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { I18nService } from '@froment/ui';
-
 @Component({
   selector: 'app-language-selector',
   imports: [],

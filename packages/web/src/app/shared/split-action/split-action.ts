@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { ActionMenu, type MenuAction } from '@shared/action-menu/action-menu';
 import { Button, type ButtonVariant } from '@shared/button/button';
-import type { IconName } from '@shared/icon/icon';
-
+import { type IconName } from '@froment/ui/icon';
 @Component({
   imports: [ActionMenu, Button],
   selector: 'app-split-action',

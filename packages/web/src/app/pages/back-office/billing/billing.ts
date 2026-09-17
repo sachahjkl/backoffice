@@ -15,7 +15,7 @@ import { type InvoiceListValue, type InvoiceSummaryValue } from '@froment/contra
 import { formatMoney } from '@froment/l10n';
 import { InvoicesApi } from '@backoffice/invoices-api';
 import { I18nService, type TranslationKey } from '@froment/ui';
-import { Badge } from '@froment/ui';
+import { Badge } from '@froment/ui/badge';
 import { EntityIcon, type EntityIconVariant } from '@shared/entity-icon/entity-icon';
 import { Button } from '@shared/button/button';
 import { DataTable } from '@shared/data-table/data-table';

@@ -10,9 +10,8 @@ import {
 } from '@angular/core';
 import { I18nService } from '@froment/ui';
 import { Button } from '@shared/button/button';
-import { Hint } from '@shared/hint/hint';
-import { Icon } from '@shared/icon/icon';
-
+import { Hint } from '@froment/ui/hint';
+import { Icon } from '@froment/ui/icon';
 export interface InlineEditOption {
   readonly value: string;
   readonly label: string;

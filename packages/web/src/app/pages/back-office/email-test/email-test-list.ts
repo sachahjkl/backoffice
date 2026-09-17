@@ -13,7 +13,7 @@ import { I18nService, type TranslationKey } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
 import { DataTable } from '@shared/data-table/data-table';
-import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
+import { LocalizedDatePipe } from '@froment/ui/localized-date';
 import { EmailTestHistory } from './email-test-history';
 import { emailTestStatusLabel } from './email-test-view';
 import { createWorkspaceTable } from '../configuration/workspace-table';

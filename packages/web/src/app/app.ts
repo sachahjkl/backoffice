@@ -29,7 +29,7 @@ import { SiteHeader } from './shared/site-header/site-header';
 import { BackOfficeHeader } from './shared/back-office-header/back-office-header';
 import { BackOfficeHeaderPlaceholder } from './shared/back-office-header/back-office-header-placeholder';
 import { Button } from './shared/button/button';
-import { EnvironmentStatus } from './shared/environment-status/environment-status';
+import { EnvironmentStatus } from '@froment/ui/environment-status';
 import { FlashOutlet } from './shared/flash/flash-outlet';
 import { NavigationProgress } from './shared/navigation-progress/navigation-progress';
 

@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { form, FormField } from '@angular/forms/signals';
-import { Badge, type BadgeVariant } from '@froment/ui';
+import { Badge, type BadgeVariant } from '@froment/ui/badge';
 import { Notice, type NoticeVariant } from '@shared/notice/notice';
 import { EmptyState } from '@shared/empty-state/empty-state';
-import { Hint } from '@shared/hint/hint';
-import { StatusBlock, type StatusBlockVariant } from '@shared/status-block/status-block';
-import { Icon, type IconName } from '@shared/icon/icon';
+import { Hint } from '@froment/ui/hint';
+import { StatusBlock, type StatusBlockVariant } from '@froment/ui/status-block';
+import { Icon, type IconName } from '@froment/ui/icon';
 import { EntityIcon } from '@shared/entity-icon/entity-icon';
 import { Button } from '@shared/button/button';
 import { Flash, type FlashVariant } from '@shared/flash/flash';

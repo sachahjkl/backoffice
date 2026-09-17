@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { I18nService } from '@froment/ui';
-import { Icon } from '@shared/icon/icon';
-
+import { Icon } from '@froment/ui/icon';
 @Component({
   selector: 'button[appFilterChip]',
   imports: [Icon],

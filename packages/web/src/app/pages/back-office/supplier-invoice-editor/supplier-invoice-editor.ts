@@ -33,7 +33,7 @@ import { SupplierInvoicesApi } from '@backoffice/supplier-invoices-api';
 import { SuppliersApi } from '@backoffice/suppliers-api';
 import { I18nService, type TranslationKey } from '@froment/ui';
 import { Button } from '@shared/button/button';
-import { Breadcrumbs } from '@shared/breadcrumbs/breadcrumbs';
+import { Breadcrumbs } from '@froment/ui/breadcrumbs';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';

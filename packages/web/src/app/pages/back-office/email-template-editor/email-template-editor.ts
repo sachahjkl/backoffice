@@ -34,7 +34,7 @@ import { Confirmation } from '@shared/confirmation/confirmation';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
 import { DocumentTextEditor } from '@shared/document-text-editor/document-text-editor';
-import { DocumentTextView } from '@shared/document-text-view/document-text-view';
+import { DocumentTextView } from '@froment/ui/document-text-view';
 import { SegmentedControl } from '@shared/segmented-control/segmented-control';
 import { emailFilterQuery, emailQuery } from '../emails/email-workspace';
 import { convertEmailBody, emailBodyPresentation } from '../email-body';

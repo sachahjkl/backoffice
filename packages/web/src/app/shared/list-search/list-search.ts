@@ -8,8 +8,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { disabled, form, FormField, type FormValueControl } from '@angular/forms/signals';
-import { Icon } from '@shared/icon/icon';
-
+import { Icon } from '@froment/ui/icon';
 @Component({
   imports: [FormField, Icon],
   selector: 'app-list-search',

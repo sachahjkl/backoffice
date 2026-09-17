@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { FieldGroup } from './field-group';
+import { FieldGroup } from '../../field-group/field-group';
 
 @Component({
   imports: [FieldGroup],

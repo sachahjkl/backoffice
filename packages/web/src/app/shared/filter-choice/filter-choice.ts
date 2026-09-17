@@ -15,8 +15,7 @@ import {
 } from '@angular/core';
 import { disabled, form, type FormValueControl } from '@angular/forms/signals';
 import { createFuzzySearch } from '@shared/fuzzy-search';
-import { Icon } from '@shared/icon/icon';
-
+import { Icon } from '@froment/ui/icon';
 export interface FilterChoiceOption {
   readonly value: string;
   readonly label: string;

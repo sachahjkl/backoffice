@@ -2,9 +2,8 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Blog as BlogService } from '../../blog/blog';
 import { I18nService } from '@froment/ui';
-import { Icon } from '@shared/icon/icon';
-import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
-
+import { Icon } from '@froment/ui/icon';
+import { LocalizedDatePipe } from '@froment/ui/localized-date';
 @Component({
   host: { class: 'page-container' },
   selector: 'app-blog',

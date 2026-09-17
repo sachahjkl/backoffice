@@ -17,8 +17,7 @@ import {
 import { FormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
 import { I18nService } from '@froment/ui';
-import { Icon } from '@shared/icon/icon';
-
+import { Icon } from '@froment/ui/icon';
 interface FilterSelectOption {
   readonly disabled: boolean;
   readonly label: string;

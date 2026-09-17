@@ -1,0 +1,6 @@
+{
+  "name": "@froment/ui/hint",
+  "private": true,
+  "main": "../dist/fesm2022/froment-ui-hint.mjs",
+  "types": "../dist/types/froment-ui-hint.d.ts"
+}

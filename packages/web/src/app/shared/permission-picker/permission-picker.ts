@@ -19,7 +19,7 @@ import type { FuseResultMatch } from 'fuse.js';
 import { I18nService } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { createFuzzySearch } from '@shared/fuzzy-search';
-import { Icon } from '@shared/icon/icon';
+import { Icon } from '@froment/ui/icon';
 import { SearchHighlight, SearchHighlightRegistry } from '@shared/search-highlight';
 
 export interface PermissionPickerOption {

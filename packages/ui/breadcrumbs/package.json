@@ -1,0 +1,6 @@
+{
+  "name": "@froment/ui/breadcrumbs",
+  "private": true,
+  "main": "../dist/fesm2022/froment-ui-breadcrumbs.mjs",
+  "types": "../dist/types/froment-ui-breadcrumbs.d.ts"
+}

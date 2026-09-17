@@ -19,7 +19,7 @@ import { formatMoney } from '@froment/l10n';
 import { BankingApi } from '@backoffice/banking-api';
 import { I18nService } from '@froment/ui';
 import { Button } from '@shared/button/button';
-import { Badge } from '@froment/ui';
+import { Badge } from '@froment/ui/badge';
 import { DataTable } from '@shared/data-table/data-table';
 import { EmptyState } from '@shared/empty-state/empty-state';
 import { EntityIcon, type EntityIconVariant } from '@shared/entity-icon/entity-icon';
@@ -33,7 +33,7 @@ import { DateRangeFilter, type DateRange } from '@shared/date-range-filter/date-
 import { TableExport } from '@shared/table-export/table-export';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
-import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
+import { LocalizedDatePipe } from '@froment/ui/localized-date';
 import { Tabs } from '@shared/tabs/tabs';
 import { TableSort } from '@shared/table-sort/table-sort';
 import { bankSortDirection, compareBankRows, nextBankSort } from './bank-table-sort';

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
-import { Breadcrumbs } from './breadcrumbs';
+import { Breadcrumbs } from '../../breadcrumbs/breadcrumbs';
 
 describe('Breadcrumbs', () => {
   it('keeps focus when an ancestor query changes', async () => {

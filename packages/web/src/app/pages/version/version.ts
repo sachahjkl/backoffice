@@ -11,7 +11,7 @@ import { RouterLink } from '@angular/router';
 
 import { I18nService } from '@froment/ui';
 import { Notice } from '@shared/notice/notice';
-import { EnvironmentStatus } from '@shared/environment-status/environment-status';
+import { EnvironmentStatus } from '@froment/ui/environment-status';
 import { RuntimeConfiguration } from '@froment/ui';
 import { VersionApi } from './version-api';
 

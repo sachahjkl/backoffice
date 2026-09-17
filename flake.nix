@@ -98,11 +98,26 @@
             ./packages/l10n/src
             ./packages/l10n/tsconfig.json
             ./packages/ui/angular.json
+            ./packages/ui/badge
+            ./packages/ui/breadcrumbs
+            ./packages/ui/detail-panel
+            ./packages/ui/detail-row
+            ./packages/ui/document-text-view
+            ./packages/ui/environment-status
+            ./packages/ui/field-group
+            ./packages/ui/field-hint
+            ./packages/ui/hint
+            ./packages/ui/icon
+            ./packages/ui/localized-date
             ./packages/ui/ng-package.json
+            ./packages/ui/outcome-panel
             ./packages/ui/package.json
+            ./packages/ui/process-timeline
             ./packages/ui/src
+            ./packages/ui/status-block
             ./packages/ui/tsconfig.json
             ./packages/ui/tsconfig.lib.json
+            ./packages/ui/tsconfig.lib.prod.json
             ./packages/ui/tsconfig.spec.json
             ./packages/web/angular.json
             ./packages/web/package.json

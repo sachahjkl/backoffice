@@ -17,9 +17,9 @@ import { Can } from '@backoffice/can';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { I18nService, type TranslationKey } from '@froment/ui';
 import { Button } from '@shared/button/button';
-import { Badge } from '@froment/ui';
+import { Badge } from '@froment/ui/badge';
 import { Notice } from '@shared/notice/notice';
-import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
+import { LocalizedDatePipe } from '@froment/ui/localized-date';
 import { CheckoutHistory } from './checkout-history';
 import {
   canOpenCheckout,

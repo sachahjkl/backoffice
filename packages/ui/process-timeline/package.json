@@ -1,0 +1,6 @@
+{
+  "name": "@froment/ui/process-timeline",
+  "private": true,
+  "main": "../dist/fesm2022/froment-ui-process-timeline.mjs",
+  "types": "../dist/types/froment-ui-process-timeline.d.ts"
+}

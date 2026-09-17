@@ -26,7 +26,7 @@ import { Authentication } from '@backoffice/authentication';
 import { I18nService } from '@froment/ui';
 import type { PermissionCodeValue } from '@froment/contracts';
 import { Button } from '@shared/button/button';
-import { Icon } from '@shared/icon/icon';
+import { Icon } from '@froment/ui/icon';
 import { createFuzzySearch } from '@shared/fuzzy-search';
 import { SearchHighlight, SearchHighlightRegistry } from '@shared/search-highlight';
 

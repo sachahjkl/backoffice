@@ -14,11 +14,11 @@ import { formatMoney } from '@froment/l10n';
 import { Option, Schema } from 'effect';
 import { ClientPortalApi } from '@backoffice/client-portal-api';
 import { I18nService } from '@froment/ui';
-import { Badge } from '@froment/ui';
+import { Badge } from '@froment/ui/badge';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
-import { formatLocalizedDate } from '@shared/localized-date/localized-date-pipe';
+import { formatLocalizedDate } from '@froment/ui/localized-date';
 import {
   portalDocuments,
   PortalDocumentKind,

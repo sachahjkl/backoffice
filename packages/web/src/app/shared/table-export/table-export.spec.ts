@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Icon } from '@shared/icon/icon';
+import { Icon } from '@froment/ui/icon';
 import { vi } from 'vitest';
 import { TableExport } from './table-export';
 

@@ -1,0 +1,6 @@
+{
+  "name": "@froment/ui/detail-row",
+  "private": true,
+  "main": "../dist/fesm2022/froment-ui-detail-row.mjs",
+  "types": "../dist/types/froment-ui-detail-row.d.ts"
+}

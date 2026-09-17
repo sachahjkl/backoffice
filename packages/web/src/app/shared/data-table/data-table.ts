@@ -6,7 +6,6 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { I18nService } from '@froment/ui';
-
 @Component({
   selector: 'div[appDataTable]',
   template: '<ng-content />',

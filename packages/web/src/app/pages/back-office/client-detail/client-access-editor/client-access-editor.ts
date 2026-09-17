@@ -29,7 +29,7 @@ import { Button } from '@shared/button/button';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
-import { FieldHint } from '@shared/field-hint/field-hint';
+import { FieldHint } from '@froment/ui/field-hint';
 import { clientNavigationQuery } from '../client-navigation';
 
 @Component({

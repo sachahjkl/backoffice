@@ -6,7 +6,6 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
 import { blogPosts, type BlogPostMetadata } from '@froment/l10n/blog-posts';
 import { I18nService, TranslationKey } from '@froment/ui';
-
 const origin = 'https://froment.software';
 const socialImage = `${origin}/social-card-v4.png`;
 

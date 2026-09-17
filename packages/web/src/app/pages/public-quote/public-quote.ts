@@ -34,15 +34,14 @@ import { distinctUntilChanged } from 'rxjs';
 import { I18nService, type TranslationKey } from '@froment/ui';
 import { PublicQuoteApi } from '../../public-quote/public-quote-api';
 import { Button } from '@shared/button/button';
-import { DocumentTextView } from '@shared/document-text-view/document-text-view';
+import { DocumentTextView } from '@froment/ui/document-text-view';
 import { Notice } from '@shared/notice/notice';
-import { StatusBlock } from '@shared/status-block/status-block';
+import { StatusBlock } from '@froment/ui/status-block';
 import { Tabs, type TabItem } from '@shared/tabs/tabs';
 import { TabLayout, TabPanel } from '@shared/tabs/tab-panel';
 import { Confirmation } from '@shared/confirmation/confirmation';
-import { formatLocalizedDate } from '@shared/localized-date/localized-date-pipe';
-import { FieldHint } from '@shared/field-hint/field-hint';
-
+import { formatLocalizedDate } from '@froment/ui/localized-date';
+import { FieldHint } from '@froment/ui/field-hint';
 @Component({
   host: { class: 'page-container' },
   selector: 'app-public-quote',

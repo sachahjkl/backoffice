@@ -31,7 +31,7 @@ import {
   entryExportEmptyKey,
   entryEmptyKey,
 } from '../billing/entry-list';
-import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
+import { LocalizedDatePipe } from '@froment/ui/localized-date';
 import { BillingNav } from '../billing/billing-nav';
 import { businessDate } from '../billing/billing-state';
 import { billingDetailQuery } from '../billing/billing-navigation';

@@ -20,7 +20,7 @@
           },
           "configurations": {
             "production": {
-              "tsConfig": "tsconfig.lib.json"
+              "tsConfig": "tsconfig.lib.prod.json"
             },
             "development": {
               "tsConfig": "tsconfig.lib.json"
@@ -32,7 +32,8 @@
           "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "tsconfig.spec.json",
-            "runner": "vitest"
+            "runner": "vitest",
+            "include": ["src/**/*.spec.ts", "*/**/*.spec.ts"]
           }
         }
       }

@@ -17,7 +17,7 @@ import { I18nService } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { DataTable } from '@shared/data-table/data-table';
 import { EntityIcon } from '@shared/entity-icon/entity-icon';
-import { Badge, type BadgeVariant } from '@froment/ui';
+import { Badge, type BadgeVariant } from '@froment/ui/badge';
 import { Notice } from '@shared/notice/notice';
 import { Tabs, type TabItem } from '@shared/tabs/tabs';
 import { TabLayout, TabPanel } from '@shared/tabs/tab-panel';

@@ -30,7 +30,7 @@ import { ListWorkspace } from '@shared/list-toolbar/list-workspace';
 import { WorkspaceTableTools } from '@shared/list-toolbar/workspace-table-tools';
 import { Tabs } from '@shared/tabs/tabs';
 import { TableSort } from '@shared/table-sort/table-sort';
-import { FieldHint } from '@shared/field-hint/field-hint';
+import { FieldHint } from '@froment/ui/field-hint';
 import { createWorkspaceTable } from '../configuration/workspace-table';
 import {
   accountTableOptions,

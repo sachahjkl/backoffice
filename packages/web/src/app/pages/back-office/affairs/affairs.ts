@@ -23,7 +23,7 @@ import {
 import { Schema } from 'effect';
 import { filter } from 'rxjs';
 import { I18nService, type TranslationKey } from '@froment/ui';
-import { Badge } from '@froment/ui';
+import { Badge } from '@froment/ui/badge';
 import { Button } from '@shared/button/button';
 import { DataTable } from '@shared/data-table/data-table';
 import { Notice } from '@shared/notice/notice';

@@ -20,7 +20,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { Button } from '@shared/button/button';
-import { Icon } from '@shared/icon/icon';
+import { Icon } from '@froment/ui/icon';
 import { FilterPanel } from './filter-panel';
 
 export { FilterPanel } from './filter-panel';

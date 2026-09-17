@@ -1,0 +1,6 @@
+{
+  "name": "@froment/ui/document-text-view",
+  "private": true,
+  "main": "../dist/fesm2022/froment-ui-document-text-view.mjs",
+  "types": "../dist/types/froment-ui-document-text-view.d.ts"
+}

@@ -4,8 +4,7 @@ import { I18nService } from '@froment/ui';
 import { AnchorLink } from '@shared/anchor-link/anchor-link';
 import { ConcreteExamples } from '@shared/concrete-examples/concrete-examples';
 import { ContactActions } from '@shared/contact-actions/contact-actions';
-import { ProcessTimeline, TimelineStep } from '@shared/process-timeline/process-timeline';
-
+import { ProcessTimeline, TimelineStep } from '@froment/ui/process-timeline';
 type PublicEntry = {
   title: string;
   description: string;

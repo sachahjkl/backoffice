@@ -1,4 +1,4 @@
-import { formatLocalizedDate, LocalizedDatePipe } from './localized-date-pipe';
+import { formatLocalizedDate, LocalizedDatePipe } from '../../localized-date/localized-date-pipe';
 
 describe('LocalizedDatePipe', () => {
   it('keeps an ISO date on the same calendar day in every time zone', () => {

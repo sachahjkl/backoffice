@@ -1,0 +1,5 @@
+{
+  "lib": {
+    "entryFile": "localized-date-pipe.ts"
+  }
+}

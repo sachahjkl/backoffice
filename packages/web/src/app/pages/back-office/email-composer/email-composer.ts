@@ -43,13 +43,13 @@ import {
 import { I18nService, type TranslationKey } from '@froment/ui';
 import { Button } from '@shared/button/button';
 import { ActionMenu } from '@shared/action-menu/action-menu';
-import { FieldGroup } from '@shared/field-group/field-group';
+import { FieldGroup } from '@froment/ui/field-group';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { Notice } from '@shared/notice/notice';
 import { ObjectPicker } from '@shared/object-picker/object-picker';
 import { PageHeader } from '@shared/page-header/page-header';
 import { DocumentTextEditor } from '@shared/document-text-editor/document-text-editor';
-import { DocumentTextView } from '@shared/document-text-view/document-text-view';
+import { DocumentTextView } from '@froment/ui/document-text-view';
 import { SegmentedControl } from '@shared/segmented-control/segmented-control';
 import { emailFilterQuery, emailQuery, emailView } from '../emails/email-workspace';
 import { convertEmailBody, emailBodyPresentation } from '../email-body';

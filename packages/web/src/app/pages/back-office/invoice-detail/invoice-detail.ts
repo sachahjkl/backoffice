@@ -19,13 +19,13 @@ import { type TranslationKey } from '@froment/ui';
 import { InvoiceCreditsApi } from '@backoffice/invoice-credits-api';
 import { OrdersApi } from '@backoffice/orders-api';
 import { Button } from '@shared/button/button';
-import { Badge } from '@froment/ui';
+import { Badge } from '@froment/ui/badge';
 import { DataTable } from '@shared/data-table/data-table';
 import { Notice } from '@shared/notice/notice';
 import { PageHeader } from '@shared/page-header/page-header';
 import { DocumentPreview } from '@shared/document-preview/document-preview';
-import { DocumentTextView } from '@shared/document-text-view/document-text-view';
-import { LocalizedDatePipe } from '@shared/localized-date/localized-date-pipe';
+import { DocumentTextView } from '@froment/ui/document-text-view';
+import { LocalizedDatePipe } from '@froment/ui/localized-date';
 import { Tabs, type TabItem } from '@shared/tabs/tabs';
 import { SplitAction } from '@shared/split-action/split-action';
 import { type MenuAction } from '@shared/action-menu/action-menu';
@@ -39,7 +39,7 @@ import {
 import { canCancelPayment } from '../billing/receipt-cancellation';
 import { invoiceActions, recordedEntryStatus } from './invoice-actions';
 import { ClientDescription } from '../client-description/client-description';
-import { DetailList, DetailPanel } from '@shared/detail-panel/detail-panel';
+import { DetailList, DetailPanel } from '@froment/ui/detail-panel';
 import { createEventHistoryResource } from '@shared/event-history/event-history-resource';
 
 @Component({
