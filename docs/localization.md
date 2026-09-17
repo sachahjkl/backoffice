@@ -13,7 +13,7 @@ Les documents commerciaux utilisent encore l’euro : le formateur ne change pas
 
 ## Dates
 
-Node.js 26 fournit Temporal sans option expérimentale.
+Node.js 24 LTS ne fournit pas Temporal.
 Les services Effect utilisent `Clock` et `DateTime` pour les horloges testables et les fuseaux explicites.
 L’interface utilise `Intl.DateTimeFormat`.
 Une date civile sans heure doit rester une date civile, sans décalage selon le fuseau du navigateur.

@@ -65,11 +65,10 @@ The `/design` route remains hidden and non-indexable. Do not add it to the sitem
 
 ## Local development
 
-Prerequisites: Node.js 26.7.0 or later in the 26.x series and pnpm 11.25.0, or `nix develop`.
+Prerequisites: Node.js 24.x LTS and pnpm 11.25.0, or `nix develop`.
 
-The development shell, builds, tests, and production container use Node.js 26 from Nixpkgs.
-The `node-runtime` flake check verifies native Temporal support without an experimental flag.
-Angular unit tests disable Node's Web Storage globals so jsdom provides browser storage.
+The development shell, builds, tests, and production container use Node.js 24 from Nixpkgs.
+The `node-runtime` flake check verifies the Node.js 24 runtime.
 
 ```bash
 pnpm install --frozen-lockfile

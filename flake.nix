@@ -61,8 +61,8 @@
           else "unversioned";
         inherit (packageJson) version;
         pname = packageJson.name;
-        buildNode = pkgs.nodejs_26;
-        runtimeNode = pkgs.nodejs-slim_26;
+        buildNode = pkgs.nodejs_24;
+        runtimeNode = pkgs.nodejs-slim_24;
         caBundle = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
         pnpm = pkgs.pnpm.override {nodejs-slim = buildNode;};
         cousineFonts = pkgs.google-fonts.override {fonts = ["Cousine"];};
@@ -366,8 +366,7 @@
           node-runtime = pkgs.runCommand "node-runtime-check" {nativeBuildInputs = [runtimeNode];} ''
             node --input-type=module -e '
               import assert from "node:assert/strict";
-              assert.equal(process.versions.node.split(".")[0], "26");
-              assert.equal(Temporal.PlainDate.from("2026-09-06").add({ days: 1 }).toString(), "2026-09-07");
+              assert.equal(process.versions.node.split(".")[0], "24");
             '
             touch "$out"
           '';
