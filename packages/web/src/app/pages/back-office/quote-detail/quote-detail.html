@@ -147,7 +147,7 @@
     <select
       appFilterSelect
       class="input"
-      [value]="version()"
+      [formField]="versionForm"
       (change)="selectVersion($any($event.target).value)"
     >
       @for (item of revisions(); track item.id) {

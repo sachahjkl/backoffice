@@ -110,6 +110,10 @@ describe('Quote detail', () => {
         option.getAttribute('value'),
       ),
     ).toEqual(['1', '']);
+    expect(control<HTMLSelectElement>(root, '.version-selector select').value).toBe('');
+    expect(control<HTMLOptionElement>(root, '.version-selector option[value=""]')?.selected).toBe(
+      true,
+    );
     expect(root.querySelector('[appTableSort]')).toBeNull();
     expect(revisions[0]?.version).toBe(2);
   });

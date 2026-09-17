@@ -175,6 +175,7 @@ export class QuoteDetail {
     }
   }
   protected readonly version = signal('');
+  protected readonly versionForm = form(this.version);
   protected readonly revision = computed(() => {
     const quote = this.quote();
     if (!quote) return undefined;
