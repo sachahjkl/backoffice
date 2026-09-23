@@ -4,7 +4,7 @@
     <section class="ds-panel" *appCan="'company.update'">
       <h2>@if (i18n.language() === 'fr') { Identité visuelle } @else { Branding }</h2>
       @if (branding.current(); as brand) {
-      <form (submit)="saveBranding($event, name.value, logoUrl.value)">
+      <form (submit)="saveBranding($event, name.value, logo.files?.item(0) ?? null)">
         <div class="field">
           <label for="enterprise-name"
             >@if (i18n.language() === 'fr') { Nom de l’entreprise } @else { Enterprise name }</label
@@ -20,16 +20,22 @@
         </div>
         <div class="field">
           <label for="enterprise-logo"
-            >@if (i18n.language() === 'fr') { Adresse du logo } @else { Logo URL }</label
+            >@if (i18n.language() === 'fr') { Fichier du logo } @else { Logo file }</label
           >
+          <img [src]="brand.logoUrl" width="48" height="48" alt="" />
           <input
-            #logoUrl
+            #logo
             id="enterprise-logo"
             class="input"
-            required
-            maxlength="2048"
-            [value]="brand.logoUrl"
+            type="file"
+            accept="image/png,image/jpeg,image/webp"
+            aria-describedby="enterprise-logo-hint"
           />
+          <small id="enterprise-logo-hint"
+            >@if (i18n.language() === 'fr') { PNG, JPEG ou WebP, 256 Ko maximum. Laissez vide pour
+            conserver le logo actuel. } @else { PNG, JPEG or WebP, up to 256 KB. Leave empty to keep
+            the current logo. }</small
+          >
         </div>
         @if (brandingError()) {
         <p appNotice variant="danger" role="alert">{{ i18n.t('company.error') }}</p>

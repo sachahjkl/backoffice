@@ -26,4 +26,20 @@ describe('branding update', () => {
       }),
     ).toThrow();
   });
+
+  it('accepts raster image data and rejects SVG data', () => {
+    const request = { name: 'ACME', expectedVersion: 0 };
+    expect(
+      Schema.decodeUnknownSync(BrandingUpdateRequest)({
+        ...request,
+        logoUrl: 'data:image/png;base64,iVBORw0KGgo=',
+      }).logoUrl,
+    ).toBe('data:image/png;base64,iVBORw0KGgo=');
+    expect(() =>
+      Schema.decodeUnknownSync(BrandingUpdateRequest)({
+        ...request,
+        logoUrl: 'data:image/svg+xml;base64,PHN2Zz4=',
+      }),
+    ).toThrow();
+  });
 });

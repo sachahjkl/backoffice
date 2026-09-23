@@ -97,6 +97,10 @@ form {
   padding-inline-start: var(--space-5);
 }
 
+.demo-accounts strong {
+  margin-inline-end: var(--space-2);
+}
+
 .demo-accounts code {
   overflow-wrap: anywhere;
 }

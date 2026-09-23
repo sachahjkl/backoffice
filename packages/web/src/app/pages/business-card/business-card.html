@@ -31,7 +31,9 @@
 
     <section class="business-card back" [attr.aria-label]="i18n.t('businessCard.backSide')">
       <div class="brand-lockup">
-        <img src="/brand/favicon.png" width="48" height="48" alt="" />
+        @if (branding.current(); as brand) {
+        <img [src]="brand.logoUrl" width="48" height="48" alt="" />
+        }
         <p>{{ content().brandName }}</p>
       </div>
     </section>

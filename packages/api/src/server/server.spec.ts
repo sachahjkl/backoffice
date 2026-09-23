@@ -216,7 +216,7 @@ describe('HTTP server', () => {
     const fixed = await fetch(`${baseUrl}/api/auth/login`, {
       method: 'POST',
       headers: { 'content-type': 'application/json', origin: baseUrl },
-      body: JSON.stringify({ email: `${'a'.repeat(33_000)}@example.test`, password: 'password' }),
+      body: JSON.stringify({ email: `${'a'.repeat(400_000)}@example.test`, password: 'password' }),
     });
     expect(fixed.status).toBe(413);
     await expect(fixed.json()).resolves.toMatchObject({ code: 'request.too_large' });
@@ -241,8 +241,8 @@ describe('HTTP server', () => {
           },
         );
         request.on('error', reject);
-        request.write('A'.repeat(17_000));
-        request.end('B'.repeat(17_000));
+        request.write('A'.repeat(200_001));
+        request.end('B'.repeat(200_001));
       },
     );
     expect(chunked.status).toBe(413);

@@ -2,8 +2,10 @@ import { Schema } from 'effect';
 
 export const BrandingName = Schema.String.check(Schema.isMinLength(1), Schema.isMaxLength(120));
 export const BrandingLogoUrl = Schema.String.check(
-  Schema.isMaxLength(2048),
-  Schema.isPattern(/^(?:\/(?!\/)[^\s]*|https:\/\/[^\s]+)$/),
+  Schema.isMaxLength(350_000),
+  Schema.isPattern(
+    /^(?:\/(?!\/)[^\s]*|https:\/\/[^\s]+|data:image\/(?:png|jpeg|webp);base64,[A-Za-z0-9+/]+={0,2})$/,
+  ),
 );
 
 export const Branding = Schema.Struct({

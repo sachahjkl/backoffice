@@ -22,6 +22,8 @@ The command creates `data/froment.sqlite`, applies database migrations, and list
 
 Set `DATABASE_PATH` to use a different database file. Set `PORT` to use a different port. Set `TYPST_PATH` to the absolute path of Typst if it is not on `PATH`. The package includes the Cousine fonts and document templates used for PDF documents. Set `BUSINESS_TIME_ZONE` to override `Europe/Paris`.
 
+In Configuration, upload a PNG, JPEG, or WebP logo of up to 256 KB. The application stores it with the branding settings in the database. Without an uploaded logo, the package uses its default logo or the instance's `ENTERPRISE_LOGO_URL`.
+
 Run `npx froment-backoffice migrate` to apply migrations without starting the server. Run `npx froment-backoffice backup` with `BACKUP_ACTION` and `BACKUP_PATH` to create, verify, or restore a backup.
 
 For a separate demo installation, set `APP_ENV=staging`, `DEMO_MODE=true`, `DEMO_PASSWORD`, and a different `DEMO_ACCOUNT_PASSWORD`. Set `ENTERPRISE_NAME` before `demo-reset` to name the company in its settings and generated documents. Run `npx froment-backoffice demo-reset` to migrate the database and create synthetic accounts and data. The login page displays the demo account credentials only in demo mode. Schedule this command to restore the demo data when needed.
@@ -30,4 +32,4 @@ See the source repository's `docs/secrets.md` and `docs/runtime-configuration.md
 
 ## Build a local package from source
 
-Run `pnpm pack:app` at the repository root. This builds the API and web application, assembles the assets, and writes an npm tarball to the repository root. Install that tarball with `npm install ./sachahjkl-backoffice-0.2.7.tgz` in the consuming application.
+Run `pnpm pack:app` at the repository root. This builds the API and web application, assembles the assets, and writes an npm tarball to the repository root. Install that tarball with `npm install ./sachahjkl-backoffice-0.2.8.tgz` in the consuming application.

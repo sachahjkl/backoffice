@@ -26,21 +26,43 @@ export class ConfigurationIndex {
     void this.branding.load();
   }
 
-  protected async saveBranding(event: SubmitEvent, name: string, logoUrl: string): Promise<void> {
+  protected async saveBranding(event: SubmitEvent, name: string, logo: File | null): Promise<void> {
     event.preventDefault();
     const current = this.branding.current();
     if (!current || this.brandingSaving()) return;
     this.brandingSaving.set(true);
     this.brandingError.set(false);
     this.brandingSaved.set(false);
-    const outcome = await this.branding.update({
-      name: name.trim(),
-      logoUrl: logoUrl.trim(),
-      expectedVersion: current.version,
+    try {
+      if (
+        logo &&
+        (logo.size > 256 * 1024 || !['image/png', 'image/jpeg', 'image/webp'].includes(logo.type))
+      ) {
+        this.brandingError.set(true);
+        return;
+      }
+      const logoUrl = logo ? await this.readLogo(logo) : current.logoUrl;
+      const outcome = await this.branding.update({
+        name: name.trim(),
+        logoUrl,
+        expectedVersion: current.version,
+      });
+      this.brandingError.set(!outcome.success);
+      this.brandingSaved.set(outcome.success);
+    } catch {
+      this.brandingError.set(true);
+    } finally {
+      this.brandingSaving.set(false);
+    }
+  }
+
+  private readLogo(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result));
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(file);
     });
-    this.brandingSaving.set(false);
-    this.brandingError.set(!outcome.success);
-    this.brandingSaved.set(outcome.success);
   }
 
   protected async resetBranding(): Promise<void> {

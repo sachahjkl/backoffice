@@ -9,6 +9,7 @@ import { defaultRuntimeConfig, RuntimeConfiguration } from '../runtime-config.js
 import { Company, CompanyLive } from './service.js';
 
 describe('enterprise branding', () => {
+  const uploadedLogo = 'data:image/png;base64,iVBORw0KGgo=';
   const connections: Array<Sqlite.Database> = [];
   afterEach(() => connections.splice(0).forEach((connection) => connection.close()));
 
@@ -40,9 +41,13 @@ describe('enterprise branding', () => {
         const fallback = yield* company.getBranding;
         const updated = yield* company.updateBranding({
           name: 'Acme',
-          logoUrl: '/acme.png',
+          logoUrl: uploadedLogo,
           expectedVersion: 0,
         });
+        const storedLogo = sqlite
+          .prepare('select logo_url from branding_settings where id = 1')
+          .pluck()
+          .get();
         const stale = yield* company
           .updateBranding({ name: 'Ignored', logoUrl: null, expectedVersion: 0 })
           .pipe(Effect.flip);
@@ -51,7 +56,7 @@ describe('enterprise branding', () => {
           logoUrl: null,
           expectedVersion: 1,
         });
-        return { fallback, updated, stale, reset };
+        return { fallback, updated, storedLogo, stale, reset };
       }).pipe(Effect.provide(layer)),
     );
 
@@ -60,7 +65,8 @@ describe('enterprise branding', () => {
       logoUrl: '/default.png',
       version: 0,
     });
-    expect(result.updated).toEqual({ name: 'Acme', logoUrl: '/acme.png', version: 1 });
+    expect(result.updated).toEqual({ name: 'Acme', logoUrl: uploadedLogo, version: 1 });
+    expect(result.storedLogo).toBe(uploadedLogo);
     expect(result.stale).toMatchObject({ code: 'company.branding_conflict' });
     expect(result.reset).toEqual({
       name: 'Default enterprise',

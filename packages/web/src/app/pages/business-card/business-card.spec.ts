@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { BrandingApi } from '@backoffice/branding-api';
+import { IssuerSettingsApi } from '@backoffice/issuer-settings-api';
 import { BusinessCard } from './business-card';
 
 describe('BusinessCard', () => {
@@ -30,11 +32,36 @@ describe('BusinessCard', () => {
     expect(versionInput.value).toMatch(/^Alice Martin - /);
   });
 
+  it('uses the configured company name and logo on a new card', async () => {
+    await fixture.whenStable();
+    fixture.destroy();
+    const branding = TestBed.inject(BrandingApi);
+    branding.current.set({ name: 'ACME', logoUrl: '/brand/acme.png', version: 0 });
+    vi.spyOn(branding, 'load').mockResolvedValue();
+    vi.spyOn(TestBed.inject(IssuerSettingsApi), 'get').mockRejectedValue(
+      new Error('issuer.unavailable'),
+    );
+    fixture = TestBed.createComponent(BusinessCard);
+    fixture.detectChanges();
+    element = fixture.nativeElement;
+
+    await vi.waitFor(() => {
+      fixture.detectChanges();
+      expect(element.querySelector('.brand-lockup p')?.textContent).toBe('ACME');
+    });
+    expect(element.querySelector<HTMLImageElement>('.brand-lockup img')?.getAttribute('src')).toBe(
+      '/brand/acme.png',
+    );
+    expect(element.querySelector('.contact-details')?.textContent).not.toContain(
+      'froment.software',
+    );
+  });
+
   it('generates an editable version name and restores a local version', async () => {
     const versionInput = Array.from(element.querySelectorAll<HTMLInputElement>('input')).find(
       (input) => input.closest('.version-save'),
     )!;
-    expect(versionInput.value).toMatch(/^Sacha Froment - /);
+    expect(versionInput.value).toMatch(/^Prénom Nom - /);
 
     versionInput.value = 'Carte salon';
     versionInput.dispatchEvent(new Event('input'));
@@ -54,7 +81,7 @@ describe('BusinessCard', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(nameInput.value).toBe('Sacha Froment');
+    expect(nameInput.value).toBe('Prénom Nom');
   });
 
   it('loads and deletes versions stored by an earlier component instance', () => {

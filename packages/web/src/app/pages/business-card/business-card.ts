@@ -4,6 +4,8 @@ import { email, form, FormField, required } from '@angular/forms/signals';
 import { RouterLink } from '@angular/router';
 import { translate } from '@froment/l10n';
 import { I18nService } from '@app/i18n.service';
+import { BrandingApi } from '@backoffice/branding-api';
+import { IssuerSettingsApi } from '@backoffice/issuer-settings-api';
 import { Button } from '@shared/button/button';
 import { Confirmation } from '@shared/confirmation/confirmation';
 import { PageHeader } from '@shared/page-header/page-header';
@@ -17,9 +19,9 @@ import {
 const defaultContent: BusinessCardContent = {
   name: translate('fr', 'businessCard.defaultName'),
   role: translate('fr', 'businessCard.defaultRole'),
-  email: 'contact@froment.software',
-  website: 'froment.software',
-  brandName: 'froment.software',
+  email: 'contact@example.com',
+  website: 'example.com',
+  brandName: translate('fr', 'backOffice.title'),
 };
 
 @Component({
@@ -33,6 +35,8 @@ const defaultContent: BusinessCardContent = {
 })
 export class BusinessCard {
   protected readonly i18n = inject(I18nService);
+  protected readonly branding = inject(BrandingApi);
+  private readonly issuer = inject(IssuerSettingsApi);
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly versionStorage = inject(BusinessCardVersionStorage);
   private readonly confirmation = inject(Confirmation);
@@ -52,6 +56,33 @@ export class BusinessCard {
   });
   protected readonly versions = this.versionStorage.versions;
   protected readonly storageMessage = signal('');
+
+  constructor() {
+    void this.loadDefaults();
+  }
+
+  private async loadDefaults(): Promise<void> {
+    const [branding, issuer] = await Promise.all([
+      this.branding.load().then(() => this.branding.current()),
+      this.issuer.get().catch(() => null),
+    ]);
+    if (!branding) return;
+    const content = this.content();
+    if (
+      content.name !== defaultContent.name ||
+      content.role !== defaultContent.role ||
+      content.email !== defaultContent.email ||
+      content.website !== defaultContent.website ||
+      content.brandName !== defaultContent.brandName
+    )
+      return;
+    this.content.set({
+      ...defaultContent,
+      email: issuer?.email || defaultContent.email,
+      website: this.isBrowser ? window.location.hostname : defaultContent.website,
+      brandName: branding.name,
+    });
+  }
 
   print(): void {
     if (this.isBrowser) {

@@ -34,7 +34,7 @@ describe('RuntimeConfiguration', () => {
     expect(config.requestLimiter.enabled).toBe(false);
     expect(config.requestLimiter.publicCapacity).toBe(5);
     expect(config.http.maximumBankImportBodyBytes).toBe(600_000);
-    expect(config.http.maximumRequestBodyBytes).toBe(32_768);
+    expect(config.http.maximumRequestBodyBytes).toBe(400_000);
     expect(config.http.maximumSupplierInvoiceAnalysisBodyBytes).toBe(700_000);
     expect(config.supplierInvoiceAnalysis.requestTimeoutMillis).toBe(8_000);
     expect(config.exchangeRates.requestTimeoutMillis).toBe(7_000);
