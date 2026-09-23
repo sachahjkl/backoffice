@@ -26,6 +26,14 @@ it('schedules, cancels, prepares current balances once, and skips paid invoices 
   const headers = { ...server.jsonHeaders, origin: server.baseUrl };
   const sendTime = Date.now() + 86400000;
   const sendAt = new Date(sendTime).toISOString();
+  const businessDate = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Europe/Paris',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
+  const paidOn = businessDate.format(new Date());
+  const dueDate = businessDate.format(new Date(Date.now() + 30 * 86400000));
   const post = (path: string, body: typeof Schema.Json.Type) =>
     fetch(`${server.baseUrl}${path}`, { method: 'POST', headers, body: JSON.stringify(body) });
   const database = Layer.succeed(Database, { sqlite, orm: drizzle({ client: sqlite }) });
@@ -68,7 +76,7 @@ it('schedules, cancels, prepares current balances once, and skips paid invoices 
         await post('/api/invoices', {
           orderId: accepted.orderId,
           serviceDate: '2026-08-20',
-          dueDate: '2026-09-19',
+          dueDate,
           paymentTerms: '30 days',
         })
       ).json(),
@@ -152,7 +160,7 @@ it('schedules, cancels, prepares current balances once, and skips paid invoices 
           requestId: randomUUID(),
           expectedVersion: invoice.version,
           amountCents: 100,
-          paidOn: '2026-09-01',
+          paidOn,
           method: 'transfer',
           reference: 'PARTIAL',
         })
@@ -191,7 +199,11 @@ it('schedules, cancels, prepares current balances once, and skips paid invoices 
         "insert into role_permissions (role_id, permission_code) values (?, 'email.reminder.manage')",
       )
       .run(reminderRole);
-    expect(email.body).toContain('September 19, 2026');
+    expect(email.body).toContain(
+      new Intl.DateTimeFormat('en', { dateStyle: 'long', timeZone: 'UTC' }).format(
+        new Date(`${dueDate}T00:00:00Z`),
+      ),
+    );
     expect(email.body).toContain(((invoice.currentRevision.totalCents - 100) / 100).toFixed(2));
     expect(
       sqlite
@@ -215,7 +227,7 @@ it('schedules, cancels, prepares current balances once, and skips paid invoices 
           requestId: randomUUID(),
           expectedVersion: invoice.version,
           amountCents: invoice.currentRevision.totalCents - 100,
-          paidOn: '2026-09-01',
+          paidOn,
           method: 'transfer',
           reference: 'BALANCE',
         })

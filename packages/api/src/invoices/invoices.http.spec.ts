@@ -20,6 +20,14 @@ describe('invoice HTTP routes', () => {
 
   it('creates, revises, issues, downloads, and terminates an invoice', async () => {
     await setIssuer(server);
+    const businessDate = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'Europe/Paris',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
+    const dueDate = businessDate.format(new Date(Date.now() + 30 * 86400000));
+    const invoiceNumber = `FA-${businessDate.format(new Date()).slice(0, 4)}-000001`;
     const client = await createClient(server);
     const clientSession = await createClientSession(server, client.id);
     const quote = await createQuote(server, client.id);
@@ -27,7 +35,7 @@ describe('invoice HTTP routes', () => {
     const payload = {
       orderId: accepted.orderId,
       serviceDate: '2026-08-20',
-      dueDate: '2026-09-19',
+      dueDate,
       paymentTerms: 'Payment due within 30 days.',
     };
     const create = await fetch(`${server.baseUrl}/api/invoices`, {
@@ -89,7 +97,7 @@ describe('invoice HTTP routes', () => {
     ]);
     expect(issues.map(({ status }) => status)).toEqual([200, 200]);
     const issued = (await issues[0]!.json()) as { invoiceNumber: string; version: number };
-    expect(issued).toMatchObject({ invoiceNumber: 'FA-2026-000001', version: 3 });
+    expect(issued).toMatchObject({ invoiceNumber, version: 3 });
     const issuedDetail = Schema.decodeUnknownSync(InvoiceDetail)(
       await (
         await fetch(`${server.baseUrl}/api/invoices/${invoice.id}`, {
@@ -111,7 +119,7 @@ describe('invoice HTTP routes', () => {
     );
     expect(issuedPreview.status).toBe(200);
     expect(issuedPreview.headers.get('content-disposition')).toBe(
-      'inline; filename="preview-facture-FA-2026-000001-v3.pdf"',
+      `inline; filename="preview-facture-${invoiceNumber}-v3.pdf"`,
     );
     await issuedPreview.arrayBuffer();
 
@@ -119,7 +127,7 @@ describe('invoice HTTP routes', () => {
       headers: server.sessionHeaders,
     });
     expect(download.status).toBe(200);
-    expect(download.headers.get('content-disposition')).toContain('FA-2026-000001-v3.pdf');
+    expect(download.headers.get('content-disposition')).toContain(`${invoiceNumber}-v3.pdf`);
     const pdf = Buffer.from(await download.arrayBuffer());
     expect(pdf.subarray(0, 5).toString()).toBe('%PDF-');
     const clientDownload = await fetch(`${server.baseUrl}/api/client/invoices/${invoice.id}/pdf`, {

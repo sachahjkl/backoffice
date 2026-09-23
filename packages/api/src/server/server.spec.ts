@@ -587,7 +587,11 @@ describe('HTTP server', () => {
     const root = await fetch(`${baseUrl}/`);
     expect(root.status).toBe(200);
     expect(root.headers.get('cache-control')).toBe('no-store');
-    expect(await root.text()).toContain('Froment Software');
+    expect(await root.text()).toContain('url=/fr');
+
+    const landing = await fetch(`${baseUrl}/fr`);
+    expect(landing.status).toBe(200);
+    expect(await landing.text()).toContain('Des logiciels métier qui avancent.');
 
     const about = await fetch(`${baseUrl}/about`);
     expect(about.status).toBe(200);
