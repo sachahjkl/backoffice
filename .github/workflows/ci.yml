@@ -29,3 +29,17 @@ jobs:
           .#checks.x86_64-linux.format
           .#checks.x86_64-linux.npm-package
           .#checks.x86_64-linux.pre-commit
+      - name: Validate the production deployment contract and Nomad job
+        run: |
+          contract=github:sachahjkl/application-contract/v2.2.2
+          nix run "$contract" -- validate
+          nix run "$contract" -- nomad-vars production \
+            ghcr.io/sachahjkl/backoffice@sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef \
+            > "$RUNNER_TEMP/production.vars.hcl"
+          printf 'datacenter = "homelab"\nnode_class = "general"\n' >> "$RUNNER_TEMP/production.vars.hcl"
+          pack=$(nix build github:sachahjkl/nomad-pack/v1.4.1#default --no-link --print-out-paths)
+          nix run nixpkgs#nomad-pack -- render "$pack" \
+            --var-file "$RUNNER_TEMP/production.vars.hcl" \
+            --ignore-missing-vars --to-dir "$RUNNER_TEMP/production-pack" --auto-approve
+          NIXPKGS_ALLOW_UNFREE=1 nix run --impure nixpkgs#nomad -- job validate \
+            "$RUNNER_TEMP/production-pack/application/application.nomad"
