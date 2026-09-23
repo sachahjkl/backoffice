@@ -155,7 +155,7 @@ export class AffairDetail {
         totalCents: quote.totalCents,
         currency: quote.currency,
         updatedAt: quote.updatedAt,
-        link: ['/backoffice/quotes', quote.id] as const,
+        link: ['/quotes', quote.id] as const,
       };
     }),
     ...this.linkedOrders().map((order) => ({
@@ -169,7 +169,7 @@ export class AffairDetail {
       totalCents: order.totalCents,
       currency: order.currency,
       updatedAt: order.createdAt,
-      link: ['/backoffice/orders', order.id] as const,
+      link: ['/orders', order.id] as const,
     })),
     ...this.linkedInvoices().map((invoice) => {
       const badge = invoiceStatusBadge(invoice.status);
@@ -184,7 +184,7 @@ export class AffairDetail {
         totalCents: invoice.totalCents,
         currency: invoice.currency,
         updatedAt: invoice.updatedAt,
-        link: ['/backoffice/invoices', invoice.id] as const,
+        link: ['/invoices', invoice.id] as const,
       };
     }),
   ]);

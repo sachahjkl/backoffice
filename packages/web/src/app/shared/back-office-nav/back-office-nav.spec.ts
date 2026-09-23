@@ -20,9 +20,9 @@ describe('BackOfficeNav', () => {
     const fixture = TestBed.createComponent(BackOfficeNav);
     await fixture.whenStable();
     const root: HTMLElement = fixture.nativeElement;
-    expect(root.querySelector('a[href="/backoffice/clients"]')).not.toBeNull();
-    expect(root.querySelector('a[href="/backoffice/team"]')).toBeNull();
-    expect(root.querySelector('a[href="/backoffice/emails"]')).toBeNull();
+    expect(root.querySelector('a[href="/clients"]')).not.toBeNull();
+    expect(root.querySelector('a[href="/team"]')).toBeNull();
+    expect(root.querySelector('a[href="/emails"]')).toBeNull();
     context.account.set(undefined);
     await fixture.whenStable();
     expect(root.querySelector('a')).toBeNull();
@@ -46,11 +46,11 @@ describe('BackOfficeNav', () => {
       ['services/stripe/tests/example', 'services'],
       ['audit', 'audit'],
     ]) {
-      await router.navigateByUrl(`/backoffice/${path}`);
+      await router.navigateByUrl(`/${path}`);
       await fixture.whenStable();
       const links = fixture.nativeElement.querySelectorAll('a[aria-current="page"]');
       expect(links.length).toBe(1);
-      expect(links[0].getAttribute('href')).toBe(`/backoffice/${selected}`);
+      expect(links[0].getAttribute('href')).toBe(`/${selected}`);
     }
   });
   it('keeps team, API, services and audit separate from company configuration', async () => {
@@ -59,18 +59,12 @@ describe('BackOfficeNav', () => {
     await fixture.whenStable();
     const root: HTMLElement = fixture.nativeElement;
     expect(root.querySelectorAll('nav section')).toHaveLength(2);
-    expect(root.querySelector('a[href="/backoffice/suppliers"]')).not.toBeNull();
+    expect(root.querySelector('a[href="/suppliers"]')).not.toBeNull();
     expect(
       [...root.querySelectorAll('nav section:last-child a')].map((link) =>
         link.getAttribute('href'),
       ),
-    ).toEqual([
-      '/backoffice/team',
-      '/backoffice/api',
-      '/backoffice/services',
-      '/backoffice/audit',
-      '/backoffice/configuration',
-    ]);
-    expect(root.querySelector('a[href="/backoffice/account"]')).toBeNull();
+    ).toEqual(['/team', '/api', '/services', '/audit', '/configuration']);
+    expect(root.querySelector('a[href="/account"]')).toBeNull();
   });
 });

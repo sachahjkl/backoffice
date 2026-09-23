@@ -1,6 +1,6 @@
 <section class="detail-page form-page">
   <app-page-header layout="stacked">
-    <a pageBack routerLink="/backoffice/services">{{ i18n.t('connections.back') }}</a>
+    <a pageBack routerLink="/services">{{ i18n.t('connections.back') }}</a>
     <h1>{{ i18n.t(providerName(provider)) }}</h1>
     <p>{{ i18n.t('configurationWorkspace.providerSetup') }}</p>
   </app-page-header>
@@ -46,7 +46,7 @@
   <a
     appLinkButton
     variant="primary"
-    [routerLink]="['/backoffice/services', provider, 'tests', requestId]"
+    [routerLink]="['/services', provider, 'tests', requestId]"
     [queryParams]="testParams()"
     >{{ i18n.t('configurationWorkspace.testDetail') }}</a
   >

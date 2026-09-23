@@ -51,7 +51,7 @@ export class SupplierInvoiceAnalysisSettingsPage {
   protected readonly breadcrumbs = signal([
     {
       label: this.i18n.t('backOffice.configuration.title'),
-      path: '/backoffice/configuration',
+      path: '/configuration',
     },
   ]);
   protected readonly model = signal<SettingsModel>({ adapter: 'local', endpoint: '', apiKey: '' });

@@ -5,22 +5,22 @@ import { billingDetailQuery, billingListQuery, BillingNavigation } from './billi
 
 const client = '01ARZ3NDEKTSV4RRFFQ69G5FAV';
 const cases = [
-  { source: 'invoices', path: '/backoffice/billing', sort: 'total-desc', status: 'issued' },
+  { source: 'invoices', path: '/billing', sort: 'total-desc', status: 'issued' },
   {
     source: 'receipts',
-    path: '/backoffice/billing/receipts',
+    path: '/billing/receipts',
     sort: 'method-asc',
     status: 'active',
   },
   {
     source: 'credits',
-    path: '/backoffice/billing/credit-notes',
+    path: '/billing/credit-notes',
     sort: 'amount-desc',
     status: undefined,
   },
   {
     source: 'refunds',
-    path: '/backoffice/billing/refunds',
+    path: '/billing/refunds',
     sort: 'date-asc',
     status: 'cancelled',
   },
@@ -127,7 +127,7 @@ describe('Billing navigation', () => {
       billingQ: 'ignored',
       tab: 'outside',
     });
-    expect(value.listLink()).toBe('/backoffice/billing');
+    expect(value.listLink()).toBe('/billing');
     expect(value.listQuery()).toEqual({});
     expect(value.detailQuery()).toEqual({});
     params.next(convertToParamMap({ tab: 'document' }));

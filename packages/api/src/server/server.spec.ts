@@ -175,8 +175,11 @@ describe('HTTP server', () => {
     await expect(runtimeConfig.text()).resolves.toBe(
       'globalThis.fromentRuntimeConfig={"appEnvironment":"development","sitePhase":"live","githubRepositoryUrl":"https://github.com/example/application","commit":"6c9757782e249d4db6ffb804349b7da620494565"};document.documentElement.dataset.appEnvironment=globalThis.fromentRuntimeConfig.appEnvironment;document.documentElement.dataset.sitePhase=globalThis.fromentRuntimeConfig.sitePhase;',
     );
-    const shell = await fetch(`${baseUrl}/backoffice/login`, { headers: { accept: 'text/html' } });
-    expect(await shell.text()).toContain('<app-root></app-root>');
+    for (const path of ['/', '/login', '/clients/active', '/quote/summary']) {
+      const shell = await fetch(`${baseUrl}${path}`, { headers: { accept: 'text/html' } });
+      expect(shell.status).toBe(200);
+      expect(await shell.text()).toContain('<app-root></app-root>');
+    }
   });
 
   it('replaces supplied request identifiers and returns exact deployment metadata', async () => {
@@ -583,21 +586,21 @@ describe('HTTP server', () => {
     expect(otherAddress.status).toBe(401);
   });
 
-  it('serves static, prerendered, and missing routes correctly', async () => {
+  it('serves the application shell for routes and static assets directly', async () => {
     const root = await fetch(`${baseUrl}/`);
     expect(root.status).toBe(200);
     expect(root.headers.get('cache-control')).toBe('no-store');
-    expect(await root.text()).toContain('url=/fr');
-
-    const landing = await fetch(`${baseUrl}/fr`);
-    expect(landing.status).toBe(200);
-    expect(await landing.text()).toContain('Des logiciels métier qui avancent.');
-
-    const about = await fetch(`${baseUrl}/about`);
-    expect(about.status).toBe(200);
-    expect(about.headers.get('cache-control')).toBe('no-store');
-    expect(await about.text()).toContain('ng-server-context="ssg"');
-
-    expect((await fetch(`${baseUrl}/missing`)).status).toBe(404);
+    const html = await root.text();
+    expect(html).toContain('<app-root></app-root>');
+    const script = html.match(/src="(main-[^"]+\.js)"/);
+    expect(script).not.toBeNull();
+    const asset = await fetch(`${baseUrl}/${script?.[1]}`);
+    expect(asset.status).toBe(200);
+    expect(asset.headers.get('content-type')).toContain('javascript');
+    const quote = await fetch(`${baseUrl}/quote/signature`, {
+      headers: { accept: 'text/html' },
+    });
+    expect(quote.status).toBe(200);
+    expect(await quote.text()).toContain('<app-root></app-root>');
   });
 });

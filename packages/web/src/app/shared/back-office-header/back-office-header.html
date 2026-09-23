@@ -4,7 +4,11 @@
 </aside>
 <header class="workspace-header">
   <app-navigation-progress />
-  @if (administrator()) {
+  @if (branding.current(); as brand) {
+  <span class="workspace-brand"
+    ><img [src]="brand.logoUrl" alt="" width="28" height="28" />{{ brand.name }}</span
+  >
+  } @if (administrator()) {
   <app-global-search [shortcutEnabled]="searchShortcut()" />
   } @else {
   <span class="workspace-label">{{ i18n.t('backOffice.client.title') }}</span>
@@ -52,7 +56,7 @@
       [style.min-block-size]="accountControlHeight"
       [cdkMenuTriggerFor]="accountActions"
     >
-      <img src="/brand/favicon.png" alt="" width="24" height="24" />
+      <app-icon name="secrets" />
       <span
         ><small>{{ i18n.t('backOffice.header.account') }}</small
         ><strong>{{ current.email }}</strong></span
@@ -64,7 +68,7 @@
         <a
           cdkMenuItem
           class="account-menu-item"
-          [routerLink]="administrator() ? '/backoffice/account' : '/backoffice/client/account'"
+          [routerLink]="administrator() ? '/account' : '/client/account'"
           ><app-icon name="secrets" />{{ i18n.t('account.security_title') }}</a
         >
         <button
@@ -86,9 +90,7 @@
     <button appButton type="button" (click)="loadAccount()">
       {{ i18n.t('backOffice.dashboard.retry') }}
     </button>
-    <a
-      class="account-unavailable"
-      [routerLink]="administrator() ? '/backoffice/account' : '/backoffice/client/account'"
+    <a class="account-unavailable" [routerLink]="administrator() ? '/account' : '/client/account'"
       ><app-icon name="user" />{{ i18n.t('account.security_title') }}</a
     >
     <button appButton type="button" (click)="signOut()">{{ i18n.t('backOffice.signOut') }}</button>
@@ -103,9 +105,7 @@
 <ng-template #navigation>
   @if (administrator()) { <app-back-office-nav /> } @else {
   <nav class="client-navigation" [attr.aria-label]="i18n.t('backOffice.navigation.label')">
-    <a routerLink="/backoffice/client"
-      ><app-icon name="invoice" />{{ i18n.t('backOffice.client.title') }}</a
-    >
+    <a routerLink="/client"><app-icon name="invoice" />{{ i18n.t('backOffice.client.title') }}</a>
   </nav>
   }
   <div class="sidebar-bottom">

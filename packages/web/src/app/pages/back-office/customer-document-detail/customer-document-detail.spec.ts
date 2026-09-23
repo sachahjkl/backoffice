@@ -31,7 +31,7 @@ describe('CustomerDocumentDetail', () => {
     expect(amounts[2]?.textContent).toMatch(/90[,.]00/);
     expect(root.querySelector('a[download], form, iframe')).toBeNull();
     expect(root.querySelector('.related a')?.getAttribute('href')).toBe(
-      `/backoffice/client/documents/order/${orderId}`,
+      `/client/documents/order/${orderId}`,
     );
   });
 

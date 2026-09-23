@@ -56,18 +56,18 @@ describe('ConfigurationIndex', () => {
     for (const path of [
       'conditions/new',
       'conditions/:presetId/edit',
-      'backoffice/team/invitations/new',
-      'backoffice/api/new',
-      'backoffice/services/resend/tests/new',
-      'backoffice/services/stripe/tests/new',
+      'team/invitations/new',
+      'api/new',
+      'services/resend/tests/new',
+      'services/stripe/tests/new',
     ]) {
       expect(routes.find((route) => route.path === path)?.canDeactivate).toHaveLength(1);
     }
-    expect(paths.indexOf('backoffice/services/resend/tests/new')).toBeLessThan(
-      paths.indexOf('backoffice/services/resend/tests/:requestId'),
+    expect(paths.indexOf('services/resend/tests/new')).toBeLessThan(
+      paths.indexOf('services/resend/tests/:requestId'),
     );
-    expect(paths.indexOf('backoffice/services/stripe/tests/new')).toBeLessThan(
-      paths.indexOf('backoffice/services/stripe/tests/:requestId'),
+    expect(paths.indexOf('services/stripe/tests/new')).toBeLessThan(
+      paths.indexOf('services/stripe/tests/:requestId'),
     );
     expect(
       accountRoutes
@@ -79,7 +79,7 @@ describe('ConfigurationIndex', () => {
     const configurationPaths = configurationRoutes.map(({ path }) => path);
     expect(configurationPaths).toContain('company');
     expect(configurationPaths).toContain('issuer');
-    expect(auditRoute.path).toBe('backoffice/audit');
+    expect(auditRoute.path).toBe('audit');
     for (const route of [...teamRoutes, ...apiTokenRoutes, ...serviceRoutes, auditRoute]) {
       expect(route.canActivate).toEqual([administratorGuard]);
       expect(route.path).not.toContain('configuration/');
@@ -91,7 +91,7 @@ describe('ConfigurationIndex', () => {
     const fixture = TestBed.createComponent(ConfigurationIndex);
     await fixture.whenStable();
     const root: HTMLElement = fixture.nativeElement;
-    expect(root.querySelector('a[href="/backoffice/account/preferences"]')).not.toBeNull();
+    expect(root.querySelector('a[href="/account/preferences"]')).not.toBeNull();
     expect(root.querySelector('a[href$="business-card"]')).not.toBeNull();
     expect(root.querySelector('a[href$="company"]')).not.toBeNull();
     expect(root.querySelector('a[href$="supplier-invoice-analysis"]')).not.toBeNull();

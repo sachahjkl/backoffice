@@ -46,7 +46,7 @@ export class SupplierPaymentBatchesPage {
     () => this.selectedIds().length > 0 && this.executionDate() !== '' && !this.busy(),
   );
   protected readonly breadcrumbs = computed(() => [
-    { label: this.i18n.t('supplierInvoice.title'), path: '/backoffice/purchases' },
+    { label: this.i18n.t('supplierInvoice.title'), path: '/purchases' },
   ]);
 
   constructor() {

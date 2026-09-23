@@ -7,7 +7,7 @@
         appLinkButton
         icon="tests"
         variant="primary"
-        routerLink="/backoffice/services/resend/tests/new"
+        routerLink="/services/resend/tests/new"
         [queryParams]="table.params()"
         >{{ i18n.t('configurationWorkspace.newTest') }}</a
       >
@@ -115,7 +115,7 @@
             </td>
             <th scope="row">
               <a
-                [routerLink]="['/backoffice/services/resend/tests', item.request.requestId]"
+                [routerLink]="['/services/resend/tests', item.request.requestId]"
                 [queryParams]="table.params()"
                 [appSearchHighlight]="table.match(result, 'request.subject')"
                 >{{ item.request.subject }}</a

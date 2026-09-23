@@ -1,6 +1,4 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
-import { policies } from './pages/policy/policy-documents';
 import {
   administratorGuard,
   administratorChildGuard,
@@ -39,7 +37,7 @@ export const routes: Routes = [
     auditRoute,
   ]),
   {
-    path: 'backoffice/join',
+    path: 'join',
     loadComponent: () =>
       import('./pages/back-office/team/team-join').then((module) => module.TeamJoin),
     canDeactivate: [unsavedChangesGuard],
@@ -47,81 +45,8 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'fr',
+    redirectTo: 'login',
     pathMatch: 'full',
-  },
-  {
-    path: 'fr',
-    component: HomeComponent,
-    data: {
-      shell: 'landing',
-      language: 'fr',
-      titleKey: 'page.home',
-      descriptionKey: 'page.description.home',
-    },
-  },
-  {
-    path: 'en',
-    component: HomeComponent,
-    data: {
-      shell: 'landing',
-      language: 'en',
-      titleKey: 'page.home',
-      descriptionKey: 'page.description.home',
-    },
-  },
-  {
-    path: 'about',
-    loadComponent: () =>
-      import('./pages/about/about.component').then((module) => module.AboutComponent),
-    data: { titleKey: 'page.about', descriptionKey: 'page.description.about' },
-  },
-  {
-    path: 'clients',
-    loadComponent: () =>
-      import('./pages/clients/clients.component').then((module) => module.ClientsComponent),
-    data: { titleKey: 'page.clients', descriptionKey: 'page.description.clients' },
-  },
-  {
-    path: 'services',
-    loadComponent: () =>
-      import('./pages/services/services.component').then((module) => module.ServicesComponent),
-    data: { titleKey: 'page.services', descriptionKey: 'page.description.services' },
-  },
-  {
-    path: 'services/audit-renovation',
-    loadComponent: () =>
-      import('./pages/service-detail/service-detail').then((module) => module.ServiceDetail),
-    data: {
-      offer: 'renovation',
-      titleKey: 'page.service.renovation',
-      descriptionKey: 'page.description.service.renovation',
-    },
-  },
-  {
-    path: 'services/development',
-    loadComponent: () =>
-      import('./pages/service-detail/service-detail').then((module) => module.ServiceDetail),
-    data: {
-      offer: 'development',
-      titleKey: 'page.service.development',
-      descriptionKey: 'page.description.service.development',
-    },
-  },
-  {
-    path: 'tools',
-    loadComponent: () =>
-      import('./pages/tools/tools.component').then((module) => module.ToolsComponent),
-    data: { titleKey: 'page.products', descriptionKey: 'page.description.products' },
-  },
-  {
-    path: 'blog',
-    loadComponent: () => import('./pages/blog/blog').then((module) => module.Blog),
-    data: { titleKey: 'page.blog', descriptionKey: 'page.description.blog' },
-  },
-  {
-    path: 'blog/:slug',
-    loadComponent: () => import('./pages/blog-post/blog-post').then((module) => module.BlogPost),
   },
   {
     path: 'quote',
@@ -144,12 +69,7 @@ export const routes: Routes = [
     ],
   },
   {
-    path: 'backoffice',
-    redirectTo: 'backoffice/login',
-    pathMatch: 'full',
-  },
-  {
-    path: 'backoffice/login',
+    path: 'login',
     loadComponent: () => import('./pages/back-office/login/login').then((module) => module.Login),
     data: {
       shell: 'public',
@@ -159,14 +79,14 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/sign-out',
+    path: 'sign-out',
     loadComponent: () =>
       import('./pages/back-office/sign-out/sign-out').then((module) => module.SignOut),
     canDeactivate: [unsavedChangesGuard],
     data: { shell: 'public', titleKey: 'backOffice.signOut', robots: 'noindex, nofollow' },
   },
   {
-    path: 'backoffice/bootstrap',
+    path: 'bootstrap',
     loadComponent: () =>
       import('./pages/back-office/bootstrap/bootstrap').then((module) => module.Bootstrap),
     data: {
@@ -177,7 +97,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/dashboard',
+    path: 'dashboard',
     loadComponent: () =>
       import('./pages/back-office/dashboard/dashboard').then((module) => module.Dashboard),
     canActivate: [administratorGuard],
@@ -190,7 +110,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/account',
+    path: 'account',
     loadComponent: () =>
       import('./pages/back-office/account-security/account-layout').then(
         (module) => module.AccountLayout,
@@ -207,7 +127,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/client/account',
+    path: 'client/account',
     loadComponent: () =>
       import('./pages/back-office/account-security/account-layout').then(
         (module) => module.AccountLayout,
@@ -222,7 +142,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/client/documents/:kind/:documentId',
+    path: 'client/documents/:kind/:documentId',
     loadComponent: () =>
       import('./pages/back-office/customer-document-detail/customer-document-detail').then(
         (module) => module.CustomerDocumentDetail,
@@ -231,7 +151,7 @@ export const routes: Routes = [
     data: { shell: 'client', titleKey: 'page.back_office_client', robots: 'noindex, nofollow' },
   },
   {
-    path: 'backoffice/client',
+    path: 'client',
     loadComponent: () =>
       import('./pages/back-office/client-portal/client-portal').then(
         (module) => module.ClientPortal,
@@ -245,7 +165,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/clients',
+    path: 'clients',
     loadComponent: () =>
       import('./pages/back-office/clients/clients').then((module) => module.Clients),
     canActivate: [administratorGuard],
@@ -260,7 +180,7 @@ export const routes: Routes = [
     children: tabRoutes('active', 'clients', ['active', 'archived', 'all']),
   },
   {
-    path: 'backoffice/purchases',
+    path: 'purchases',
     loadComponent: () =>
       import('./pages/back-office/supplier-invoices/supplier-invoices').then(
         (module) => module.SupplierInvoicesPage,
@@ -275,7 +195,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/purchases/new',
+    path: 'purchases/new',
     loadComponent: () =>
       import('./pages/back-office/supplier-invoice-editor/supplier-invoice-editor').then(
         (module) => module.SupplierInvoiceEditor,
@@ -290,7 +210,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/purchases/analyze',
+    path: 'purchases/analyze',
     loadComponent: () =>
       import('./pages/back-office/supplier-invoice-analysis/supplier-invoice-analysis').then(
         (module) => module.SupplierInvoiceAnalysisPage,
@@ -305,7 +225,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/purchases/payments',
+    path: 'purchases/payments',
     loadComponent: () =>
       import('./pages/back-office/supplier-payment-batches/supplier-payment-batches').then(
         (module) => module.SupplierPaymentBatchesPage,
@@ -319,7 +239,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/purchases/:invoiceId/edit',
+    path: 'purchases/:invoiceId/edit',
     loadComponent: () =>
       import('./pages/back-office/supplier-invoice-editor/supplier-invoice-editor').then(
         (module) => module.SupplierInvoiceEditor,
@@ -334,7 +254,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/purchases/:invoiceId',
+    path: 'purchases/:invoiceId',
     loadComponent: () =>
       import('./pages/back-office/supplier-invoice-detail/supplier-invoice-detail').then(
         (module) => module.SupplierInvoiceDetail,
@@ -349,7 +269,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/suppliers',
+    path: 'suppliers',
     loadComponent: () =>
       import('./pages/back-office/suppliers/suppliers').then((module) => module.Suppliers),
     canActivate: [administratorGuard],
@@ -364,7 +284,7 @@ export const routes: Routes = [
     children: tabRoutes('active', 'suppliers', ['active', 'archived', 'all']),
   },
   {
-    path: 'backoffice/suppliers/new',
+    path: 'suppliers/new',
     loadComponent: () =>
       import('./pages/back-office/supplier-editor/supplier-editor').then(
         (module) => module.SupplierEditor,
@@ -379,7 +299,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/suppliers/:supplierId/edit',
+    path: 'suppliers/:supplierId/edit',
     loadComponent: () =>
       import('./pages/back-office/supplier-editor/supplier-editor').then(
         (module) => module.SupplierEditor,
@@ -394,7 +314,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/suppliers/:supplierId',
+    path: 'suppliers/:supplierId',
     loadComponent: () =>
       import('./pages/back-office/supplier-detail/supplier-detail').then(
         (module) => module.SupplierDetail,
@@ -409,7 +329,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/clients/new',
+    path: 'clients/new',
     loadComponent: () =>
       import('./pages/back-office/client-editor/client-editor').then(
         (module) => module.ClientEditor,
@@ -424,7 +344,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/clients/:clientId/edit',
+    path: 'clients/:clientId/edit',
     loadComponent: () =>
       import('./pages/back-office/client-editor/client-editor').then(
         (module) => module.ClientEditor,
@@ -439,7 +359,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/clients/:clientId/access/new',
+    path: 'clients/:clientId/access/new',
     loadComponent: () =>
       import('./pages/back-office/client-detail/client-access-editor/client-access-editor').then(
         (module) => module.ClientAccessEditor,
@@ -454,7 +374,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/clients/:clientId',
+    path: 'clients/:clientId',
     loadComponent: () =>
       import('./pages/back-office/client-detail/client-detail').then(
         (module) => module.ClientDetail,
@@ -483,7 +403,7 @@ export const routes: Routes = [
     ],
   },
   {
-    path: 'backoffice/affairs',
+    path: 'affairs',
     loadComponent: () =>
       import('./pages/back-office/affairs/affairs').then((module) => module.Affairs),
     canActivate: [administratorGuard],
@@ -498,7 +418,7 @@ export const routes: Routes = [
     children: tabRoutes('attention', 'affairs', ['attention', 'active', 'completed', 'all']),
   },
   {
-    path: 'backoffice/affairs/:affairId',
+    path: 'affairs/:affairId',
     loadComponent: () =>
       import('./pages/back-office/affair-detail/affair-detail').then(
         (module) => module.AffairDetail,
@@ -523,7 +443,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/quotes/new',
+    path: 'quotes/new',
     loadComponent: () =>
       import('./pages/back-office/quote-editor/quote-editor').then((module) => module.QuoteEditor),
     canActivate: [administratorGuard],
@@ -543,7 +463,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/quotes/:quoteId/edit',
+    path: 'quotes/:quoteId/edit',
     loadComponent: () =>
       import('./pages/back-office/quote-editor/quote-editor').then((module) => module.QuoteEditor),
     canActivate: [administratorGuard],
@@ -564,7 +484,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/quotes/:quoteId/publication',
+    path: 'quotes/:quoteId/publication',
     loadComponent: () =>
       import('./pages/back-office/quote-publication/quote-publication').then(
         (module) => module.QuotePublication,
@@ -579,7 +499,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/quotes/:quoteId',
+    path: 'quotes/:quoteId',
     loadComponent: () =>
       import('./pages/back-office/quote-detail/quote-detail').then((module) => module.QuoteDetail),
     canActivate: [administratorGuard],
@@ -594,7 +514,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/orders/:orderId',
+    path: 'orders/:orderId',
     loadComponent: () =>
       import('./pages/back-office/order-detail/order-detail').then((module) => module.OrderDetail),
     canActivate: [administratorGuard],
@@ -606,7 +526,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/catalog/new',
+    path: 'catalog/new',
     loadComponent: () =>
       import('./pages/back-office/catalog-editor/catalog-editor').then(
         (module) => module.CatalogEditor,
@@ -621,7 +541,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/catalog/:itemId/edit',
+    path: 'catalog/:itemId/edit',
     loadComponent: () =>
       import('./pages/back-office/catalog-editor/catalog-editor').then(
         (module) => module.CatalogEditor,
@@ -636,7 +556,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/catalog',
+    path: 'catalog',
     loadComponent: () =>
       import('./pages/back-office/catalog/catalog').then((module) => module.Catalog),
     canActivate: [administratorGuard],
@@ -650,7 +570,7 @@ export const routes: Routes = [
     children: tabRoutes('active', 'catalog', ['active', 'archived', 'all']),
   },
   {
-    path: 'backoffice/configuration',
+    path: 'configuration',
     loadComponent: () =>
       import('./pages/back-office/configuration/configuration').then(
         (module) => module.Configuration,
@@ -667,7 +587,7 @@ export const routes: Routes = [
     children: configurationRoutes,
   },
   {
-    path: 'backoffice/emails/new',
+    path: 'emails/new',
     loadComponent: () =>
       import('./pages/back-office/email-composer/email-composer').then(
         (module) => module.EmailComposer,
@@ -682,7 +602,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/emails/drafts/:draftId/edit',
+    path: 'emails/drafts/:draftId/edit',
     loadComponent: () =>
       import('./pages/back-office/email-composer/email-composer').then(
         (module) => module.EmailComposer,
@@ -697,7 +617,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/emails/messages/:operationId',
+    path: 'emails/messages/:operationId',
     loadComponent: () =>
       import('./pages/back-office/email-detail/email-detail').then((module) => module.EmailDetail),
     canActivate: [administratorGuard],
@@ -710,7 +630,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/emails/templates/new',
+    path: 'emails/templates/new',
     loadComponent: () =>
       import('./pages/back-office/email-template-editor/email-template-editor').then(
         (module) => module.EmailTemplateEditor,
@@ -725,7 +645,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/emails/templates/:templateId/edit',
+    path: 'emails/templates/:templateId/edit',
     loadComponent: () =>
       import('./pages/back-office/email-template-editor/email-template-editor').then(
         (module) => module.EmailTemplateEditor,
@@ -740,7 +660,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/emails/reminders/new',
+    path: 'emails/reminders/new',
     loadComponent: () =>
       import('./pages/back-office/reminder-editor/reminder-editor').then(
         (module) => module.ReminderEditor,
@@ -755,7 +675,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'backoffice/emails',
+    path: 'emails',
     loadComponent: () =>
       import('./pages/back-office/emails/emails').then((module) => module.Emails),
     canActivate: [administratorGuard],
@@ -804,46 +724,6 @@ export const routes: Routes = [
         data: { panel: 'emails', tab: 'templates', ...permissionData('email.template.manage') },
       },
     ],
-  },
-  {
-    path: 'design',
-    loadComponent: () =>
-      import('./pages/design/design.component').then((module) => module.DesignComponent),
-    data: {
-      shell: 'standalone',
-      titleKey: 'page.design',
-      descriptionKey: 'page.description.design',
-      robots: 'noindex, follow',
-    },
-    loadChildren: () =>
-      import('./pages/design/design.routes').then((module) => module.designRoutes),
-  },
-  {
-    path: 'legal',
-    loadComponent: () => import('./pages/policy/policy-page').then((module) => module.PolicyPage),
-    data: {
-      policy: policies.legal,
-      titleKey: 'page.legal',
-      descriptionKey: 'page.description.legal',
-    },
-  },
-  {
-    path: 'privacy',
-    loadComponent: () => import('./pages/policy/policy-page').then((module) => module.PolicyPage),
-    data: {
-      policy: policies.privacy,
-      titleKey: 'page.privacy',
-      descriptionKey: 'page.description.privacy',
-    },
-  },
-  {
-    path: 'cookies',
-    loadComponent: () => import('./pages/policy/policy-page').then((module) => module.PolicyPage),
-    data: {
-      policy: policies.cookies,
-      titleKey: 'page.cookies',
-      descriptionKey: 'page.description.cookies',
-    },
   },
   {
     path: 'version',

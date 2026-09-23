@@ -45,11 +45,11 @@ describe('Affairs', () => {
         provideAccount(),
         provideRouter([
           {
-            path: 'backoffice/affairs',
+            path: 'affairs',
             component: Affairs,
             children: detailTabs('affairs', ['attention', 'active', 'completed', 'all']),
           },
-          { path: 'backoffice/affairs/:affairId', component: Affairs },
+          { path: 'affairs/:affairId', component: Affairs },
         ]),
         {
           provide: AffairsApi,
@@ -72,14 +72,14 @@ describe('Affairs', () => {
   });
 
   it('shows unquoted open affairs in the attention view', async () => {
-    const harness = await RouterTestingHarness.create('/backoffice/affairs/attention');
+    const harness = await RouterTestingHarness.create('/affairs/attention');
     await harness.fixture.whenStable();
     expect(harness.routeNativeElement!.querySelectorAll('tbody tr')).toHaveLength(1);
     expect(harness.routeNativeElement!.textContent).toContain(open.reference);
   });
 
   it('shows closed affairs in the completed view', async () => {
-    const harness = await RouterTestingHarness.create('/backoffice/affairs/completed');
+    const harness = await RouterTestingHarness.create('/affairs/completed');
     await harness.fixture.whenStable();
     expect(harness.routeNativeElement!.textContent).toContain(closed.reference);
     expect(harness.routeNativeElement!.textContent).not.toContain(active.reference);
@@ -89,7 +89,7 @@ describe('Affairs', () => {
     TestBed.overrideProvider(AffairsApi, {
       useValue: { list: async () => ({ success: false, code: 'affair.error' }), create },
     });
-    const harness = await RouterTestingHarness.create('/backoffice/affairs/all');
+    const harness = await RouterTestingHarness.create('/affairs/all');
     await harness.fixture.whenStable();
     expect(harness.routeNativeElement!.querySelector('[role="alert"]')).not.toBeNull();
   });

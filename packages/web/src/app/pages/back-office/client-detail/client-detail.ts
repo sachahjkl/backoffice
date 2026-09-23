@@ -138,7 +138,7 @@ export class ClientDetail {
     initialValue: this.route.snapshot.queryParamMap,
   });
   protected readonly backLink = computed(() => [
-    '/backoffice/clients',
+    '/clients',
     clientView(this.queryParams().get('view')),
   ]);
   protected readonly returnQuery = computed(() =>
@@ -194,7 +194,7 @@ export class ClientDetail {
           title: quote.title,
           status: this.i18n.t(`backOffice.quote.status.${quote.status}`),
           totalCents: quote.totalCents,
-          link: ['/backoffice/quotes', quote.id] as const,
+          link: ['/quotes', quote.id] as const,
           updatedAt: quote.updatedAt,
         })),
       ...this.orders()
@@ -207,7 +207,7 @@ export class ClientDetail {
           title: order.title,
           status: this.i18n.t('backOffice.clientDetail.confirmed'),
           totalCents: order.totalCents,
-          link: ['/backoffice/orders', order.id] as const,
+          link: ['/orders', order.id] as const,
           updatedAt: order.createdAt,
         })),
       ...this.invoices()
@@ -220,7 +220,7 @@ export class ClientDetail {
           title: invoice.title,
           status: this.i18n.t(`backOffice.invoice.status.${invoice.status}`),
           totalCents: invoice.totalCents,
-          link: ['/backoffice/invoices', invoice.id] as const,
+          link: ['/invoices', invoice.id] as const,
           updatedAt: invoice.updatedAt,
         })),
     ];

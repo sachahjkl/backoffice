@@ -58,7 +58,7 @@ describe('BackOfficeHeader', () => {
     );
     expect(root.querySelector('app-global-search')).not.toBeNull();
     expect(root.querySelector<HTMLSelectElement>('app-language-selector select')?.value).toBe('en');
-    expect(root.querySelector('a[href="/services"]')).toBeNull();
+    expect(root.querySelector('a[href="/services"]')).not.toBeNull();
     const account = root.querySelector<HTMLButtonElement>('.account-trigger')!;
     expect(account.dataset['buttonVariant']).toBe('ghost');
     account.focus();
@@ -66,7 +66,7 @@ describe('BackOfficeHeader', () => {
     await fixture.whenStable();
     const overlay = TestBed.inject(OverlayContainer).getContainerElement();
     const security = overlay.querySelector<HTMLAnchorElement>(
-      '[role="menuitem"][href="/backoffice/account"]',
+      '[role="menuitem"][href="/account"]',
     )!;
     expect(security).not.toBeNull();
     expect(overlay.querySelector('.sign-out')?.textContent).toMatch(/déconnecter|sign out/i);
@@ -82,7 +82,7 @@ describe('BackOfficeHeader', () => {
     const navigate = vi.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(false);
     overlay.querySelector<HTMLButtonElement>('.sign-out')!.click();
     await fixture.whenStable();
-    expect(navigate).toHaveBeenCalledWith('/backoffice/sign-out');
+    expect(navigate).toHaveBeenCalledWith('/sign-out');
     expect(signOut).not.toHaveBeenCalled();
     expect(overlay.querySelector('[role="menu"]')).toBeNull();
   });
@@ -104,8 +104,8 @@ describe('BackOfficeHeader', () => {
     const root: HTMLElement = fixture.nativeElement;
     expect(root.querySelector('app-global-search')).toBeNull();
     expect(root.querySelector('app-back-office-nav')).toBeNull();
-    expect(root.querySelector('a[href="/backoffice/team"]')).toBeNull();
-    expect(root.querySelector('a[href="/backoffice/api"]')).toBeNull();
+    expect(root.querySelector('a[href="/team"]')).toBeNull();
+    expect(root.querySelector('a[href="/api"]')).toBeNull();
     expect(root.querySelector('.client-navigation a')?.textContent?.trim()).toBe('Documents');
     expect(root.querySelector('.workspace-label')?.textContent?.trim()).toBe('Documents');
     const shortcut = new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, cancelable: true });

@@ -40,7 +40,7 @@ describe('Login', () => {
     const bootstrapLink = () => root.querySelector<HTMLAnchorElement>('.bootstrap-link');
     expect(root.querySelector('.bootstrap-slot')).not.toBeNull();
     expect(bootstrapLink()?.hasAttribute('appLinkButton')).toBe(false);
-    expect(bootstrapLink()?.getAttribute('href')).toBe('/backoffice/bootstrap');
+    expect(bootstrapLink()?.getAttribute('href')).toBe('/bootstrap');
     const navigate = vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
 
     const inputs = root.querySelectorAll<HTMLInputElement>('input');
@@ -52,7 +52,7 @@ describe('Login', () => {
     await fixture.whenStable();
 
     expect(auth.calls).toEqual([['administrator@example.test', 'administrator-password']]);
-    expect(navigate).toHaveBeenCalledWith('/backoffice/dashboard');
+    expect(navigate).toHaveBeenCalledWith('/dashboard');
     expect(root.querySelector<HTMLButtonElement>('button[type="submit"]')?.disabled).toBe(false);
   });
 
@@ -65,7 +65,7 @@ describe('Login', () => {
       ],
     });
     const router = TestBed.inject(Router);
-    const target = '/backoffice/client/documents/quote/01ARZ3NDEKTSV4RRFFQ69G5FAV';
+    const target = '/client/documents/quote/01ARZ3NDEKTSV4RRFFQ69G5FAV';
     const harness = await RouterTestingHarness.create(`/?returnUrl=${encodeURIComponent(target)}`);
     const root: HTMLElement = harness.fixture.nativeElement;
     const navigate = vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);

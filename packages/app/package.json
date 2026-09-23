@@ -1,0 +1,29 @@
+{
+  "name": "@sachahjkl/backoffice",
+  "version": "0.2.5",
+  "description": "Standalone Froment Software backoffice server and web application",
+  "license": "UNLICENSED",
+  "bin": {
+    "froment-backoffice": "bin/backoffice.mjs"
+  },
+  "files": [
+    "bin/",
+    "dist/"
+  ],
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "start": "node bin/backoffice.mjs",
+    "migrate": "node bin/backoffice.mjs migrate",
+    "backup": "node bin/backoffice.mjs backup"
+  },
+  "dependencies": {
+    "argon2": "^0.45.1",
+    "better-sqlite3": "13.0.3"
+  },
+  "engines": {
+    "node": ">=26.7.0 <27"
+  }
+}

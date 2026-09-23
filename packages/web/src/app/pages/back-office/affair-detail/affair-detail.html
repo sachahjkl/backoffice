@@ -1,6 +1,6 @@
 <section appTabLayout class="detail-page wide-page" aria-labelledby="affair-title">
   <app-page-header layout="stacked">
-    <a pageBack routerLink="/backoffice/affairs">{{ i18n.t('backOffice.affairs.title') }}</a>
+    <a pageBack routerLink="/affairs">{{ i18n.t('backOffice.affairs.title') }}</a>
     <h1 id="affair-title">{{ affair()?.reference ?? i18n.t('backOffice.affairs.title') }}</h1>
     @if (affair(); as item) {
     <ng-container pageActions>
@@ -9,7 +9,7 @@
         appLinkButton
         icon="file-plus"
         variant="primary"
-        routerLink="/backoffice/quotes/new"
+        routerLink="/quotes/new"
         [queryParams]="{ affairId: item.id, clientId: item.clientId }"
       >
         {{ i18n.t('affair.createQuote') }}
@@ -36,7 +36,7 @@
       <div class="affair-summary-client">
         <dt class="visually-hidden">{{ i18n.t('backOffice.affairs.client') }}</dt>
         <dd>
-          <a [routerLink]="['/backoffice/clients', item.clientId]">{{ item.clientDisplayName }}</a>
+          <a [routerLink]="['/clients', item.clientId]">{{ item.clientDisplayName }}</a>
         </dd>
       </div>
       <div

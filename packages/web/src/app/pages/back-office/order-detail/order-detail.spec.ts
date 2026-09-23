@@ -36,7 +36,7 @@ describe('Order detail', () => {
         renderPdf,
       },
     });
-    const harness = await RouterTestingHarness.create(`/backoffice/orders/${orderFixture.id}`);
+    const harness = await RouterTestingHarness.create(`/orders/${orderFixture.id}`);
     await harness.fixture.whenStable();
     expect(
       harness.fixture.nativeElement.querySelector(`a[href="/api/orders/${orderFixture.id}/pdf"]`),
@@ -59,15 +59,13 @@ describe('Order detail', () => {
         }),
       },
     });
-    const harness = await RouterTestingHarness.create(`/backoffice/orders/${orderFixture.id}`);
+    const harness = await RouterTestingHarness.create(`/orders/${orderFixture.id}`);
     await harness.fixture.whenStable();
     const root: HTMLElement = harness.fixture.nativeElement;
     expect(root.textContent).toContain('Audit');
     expect(root.textContent).not.toContain('Unaccepted change');
     expect(root.querySelector('app-quote-lines tbody tr')).not.toBeNull();
-    expect(
-      root.querySelector(`a[href="/backoffice/invoices/new?orderId=${orderFixture.id}"]`),
-    ).not.toBeNull();
+    expect(root.querySelector(`a[href="/invoices/new?orderId=${orderFixture.id}"]`)).not.toBeNull();
     expect(root.querySelector('form')).toBeNull();
   });
   it('opens an existing invoice instead of creating another', async () => {
@@ -76,24 +74,19 @@ describe('Order detail', () => {
         list: async () => [{ ...orderFixture, invoiceId: '01ARZ3NDEKTSV4RRFFQ69G5FAF' }],
       },
     });
-    const harness = await RouterTestingHarness.create(`/backoffice/orders/${orderFixture.id}`);
+    const harness = await RouterTestingHarness.create(`/orders/${orderFixture.id}`);
     await harness.fixture.whenStable();
     const root: HTMLElement = harness.fixture.nativeElement;
-    expect(
-      root.querySelector('a[href="/backoffice/invoices/01ARZ3NDEKTSV4RRFFQ69G5FAF"]'),
-    ).not.toBeNull();
-    expect(root.querySelector('a[href^="/backoffice/invoices/new"]')).toBeNull();
+    expect(root.querySelector('a[href="/invoices/01ARZ3NDEKTSV4RRFFQ69G5FAF"]')).not.toBeNull();
+    expect(root.querySelector('a[href^="/invoices/new"]')).toBeNull();
   });
   it('preserves sort and filters when opening the accepted quote revision', async () => {
     const harness = await RouterTestingHarness.create(
-      `/backoffice/orders/${orderFixture.id}?q=Audit&stage=ordered&client=${quoteFixture.clientId}&view=active&sort=updated-asc`,
+      `/orders/${orderFixture.id}?q=Audit&stage=ordered&client=${quoteFixture.clientId}&view=active&sort=updated-asc`,
     );
     await harness.fixture.whenStable();
     const root: HTMLElement = harness.fixture.nativeElement;
-    control<HTMLAnchorElement>(
-      root,
-      `a[href^="/backoffice/quotes/${quoteFixture.id}/document?"]`,
-    ).click();
+    control<HTMLAnchorElement>(root, `a[href^="/quotes/${quoteFixture.id}/document?"]`).click();
     await harness.fixture.whenStable();
     const router = TestBed.inject(Router);
     expect(router.parseUrl(router.url).queryParams).toEqual({
@@ -114,7 +107,7 @@ describe('Order detail', () => {
         get: async () => ({ success: true, result: { ...quoteFixture, revisions: [] } }),
       },
     });
-    const harness = await RouterTestingHarness.create(`/backoffice/orders/${orderFixture.id}`);
+    const harness = await RouterTestingHarness.create(`/orders/${orderFixture.id}`);
     await harness.fixture.whenStable();
     const root: HTMLElement = harness.fixture.nativeElement;
     expect(root.querySelector('[role="alert"]')).not.toBeNull();

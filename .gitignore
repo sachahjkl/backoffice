@@ -1,6 +1,7 @@
 # Node / Angular
 node_modules/
 dist/
+*.tgz
 .deploy/
 .angular/
 out-tsc/

@@ -7,13 +7,25 @@ on:
     branches: [master]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  platform:
-    permissions:
-      attestations: write
-      contents: read
-      id-token: write
-      packages: write
-    uses: sachahjkl/deployment-actions/.github/workflows/application-ci.yml@v6.0.3
-    with:
-      deployment-environment: staging
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@v19
+      - name: Build, test, lint, format, and check package contents
+        run: >-
+          nix build --no-link
+          .#checks.x86_64-linux.build
+          .#checks.x86_64-linux.test
+          .#checks.x86_64-linux.lint
+          .#checks.x86_64-linux.format
+          .#checks.x86_64-linux.npm-package
+          .#checks.x86_64-linux.pre-commit

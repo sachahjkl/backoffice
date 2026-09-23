@@ -1,5 +1,9 @@
 <section class="login-page" aria-labelledby="back-office-title">
   <header class="login-intro">
+    @if (branding.current(); as brand) {
+    <img class="enterprise-logo" [src]="brand.logoUrl" alt="" width="64" height="64" />
+    <p class="enterprise-name">{{ brand.name }}</p>
+    }
     <h1 id="back-office-title">{{ i18n.t('backOffice.title') }}</h1>
     <p class="login-description">{{ i18n.t('login.description') }}</p>
     <p class="login-access">{{ i18n.t('login.access') }}</p>
@@ -48,9 +52,7 @@
       }
     </form>
     <div class="bootstrap-slot">
-      <a class="bootstrap-link" routerLink="/backoffice/bootstrap">
-        {{ i18n.t('backOffice.bootstrap') }}
-      </a>
+      <a class="bootstrap-link" routerLink="/bootstrap"> {{ i18n.t('backOffice.bootstrap') }} </a>
     </div>
   </div>
 </section>

@@ -117,7 +117,7 @@ export class GlobalSearch {
           'condition.read',
           'issuer.read',
         ],
-        link: ['/backoffice/quotes/new'],
+        link: ['/quotes/new'],
       },
       {
         id: 'create-client',
@@ -125,7 +125,7 @@ export class GlobalSearch {
         detail: this.i18n.t('globalSearch.action.createClientDetail'),
         aliases: this.i18n.t('globalSearch.action.createClientAliases'),
         permissions: ['client.create'],
-        link: ['/backoffice/clients/new'],
+        link: ['/clients/new'],
       },
       {
         id: 'create-affair',
@@ -133,7 +133,7 @@ export class GlobalSearch {
         detail: this.i18n.t('globalSearch.action.createAffairDetail'),
         aliases: this.i18n.t('globalSearch.action.createAffairAliases'),
         permissions: ['affair.create', 'affair.read', 'client.read'],
-        link: ['/backoffice/affairs'],
+        link: ['/affairs'],
       },
       {
         id: 'create-purchase',
@@ -141,7 +141,7 @@ export class GlobalSearch {
         detail: this.i18n.t('globalSearch.action.createPurchaseDetail'),
         aliases: this.i18n.t('globalSearch.action.createPurchaseAliases'),
         permissions: ['supplier-invoice.create'],
-        link: ['/backoffice/purchases/new'],
+        link: ['/purchases/new'],
       },
       {
         id: 'create-supplier',
@@ -149,7 +149,7 @@ export class GlobalSearch {
         detail: this.i18n.t('globalSearch.action.createSupplierDetail'),
         aliases: this.i18n.t('globalSearch.action.createSupplierAliases'),
         permissions: ['supplier.create'],
-        link: ['/backoffice/suppliers/new'],
+        link: ['/suppliers/new'],
       },
       {
         id: 'create-catalog-item',
@@ -157,7 +157,7 @@ export class GlobalSearch {
         detail: this.i18n.t('globalSearch.action.createCatalogItemDetail'),
         aliases: this.i18n.t('globalSearch.action.createCatalogItemAliases'),
         permissions: ['catalog.manage'],
-        link: ['/backoffice/catalog/new'],
+        link: ['/catalog/new'],
       },
       {
         id: 'compose-email',
@@ -165,7 +165,7 @@ export class GlobalSearch {
         detail: this.i18n.t('globalSearch.action.composeEmailDetail'),
         aliases: this.i18n.t('globalSearch.action.composeEmailAliases'),
         permissions: ['email.draft.manage'],
-        link: ['/backoffice/emails/new'],
+        link: ['/emails/new'],
       },
     ] satisfies readonly SearchAction[];
     return actions.filter((action) =>
@@ -321,7 +321,7 @@ export class GlobalSearch {
           reference: client.displayName,
           detail: client.email,
           aliases: `${client.city} ${client.country}`,
-          link: ['/backoffice/clients', client.id],
+          link: ['/clients', client.id],
         })),
         ...quotes.map((quote) => ({
           id: quote.id,
@@ -329,7 +329,7 @@ export class GlobalSearch {
           reference: quote.reference,
           detail: `${quote.clientDisplayName} · ${quote.title}`,
           aliases: '',
-          link: ['/backoffice/quotes', quote.id],
+          link: ['/quotes', quote.id],
         })),
         ...orders.map((order) => ({
           id: order.id,
@@ -337,7 +337,7 @@ export class GlobalSearch {
           reference: order.reference,
           detail: `${order.clientDisplayName} · ${order.title}`,
           aliases: order.quoteReference,
-          link: ['/backoffice/orders', order.id],
+          link: ['/orders', order.id],
         })),
         ...invoices.map((invoice) => ({
           id: invoice.id,
@@ -345,7 +345,7 @@ export class GlobalSearch {
           reference: invoice.invoiceNumber ?? invoice.orderReference,
           detail: `${invoice.clientDisplayName} · ${invoice.title}`,
           aliases: invoice.orderReference,
-          link: ['/backoffice/invoices', invoice.id],
+          link: ['/invoices', invoice.id],
         })),
       ]);
       this.state.set('ready');

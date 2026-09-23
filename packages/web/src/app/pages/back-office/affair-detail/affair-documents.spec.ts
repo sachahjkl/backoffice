@@ -16,7 +16,7 @@ describe('Affair documents', () => {
       reference: quoteFixture.reference,
       date: quoteFixture.currentRevision.createdAt,
       totalCents: quoteFixture.currentRevision.totalCents,
-      link: ['/backoffice/quotes', quoteFixture.id],
+      link: ['/quotes', quoteFixture.id],
       query: context,
     });
   });

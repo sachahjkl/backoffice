@@ -25,19 +25,17 @@ async function configure(query = '') {
     providers: [
       provideRouter([
         {
-          path: 'backoffice/clients/:clientId/access/new',
+          path: 'clients/:clientId/access/new',
           component: ClientAccessEditor,
           canDeactivate: [unsavedChangesGuard],
         },
-        { path: 'backoffice/clients/:clientId/access', component: AccessList },
+        { path: 'clients/:clientId/access', component: AccessList },
       ]),
       { provide: ClientsApi, useValue: api },
       { provide: Confirmation, useValue: confirmation },
     ],
   });
-  const harness = await RouterTestingHarness.create(
-    `/backoffice/clients/${client.id}/access/new${query}`,
-  );
+  const harness = await RouterTestingHarness.create(`/clients/${client.id}/access/new${query}`);
   await harness.fixture.whenStable();
   return { harness, root: harness.routeNativeElement!, api, confirmation };
 }
@@ -63,7 +61,7 @@ describe('ClientAccessEditor', () => {
     password.value = 'secure-password-for-client';
     password.dispatchEvent(new Event('input'));
     await harness.fixture.whenStable();
-    const back = `/backoffice/clients/${client.id}/access`;
+    const back = `/clients/${client.id}/access`;
     await harness.navigateByUrl(back);
     expect(TestBed.inject(Router).url).toBe(`${back}/new`);
     expect(confirmation.request).toHaveBeenCalledOnce();
@@ -80,14 +78,13 @@ describe('ClientAccessEditor', () => {
     'retains only allowed context through the return link %s',
     async (selector) => {
       const { root, harness } = await configure(
-        '?q=Acme&view=archived&clientDocumentType=invoice&clientAccessQ=portal&clientAccessFrom=2026-09-01&token=secret&returnUrl=/backoffice/team',
+        '?q=Acme&view=archived&clientDocumentType=invoice&clientAccessQ=portal&clientAccessFrom=2026-09-01&token=secret&returnUrl=/team',
       );
       root.querySelector<HTMLAnchorElement>(selector)!.click();
       await harness.fixture.whenStable();
       const router = TestBed.inject(Router);
       const destination = router.parseUrl(router.url);
       expect(destination.root.children['primary']?.segments.map(({ path }) => path)).toEqual([
-        'backoffice',
         'clients',
         client.id,
         'access',
@@ -118,7 +115,6 @@ describe('ClientAccessEditor', () => {
     const router = TestBed.inject(Router);
     const destination = router.parseUrl(router.url);
     expect(destination.root.children['primary']?.segments.map(({ path }) => path)).toEqual([
-      'backoffice',
       'clients',
       client.id,
       'access',

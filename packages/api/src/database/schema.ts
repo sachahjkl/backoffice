@@ -658,6 +658,20 @@ export const companySettings = sqliteTable(
   ],
 );
 
+export const brandingSettings = sqliteTable(
+  'branding_settings',
+  {
+    id: integer().primaryKey().notNull(),
+    name: text(),
+    logoUrl: text('logo_url'),
+    version: integer().notNull().default(0),
+  },
+  (table) => [
+    check('branding_settings_singleton_check', sql`${table.id} = 1`),
+    check('branding_settings_version_check', sql`${table.version} >= 0`),
+  ],
+);
+
 export const exchangeRates = sqliteTable(
   'exchange_rates',
   {

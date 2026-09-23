@@ -31,7 +31,7 @@
       <a
         appLinkButton
         icon="pencil"
-        [routerLink]="['/backoffice/invoices', invoice.id, 'edit']"
+        [routerLink]="['/invoices', invoice.id, 'edit']"
         *appCan="'invoice.update'"
         [queryParams]="task.navigation.detailQuery()"
         >{{ i18n.t('billingWorkspace.edit') }}</a
@@ -40,7 +40,7 @@
         appLinkButton
         icon="mail"
         variant="primary"
-        [routerLink]="['/backoffice/invoices', invoice.id, 'issue']"
+        [routerLink]="['/invoices', invoice.id, 'issue']"
         *appCan="'invoice.issue'"
         [queryParams]="task.navigation.detailQuery()"
         >{{ i18n.t('backOffice.invoice.issue') }}</a
@@ -70,7 +70,7 @@
       <a
         appLinkButton
         icon="mail"
-        routerLink="/backoffice/emails/new"
+        routerLink="/emails/new"
         *appCan="'email.draft.manage'"
         [queryParams]="{ invoice: invoice.id }"
         >{{ i18n.t('billingWorkspace.email') }}</a
@@ -78,7 +78,7 @@
       <a
         appLinkButton
         icon="calendar"
-        routerLink="/backoffice/emails/reminders/new"
+        routerLink="/emails/reminders/new"
         *appCan="'email.reminder.manage'"
         [queryParams]="{ invoice: invoice.id }"
         >{{ i18n.t('billingWorkspace.reminder') }}</a
@@ -88,7 +88,7 @@
         appLinkButton
         icon="close"
         variant="danger"
-        [routerLink]="['/backoffice/invoices', invoice.id, 'void']"
+        [routerLink]="['/invoices', invoice.id, 'void']"
         *appCan="'invoice.void'"
         [queryParams]="task.navigation.detailQuery()"
         >{{ i18n.t('backOffice.invoice.void') }}</a
@@ -112,16 +112,14 @@
           <div>
             <dt>{{ i18n.t('backOffice.invoice.order') }}</dt>
             <dd>
-              <a [routerLink]="['/backoffice/orders', invoice.orderId]"
-                >{{ invoice.orderReference }}</a
-              >
+              <a [routerLink]="['/orders', invoice.orderId]">{{ invoice.orderReference }}</a>
             </dd>
           </div>
           @if (order(); as order) {
           <div>
             <dt>{{ i18n.t('billingWorkspace.quote') }}</dt>
             <dd>
-              <a [routerLink]="['/backoffice/quotes', order.quoteId]">{{ order.quoteReference }}</a>
+              <a [routerLink]="['/quotes', order.quoteId]">{{ order.quoteReference }}</a>
             </dd>
           </div>
           }
@@ -265,7 +263,7 @@
             <td>
               @if (canCancelPayment(invoice, payment, creditState())) {
               <a
-                [routerLink]="['/backoffice/invoices', invoice.id, 'payments', payment.id, 'cancel']"
+                [routerLink]="['/invoices', invoice.id, 'payments', payment.id, 'cancel']"
                 *appCan="'invoice.mark-paid'"
                 [queryParams]="task.navigation.detailQuery()"
                 >{{ i18n.t('payment.cancel') }}</a
@@ -300,7 +298,7 @@
       >
       } @else {
       <a
-        [routerLink]="['/backoffice/invoices', invoice.id, 'credits', note.id, 'edit']"
+        [routerLink]="['/invoices', invoice.id, 'credits', note.id, 'edit']"
         *appCan="'invoice.credit'"
         [queryParams]="task.navigation.detailQuery()"
         >{{ i18n.t('credit.editDraft') }}</a
@@ -315,7 +313,7 @@
     <a
       appLinkButton
       icon="plus"
-      [routerLink]="['/backoffice/invoices', invoice.id, 'refunds', 'new']"
+      [routerLink]="['/invoices', invoice.id, 'refunds', 'new']"
       *appCan="'invoice.refund'"
       [queryParams]="task.navigation.detailQuery()"
       >{{ i18n.t('credit.recordRefund') }}</a
@@ -323,7 +321,7 @@
     <a
       appLinkButton
       icon="plus"
-      [routerLink]="['/backoffice/invoices', invoice.id, 'credit-allocations', 'new']"
+      [routerLink]="['/invoices', invoice.id, 'credit-allocations', 'new']"
       *appCan="'invoice.refund'"
       [queryParams]="task.navigation.detailQuery()"
       >{{ i18n.t('credit.allocate') }}</a
@@ -346,7 +344,7 @@
           <tr [id]="allocation.id">
             <td>{{ allocation.reference }}</td>
             <td>
-              <a [routerLink]="['/backoffice/invoices', allocation.targetInvoiceId]"
+              <a [routerLink]="['/invoices', allocation.targetInvoiceId]"
                 >{{ allocation.targetInvoiceId }}</a
               >
             </td>
@@ -356,7 +354,7 @@
               @if (allocation.cancelledAt === null) {
               <a
                 [routerLink]="[
-                  '/backoffice/invoices',
+                  '/invoices',
                   invoice.id,
                   'credit-allocations',
                   allocation.id,
@@ -404,7 +402,7 @@
             <td>
               @if (refund.cancelledAt === null) {
               <a
-                [routerLink]="['/backoffice/invoices', invoice.id, 'refunds', refund.id, 'cancel']"
+                [routerLink]="['/invoices', invoice.id, 'refunds', refund.id, 'cancel']"
                 *appCan="'invoice.refund'"
                 [queryParams]="task.navigation.detailQuery()"
                 >{{ i18n.t('credit.cancelRefund') }}</a

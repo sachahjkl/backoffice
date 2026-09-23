@@ -19,9 +19,7 @@
     <p role="alert">{{ i18n.t('shell.navigationUnavailable') }}</p>
     <button appButton type="button" (click)="reload()">{{ i18n.t('shell.reload') }}</button>
   </div>
-  } } @else if (publicPage() && !landingPage()) {
-  <app-site-header />
-  } @else if (standalonePage()) {
+  } } @else if (standalonePage()) {
   <app-navigation-progress class="standalone-progress" />
   } @if (!backOffice()) {
   <app-environment-status ngSkipHydration [publicPage]="publicPage()" placement="hidden" />
@@ -46,6 +44,5 @@
     } @defer (when backOffice()) { <app-flash-outlet /> }
     <router-outlet />
   </main>
-  @if (publicPage()) { <app-site-footer /> }
   <app-copy-notice />
 </div>

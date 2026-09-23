@@ -198,6 +198,11 @@ const make = Effect.gen(function* () {
                 .run(now);
               sqlite
                 .prepare(
+                  "insert into branding_settings (id, name, logo_url, version) values (1, 'Atelier Nébula', null, 0)",
+                )
+                .run();
+              sqlite
+                .prepare(
                   "insert into issuer_settings (id, display_name, address_line_1, address_line_2, postal_code, city, country, email, phone, registration_number, vat_number, iban, bic, version, updated_at) values (1, 'Atelier Nébula', '18 rue des Forges', '', '44000', 'Nantes', 'France', 'bonjour@atelier-nebula.invalid', '+33251840024', '84372860100019', 'FR32843728601', 'FR7630006000011234567890189', 'AGRIFRPP', 1, ?)",
                 )
                 .run(now);

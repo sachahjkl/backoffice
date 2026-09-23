@@ -18,6 +18,19 @@
   padding-block: var(--space-4);
 }
 
+.enterprise-logo {
+  display: block;
+  max-inline-size: 4rem;
+  max-block-size: 4rem;
+  object-fit: contain;
+  margin-block-end: var(--space-3);
+}
+
+.enterprise-name {
+  font-weight: 700;
+  margin-block-end: var(--space-3);
+}
+
 h1 {
   max-width: 10ch;
   font-size: clamp(2.375rem, 5vw, 3.25rem);

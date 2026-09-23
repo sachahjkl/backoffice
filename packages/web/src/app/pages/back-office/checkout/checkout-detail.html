@@ -1,6 +1,6 @@
 <section class="detail-page form-page">
   <app-page-header layout="stacked">
-    <a pageBack routerLink="/backoffice/services/stripe/tests" [queryParams]="testParams()"
+    <a pageBack routerLink="/services/stripe/tests" [queryParams]="testParams()"
       >{{ i18n.t('configurationWorkspace.backTests') }}</a
     >
     <h1>{{ i18n.t('connections.stripe') }} — {{ i18n.t('configurationWorkspace.testDetail') }}</h1>
@@ -60,9 +60,7 @@
       {{ i18n.t('checkout.reconcile') }}
     </button>
     }
-    <a [routerLink]="['/backoffice/invoices', item.request.invoiceId]"
-      >{{ i18n.t('checkout.viewInvoice') }}</a
-    >
+    <a [routerLink]="['/invoices', item.request.invoiceId]">{{ i18n.t('checkout.viewInvoice') }}</a>
     @if (canOpen(item)) {
     <a
       appLinkButton

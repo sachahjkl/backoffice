@@ -1,6 +1,6 @@
 <section class="detail-page form-page" aria-labelledby="checkout-title">
   <app-page-header layout="stacked">
-    <a pageBack routerLink="/backoffice/services/stripe/tests" [queryParams]="testParams()"
+    <a pageBack routerLink="/services/stripe/tests" [queryParams]="testParams()"
       >{{ i18n.t('configurationWorkspace.backTests') }}</a
     >
     <h1 id="checkout-title">
@@ -34,7 +34,7 @@
   <a
     appLinkButton
     variant="primary"
-    [routerLink]="['/backoffice/services/stripe/tests', selected()]"
+    [routerLink]="['/services/stripe/tests', selected()]"
     [queryParams]="testParams()"
     >{{ i18n.t('configurationWorkspace.testDetail') }}</a
   >
@@ -71,7 +71,7 @@
         <dd>{{ item.version }}</dd>
       </dl>
     </section>
-    <a [routerLink]="['/backoffice/invoices', item.id]">{{ i18n.t('checkout.viewInvoice') }}</a>
+    <a [routerLink]="['/invoices', item.id]">{{ i18n.t('checkout.viewInvoice') }}</a>
     }
     <p>{{ i18n.t('checkout.transmitted') }}</p>
     @if (active()) {

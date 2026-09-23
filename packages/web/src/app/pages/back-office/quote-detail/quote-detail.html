@@ -30,7 +30,7 @@
         appLinkButton
         icon="pencil"
         [variant]="action.variant"
-        [routerLink]="['/backoffice/quotes', quote.id, 'edit']"
+        [routerLink]="['/quotes', quote.id, 'edit']"
         *appCan="'quote.update'"
         [queryParams]="context()"
         >{{ i18n.t(action.label) }}</a
@@ -40,7 +40,7 @@
         appLinkButton
         icon="mail"
         variant="primary"
-        [routerLink]="['/backoffice/quotes', quote.id, 'publication']"
+        [routerLink]="['/quotes', quote.id, 'publication']"
         *appCan="'quote.send'"
         [queryParams]="context()"
         >{{ i18n.t('commercial.publish') }}</a
@@ -50,7 +50,7 @@
         *appCan="'quote.send'"
         appLinkButton
         icon="external"
-        [routerLink]="['/backoffice/quotes', quote.id, 'publication']"
+        [routerLink]="['/quotes', quote.id, 'publication']"
         [queryParams]="context()"
       >
         {{ i18n.t('commercial.manageLink') }}
@@ -177,7 +177,7 @@
           <div>
             <dt>{{ i18n.t('commercial.order') }}</dt>
             <dd>
-              <a [routerLink]="['/backoffice/orders', order.id]" [queryParams]="context()"
+              <a [routerLink]="['/orders', order.id]" [queryParams]="context()"
                 >{{ order.reference }}</a
               >
             </dd>
@@ -186,7 +186,7 @@
           <div>
             <dt>{{ i18n.t('backOffice.affair.invoice') }}</dt>
             <dd>
-              <a [routerLink]="['/backoffice/invoices', order.invoiceId]"
+              <a [routerLink]="['/invoices', order.invoiceId]"
                 >{{ i18n.t('backOffice.affairs.openInvoice') }}</a
               >
             </dd>

@@ -130,10 +130,10 @@ export class Dashboard {
             title: quote.title,
             client: quote.clientDisplayName,
             link: blocked
-              ? ['/backoffice/clients', quote.clientId, archived ? 'profile' : 'edit']
+              ? ['/clients', quote.clientId, archived ? 'profile' : 'edit']
               : quote.status === 'draft'
-                ? ['/backoffice/quotes', quote.id, 'edit']
-                : ['/backoffice/quotes', quote.id],
+                ? ['/quotes', quote.id, 'edit']
+                : ['/quotes', quote.id],
             task: this.i18n.t(
               blocked
                 ? archived
@@ -155,7 +155,7 @@ export class Dashboard {
           label: this.i18n.t('backOffice.affairs.stage.ordered'),
           title: order.title,
           client: order.clientDisplayName,
-          link: ['/backoffice/invoices/new'] as const,
+          link: ['/invoices/new'] as const,
           query: { orderId: order.id },
           task: this.i18n.t('backOffice.affairs.createInvoice'),
           variant: 'default' as const,
@@ -190,12 +190,12 @@ export class Dashboard {
           client: invoice.clientDisplayName,
           link:
             invoice.pdf?.status === 'failed'
-              ? ['/backoffice/invoices', invoice.id]
+              ? ['/invoices', invoice.id]
               : this.canRemind(invoice)
-                ? ['/backoffice/emails/new']
+                ? ['/emails/new']
                 : invoice.status === 'draft'
-                  ? ['/backoffice/invoices', invoice.id, 'edit']
-                  : ['/backoffice/invoices', invoice.id],
+                  ? ['/invoices', invoice.id, 'edit']
+                  : ['/invoices', invoice.id],
           query: this.canRemind(invoice) ? { invoice: invoice.id } : undefined,
           task: this.i18n.t(
             invoice.pdf?.status === 'failed'
@@ -231,14 +231,14 @@ export class Dashboard {
         title: quote.reference,
         client: quote.clientDisplayName,
         date: quote.updatedAt,
-        link: ['/backoffice/quotes', quote.id] as const,
+        link: ['/quotes', quote.id] as const,
       })),
       ...this.invoices().map((invoice) => ({
         id: `invoice-${invoice.id}`,
         title: invoice.invoiceNumber ?? invoice.orderReference,
         client: invoice.clientDisplayName,
         date: invoice.updatedAt,
-        link: ['/backoffice/invoices', invoice.id] as const,
+        link: ['/invoices', invoice.id] as const,
       })),
     ]
       .sort((left, right) => right.date.localeCompare(left.date))

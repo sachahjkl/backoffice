@@ -7,7 +7,7 @@
       appLinkButton
       icon="invoice"
       variant="primary"
-      routerLink="/backoffice/billing"
+      routerLink="/billing"
       [queryParams]="{ status: 'issued', credit: 'without' }"
       >{{ i18n.t('billingWorkspace.chooseInvoice') }}</a
     >
@@ -96,7 +96,7 @@
                 <div>
                   <a
                     [routerLink]="[
-                      '/backoffice/invoices',
+                      '/invoices',
                       entry.sourceInvoiceIds[0],
                       'credits',
                       entry.id,

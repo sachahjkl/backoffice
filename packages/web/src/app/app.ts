@@ -24,8 +24,6 @@ import { I18nService } from './i18n.service';
 import { NavigationFocus } from './navigation-focus';
 import { PageMetadata } from './page-metadata';
 import { CopyNotice } from './shared/copy-notice/copy-notice';
-import { SiteFooter } from './shared/site-footer/site-footer';
-import { SiteHeader } from './shared/site-header/site-header';
 import { BackOfficeHeader } from './shared/back-office-header/back-office-header';
 import { BackOfficeHeaderPlaceholder } from './shared/back-office-header/back-office-header-placeholder';
 import { Button } from './shared/button/button';
@@ -45,8 +43,6 @@ import { NavigationProgress } from './shared/navigation-progress/navigation-prog
     FlashOutlet,
     NavigationProgress,
     RouterOutlet,
-    SiteFooter,
-    SiteHeader,
   ],
   templateUrl: './app.html',
   changeDetection: ChangeDetectionStrategy.Eager,
@@ -70,10 +66,7 @@ export class App {
   );
   protected readonly administrator = computed(() => this.shell() === 'administrator');
   protected readonly standalonePage = computed(() => this.shell() === 'standalone');
-  protected readonly publicPage = computed(
-    () => this.shell() === 'public' || this.shell() === 'landing',
-  );
-  protected readonly landingPage = computed(() => this.shell() === 'landing');
+  protected readonly publicPage = computed(() => this.shell() === 'public');
 
   constructor() {
     inject(NavigationFocus);

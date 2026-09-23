@@ -44,15 +44,13 @@ describe('Quote detail', () => {
     });
   });
   it('separates the read-only summary and document tabs with an integrated version selector', async () => {
-    const harness = await RouterTestingHarness.create(`/backoffice/quotes/${quoteId}`);
+    const harness = await RouterTestingHarness.create(`/quotes/${quoteId}`);
     await harness.fixture.whenStable();
     const root: HTMLElement = harness.fixture.nativeElement;
     expect(root.querySelector('#quote-name')).toBeNull();
     expect(root.querySelector('iframe')).toBeNull();
-    expect(root.querySelector(`a[href="/backoffice/quotes/${quoteId}/edit"]`)).not.toBeNull();
-    expect(
-      root.querySelector(`a[href="/backoffice/quotes/${quoteId}/publication"]`),
-    ).not.toBeNull();
+    expect(root.querySelector(`a[href="/quotes/${quoteId}/edit"]`)).not.toBeNull();
+    expect(root.querySelector(`a[href="/quotes/${quoteId}/publication"]`)).not.toBeNull();
     selectValue(control<HTMLSelectElement>(root, '.version-selector select'), '1');
     await harness.fixture.whenStable();
     expect(control<HTMLSelectElement>(root, '.version-selector select').value).toBe('1');
@@ -66,16 +64,14 @@ describe('Quote detail', () => {
   it('does not offer signature link management without send permission', async () => {
     TestBed.configureTestingModule({ providers: [provideAccount(['quote.read'])] });
     get.mockResolvedValue({ success: true, result: { ...quoteFixture, status: 'sent' } });
-    const harness = await RouterTestingHarness.create(`/backoffice/quotes/${quoteId}`);
+    const harness = await RouterTestingHarness.create(`/quotes/${quoteId}`);
     await harness.fixture.whenStable();
     expect(
-      harness.fixture.nativeElement.querySelector(
-        `a[href="/backoffice/quotes/${quoteId}/publication"]`,
-      ),
+      harness.fixture.nativeElement.querySelector(`a[href="/quotes/${quoteId}/publication"]`),
     ).toBeNull();
   });
   it('requires a reason and confirmation for cancellation', async () => {
-    const harness = await RouterTestingHarness.create(`/backoffice/quotes/${quoteId}`);
+    const harness = await RouterTestingHarness.create(`/quotes/${quoteId}`);
     await harness.fixture.whenStable();
     const root: HTMLElement = harness.fixture.nativeElement;
     await openCancellation(harness, root);
@@ -102,7 +98,7 @@ describe('Quote detail', () => {
   it('keeps revisions in fixed ascending version order without mutating the response', async () => {
     const revisions = quoteFixture.revisions.toReversed();
     get.mockResolvedValue({ success: true, result: { ...quoteFixture, revisions } });
-    const harness = await RouterTestingHarness.create(`/backoffice/quotes/${quoteId}`);
+    const harness = await RouterTestingHarness.create(`/quotes/${quoteId}`);
     await harness.fixture.whenStable();
     const root: HTMLElement = harness.fixture.nativeElement;
     expect(
@@ -120,16 +116,16 @@ describe('Quote detail', () => {
   it('opens the order for an accepted quote and removes edit and cancel actions', async () => {
     get.mockResolvedValue({ success: true, result: { ...quoteFixture, status: 'accepted' } });
     TestBed.overrideProvider(OrdersApi, { useValue: { list: async () => [orderFixture] } });
-    const harness = await RouterTestingHarness.create(`/backoffice/quotes/${quoteId}`);
+    const harness = await RouterTestingHarness.create(`/quotes/${quoteId}`);
     await harness.fixture.whenStable();
     const root: HTMLElement = harness.fixture.nativeElement;
-    expect(root.querySelector(`a[href="/backoffice/orders/${orderFixture.id}"]`)).not.toBeNull();
-    expect(root.querySelector(`a[href="/backoffice/quotes/${quoteId}/edit"]`)).toBeNull();
+    expect(root.querySelector(`a[href="/orders/${orderFixture.id}"]`)).not.toBeNull();
+    expect(root.querySelector(`a[href="/quotes/${quoteId}/edit"]`)).toBeNull();
     expect(root.querySelector('.cancel-quote')).toBeNull();
   });
   it('keeps cancellation annotations between tabs and warns before leaving', async () => {
     confirm.mockResolvedValue(false);
-    const harness = await RouterTestingHarness.create(`/backoffice/quotes/${quoteId}`);
+    const harness = await RouterTestingHarness.create(`/quotes/${quoteId}`);
     await harness.fixture.whenStable();
     const root: HTMLElement = harness.fixture.nativeElement;
     await openCancellation(harness, root);
@@ -142,7 +138,7 @@ describe('Quote detail', () => {
     const event = new Event('beforeunload', { cancelable: true });
     window.dispatchEvent(event);
     expect(event.defaultPrevented).toBe(true);
-    await TestBed.inject(Router).navigateByUrl('/backoffice/affairs');
+    await TestBed.inject(Router).navigateByUrl('/affairs');
     expect(TestBed.inject(Router).url).toContain('/document');
     expect(confirm).toHaveBeenCalledOnce();
     control<HTMLAnchorElement>(root, '#quote-summary-tab').click();
@@ -156,7 +152,7 @@ describe('Quote detail', () => {
   });
   it('locks a real confirmation without disabling its focus restoration target', async () => {
     TestBed.overrideProvider(Confirmation, { useFactory: () => new Confirmation() });
-    const harness = await RouterTestingHarness.create(`/backoffice/quotes/${quoteId}`);
+    const harness = await RouterTestingHarness.create(`/quotes/${quoteId}`);
     await harness.fixture.whenStable();
     const root: HTMLElement = harness.fixture.nativeElement;
     await openCancellation(harness, root);
@@ -169,7 +165,7 @@ describe('Quote detail', () => {
     expect(button.disabled).toBe(false);
     expect(document.querySelectorAll('[role="alertdialog"]')).toHaveLength(1);
     button.click();
-    await TestBed.inject(Router).navigateByUrl('/backoffice/affairs');
+    await TestBed.inject(Router).navigateByUrl('/affairs');
     expect(TestBed.inject(Router).url).toContain('/summary');
     expect(document.querySelectorAll('[role="alertdialog"]')).toHaveLength(1);
     const event = new Event('beforeunload', { cancelable: true });
@@ -182,7 +178,7 @@ describe('Quote detail', () => {
   });
   it('keeps an accessible heading and retry action after a load error', async () => {
     get.mockResolvedValueOnce({ success: false, code: 'quote.error' });
-    const harness = await RouterTestingHarness.create(`/backoffice/quotes/${quoteId}`);
+    const harness = await RouterTestingHarness.create(`/quotes/${quoteId}`);
     await harness.fixture.whenStable();
     const root: HTMLElement = harness.fixture.nativeElement;
     expect(root.querySelector('#quote-detail-title')).not.toBeNull();
@@ -194,7 +190,7 @@ describe('Quote detail', () => {
   });
   it('does not discard cancellation annotations when a reload confirmation is rejected', async () => {
     cancel.mockResolvedValue({ success: false, code: 'quote.version_conflict' });
-    const harness = await RouterTestingHarness.create(`/backoffice/quotes/${quoteId}`);
+    const harness = await RouterTestingHarness.create(`/quotes/${quoteId}`);
     await harness.fixture.whenStable();
     const root: HTMLElement = harness.fixture.nativeElement;
     await openCancellation(harness, root);

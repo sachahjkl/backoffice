@@ -9,6 +9,22 @@ import { ExchangeRates } from './exchange-rates.js';
 export const CompanyHandlers = HttpApiBuilder.group(Api, 'company', (handlers) =>
   Effect.succeed(
     handlers
+      .handle('brandingGet', () =>
+        Effect.gen(function* () {
+          yield* setPrivateResponseHeaders;
+          return yield* (yield* Company).getBranding.pipe(
+            Effect.catchTag('DatabaseError', Effect.orDie),
+          );
+        }),
+      )
+      .handle('brandingUpdate', ({ payload }) =>
+        Effect.gen(function* () {
+          yield* setPrivateResponseHeaders;
+          return yield* (yield* Company)
+            .updateBranding(payload)
+            .pipe(Effect.catchTag('DatabaseError', Effect.orDie));
+        }),
+      )
       .handle('companySettingsGet', () =>
         Effect.gen(function* () {
           yield* setPrivateResponseHeaders;

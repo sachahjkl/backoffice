@@ -49,7 +49,7 @@ export function affairDocuments(
       label: 'backOffice.affair.quote',
       icon: 'folder',
       reference: quote.reference,
-      link: ['/backoffice/quotes', quote.id],
+      link: ['/quotes', quote.id],
       query: context,
       badges: [quoteStatusBadge(quote.status)],
       date: quote.currentRevision.createdAt,
@@ -63,7 +63,7 @@ export function affairDocuments(
       label: 'backOffice.affair.order',
       icon: 'check',
       reference: order.reference,
-      link: ['/backoffice/orders', order.id],
+      link: ['/orders', order.id],
       query: context,
       badges: [{ label: 'backOffice.affair.confirmed', variant: 'success' }],
       date: order.createdAt,
@@ -76,7 +76,7 @@ export function affairDocuments(
       label: 'backOffice.affair.invoice',
       icon: 'invoice',
       reference: invoiceReference(invoice.invoiceNumber, language),
-      link: ['/backoffice/invoices', invoice.id],
+      link: ['/invoices', invoice.id],
       query: undefined,
       badges:
         invoice.status === 'issued' || invoice.status === 'paid'

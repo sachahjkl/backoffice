@@ -86,27 +86,27 @@ export function detailTabs(panel: string, tabs: readonly string[]): Routes {
   ];
 }
 export const commercialTestRoutes: Routes = [
-  { path: 'backoffice/quotes/new', component: QuoteEditor, canDeactivate: [unsavedChangesGuard] },
+  { path: 'quotes/new', component: QuoteEditor, canDeactivate: [unsavedChangesGuard] },
   {
-    path: 'backoffice/quotes/:quoteId/edit',
+    path: 'quotes/:quoteId/edit',
     component: QuoteEditor,
     canDeactivate: [unsavedChangesGuard],
   },
   {
-    path: 'backoffice/quotes/:quoteId/publication',
+    path: 'quotes/:quoteId/publication',
     component: QuotePublication,
     canDeactivate: [unsavedChangesGuard],
   },
   {
-    path: 'backoffice/quotes/:quoteId',
+    path: 'quotes/:quoteId',
     component: QuoteDetailPage,
     canDeactivate: [unsavedChangesGuard],
     children: detailTabs('quote-detail', ['summary', 'document', 'versions']),
   },
-  { path: 'backoffice/orders/:orderId', component: OrderDetail },
-  { path: 'backoffice/affairs', component: CommercialDestination },
-  { path: 'backoffice/invoices/new', component: CommercialDestination },
-  { path: 'backoffice/invoices/:invoiceId', component: CommercialDestination },
+  { path: 'orders/:orderId', component: OrderDetail },
+  { path: 'affairs', component: CommercialDestination },
+  { path: 'invoices/new', component: CommercialDestination },
+  { path: 'invoices/:invoiceId', component: CommercialDestination },
 ];
 
 export function control<T extends HTMLElement>(root: ParentNode, selector: string): T {

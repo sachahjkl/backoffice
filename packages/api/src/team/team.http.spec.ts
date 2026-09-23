@@ -58,6 +58,7 @@ it('creates single-use team invitations and enforces profiles, version checks an
     expect(response.headers.get('cache-control')).toContain('no-store');
     const invitation = Schema.decodeUnknownSync(TeamInviteResult)(await response.json());
     expect(invitation.invitation.email).toBe('accountant@example.test');
+    expect(new URL(invitation.url).pathname).toBe('/join');
     expect(
       Schema.decodeUnknownSync(TeamInviteResult)(
         await (await post('/api/team/invitations', request)).json(),

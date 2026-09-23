@@ -9,8 +9,7 @@ import {
 
 describe('EmailComposer', () => {
   it('keeps completed writes locked when destination navigation is refused', async () => {
-    const { navigation, drafts, fill, harness, root } =
-      await setupEmailPage('/backoffice/emails/new');
+    const { navigation, drafts, fill, harness, root } = await setupEmailPage('/emails/new');
     await fill('email-subject', 'Saved draft');
     navigation.allowList = false;
     const component = harness.routeDebugElement!.componentInstance as EmailComposer;
@@ -25,7 +24,7 @@ describe('EmailComposer', () => {
   it('blocks submission when stored recovery data is malformed', async () => {
     const { root, router, harness, api, drafts } = await setupEmailPage('/other');
     sessionStorage.setItem('test.email-message', '{"requestId":"invalid"}');
-    await router.navigateByUrl('/backoffice/emails/new');
+    await router.navigateByUrl('/emails/new');
     await harness.fixture.whenStable();
     expect(root.querySelector('form')).toBeNull();
     expect(root.querySelector('[role="alert"]')).not.toBeNull();
@@ -33,13 +32,12 @@ describe('EmailComposer', () => {
     expect(drafts.save).not.toHaveBeenCalled();
   });
   it('never turns a missing draft into a creation form', async () => {
-    const { root } = await setupEmailPage(`/backoffice/emails/drafts/${emailDraftId}/edit`);
+    const { root } = await setupEmailPage(`/emails/drafts/${emailDraftId}/edit`);
     expect(root.querySelector('form')).toBeNull();
     expect(root.querySelector('[role="alert"]')).not.toBeNull();
   });
   it('validates submission without disabling its button and saves incomplete drafts separately', async () => {
-    const { root, save, fill, drafts, api, router, harness } =
-      await setupEmailPage('/backoffice/emails/new');
+    const { root, save, fill, drafts, api, router, harness } = await setupEmailPage('/emails/new');
     expect(
       root.querySelector<HTMLButtonElement>('[type="submit"]')?.disabled,
       root.textContent,
@@ -64,8 +62,7 @@ describe('EmailComposer', () => {
     expect(api.submit).not.toHaveBeenCalled();
   });
   it('copies template text without changing recipients or writing a shared template', async () => {
-    const { root, fill, harness, templates, confirmation } =
-      await setupEmailPage('/backoffice/emails/new');
+    const { root, fill, harness, templates, confirmation } = await setupEmailPage('/emails/new');
     const component = harness.routeDebugElement!.componentInstance as EmailComposer;
     await fill('email-recipient', 'recipient@example.test');
     await fill('email-reference', 'DE-2026-000001');
@@ -84,7 +81,7 @@ describe('EmailComposer', () => {
   });
   it('keeps uncertain requests across route recreation and retries the same content and identifier', async () => {
     const { root, fill, save, api, store, router, confirmation, harness } =
-      await setupEmailPage('/backoffice/emails/new');
+      await setupEmailPage('/emails/new');
     api.submit.mockResolvedValueOnce({ success: false, code: 'integrations.error' });
     api.list.mockResolvedValue([]);
     await fill('email-recipient', 'client@example.test');
@@ -97,7 +94,7 @@ describe('EmailComposer', () => {
     expect(pending?.body).toBe('<script>Literal text</script>');
     confirmation.request.mockResolvedValue(true);
     await router.navigateByUrl('/other');
-    await router.navigateByUrl('/backoffice/emails/new');
+    await router.navigateByUrl('/emails/new');
     await harness.fixture.whenStable();
     expect(api.submit).toHaveBeenCalledTimes(1);
     expect(root.querySelector<HTMLTextAreaElement>('#email-body')?.value).toBe(pending?.body);
@@ -112,7 +109,7 @@ describe('EmailComposer', () => {
   it('reconciles confirmed requests without resubmitting them', async () => {
     const { store, api, router, harness, root } = await setupEmailPage('/other');
     store.write(operation.request);
-    await router.navigateByUrl('/backoffice/emails/new');
+    await router.navigateByUrl('/emails/new');
     await harness.fixture.whenStable();
     expect(store.read()).toBeUndefined();
     expect(api.submit).not.toHaveBeenCalled();
@@ -133,7 +130,7 @@ describe('EmailComposer', () => {
       version: 3,
       updatedAt: operation.createdAt,
     });
-    await router.navigateByUrl(`/backoffice/emails/drafts/${emailDraftId}/edit`);
+    await router.navigateByUrl(`/emails/drafts/${emailDraftId}/edit`);
     await harness.fixture.whenStable();
     drafts.save.mockResolvedValue({ success: false, code: 'email_draft.conflict' });
     await fill('email-body', 'Unsaved text');
@@ -146,7 +143,7 @@ describe('EmailComposer', () => {
     expect(root.querySelector<HTMLTextAreaElement>('#email-body')?.value).toBe('Unsaved text');
   });
   it('guards prepared reminders even before manual edits', async () => {
-    const { harness, root } = await setupEmailPage(`/backoffice/emails/new?invoice=${invoiceId}`);
+    const { harness, root } = await setupEmailPage(`/emails/new?invoice=${invoiceId}`);
     const component = harness.routeDebugElement!.componentInstance as EmailComposer;
     expect(root.querySelector<HTMLInputElement>('#email-reference')?.value).toBe(
       operation.request.reference,

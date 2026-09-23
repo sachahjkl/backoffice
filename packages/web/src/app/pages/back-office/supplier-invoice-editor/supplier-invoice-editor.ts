@@ -126,7 +126,7 @@ export class SupplierInvoiceEditor {
   protected readonly completed = signal(false);
   protected readonly error = signal<TranslationKey | undefined>(undefined);
   protected readonly breadcrumbs = signal([
-    { label: this.i18n.t('supplierInvoice.title'), path: '/backoffice/purchases' },
+    { label: this.i18n.t('supplierInvoice.title'), path: '/purchases' },
   ]);
   constructor() {
     afterNextRender(() => void this.load());
@@ -188,7 +188,7 @@ export class SupplierInvoiceEditor {
         }
         this.completed.set(true);
         this.invoiceForm().reset(this.model());
-        await this.router.navigate(['/backoffice/purchases', outcome.result.id]);
+        await this.router.navigate(['/purchases', outcome.result.id]);
       } catch {
         this.error.set('supplierInvoice.error');
       } finally {

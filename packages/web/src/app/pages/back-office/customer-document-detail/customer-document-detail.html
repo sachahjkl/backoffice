@@ -1,6 +1,6 @@
 <section class="detail-page" aria-labelledby="document-title">
   <app-page-header layout="stacked">
-    <a pageBack routerLink="/backoffice/client" [queryParams]="returnQuery()"
+    <a pageBack routerLink="/client" [queryParams]="returnQuery()"
       >{{ i18n.t('portalWorkspace.back') }}</a
     >
     <h1 id="document-title">{{ document()?.reference ?? i18n.t('portalWorkspace.detail') }}</h1>
@@ -46,16 +46,12 @@
   } @if (item.order; as order) {
   <section class="related">
     <h2>{{ i18n.t('backOffice.client.quotes') }}</h2>
-    <a
-      [routerLink]="['/backoffice/client/documents/quote', order.quoteId]"
-      [queryParams]="returnQuery()"
+    <a [routerLink]="['/client/documents/quote', order.quoteId]" [queryParams]="returnQuery()"
       >{{ order.quoteReference }}</a
     >
     <h2>{{ i18n.t('backOffice.client.invoice') }}</h2>
     @if (order.invoiceId) {
-    <a
-      [routerLink]="['/backoffice/client/documents/invoice', order.invoiceId]"
-      [queryParams]="returnQuery()"
+    <a [routerLink]="['/client/documents/invoice', order.invoiceId]" [queryParams]="returnQuery()"
       >{{ i18n.t('backOffice.client.invoice.available') }}</a
     >
     } @else {
@@ -102,9 +98,7 @@
   </section>
   <section class="related">
     <h2>{{ i18n.t('backOffice.client.orders') }}</h2>
-    <a
-      [routerLink]="['/backoffice/client/documents/order', invoice.orderId]"
-      [queryParams]="returnQuery()"
+    <a [routerLink]="['/client/documents/order', invoice.orderId]" [queryParams]="returnQuery()"
       >{{ invoice.orderReference }}</a
     >
   </section>

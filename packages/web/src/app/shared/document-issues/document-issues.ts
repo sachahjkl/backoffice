@@ -33,8 +33,8 @@ const reasonKeys = {
           <a
             [routerLink]="
               group.party === 'issuer'
-                ? ['/backoffice/configuration/issuer']
-                : ['/backoffice/clients', clientId(), 'profile']
+                ? ['/configuration/issuer']
+                : ['/clients', clientId(), 'profile']
             "
           >
             {{ i18n.t(group.party === 'issuer' ? 'document.issuer.edit' : 'document.client.edit') }}

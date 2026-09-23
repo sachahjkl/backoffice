@@ -21,7 +21,7 @@ describe('routeShell', () => {
               ],
             },
           ]),
-          { path: 'backoffice/unknown', component: ShellPage },
+          { path: 'unknown', component: ShellPage },
           { path: 'customer', component: ShellPage, data: { shell: 'client' } },
           { path: 'version', component: ShellPage, data: { shell: 'standalone' } },
         ]),
@@ -32,7 +32,7 @@ describe('routeShell', () => {
     expect(shell()).toBe('administrator');
     await harness.navigateByUrl('/workspace/join');
     expect(shell()).toBe('public');
-    await harness.navigateByUrl('/backoffice/unknown');
+    await harness.navigateByUrl('/unknown');
     expect(shell()).toBe('public');
     await harness.navigateByUrl('/customer');
     expect(shell()).toBe('client');

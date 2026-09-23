@@ -97,6 +97,7 @@
             ./packages/l10n/package.json
             ./packages/l10n/src
             ./packages/l10n/tsconfig.json
+            ./packages/app
             ./packages/web/angular.json
             ./packages/web/package.json
             ./packages/web/public
@@ -373,6 +374,34 @@
           lint = mkCheck {
             name = "lint";
             command = "pnpm lint";
+          };
+          npm-package = mkCheck {
+            name = "npm-package";
+            command = ''
+              pnpm build
+              node tools/package-app.mjs
+              npm pack --dry-run --json ./packages/app | node -e '
+                let text = "";
+                process.stdin.on("data", chunk => text += chunk);
+                process.stdin.on("end", () => {
+                  const files = new Set(JSON.parse(text)[0].files.map(file => file.path));
+                  for (const path of [
+                    "bin/backoffice.mjs",
+                    "dist/main.cjs",
+                    "dist/migrate.cjs",
+                    "dist/backup.cjs",
+                    "dist/web/index.csr.html",
+                    "dist/templates/document.typ",
+                    "dist/web/fonts/Cousine-Regular.ttf",
+                  ]) {
+                    if (!files.has(path)) throw new Error(`Missing package file: ''${path}`);
+                  }
+                  if (![...files].some(path => path.startsWith("dist/drizzle/") && path.endsWith("migration.sql"))) {
+                    throw new Error("Missing database migrations");
+                  }
+                });
+              '
+            '';
           };
           pre-commit = preCommitCheck;
           secret-contract = secretContract;

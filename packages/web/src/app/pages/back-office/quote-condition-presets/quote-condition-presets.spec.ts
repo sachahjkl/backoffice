@@ -120,7 +120,7 @@ describe('QuoteConditionPresets', () => {
     await fixture.whenStable();
     const root: HTMLElement = fixture.nativeElement;
     expect(
-      root.querySelector('a[href^="/backoffice/configuration/conditions?"]')?.getAttribute('href'),
+      root.querySelector('a[href^="/configuration/conditions?"]')?.getAttribute('href'),
     ).toContain('sort=conditionsDesc');
     fixture.componentInstance['save'](new SubmitEvent('submit'));
     await fixture.whenStable();
@@ -128,7 +128,7 @@ describe('QuoteConditionPresets', () => {
       name: preset.name,
       conditions: preset.conditions,
     });
-    expect(navigate).toHaveBeenLastCalledWith(['/backoffice/configuration/conditions'], {
+    expect(navigate).toHaveBeenLastCalledWith(['/configuration/conditions'], {
       queryParams: { q: 'Payment', sort: 'conditionsDesc' },
     });
   });

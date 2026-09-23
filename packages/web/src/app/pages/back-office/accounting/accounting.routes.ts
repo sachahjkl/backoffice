@@ -3,7 +3,7 @@ import { administratorGuard, permissionData } from '@backoffice/authentication-g
 
 export const accountingRoutes: Routes = [
   {
-    path: 'backoffice/accounting',
+    path: 'accounting',
     loadComponent: () => import('./accounting').then((module) => module.Accounting),
     canActivate: [administratorGuard],
     data: {

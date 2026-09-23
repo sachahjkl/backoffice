@@ -30,7 +30,7 @@ describe('Bank import task', () => {
   it('validates all data before confirmation and reports authoritative import counts', async () => {
     const { api } = setupBankWorkspace();
     const harness = await RouterTestingHarness.create();
-    await harness.navigateByUrl('/backoffice/banking/import', BankImport);
+    await harness.navigateByUrl('/banking/import', BankImport);
     await harness.fixture.whenStable();
     const root = bankRoot(harness);
     bankSubmit(root);
@@ -65,7 +65,7 @@ describe('Bank import task', () => {
   it('rejects invalid UTF-8 and preserves the selected file when navigation is refused', async () => {
     const { confirmation, api } = setupBankWorkspace();
     const harness = await RouterTestingHarness.create();
-    await harness.navigateByUrl('/backoffice/banking/import', BankImport);
+    await harness.navigateByUrl('/banking/import', BankImport);
     await harness.fixture.whenStable();
     const root = bankRoot(harness);
     chooseFile(root, new Uint8Array([0xff, 0xff]));
@@ -76,8 +76,8 @@ describe('Bank import task', () => {
     chooseFile(root, new TextEncoder().encode(csv));
     await harness.fixture.whenStable();
     confirmation.request.mockResolvedValue(false);
-    await harness.navigateByUrl('/backoffice/banking');
-    expect(TestBed.inject(Router).url).toBe('/backoffice/banking/import');
+    await harness.navigateByUrl('/banking');
+    expect(TestBed.inject(Router).url).toBe('/banking/import');
     const event = new Event('beforeunload', { cancelable: true });
     window.dispatchEvent(event);
     expect(event.defaultPrevented).toBe(true);
@@ -85,7 +85,7 @@ describe('Bank import task', () => {
   it('ignores a late file read after another file was selected', async () => {
     const { api } = setupBankWorkspace();
     const harness = await RouterTestingHarness.create();
-    await harness.navigateByUrl('/backoffice/banking/import', BankImport);
+    await harness.navigateByUrl('/banking/import', BankImport);
     await harness.fixture.whenStable();
     const root = bankRoot(harness);
     bankField(root, '#bank-account', 'Compte local');
@@ -122,7 +122,7 @@ describe('Bank import task', () => {
     });
     const harness = await RouterTestingHarness.create();
     await harness.navigateByUrl(
-      '/backoffice/banking/import?sort=reference-desc&previewSort=invalid&q=reglement&account=MAIN',
+      '/banking/import?sort=reference-desc&previewSort=invalid&q=reglement&account=MAIN',
       BankImport,
     );
     await harness.fixture.whenStable();

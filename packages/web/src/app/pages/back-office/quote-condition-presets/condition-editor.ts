@@ -86,10 +86,10 @@ export class ConditionEditor {
     this.editing() ? 'configurationWorkspace.editCondition' : 'configurationWorkspace.newCondition',
   );
   protected readonly breadcrumbs = computed<readonly BreadcrumbItem[]>(() => [
-    { label: this.i18n.t('backOffice.configuration.title'), path: '/backoffice/configuration' },
+    { label: this.i18n.t('backOffice.configuration.title'), path: '/configuration' },
     {
       label: this.i18n.t('backOffice.configuration.conditions'),
-      path: '/backoffice/configuration/conditions',
+      path: '/configuration/conditions',
       queryParams: this.backQuery(),
     },
   ]);
@@ -281,7 +281,7 @@ export class ConditionEditor {
       if (this.completed()) {
         if (this.dialog) this.dialog.close(this.preset());
         else
-          await this.router.navigate(['/backoffice/configuration/conditions'], {
+          await this.router.navigate(['/configuration/conditions'], {
             queryParams: this.backQuery(),
           });
       }

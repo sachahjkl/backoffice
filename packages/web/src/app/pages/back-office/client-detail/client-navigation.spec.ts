@@ -34,7 +34,7 @@ describe('Client navigation query', () => {
           password: 'secret-password',
           clientAccessFilter: 'revoked',
           clientDocumentSecret: 'secret-document',
-          clientAffairReturnUrl: '/backoffice/team',
+          clientAffairReturnUrl: '/team',
         }),
       ),
     ).toEqual(context);

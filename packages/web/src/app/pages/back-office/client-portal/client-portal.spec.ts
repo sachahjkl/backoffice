@@ -12,13 +12,13 @@ import { CustomerDocumentDetail } from '../customer-document-detail/customer-doc
 import { ClientPortal } from './client-portal';
 import { ClientPortalApiStub, invoiceId, orderId, quoteId } from './portal.spec-helper';
 
-async function configure(url = '/backoffice/client', api = new ClientPortalApiStub()) {
+async function configure(url = '/client', api = new ClientPortalApiStub()) {
   TestBed.configureTestingModule({
     providers: [
       provideRouter([
-        { path: 'backoffice/client', component: ClientPortal },
+        { path: 'client', component: ClientPortal },
         {
-          path: 'backoffice/client/documents/:kind/:documentId',
+          path: 'client/documents/:kind/:documentId',
           component: CustomerDocumentDetail,
         },
       ]),
@@ -75,14 +75,14 @@ describe('ClientPortal', () => {
     async ({ language, empty, one, other }) => {
       const api = new ClientPortalApiStub();
       api.orders = [];
-      const { root, harness } = await configure('/backoffice/client', api);
+      const { root, harness } = await configure('/client', api);
       TestBed.inject(I18nService).setLanguage(language);
       for (const [query, count, label] of [
         ['', 2, other],
         ['?kind=quote', 1, one],
         ['?kind=order', 0, empty],
       ] as const) {
-        await harness.navigateByUrl(`/backoffice/client${query}`);
+        await harness.navigateByUrl(`/client${query}`);
         await harness.fixture.whenStable();
         expect(root.querySelectorAll('tbody tr')).toHaveLength(count);
         expect(root.querySelector('footer.list-summary [role="status"]')?.textContent?.trim()).toBe(
@@ -105,7 +105,7 @@ describe('ClientPortal', () => {
         updatedAt: '2026-01-30T08:00:00.000Z',
       },
     ];
-    const { root, harness } = await configure('/backoffice/client', api);
+    const { root, harness } = await configure('/client', api);
     const ids = () => Array.from(root.querySelectorAll('tbody tr'), (row) => row.id);
     const quote = `client-quote-${quoteId}`;
     const order = `client-order-${orderId}`;
@@ -130,7 +130,7 @@ describe('ClientPortal', () => {
     await harness.fixture.whenStable();
     expect(ids()).toEqual([quote, invoice, order]);
     expect(root.querySelectorAll('thead th[aria-sort]')).toHaveLength(0);
-    expect(TestBed.inject(Router).url).toBe('/backoffice/client');
+    expect(TestBed.inject(Router).url).toBe('/client');
     expect(exporter.rows().map((row) => row[5])).toEqual([9, 25, 120]);
     buttons.item(3).click();
     await harness.fixture.whenStable();
@@ -158,7 +158,7 @@ describe('ClientPortal', () => {
     expect(TestBed.inject(Router).url).toContain('sort=reference-asc');
     root.querySelector<HTMLButtonElement>('.filter-chips > button:last-child')!.click();
     await harness.fixture.whenStable();
-    expect(TestBed.inject(Router).url).toBe('/backoffice/client?sort=reference-asc');
+    expect(TestBed.inject(Router).url).toBe('/client?sort=reference-asc');
     expect(document.activeElement).toBe(search);
   });
 
@@ -171,7 +171,7 @@ describe('ClientPortal', () => {
       { ...invoice, id: quoteId, updatedAt: '2026-08-20T10:00:00+02:00', totalCents: 2500 },
     ];
     const { harness } = await configure(
-      `/backoffice/client?q=Security&kind=invoice&status=open&invoice=${invoiceId}`,
+      `/client?q=Security&kind=invoice&status=open&invoice=${invoiceId}`,
       api,
     );
     const page = harness.routeDebugElement!.componentInstance as ClientPortal;
@@ -213,7 +213,7 @@ describe('ClientPortal', () => {
       },
     ] as const;
     for (const column of ['kind', 'status'] as const) {
-      await router.navigateByUrl(`/backoffice/client?sort=${column}-asc`);
+      await router.navigateByUrl(`/client?sort=${column}-asc`);
       for (const language of ['fr', 'en'] as const) {
         i18n.setLanguage(language);
         await harness.fixture.whenStable();
@@ -230,7 +230,7 @@ describe('ClientPortal', () => {
   });
 
   it('uses an identifier tie break in both directions and rejects unknown sorts', async () => {
-    const { root, harness } = await configure('/backoffice/client?sort=unknown');
+    const { root, harness } = await configure('/client?sort=unknown');
     const ids = () => Array.from(root.querySelectorAll('tbody tr'), (row) => row.id);
     const expected = [
       `client-quote-${quoteId}`,
@@ -239,7 +239,7 @@ describe('ClientPortal', () => {
     ];
     expect(ids()).toEqual(expected);
     for (const sort of ['amount-asc', 'amount-desc', 'date-asc', 'date-desc']) {
-      await harness.navigateByUrl(`/backoffice/client?sort=${sort}`);
+      await harness.navigateByUrl(`/client?sort=${sort}`);
       await harness.fixture.whenStable();
       expect(ids()).toEqual(expected);
     }
@@ -247,7 +247,7 @@ describe('ClientPortal', () => {
 
   it('restores URL filters and opens a focused detail with a return link', async () => {
     const { root, harness } = await configure(
-      '/backoffice/client?kind=invoice&status=open&q=Security&sort=amount-asc',
+      '/client?kind=invoice&status=open&q=Security&sort=amount-asc',
     );
     expect(root.querySelectorAll('tbody tr')).toHaveLength(1);
     expect(root.querySelector('tbody')?.textContent).toContain('FA-2026-000001');
@@ -255,9 +255,7 @@ describe('ClientPortal', () => {
     expect(root.querySelector('a[download]')).toBeNull();
     root.querySelector<HTMLAnchorElement>('tbody a')!.click();
     await harness.fixture.whenStable();
-    expect(TestBed.inject(Router).url).toContain(
-      `/backoffice/client/documents/invoice/${invoiceId}`,
-    );
+    expect(TestBed.inject(Router).url).toContain(`/client/documents/invoice/${invoiceId}`);
     expect(TestBed.inject(Router).parseUrl(TestBed.inject(Router).url).queryParams).toEqual({
       q: 'Security',
       kind: 'invoice',
@@ -291,7 +289,7 @@ describe('ClientPortal', () => {
   });
 
   it('keeps choice searches local and translates categories before an explicit commit', async () => {
-    const url = '/backoffice/client?q=Security&sort=amount-desc';
+    const url = '/client?q=Security&sort=amount-desc';
     const { root, harness, api } = await configure(url);
     const i18n = TestBed.inject(I18nService);
     const router = TestBed.inject(Router);
@@ -340,7 +338,7 @@ describe('ClientPortal', () => {
       .find((option) => option.textContent?.trim() === 'In progress')!
       .click();
     await harness.fixture.whenStable();
-    expect(router.url).toBe('/backoffice/client?q=Security&status=open&sort=amount-desc');
+    expect(router.url).toBe('/client?q=Security&status=open&sort=amount-desc');
     expect(document.querySelector('[role="dialog"]')).toBeNull();
     expect(document.activeElement).toBe(root.querySelector('app-filter-menu > button'));
     expect(root.querySelectorAll('tbody tr')).toHaveLength(1);
@@ -350,12 +348,12 @@ describe('ClientPortal', () => {
 
   it('preserves only the list filters through a direct detail URL and related documents', async () => {
     const { harness } = await configure(
-      `/backoffice/client/documents/invoice/${invoiceId}?kind=invoice&status=open&q=Security&sort=reference-desc&unrelated=value`,
+      `/client/documents/invoice/${invoiceId}?kind=invoice&status=open&q=Security&sort=reference-desc&unrelated=value`,
     );
     const router = TestBed.inject(Router);
     harness.routeNativeElement!.querySelector<HTMLAnchorElement>('.related a')!.click();
     await harness.fixture.whenStable();
-    expect(router.url).toContain(`/backoffice/client/documents/order/${orderId}`);
+    expect(router.url).toContain(`/client/documents/order/${orderId}`);
     expect(router.parseUrl(router.url).queryParams).toEqual({
       q: 'Security',
       kind: 'invoice',
@@ -363,9 +361,7 @@ describe('ClientPortal', () => {
       sort: 'reference-desc',
     });
     await returnToPortal(harness);
-    expect(router.url).toBe(
-      '/backoffice/client?q=Security&kind=invoice&status=open&sort=reference-desc',
-    );
+    expect(router.url).toBe('/client?q=Security&kind=invoice&status=open&sort=reference-desc');
     expect(harness.routeNativeElement!.querySelectorAll('tbody tr')).toHaveLength(1);
     expect(harness.routeNativeElement!.querySelector('tbody a')?.textContent).toBe(
       'FA-2026-000001',
@@ -373,16 +369,14 @@ describe('ClientPortal', () => {
   });
 
   it('updates return filters when the URL changes without replacing the document page', async () => {
-    const { harness } = await configure(
-      `/backoffice/client/documents/invoice/${invoiceId}?kind=invoice`,
-    );
+    const { harness } = await configure(`/client/documents/invoice/${invoiceId}?kind=invoice`);
     await harness.navigateByUrl(
-      `/backoffice/client/documents/invoice/${invoiceId}?kind=quote&status=completed&q=Security&sort=status-asc`,
+      `/client/documents/invoice/${invoiceId}?kind=quote&status=completed&q=Security&sort=status-asc`,
     );
     await harness.fixture.whenStable();
     await returnToPortal(harness);
     expect(TestBed.inject(Router).url).toBe(
-      '/backoffice/client?q=Security&kind=quote&status=completed&sort=status-asc',
+      '/client?q=Security&kind=quote&status=completed&sort=status-asc',
     );
     expect(harness.routeNativeElement!.querySelectorAll('tbody tr')).toHaveLength(1);
     expect(harness.routeNativeElement!.querySelector('tbody a')?.textContent).toBe(
@@ -391,7 +385,7 @@ describe('ClientPortal', () => {
   });
 
   it('focuses the document selected by an authenticated permalink', async () => {
-    const { root } = await configure(`/backoffice/client?order=${orderId}`);
+    const { root } = await configure(`/client?order=${orderId}`);
     const row = root.querySelector<HTMLElement>(`#client-order-${orderId}`)!;
     expect(row.classList.contains('target-document')).toBe(true);
     expect(row.tabIndex).toBe(-1);
@@ -401,7 +395,7 @@ describe('ClientPortal', () => {
   it('shows an error and retries document loading without a provider action', async () => {
     const api = new ClientPortalApiStub();
     api.fail = true;
-    const { root, harness } = await configure('/backoffice/client', api);
+    const { root, harness } = await configure('/client', api);
     expect(root.querySelector('[role="alert"]')).not.toBeNull();
     api.fail = false;
     root.querySelector<HTMLButtonElement>('.state button[appButton]')!.click();

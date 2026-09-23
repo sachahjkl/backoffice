@@ -4,7 +4,7 @@ import { unsavedChangesGuard } from '@backoffice/unsaved-changes-guard';
 
 export const apiTokenRoutes: Routes = [
   {
-    path: 'backoffice/api/new',
+    path: 'api/new',
     loadComponent: () => import('./api-token-editor').then((module) => module.ApiTokenEditor),
     canActivate: [administratorGuard],
     canDeactivate: [unsavedChangesGuard],
@@ -15,7 +15,7 @@ export const apiTokenRoutes: Routes = [
     },
   },
   {
-    path: 'backoffice/api',
+    path: 'api',
     loadComponent: () => import('./api-tokens').then((module) => module.ApiTokens),
     canActivate: [administratorGuard],
     canDeactivate: [unsavedChangesGuard],

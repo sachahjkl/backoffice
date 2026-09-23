@@ -4,7 +4,7 @@ import { unsavedChangesGuard } from '@backoffice/unsaved-changes-guard';
 
 export const billingRoutes: Routes = [
   {
-    path: 'backoffice/billing',
+    path: 'billing',
     pathMatch: 'full',
     loadComponent: () => import('./billing').then((m) => m.Billing),
     canActivate: [administratorGuard],
@@ -15,7 +15,7 @@ export const billingRoutes: Routes = [
     },
   },
   {
-    path: 'backoffice/billing/receipts',
+    path: 'billing/receipts',
     loadComponent: () => import('../receipt-list/receipt-list').then((m) => m.ReceiptList),
     canActivate: [administratorGuard],
     data: {
@@ -25,7 +25,7 @@ export const billingRoutes: Routes = [
     },
   },
   {
-    path: 'backoffice/billing/credit-notes',
+    path: 'billing/credit-notes',
     loadComponent: () => import('../credit-notes/credit-notes').then((m) => m.CreditNotes),
     canActivate: [administratorGuard],
     data: {
@@ -35,7 +35,7 @@ export const billingRoutes: Routes = [
     },
   },
   {
-    path: 'backoffice/billing/refunds',
+    path: 'billing/refunds',
     loadComponent: () => import('../refund-list/refund-list').then((m) => m.RefundList),
     canActivate: [administratorGuard],
     data: {
@@ -45,7 +45,7 @@ export const billingRoutes: Routes = [
     },
   },
   {
-    path: 'backoffice/invoices/new',
+    path: 'invoices/new',
     loadComponent: () => import('../invoice-editor/invoice-editor').then((m) => m.InvoiceEditor),
     canActivate: [administratorGuard],
     canDeactivate: [unsavedChangesGuard],
@@ -56,7 +56,7 @@ export const billingRoutes: Routes = [
     },
   },
   {
-    path: 'backoffice/invoices/:invoiceId/edit',
+    path: 'invoices/:invoiceId/edit',
     loadComponent: () => import('../invoice-editor/invoice-editor').then((m) => m.InvoiceEditor),
     canActivate: [administratorGuard],
     canDeactivate: [unsavedChangesGuard],
@@ -67,7 +67,7 @@ export const billingRoutes: Routes = [
     },
   },
   {
-    path: 'backoffice/invoices/:invoiceId/issue',
+    path: 'invoices/:invoiceId/issue',
     loadComponent: () => import('../invoice-issue/invoice-issue').then((m) => m.InvoiceIssue),
     canActivate: [administratorGuard],
     canDeactivate: [unsavedChangesGuard],
@@ -78,7 +78,7 @@ export const billingRoutes: Routes = [
     },
   },
   {
-    path: 'backoffice/invoices/:invoiceId/payments/new',
+    path: 'invoices/:invoiceId/payments/new',
     loadComponent: () => import('../payment-editor/payment-editor').then((m) => m.PaymentEditor),
     canActivate: [administratorGuard],
     canDeactivate: [unsavedChangesGuard],
@@ -89,7 +89,7 @@ export const billingRoutes: Routes = [
     },
   },
   {
-    path: 'backoffice/invoices/:invoiceId/payments/:paymentId/cancel',
+    path: 'invoices/:invoiceId/payments/:paymentId/cancel',
     loadComponent: () => import('../receipt-cancel/receipt-cancel').then((m) => m.ReceiptCancel),
     canActivate: [administratorGuard],
     canDeactivate: [unsavedChangesGuard],
@@ -100,7 +100,7 @@ export const billingRoutes: Routes = [
     },
   },
   {
-    path: 'backoffice/invoices/:invoiceId/credits/new',
+    path: 'invoices/:invoiceId/credits/new',
     loadComponent: () => import('../credit-editor/credit-editor').then((m) => m.CreditEditor),
     canActivate: [administratorGuard],
     canDeactivate: [unsavedChangesGuard],
@@ -111,7 +111,7 @@ export const billingRoutes: Routes = [
     },
   },
   {
-    path: 'backoffice/invoices/:invoiceId/credits/:creditNoteId/edit',
+    path: 'invoices/:invoiceId/credits/:creditNoteId/edit',
     loadComponent: () => import('../credit-editor/credit-editor').then((m) => m.CreditEditor),
     canActivate: [administratorGuard],
     canDeactivate: [unsavedChangesGuard],
@@ -122,7 +122,7 @@ export const billingRoutes: Routes = [
     },
   },
   {
-    path: 'backoffice/invoices/:invoiceId/credit-allocations/new',
+    path: 'invoices/:invoiceId/credit-allocations/new',
     loadComponent: () =>
       import('../credit-allocation-editor/credit-allocation-editor').then(
         (module) => module.CreditAllocationEditor,
@@ -136,7 +136,7 @@ export const billingRoutes: Routes = [
     },
   },
   {
-    path: 'backoffice/invoices/:invoiceId/refunds/new',
+    path: 'invoices/:invoiceId/refunds/new',
     loadComponent: () => import('../refund-editor/refund-editor').then((m) => m.RefundEditor),
     canActivate: [administratorGuard],
     canDeactivate: [unsavedChangesGuard],
@@ -147,7 +147,7 @@ export const billingRoutes: Routes = [
     },
   },
   {
-    path: 'backoffice/invoices/:invoiceId/refunds/:refundId/cancel',
+    path: 'invoices/:invoiceId/refunds/:refundId/cancel',
     loadComponent: () => import('../refund-cancel/refund-cancel').then((m) => m.RefundCancel),
     canActivate: [administratorGuard],
     canDeactivate: [unsavedChangesGuard],
@@ -158,7 +158,7 @@ export const billingRoutes: Routes = [
     },
   },
   {
-    path: 'backoffice/invoices/:invoiceId/credit-allocations/:allocationId/cancel',
+    path: 'invoices/:invoiceId/credit-allocations/:allocationId/cancel',
     loadComponent: () => import('../refund-cancel/refund-cancel').then((m) => m.RefundCancel),
     canActivate: [administratorGuard],
     canDeactivate: [unsavedChangesGuard],
@@ -169,7 +169,7 @@ export const billingRoutes: Routes = [
     },
   },
   {
-    path: 'backoffice/invoices/:invoiceId/void',
+    path: 'invoices/:invoiceId/void',
     loadComponent: () => import('../invoice-void/invoice-void').then((m) => m.InvoiceVoid),
     canActivate: [administratorGuard],
     canDeactivate: [unsavedChangesGuard],
@@ -180,7 +180,7 @@ export const billingRoutes: Routes = [
     },
   },
   {
-    path: 'backoffice/invoices/:invoiceId',
+    path: 'invoices/:invoiceId',
     loadComponent: () => import('../invoice-detail/invoice-detail').then((m) => m.InvoiceDetail),
     canActivate: [administratorGuard],
     data: {

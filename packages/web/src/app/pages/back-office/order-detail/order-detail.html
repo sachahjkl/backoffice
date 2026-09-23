@@ -29,7 +29,7 @@
         appLinkButton
         icon="file-plus"
         variant="primary"
-        routerLink="/backoffice/invoices/new"
+        routerLink="/invoices/new"
         *appCan="'invoice.create'"
         [queryParams]="{ orderId: order.id }"
         >{{ i18n.t('backOffice.affairs.createInvoice') }}</a
@@ -63,7 +63,7 @@
         <dt>{{ i18n.t('commercial.acceptedQuote') }}</dt>
         <dd>
           <a
-            [routerLink]="['/backoffice/quotes', order.quoteId, 'document']"
+            [routerLink]="['/quotes', order.quoteId, 'document']"
             [queryParams]="revisionQuery(revision.version)"
             >{{ order.quoteReference }} · {{ i18n.tf('commercial.revision', { version:
             revision.version }) }}</a
@@ -74,7 +74,7 @@
       <div>
         <dt>{{ i18n.t('backOffice.affair.invoice') }}</dt>
         <dd>
-          <a [routerLink]="['/backoffice/invoices', order.invoiceId]"
+          <a [routerLink]="['/invoices', order.invoiceId]"
             >{{ i18n.t('backOffice.affairs.openInvoice') }}</a
           >
         </dd>

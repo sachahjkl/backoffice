@@ -36,7 +36,7 @@ describe('PaymentEditor', () => {
     };
     const { fixture, queryParams } = await setupInvoicePage(PaymentEditor, { query });
     const task = fixture.componentInstance['task'];
-    expect(task.navigation.listLink()).toBe('/backoffice/billing/receipts');
+    expect(task.navigation.listLink()).toBe('/billing/receipts');
     expect(task.navigation.listQuery()).toEqual({
       q: 'BANK',
       status: 'active',
@@ -47,7 +47,7 @@ describe('PaymentEditor', () => {
     );
     await fixture.whenStable();
     const link = fixture.debugElement
-      .query(By.css('a[href^="/backoffice/invoices/"]'))
+      .query(By.css('a[href^="/invoices/"]'))
       .injector.get(RouterLink);
     expect(link.queryParams).toEqual({ ...query, tab: 'history' });
     expect(link.queryParams).not.toHaveProperty('returnUrl');

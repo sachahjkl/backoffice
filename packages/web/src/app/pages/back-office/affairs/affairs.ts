@@ -164,7 +164,7 @@ export class Affairs {
       }
       this.affairs.update((items) => [result.result, ...items]);
       this.createForm().reset({ clientId: '', title: '' });
-      await this.router.navigate(['/backoffice/affairs', result.result.id]);
+      await this.router.navigate(['/affairs', result.result.id]);
     } finally {
       this.saving.set(false);
     }

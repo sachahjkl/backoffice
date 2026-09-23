@@ -10,9 +10,15 @@ import {
   type UlidValue,
 } from '@froment/contracts';
 import { Clock, Context, Effect, Layer, Schema } from 'effect';
+import {
+  Branding,
+  BrandingConflict,
+  type BrandingUpdateRequest,
+} from '../../../contracts/src/company/branding.js';
 
 import { Audit } from '../audit/audit.js';
 import { Database, DatabaseError } from '../database/database.js';
+import { RuntimeConfiguration } from '../runtime-config.js';
 
 const CompanySettingsRecord = Schema.Struct({
   jurisdiction: Schema.Literal('FR'),
@@ -42,6 +48,10 @@ const toSettings = (record: typeof CompanySettingsRecord.Type): CompanySettingsV
   });
 
 export interface CompanyService {
+  readonly getBranding: Effect.Effect<Branding, DatabaseError>;
+  readonly updateBranding: (
+    request: BrandingUpdateRequest,
+  ) => Effect.Effect<Branding, BrandingConflict | DatabaseError>;
   readonly get: Effect.Effect<CompanySettingsValue, DatabaseError>;
   readonly update: (
     request: CompanySettingsUpdateRequestValue,
@@ -66,6 +76,55 @@ export const CompanyLive = Layer.effect(
   Effect.gen(function* () {
     const { sqlite } = yield* Database;
     const audit = yield* Audit;
+    const runtime = yield* RuntimeConfiguration;
+    const readBranding = (): Branding => {
+      const row = Schema.decodeUnknownSync(
+        Schema.Struct({
+          name: Schema.NullOr(Schema.String),
+          logoUrl: Schema.NullOr(Schema.String),
+          version: Schema.Int,
+        }),
+      )(
+        sqlite
+          .prepare('select name, logo_url as logoUrl, version from branding_settings where id = 1')
+          .get(),
+      );
+      return Schema.decodeUnknownSync(Branding)({
+        name: row.name ?? runtime.branding.name,
+        logoUrl: row.logoUrl ?? runtime.branding.logoUrl,
+        version: row.version,
+      });
+    };
+    const getBranding = Effect.try({
+      try: readBranding,
+      catch: (cause) => new DatabaseError({ operation: 'get.branding', cause }),
+    });
+    const updateBranding = Effect.fn('Company.updateBranding')(function* (
+      request: BrandingUpdateRequest,
+    ) {
+      return yield* Effect.try({
+        try: () =>
+          sqlite
+            .transaction(() => {
+              const current = readBranding();
+              if (current.version !== request.expectedVersion) {
+                throw new BrandingConflict({ code: 'company.branding_conflict' });
+              }
+              const changed = sqlite
+                .prepare(
+                  'update branding_settings set name = ?, logo_url = ?, version = version + 1 where id = 1 and version = ?',
+                )
+                .run(request.name, request.logoUrl, request.expectedVersion).changes;
+              if (changed !== 1) throw new BrandingConflict({ code: 'company.branding_conflict' });
+              return readBranding();
+            })
+            .immediate(),
+        catch: (cause) =>
+          cause instanceof BrandingConflict
+            ? cause
+            : new DatabaseError({ operation: 'update.branding', cause }),
+      });
+    });
     const read = () =>
       toSettings(
         Schema.decodeUnknownSync(CompanySettingsRecord)(sqlite.prepare(selectSettings).get()),
@@ -196,6 +255,6 @@ export const CompanyLive = Layer.effect(
       });
     });
 
-    return { get, update, initializeAccounting };
+    return { get, update, initializeAccounting, getBranding, updateBranding };
   }),
 );

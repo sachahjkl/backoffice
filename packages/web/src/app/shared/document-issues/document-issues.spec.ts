@@ -23,8 +23,8 @@ describe('DocumentIssues', () => {
     expect(element.textContent).toContain('Ville : champ requis.');
     expect(element.textContent).toContain('cochez l’actualisation');
     expect(Array.from(element.querySelectorAll('a'), (link) => link.getAttribute('href'))).toEqual([
-      '/backoffice/configuration/issuer',
-      '/backoffice/clients/01ARZ3NDEKTSV4RRFFQ69G5FAV/profile',
+      '/configuration/issuer',
+      '/clients/01ARZ3NDEKTSV4RRFFQ69G5FAV/profile',
     ]);
   });
 });

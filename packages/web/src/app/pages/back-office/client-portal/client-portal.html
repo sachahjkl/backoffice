@@ -171,7 +171,7 @@
                 <app-entity-icon icon="invoice" [variant]="iconVariant(item)" />
                 <div>
                   <a
-                    [routerLink]="['/backoffice/client/documents', item.kind, item.id]"
+                    [routerLink]="['/client/documents', item.kind, item.id]"
                     [queryParams]="returnQuery()"
                     [appSearchHighlight]="result.referenceMatches"
                     >{{ item.reference }}</a

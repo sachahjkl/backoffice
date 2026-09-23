@@ -41,6 +41,18 @@ app-global-search {
   color: var(--color-muted);
   font-size: var(--text-sm);
 }
+.workspace-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 600;
+  font-size: var(--text-sm);
+}
+.workspace-brand img {
+  max-inline-size: 1.75rem;
+  max-block-size: 1.75rem;
+  object-fit: contain;
+}
 .account {
   min-inline-size: 0;
 }

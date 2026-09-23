@@ -1,28 +1,30 @@
-import { TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
-import { PageMetadata, siteIdentityGraph } from './page-metadata';
-import { blogPosts } from '@froment/l10n/blog-posts';
 import { I18nService } from './i18n.service';
+import { PageMetadata } from './page-metadata';
 
 @Component({ template: '' })
 class MetadataPage {}
 
 describe('PageMetadata', () => {
-  const post = blogPosts[0];
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         provideRouter([
-          { path: 'blog/:slug', component: MetadataPage },
+          { path: 'login', component: MetadataPage, data: { titleKey: 'page.back_office' } },
+          { path: 'quote', component: MetadataPage, data: { titleKey: 'page.public_quote' } },
           {
-            path: 'about',
+            path: 'account',
             component: MetadataPage,
-            data: {
-              titleKey: 'page.about',
-              descriptionKey: 'page.description.about',
-            },
+            children: [
+              {
+                path: 'security',
+                component: MetadataPage,
+                data: { titleKey: 'account.security_title' },
+              },
+            ],
           },
         ]),
       ],
@@ -31,80 +33,32 @@ describe('PageMetadata', () => {
     TestBed.inject(PageMetadata);
   });
 
-  it('replaces missing article metadata and restores valid article indexing', async () => {
+  it('sets the route title and blocks indexing on navigation', async () => {
     const i18n = TestBed.inject(I18nService);
-    const harness = await RouterTestingHarness.create(`/blog/${post.slug}`);
-    const content = (selector: string) =>
-      document.head.querySelector(selector)?.getAttribute('content');
-    expect(document.title).toBe(`${i18n.t(post.titleKey)} | froment.software`);
-
-    await harness.navigateByUrl('/blog/missing');
+    const harness = await RouterTestingHarness.create('/login');
     await harness.fixture.whenStable();
-    expect(document.title).toBe(i18n.t('page.not_found'));
-    expect(content('meta[name="description"]')).toBe(i18n.t('page.description.not_found'));
-    expect(content('meta[property="og:title"]')).toBe(i18n.t('page.not_found'));
-    expect(content('meta[name="twitter:description"]')).toBe(i18n.t('page.description.not_found'));
-    expect(content('meta[name="robots"]')).toBe('noindex, nofollow');
-    expect(document.head.querySelector('script[data-blog-post]')).toBeNull();
+    expect(document.title).toBe(i18n.t('page.back_office').split(' | ')[0]);
+    expect(document.head.querySelector('meta[name="robots"]')?.getAttribute('content')).toBe(
+      'noindex, nofollow',
+    );
+
+    await harness.navigateByUrl('/quote');
+    await harness.fixture.whenStable();
+    expect(document.title).toBe(i18n.t('page.public_quote').split(' | ')[0]);
+    expect(document.head.querySelector('meta[name="robots"]')?.getAttribute('content')).toBe(
+      'noindex, nofollow',
+    );
+  });
+
+  it('uses the deepest route title and updates it when the language changes', async () => {
+    const i18n = TestBed.inject(I18nService);
+    const harness = await RouterTestingHarness.create('/account/security');
+    await harness.fixture.whenStable();
+    expect(document.title).toBe(i18n.t('account.security_title').split(' | ')[0]);
 
     i18n.setLanguage('en');
     await harness.fixture.whenStable();
-    expect(document.title).toBe(i18n.t('page.not_found'));
-    expect(content('meta[name="robots"]')).toBe('noindex, nofollow');
-
-    await harness.navigateByUrl(`/blog/${post.slug}`);
-    await harness.fixture.whenStable();
-    expect(document.title).toBe(`${i18n.t(post.titleKey)} | froment.software`);
-    expect(content('meta[name="robots"]')).toBe('index, follow');
-  });
-
-  it('sets article metadata and structured data without duplication', async () => {
-    const harness = await RouterTestingHarness.create(`/blog/${post.slug}`);
-    const i18n = TestBed.inject(I18nService);
-    i18n.setLanguage('en');
-    await harness.fixture.whenStable();
-    expect(document.title).toBe(`${i18n.t(post.titleKey)} | froment.software`);
-    expect(document.head.querySelector('meta[property="og:type"]')?.getAttribute('content')).toBe(
-      'article',
-    );
-    expect(document.head.querySelectorAll('script[data-blog-post]')).toHaveLength(1);
-    expect(document.head.querySelector('script[data-blog-post]')?.textContent).toContain(
-      '"sameAs":["https://sacha.house"]',
-    );
-  });
-
-  it('describes the publisher and the founder in one identity graph', () => {
-    const graph = JSON.stringify(
-      siteIdentityGraph({
-        publisher: 'Froment Software',
-        author: 'Sacha Froment',
-        description: 'Description',
-        language: 'fr',
-      }),
-    );
-    expect(graph).toContain('"@type":"Organization"');
-    expect(graph).toContain('"@type":"WebSite"');
-    expect(graph).toContain('"@type":"Person"');
-    expect(graph).toContain('"sameAs":["https://sacha.house"]');
-    expect(graph).toContain('"inLanguage":"fr"');
-  });
-
-  it('clears article metadata when leaving the blog', async () => {
-    const harness = await RouterTestingHarness.create(`/blog/${post.slug}`);
-    await harness.navigateByUrl('/about');
-    await harness.fixture.whenStable();
-
-    expect(document.head.querySelector('meta[property="og:type"]')?.getAttribute('content')).toBe(
-      'website',
-    );
-    expect(document.head.querySelector('meta[property="article:published_time"]')).toBeNull();
-    expect(document.head.querySelector('script[data-blog-post]')).toBeNull();
-  });
-
-  it('does not index a missing article on initial navigation', async () => {
-    const harness = await RouterTestingHarness.create('/blog/missing');
-    await harness.fixture.whenStable();
-    expect(document.title).toBe(TestBed.inject(I18nService).t('page.not_found'));
+    expect(document.title).toBe(i18n.t('account.security_title').split(' | ')[0]);
     expect(document.head.querySelector('meta[name="robots"]')?.getAttribute('content')).toBe(
       'noindex, nofollow',
     );

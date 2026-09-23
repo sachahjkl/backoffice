@@ -17,7 +17,7 @@ export function providerTabs(
   requestId?: string | null,
 ): readonly TabItem[] {
   if (provider !== 'stripe' && provider !== 'resend') return [];
-  const path = `/backoffice/services/${provider}`;
+  const path = `/services/${provider}`;
   return [
     {
       id: `${provider}-connection`,

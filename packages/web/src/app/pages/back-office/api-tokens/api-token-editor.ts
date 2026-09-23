@@ -123,7 +123,7 @@ export class ApiTokenEditor {
     this.model.set(emptyModel());
     this.baseline.set(JSON.stringify(this.model()));
     this.tokenForm().reset();
-    void this.router.navigate(['/backoffice/api'], { queryParams: this.navigation.params() });
+    void this.router.navigate(['/api'], { queryParams: this.navigation.params() });
   }
 
   protected togglePermission(permission: ApiTokenPermissionCodeValue, selected: boolean): void {

@@ -191,18 +191,7 @@ export const makeServerLayer = (options: {
   );
   const StaticRoutes = HttpStaticServer.layer({
     root: options.staticRoot,
-    index: 'index.html',
-  });
-  const BackOfficeStaticRoutes = HttpStaticServer.layer({
-    root: options.staticRoot,
     index: 'index.csr.html',
-    prefix: '/backoffice',
-    spa: true,
-  });
-  const PublicQuoteStaticRoutes = HttpStaticServer.layer({
-    root: options.staticRoot,
-    index: 'index.csr.html',
-    prefix: '/quote',
     spa: true,
   });
 
@@ -216,8 +205,6 @@ export const makeServerLayer = (options: {
       LocalizedOpenApiRoutes,
       ApiCatalogRoute,
       RuntimeConfigRoute,
-      BackOfficeStaticRoutes,
-      PublicQuoteStaticRoutes,
       StaticRoutes,
     ),
     {

@@ -108,10 +108,10 @@ describe('Authentication', () => {
     );
     if (!(administratorRedirect instanceof UrlTree))
       throw new Error('The administrator redirect is missing.');
-    expect(router.serializeUrl(administratorRedirect)).toBe('/backoffice/login');
+    expect(router.serializeUrl(administratorRedirect)).toBe('/login');
     await expect(
       TestBed.runInInjectionContext(() =>
-        clientGuard({} as never, { url: '/backoffice/client?quote=document-id' } as never),
+        clientGuard({} as never, { url: '/client?quote=document-id' } as never),
       ),
     ).resolves.toBe(true);
 
@@ -120,11 +120,11 @@ describe('Authentication', () => {
       TestBed.runInInjectionContext(() => administratorGuard(route, router.routerState.snapshot)),
     ).resolves.toBe(true);
     const clientRedirect = await TestBed.runInInjectionContext(() =>
-      clientGuard({} as never, { url: '/backoffice/client?quote=document-id' } as never),
+      clientGuard({} as never, { url: '/client?quote=document-id' } as never),
     );
     if (!(clientRedirect instanceof UrlTree)) throw new Error('The client redirect is missing.');
     expect(router.serializeUrl(clientRedirect)).toBe(
-      '/backoffice/login?returnUrl=%2Fbackoffice%2Fclient%3Fquote%3Ddocument-id',
+      '/login?returnUrl=%2Fclient%3Fquote%3Ddocument-id',
     );
   });
 

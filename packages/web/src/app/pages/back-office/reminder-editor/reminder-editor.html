@@ -1,8 +1,6 @@
 <section class="detail-page form-page" aria-labelledby="reminder-title">
   <app-page-header layout="stacked">
-    <a pageBack routerLink="/backoffice/emails/reminders"
-      >{{ i18n.t('emailsWorkspace.backReminders') }}</a
-    >
+    <a pageBack routerLink="/emails/reminders">{{ i18n.t('emailsWorkspace.backReminders') }}</a>
     <h1 id="reminder-title">{{ i18n.t('emailsWorkspace.newReminder') }}</h1>
     <p>{{ i18n.t('emailsWorkspace.simulationOnly') }}</p>
   </app-page-header>
@@ -30,7 +28,7 @@
     <dl>
       <dt>{{ i18n.t('emailsWorkspace.invoice') }}</dt>
       <dd>
-        <a [routerLink]="['/backoffice/invoices', invoice.id]">{{ invoice.invoiceNumber }}</a> — {{
+        <a [routerLink]="['/invoices', invoice.id]">{{ invoice.invoiceNumber }}</a> — {{
         invoice.title }}
       </dd>
       <dt>{{ i18n.t('emailsWorkspace.client') }}</dt>
@@ -60,9 +58,7 @@
     <div class="actions">
       <button appButton variant="primary" type="submit" [disabled]="busy() || confirming()">
         {{ i18n.t(pending() ? 'emails.retry' : 'reminder.schedule') }}</button
-      ><a appLinkButton routerLink="/backoffice/emails/reminders"
-        >{{ i18n.t('catalogWorkspace.cancel') }}</a
-      >
+      ><a appLinkButton routerLink="/emails/reminders">{{ i18n.t('catalogWorkspace.cancel') }}</a>
     </div>
   </form>
   }

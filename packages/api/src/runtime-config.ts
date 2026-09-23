@@ -1,5 +1,7 @@
 import { AppEnvironment, SitePhase } from '@froment/contracts';
+import { translations } from '@froment/l10n';
 import { Config, Context, Layer, Option, Schema } from 'effect';
+import { BrandingLogoUrl, BrandingName } from '../../contracts/src/company/branding.js';
 
 const PositiveInt = Schema.Int.check(Schema.isGreaterThan(0));
 
@@ -33,6 +35,7 @@ export const defaultRuntimeConfig = {
     sitePhase: 'live',
     githubRepositoryUrl: 'https://github.com/sachahjkl/froment.software',
   },
+  branding: { name: translations.fr['backOffice.title'], logoUrl: '/brand/default.svg' },
   authentication: defaultAuthenticationRuntimeConfig,
   requestLimiter: {
     enabled: true,
@@ -85,6 +88,14 @@ export const defaultRuntimeConfig = {
 } as const;
 
 export const RuntimeConfig = {
+  branding: Config.all({
+    name: Config.schema(BrandingName, 'ENTERPRISE_NAME').pipe(
+      Config.withDefault(defaultRuntimeConfig.branding.name),
+    ),
+    logoUrl: Config.schema(BrandingLogoUrl, 'ENTERPRISE_LOGO_URL').pipe(
+      Config.withDefault(defaultRuntimeConfig.branding.logoUrl),
+    ),
+  }),
   application: Config.all({
     appEnvironment: Config.schema(AppEnvironment, 'APP_ENV').pipe(
       Config.withDefault(defaultRuntimeConfig.application.appEnvironment),

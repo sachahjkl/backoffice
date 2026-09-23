@@ -5,7 +5,7 @@
   <p appNotice variant="danger" role="alert">{{ i18n.t(error) }}</p>
   } @if (accepted()) {
   <p appNotice variant="success" role="status">{{ i18n.t('team.joined') }}</p>
-  <a routerLink="/backoffice/login">{{ i18n.t('team.login') }}</a>
+  <a routerLink="/login">{{ i18n.t('team.login') }}</a>
   } @else {
   <form (submit)="accept($event)">
     <label

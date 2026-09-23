@@ -293,6 +293,14 @@ export const apiDocumentation = {
         summary: 'Lire la configuration de la société',
         description: 'Renvoie la juridiction, la devise, l’exercice et les modules activés.',
       },
+      brandingGet: {
+        summary: 'Lire l’identité de l’entreprise',
+        description: 'Renvoie le nom et le logo affichés sur la page de connexion.',
+      },
+      brandingUpdate: {
+        summary: 'Modifier l’identité de l’entreprise',
+        description: 'Enregistre le nom et le logo si la version correspond.',
+      },
       companySettingsUpdate: {
         summary: 'Modifier la configuration de la société',
         description: 'Modifie la configuration si sa version correspond.',
@@ -783,6 +791,14 @@ export const apiDocumentation = {
       companySettingsGet: {
         summary: 'Get company settings',
         description: 'Returns jurisdiction, currency, fiscal year, and enabled modules.',
+      },
+      brandingGet: {
+        summary: 'Get enterprise branding',
+        description: 'Returns the name and logo shown on the login page.',
+      },
+      brandingUpdate: {
+        summary: 'Update enterprise branding',
+        description: 'Saves the name and logo when the version matches.',
       },
       companySettingsUpdate: {
         summary: 'Update company settings',

@@ -15,6 +15,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { filter } from 'rxjs';
 
 import { Authentication } from '@backoffice/authentication';
+import { BrandingApi } from '@backoffice/branding-api';
 import { I18nService } from '@app/i18n.service';
 import { BackOfficeNav } from '@shared/back-office-nav/back-office-nav';
 import { Button } from '@shared/button/button';
@@ -49,6 +50,7 @@ import { NavigationProgress } from '@shared/navigation-progress/navigation-progr
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BackOfficeHeader {
+  protected readonly branding = inject(BrandingApi);
   protected readonly accountControlHeight = '3.75rem';
   readonly administrator = input(false);
   readonly searchShortcut = input(true);
@@ -63,6 +65,7 @@ export class BackOfficeHeader {
 
   constructor() {
     afterNextRender(() => {
+      void this.branding.load();
       void this.loadAccount();
       const desktop = window.matchMedia('(min-width: 64rem)');
       const resize = () => {
@@ -89,6 +92,6 @@ export class BackOfficeHeader {
   }
 
   protected async signOut(): Promise<void> {
-    await this.router.navigateByUrl('/backoffice/sign-out');
+    await this.router.navigateByUrl('/sign-out');
   }
 }

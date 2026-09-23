@@ -38,7 +38,7 @@ export class RolesPage {
   protected readonly busy = signal(false);
   protected readonly error = signal<TranslationKey | undefined>(undefined);
   protected readonly breadcrumbs = computed(() => [
-    { label: this.i18n.t('team.title'), path: '/backoffice/team' },
+    { label: this.i18n.t('team.title'), path: '/team' },
   ]);
 
   private savedNotice(): TranslationKey | undefined {

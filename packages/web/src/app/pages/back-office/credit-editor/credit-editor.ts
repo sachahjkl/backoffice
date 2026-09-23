@@ -336,7 +336,7 @@ export class CreditEditor {
     const note = await this.saveDraft();
     const invoice = this.sourceInvoice();
     if (!note || !invoice) return;
-    await this.router.navigate(['/backoffice/invoices', invoice.id, 'credits', note.id, 'edit'], {
+    await this.router.navigate(['/invoices', invoice.id, 'credits', note.id, 'edit'], {
       queryParams: this.task.navigation.detailQuery(),
       replaceUrl: true,
     });
@@ -363,7 +363,7 @@ export class CreditEditor {
       }
       this.task.completed.set(true);
       this.issueRequestId = undefined;
-      await this.router.navigate(['/backoffice/billing/credit-notes']);
+      await this.router.navigate(['/billing/credit-notes']);
     } catch {
       this.task.error.set('invoice.error');
     } finally {

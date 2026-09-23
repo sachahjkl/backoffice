@@ -87,10 +87,9 @@ const accessGuard: CanActivateFn = async (route) => {
   const router = inject(Router);
   const { Authentication } = await import('./authentication');
   const auth = injector.get(Authentication);
-  if ((await auth.sessionMode()) !== 'administrator')
-    return router.createUrlTree(['/backoffice/login']);
+  if ((await auth.sessionMode()) !== 'administrator') return router.createUrlTree(['/login']);
   const account = await auth.currentAccount();
-  if (account?.mode !== 'administrator') return router.createUrlTree(['/backoffice/login']);
+  if (account?.mode !== 'administrator') return router.createUrlTree(['/login']);
   const declarations = declaredAccess(route);
   if (
     declarations.length > 0 &&
@@ -105,7 +104,7 @@ const accessGuard: CanActivateFn = async (route) => {
     ).every(Boolean)
   )
     return true;
-  return router.createUrlTree(['/backoffice/account']);
+  return router.createUrlTree(['/account']);
 };
 
 export const administratorGuard: CanActivateFn = accessGuard;
@@ -118,7 +117,7 @@ export const clientGuard: CanActivateFn = async (_route, state) => {
   const { Authentication } = await import('./authentication');
   const auth = injector.get(Authentication);
   if ((await auth.sessionMode()) === 'client') return true;
-  return router.createUrlTree(['/backoffice/login'], {
+  return router.createUrlTree(['/login'], {
     queryParams: { returnUrl: state.url },
   });
 };

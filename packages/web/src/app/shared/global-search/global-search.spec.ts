@@ -121,7 +121,7 @@ describe('GlobalSearch', () => {
         provideAccount(),
         provideRouter([
           { path: '', component: SearchPage },
-          { path: 'backoffice/clients/:clientId', component: DetailPage },
+          { path: 'clients/:clientId', component: DetailPage },
         ]),
         { provide: ClientsApi, useValue: { list: clients } },
         { provide: QuotesApi, useValue: { list: quotes } },
@@ -254,9 +254,7 @@ describe('GlobalSearch', () => {
     expect(overlay().querySelector('[role="status"]')?.textContent).toContain(
       TestBed.inject(I18nService).plural('globalSearch.count', { count: 1 }),
     );
-    expect(overlay().querySelector('.results a')?.getAttribute('href')).toBe(
-      '/backoffice/clients/client-1',
-    );
+    expect(overlay().querySelector('.results a')?.getAttribute('href')).toBe('/clients/client-1');
     expect(document.activeElement).toBe(input);
     expect(input.value).toBe('Froment');
     expect(clients).toHaveBeenCalledTimes(2);
@@ -310,7 +308,7 @@ describe('GlobalSearch', () => {
     search(input, 'créer devis');
     await harness.fixture.whenStable();
     const result = overlay().querySelector<HTMLAnchorElement>('.results a');
-    expect(result?.getAttribute('href')).toBe('/backoffice/quotes/new');
+    expect(result?.getAttribute('href')).toBe('/quotes/new');
     expect(result?.closest('section')?.querySelector('h3')?.textContent).toContain(
       TestBed.inject(I18nService).t('backOffice.search.kind.action'),
     );
@@ -325,7 +323,7 @@ describe('GlobalSearch', () => {
             component: SearchLayout,
             children: [
               { path: 'editor', component: ClientEditor, canDeactivate: [unsavedChangesGuard] },
-              { path: 'backoffice/clients/:clientId', component: DetailPage },
+              { path: 'clients/:clientId', component: DetailPage },
             ],
           },
         ]),
@@ -369,7 +367,7 @@ describe('GlobalSearch', () => {
       )!
       .click();
     await harness.fixture.whenStable();
-    expect(TestBed.inject(Router).url).toBe('/backoffice/clients/client-1');
+    expect(TestBed.inject(Router).url).toBe('/clients/client-1');
     expect(overlay().querySelector('.results')).toBeNull();
   });
 

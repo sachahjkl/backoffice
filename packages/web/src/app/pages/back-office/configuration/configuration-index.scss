@@ -17,3 +17,7 @@
 h2 {
   font-size: var(--text-xl);
 }
+.groups form {
+  display: grid;
+  gap: var(--space-4);
+}

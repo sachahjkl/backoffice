@@ -361,10 +361,10 @@ export class Emails {
   protected createLink() {
     const view = this.currentView();
     return view === 'templates'
-      ? '/backoffice/emails/templates/new'
+      ? '/emails/templates/new'
       : view === 'reminders'
-        ? '/backoffice/emails/reminders/new'
-        : '/backoffice/emails/new';
+        ? '/emails/reminders/new'
+        : '/emails/new';
   }
   protected createLabel(): TranslationKey {
     const view = this.currentView();

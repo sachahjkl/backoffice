@@ -2,13 +2,13 @@
   <app-page-header layout="stacked">
     <div pageBack>
       @if (quoteId(); as id) {
-      <a class="back-link" [routerLink]="['/backoffice/quotes', id]" [queryParams]="context()"
+      <a class="back-link" [routerLink]="['/quotes', id]" [queryParams]="context()"
         >{{ i18n.t('commercial.backQuote') }}</a
       >
       } @else {
       <a
         class="back-link"
-        [routerLink]="['/backoffice/affairs', context().view ?? 'attention']"
+        [routerLink]="['/affairs', context().view ?? 'attention']"
         [queryParams]="context()"
         >{{ i18n.t('backOffice.backToAffairs') }}</a
       >
@@ -18,7 +18,7 @@
     @if (quote(); as quote) {
     <p>
       {{ quote.reference }} ·
-      <a [routerLink]="['/backoffice/clients', quote.clientId, 'profile']"
+      <a [routerLink]="['/clients', quote.clientId, 'profile']"
         >{{ quote.currentRevision.clientDisplayName }}</a
       >
     </p>

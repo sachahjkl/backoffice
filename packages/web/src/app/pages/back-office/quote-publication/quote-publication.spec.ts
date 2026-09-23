@@ -58,7 +58,7 @@ describe('Quote publication', () => {
     });
   });
   async function open() {
-    const harness = await RouterTestingHarness.create(`/backoffice/quotes/${quoteId}/publication`);
+    const harness = await RouterTestingHarness.create(`/quotes/${quoteId}/publication`);
     await harness.fixture.whenStable();
     return { harness, root: harness.fixture.nativeElement as HTMLElement };
   }
@@ -97,13 +97,13 @@ describe('Quote publication', () => {
     expect(root.textContent).toMatch(/aucun courriel|does not send an email/);
     expect(root.querySelector('button[type="submit"]')).toBeNull();
     expect(control<HTMLAnchorElement>(root, 'app-copy-field a').href).toBe(sent.link.url);
-    await TestBed.inject(Router).navigateByUrl('/backoffice/affairs');
+    await TestBed.inject(Router).navigateByUrl('/affairs');
     expect(TestBed.inject(Router).url).toContain('/publication');
     control<HTMLButtonElement>(root, 'app-copy-field button').click();
     await harness.fixture.whenStable();
     expect(copy).toHaveBeenCalledWith(sent.link.url);
-    await TestBed.inject(Router).navigateByUrl('/backoffice/affairs');
-    expect(TestBed.inject(Router).url).toBe('/backoffice/affairs');
+    await TestBed.inject(Router).navigateByUrl('/affairs');
+    expect(TestBed.inject(Router).url).toBe('/affairs');
   });
   it('shows server blockers and retains the reviewed revision', async () => {
     send.mockResolvedValue({
@@ -119,7 +119,7 @@ describe('Quote publication', () => {
     control<HTMLButtonElement>(root, 'button[type="submit"]').click();
     await harness.fixture.whenStable();
     expect(root.querySelector('app-document-issues')).not.toBeNull();
-    expect(root.querySelector('a[href="/backoffice/configuration/issuer"]')).not.toBeNull();
+    expect(root.querySelector('a[href="/configuration/issuer"]')).not.toBeNull();
     expect(control<HTMLInputElement>(root, 'input[type="checkbox"]').checked).toBe(true);
   });
   it('does not retry an uncertain publication or invent a recovered link', async () => {
@@ -181,10 +181,7 @@ describe('Quote publication', () => {
         }),
     );
     const { harness } = await open();
-    const page = await harness.navigateByUrl(
-      `/backoffice/quotes/${quoteId}/publication`,
-      QuotePublication,
-    );
+    const page = await harness.navigateByUrl(`/quotes/${quoteId}/publication`, QuotePublication);
     const pending = page['replaceLink']();
     context.account.update((account) => account && { ...account, permissions: ['quote.read'] });
     approve(true);
@@ -220,7 +217,7 @@ describe('Quote publication', () => {
     const event = new Event('beforeunload', { cancelable: true });
     window.dispatchEvent(event);
     expect(event.defaultPrevented).toBe(true);
-    await TestBed.inject(Router).navigateByUrl('/backoffice/affairs');
+    await TestBed.inject(Router).navigateByUrl('/affairs');
     expect(confirm).toHaveBeenCalledOnce();
     expect(TestBed.inject(Router).url).toContain('/publication');
   });
@@ -230,7 +227,7 @@ describe('Quote publication', () => {
     await prepare(harness, root);
     control<HTMLButtonElement>(root, 'button[type="submit"]').click();
     await harness.fixture.whenStable();
-    await TestBed.inject(Router).navigateByUrl('/backoffice/affairs');
+    await TestBed.inject(Router).navigateByUrl('/affairs');
     expect(confirm).toHaveBeenCalledOnce();
     expect(TestBed.inject(Router).url).toContain('/publication');
     get.mockResolvedValueOnce({ success: false, code: 'quote.error' });

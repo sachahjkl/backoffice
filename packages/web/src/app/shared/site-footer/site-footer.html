@@ -1,13 +1,10 @@
 <footer class="footer">
   <div class="footer-inner">
-    <p>{{ i18n.tf('footer.rights', { year: currentYear }) }}</p>
     <nav [attr.aria-label]="i18n.t('shell.legal_nav')">
-      <a routerLink="/fr" lang="fr">{{ i18n.t('home.language.fr') }}</a>
-      <a routerLink="/en" lang="en">{{ i18n.t('home.language.en') }}</a>
-      <a routerLink="/legal">{{ i18n.t('nav.legal') }}</a>
-      <a routerLink="/privacy">{{ i18n.t('nav.privacy') }}</a>
-      <a routerLink="/cookies">{{ i18n.t('nav.cookies') }}</a>
-      <a routerLink="/backoffice/login">{{ i18n.t('backOffice.title') }}</a>
+      <a href="https://froment.software/legal">{{ i18n.t('nav.legal') }}</a>
+      <a href="https://froment.software/privacy">{{ i18n.t('nav.privacy') }}</a>
+      <a href="https://froment.software/cookies">{{ i18n.t('nav.cookies') }}</a>
+      <a routerLink="/login">{{ i18n.t('backOffice.title') }}</a>
     </nav>
     @if (showPreferences()) {
     <div class="footer-controls">

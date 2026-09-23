@@ -523,7 +523,7 @@ export class QuoteEditor {
           this.completed.set(true);
           this.quoteForm().reset();
           this.saving.set(false);
-          await this.router.navigate(['/backoffice/quotes', outcome.result.id], {
+          await this.router.navigate(['/quotes', outcome.result.id], {
             replaceUrl: true,
             queryParams: this.context(),
           });
@@ -547,7 +547,7 @@ export class QuoteEditor {
         this.quoteForm().reset();
         this.completed.set(true);
         this.saving.set(false);
-        await this.router.navigate(['/backoffice/quotes', outcome.result.id], {
+        await this.router.navigate(['/quotes', outcome.result.id], {
           queryParams: this.context(),
         });
       } catch {

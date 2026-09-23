@@ -2,13 +2,13 @@
   <app-page-header layout="stacked">
     <div pageBack>
       @if (detail(); as quote) {
-      <a class="back-link" [routerLink]="['/backoffice/quotes', quote.id]" [queryParams]="context()"
+      <a class="back-link" [routerLink]="['/quotes', quote.id]" [queryParams]="context()"
         >{{ i18n.t('commercial.backQuote') }}</a
       >
       } @else {
       <a
         class="back-link"
-        [routerLink]="['/backoffice/affairs', context().view ?? 'attention']"
+        [routerLink]="['/affairs', context().view ?? 'attention']"
         [queryParams]="context()"
         >{{ i18n.t('backOffice.backToAffairs') }}</a
       >
@@ -18,7 +18,7 @@
     @if (detail(); as quote) {
     <p>
       {{ quote.reference }} ·
-      <a [routerLink]="['/backoffice/clients', quote.clientId, 'profile']"
+      <a [routerLink]="['/clients', quote.clientId, 'profile']"
         >{{ quote.currentRevision.clientDisplayName }}</a
       >
       · {{ i18n.tf('commercial.revision', { version: quote.version }) }}
@@ -37,21 +37,13 @@
   } @else if (completed()) {
   <p appNotice variant="success" role="status">{{ i18n.t('commercial.saved') }}</p>
   @if (detail(); as quote) {
-  <a
-    appLinkButton
-    variant="primary"
-    [routerLink]="['/backoffice/quotes', quote.id]"
-    [queryParams]="context()"
+  <a appLinkButton variant="primary" [routerLink]="['/quotes', quote.id]" [queryParams]="context()"
     >{{ i18n.t('commercial.backQuote') }}</a
   >
   } } @else if (!editable()) {
   <p appNotice>{{ i18n.t('commercial.readOnly') }}</p>
   @if (detail(); as quote) {
-  <a
-    appLinkButton
-    variant="primary"
-    [routerLink]="['/backoffice/quotes', quote.id]"
-    [queryParams]="context()"
+  <a appLinkButton variant="primary" [routerLink]="['/quotes', quote.id]" [queryParams]="context()"
     >{{ i18n.t('commercial.backQuote') }}</a
   >
   } } @else {
@@ -82,7 +74,7 @@
       @if (clients().length === 0) {
       <p appNotice>
         {{ i18n.t('backOffice.quote.noClient') }}
-        <a *appCan="'client.create'" routerLink="/backoffice/clients/new"
+        <a *appCan="'client.create'" routerLink="/clients/new"
           >{{ i18n.t('backOffice.quote.manageClients') }}</a
         >
       </p>

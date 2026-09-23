@@ -11,7 +11,7 @@
     @if (client(); as current) {
     <p>
       <a
-        [routerLink]="['/backoffice/clients', current.id, 'profile']"
+        [routerLink]="['/clients', current.id, 'profile']"
         [queryParams]="returnQuery()"
         queryParamsHandling="replace"
         >{{ current.displayName }}</a

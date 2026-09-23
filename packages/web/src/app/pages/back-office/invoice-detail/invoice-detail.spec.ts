@@ -58,10 +58,8 @@ describe('InvoiceDetail', () => {
     expect(root.querySelector('form')).toBeNull();
     expect(root.querySelector('input')).toBeNull();
     expect(root.querySelector('app-split-action')).not.toBeNull();
-    expect(root.querySelector('a[href*="/backoffice/emails/new?invoice="]')).not.toBeNull();
-    expect(
-      root.querySelector('a[href*="/backoffice/emails/reminders/new?invoice="]'),
-    ).not.toBeNull();
+    expect(root.querySelector('a[href*="/emails/new?invoice="]')).not.toBeNull();
+    expect(root.querySelector('a[href*="/emails/reminders/new?invoice="]')).not.toBeNull();
   });
   it('does not show payment balances before the invoice is issued', async () => {
     const { root } = await setupInvoicePage(InvoiceDetail, { invoice: invoiceFixture('draft') });

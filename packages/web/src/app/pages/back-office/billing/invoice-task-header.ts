@@ -23,7 +23,7 @@ import { InvoiceTask } from './invoice-task';
         <p>
           {{ task.i18n.t('backOffice.affair.invoice') }}
           {{ invoice.invoiceNumber ?? invoice.currentRevision.title }} ·
-          <a [routerLink]="['/backoffice/clients', invoice.clientId, 'profile']">{{
+          <a [routerLink]="['/clients', invoice.clientId, 'profile']">{{
             invoice.currentRevision.clientDisplayName
           }}</a>
         </p>
@@ -57,7 +57,7 @@ export class InvoiceTaskHeader {
     if (invoice)
       items.push({
         label: invoice.invoiceNumber ?? this.task.i18n.t('commercialHeader.draftInvoice'),
-        path: ['/backoffice/invoices', invoice.id],
+        path: ['/invoices', invoice.id],
         queryParams: this.task.navigation.detailQuery(),
       });
     return items;

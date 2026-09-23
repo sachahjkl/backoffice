@@ -33,8 +33,8 @@ describe('SignOut', () => {
       providers: [
         provideRouter([
           { path: 'form', component: GuardedForm, canDeactivate: [unsavedChangesGuard] },
-          { path: 'backoffice/sign-out', component: SignOut, canDeactivate: [unsavedChangesGuard] },
-          { path: 'backoffice/login', component: LoginDestination },
+          { path: 'sign-out', component: SignOut, canDeactivate: [unsavedChangesGuard] },
+          { path: 'login', component: LoginDestination },
         ]),
         { provide: Authentication, useValue: { signOut } },
       ],
@@ -42,13 +42,13 @@ describe('SignOut', () => {
     const harness = await RouterTestingHarness.create();
     const form = await harness.navigateByUrl('/form', GuardedForm);
     const router = TestBed.inject(Router);
-    expect(await router.navigateByUrl('/backoffice/sign-out')).toBe(false);
+    expect(await router.navigateByUrl('/sign-out')).toBe(false);
     expect(signOut).not.toHaveBeenCalled();
     form.allowed = true;
-    await router.navigateByUrl('/backoffice/sign-out');
+    await router.navigateByUrl('/sign-out');
     await harness.fixture.whenStable();
     expect(signOut).toHaveBeenCalledOnce();
-    expect(await router.navigateByUrl('/backoffice/login')).toBe(false);
+    expect(await router.navigateByUrl('/login')).toBe(false);
     const event = new Event('beforeunload', { cancelable: true });
     window.dispatchEvent(event);
     expect(event.defaultPrevented).toBe(true);
@@ -59,6 +59,6 @@ describe('SignOut', () => {
     harness.fixture.nativeElement.querySelector('button[appButton]').click();
     await harness.fixture.whenStable();
     expect(signOut).toHaveBeenCalledTimes(2);
-    expect(router.url).toBe('/backoffice/login');
+    expect(router.url).toBe('/login');
   });
 });

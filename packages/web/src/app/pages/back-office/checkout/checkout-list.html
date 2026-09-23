@@ -7,7 +7,7 @@
         appLinkButton
         icon="plus"
         variant="primary"
-        routerLink="/backoffice/services/stripe/tests/new"
+        routerLink="/services/stripe/tests/new"
         [queryParams]="table.params()"
         >{{ i18n.t('configurationWorkspace.newTest') }}</a
       >
@@ -119,7 +119,7 @@
           <tr>
             <th scope="row">
               <a
-                [routerLink]="['/backoffice/services/stripe/tests', item.request.requestId]"
+                [routerLink]="['/services/stripe/tests', item.request.requestId]"
                 [queryParams]="table.params()"
                 [appSearchHighlight]="table.match(result, 'invoiceNumber')"
                 >{{ item.invoiceNumber }}</a

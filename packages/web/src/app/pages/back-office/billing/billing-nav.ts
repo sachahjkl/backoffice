@@ -17,25 +17,25 @@ export class BillingNav {
     (
       [
         {
-          path: '/backoffice/billing',
+          path: '/billing',
           id: 'billing-invoices-tab',
           permissions: ['invoice.read'],
           label: this.i18n.t('billingWorkspace.invoices'),
         },
         {
-          path: '/backoffice/billing/receipts',
+          path: '/billing/receipts',
           id: 'billing-receipts-tab',
           permissions: ['invoice.read', 'payment.read'],
           label: this.i18n.t('billingWorkspace.receipts'),
         },
         {
-          path: '/backoffice/billing/credit-notes',
+          path: '/billing/credit-notes',
           id: 'billing-credits-tab',
           permissions: ['invoice.read'],
           label: this.i18n.t('billingWorkspace.credits'),
         },
         {
-          path: '/backoffice/billing/refunds',
+          path: '/billing/refunds',
           id: 'billing-refunds-tab',
           permissions: ['invoice.read', 'payment.read'],
           label: this.i18n.t('billingWorkspace.refunds'),

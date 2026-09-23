@@ -66,7 +66,8 @@ describe('initial shell loading', () => {
     await navigation;
     await fixture.whenStable();
     expect(router.url).toBe('/login');
-    expect(element.querySelector('app-site-header')).not.toBeNull();
+    expect(element.querySelector('app-site-header')).toBeNull();
+    expect(element.querySelector('app-startup-page')).not.toBeNull();
     expect(element.querySelector('app-back-office-header-placeholder')).toBeNull();
     expect(fixture.componentInstance['startup']()).toBe('ready');
   });

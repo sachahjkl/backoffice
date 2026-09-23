@@ -15,7 +15,7 @@ const fullPaths = (entries: Routes, parent = ''): string[] =>
 
 describe('back-office route organization', () => {
   it('declares session-only account and configuration routes with child checks', () => {
-    for (const path of ['backoffice/account', 'backoffice/configuration']) {
+    for (const path of ['account', 'configuration']) {
       const route = routes.find((entry) => entry.path === path);
       expect(route?.data?.['access']).toBe('session');
       expect(route?.data?.['permissions']).toBeUndefined();
@@ -25,21 +25,19 @@ describe('back-office route organization', () => {
   it('aligns provider test routes with their API permissions', () => {
     for (const suffix of ['', '/new', '/:requestId']) {
       expect(
-        routes.find((entry) => entry.path === `backoffice/services/resend/tests${suffix}`)?.data?.[
+        routes.find((entry) => entry.path === `services/resend/tests${suffix}`)?.data?.[
           'permissions'
         ],
       ).toEqual(['integration.configure']);
       expect(
-        routes.find((entry) => entry.path === `backoffice/services/stripe/tests${suffix}`)?.data?.[
+        routes.find((entry) => entry.path === `services/stripe/tests${suffix}`)?.data?.[
           'permissions'
         ],
       ).toEqual(['integration.configure', 'invoice.read']);
     }
   });
   it('declares public invitation and authenticated shells in route data', () => {
-    expect(routes.find((route) => route.path === 'backoffice/join')?.data?.['shell']).toBe(
-      'public',
-    );
+    expect(routes.find((route) => route.path === 'join')?.data?.['shell']).toBe('public');
     for (const route of routes) {
       if (route.canActivate?.includes(administratorGuard))
         expect(route.data?.['shell'], route.path).toBe('administrator');
@@ -49,19 +47,19 @@ describe('back-office route organization', () => {
   });
 
   it.each([
-    ['backoffice/clients/new', 'client.create'],
-    ['backoffice/clients/:clientId/edit', 'client.update'],
-    ['backoffice/suppliers/new', 'supplier.create'],
-    ['backoffice/suppliers/:supplierId/edit', 'supplier.update'],
-    ['backoffice/purchases/new', 'supplier-invoice.create'],
-    ['backoffice/purchases/analyze', 'supplier-invoice.analyze'],
-    ['backoffice/purchases/payments', 'supplier-invoice.pay'],
-    ['backoffice/purchases/:invoiceId/edit', 'supplier-invoice.update'],
-    ['backoffice/quotes/new', 'quote.create'],
-    ['backoffice/quotes/:quoteId/publication', 'quote.send'],
-    ['backoffice/invoices/new', 'invoice.create'],
-    ['backoffice/invoices/:invoiceId/payments/new', 'invoice.mark-paid'],
-    ['backoffice/team/invitations/new', 'user.create'],
+    ['clients/new', 'client.create'],
+    ['clients/:clientId/edit', 'client.update'],
+    ['suppliers/new', 'supplier.create'],
+    ['suppliers/:supplierId/edit', 'supplier.update'],
+    ['purchases/new', 'supplier-invoice.create'],
+    ['purchases/analyze', 'supplier-invoice.analyze'],
+    ['purchases/payments', 'supplier-invoice.pay'],
+    ['purchases/:invoiceId/edit', 'supplier-invoice.update'],
+    ['quotes/new', 'quote.create'],
+    ['quotes/:quoteId/publication', 'quote.send'],
+    ['invoices/new', 'invoice.create'],
+    ['invoices/:invoiceId/payments/new', 'invoice.mark-paid'],
+    ['team/invitations/new', 'user.create'],
   ])('declares the write permission for %s', (path, permission) => {
     const route = routes.find((entry) => entry.path === path);
     expect(route?.canActivate).toContain(administratorGuard);
@@ -70,52 +68,42 @@ describe('back-office route organization', () => {
   it('keeps administrative subjects separate from company configuration', () => {
     const paths = fullPaths(routes);
     for (const subject of ['team', 'api', 'services', 'audit', 'configuration']) {
-      const route = routes.find((entry) => entry.path === `backoffice/${subject}`);
+      const route = routes.find((entry) => entry.path === subject);
       expect(route, subject).toBeDefined();
       expect(route?.canActivate, subject).toContain(administratorGuard);
     }
     expect(
-      paths.some((path) =>
-        /^backoffice\/configuration\/(equipe|api|services|audit)(\/|$)/.test(path),
-      ),
+      paths.some((path) => /^configuration\/(equipe|api|services|audit)(\/|$)/.test(path)),
     ).toBe(false);
-    expect(paths).toContain('backoffice/configuration/conditions/:presetId/edit');
-    expect(paths).toContain('backoffice/configuration/business-card');
-    expect(paths).not.toContain('backoffice/configuration/identite');
+    expect(paths).toContain('configuration/conditions/:presetId/edit');
+    expect(paths).toContain('configuration/business-card');
+    expect(paths).not.toContain('configuration/identite');
   });
 
   it('keeps document detail pages distinct from guarded tasks', () => {
     for (const path of [
-      'backoffice/quotes/:quoteId/edit',
-      'backoffice/quotes/:quoteId/publication',
-      'backoffice/invoices/:invoiceId/edit',
-      'backoffice/purchases/:invoiceId/edit',
-      'backoffice/invoices/:invoiceId/issue',
-      'backoffice/invoices/:invoiceId/payments/new',
-      'backoffice/invoices/:invoiceId/credits/new',
-      'backoffice/invoices/:invoiceId/refunds/new',
-      'backoffice/emails/new',
-      'backoffice/emails/reminders/new',
+      'quotes/:quoteId/edit',
+      'quotes/:quoteId/publication',
+      'invoices/:invoiceId/edit',
+      'purchases/:invoiceId/edit',
+      'invoices/:invoiceId/issue',
+      'invoices/:invoiceId/payments/new',
+      'invoices/:invoiceId/credits/new',
+      'invoices/:invoiceId/refunds/new',
+      'emails/new',
+      'emails/reminders/new',
     ]) {
       const route = routes.find((entry) => entry.path === path);
       expect(route?.canActivate, path).toContain(administratorGuard);
       expect(route?.canDeactivate, path).toContain(unsavedChangesGuard);
     }
-    for (const path of [
-      'backoffice/quotes/:quoteId',
-      'backoffice/invoices/:invoiceId',
-      'backoffice/orders/:orderId',
-    ]) {
+    for (const path of ['quotes/:quoteId', 'invoices/:invoiceId', 'orders/:orderId']) {
       expect(routes.find((entry) => entry.path === path)?.loadComponent, path).toBeDefined();
     }
   });
 
   it('keeps customer pages protected separately and public signature exits guarded', () => {
-    for (const path of [
-      'backoffice/client',
-      'backoffice/client/account',
-      'backoffice/client/documents/:kind/:documentId',
-    ]) {
+    for (const path of ['client', 'client/account', 'client/documents/:kind/:documentId']) {
       expect(routes.find((entry) => entry.path === path)?.canActivate, path).toContain(clientGuard);
     }
     expect(routes.find((entry) => entry.path === 'quote')?.canDeactivate).toContain(

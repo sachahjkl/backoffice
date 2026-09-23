@@ -207,7 +207,7 @@ const make = Effect.gen(function* () {
           ? cause
           : new DatabaseError({ operation: 'team.invite', cause }),
     });
-    return { invitation, url: `${config.publicOrigin}/backoffice/join#${token}` };
+    return { invitation, url: `${config.publicOrigin}/join#${token}` };
   });
   const cancel = Effect.fn('Team.cancel')(function* (actor: string, id: string) {
     const now = yield* Clock.currentTimeMillis;

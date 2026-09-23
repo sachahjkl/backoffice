@@ -8,7 +8,7 @@
       appLinkButton
       icon="plus"
       variant="primary"
-      routerLink="/backoffice/clients/new"
+      routerLink="/clients/new"
       >{{ i18n.t('backOffice.clients.create') }}</a
     >
   </app-page-header>
@@ -131,7 +131,7 @@
           emptyActions
           appLinkButton
           icon="plus"
-          routerLink="/backoffice/clients/new"
+          routerLink="/clients/new"
           >{{ i18n.t('backOffice.clients.create') }}</a
         >
         }
@@ -194,7 +194,7 @@
                 <div class="entity-label">
                   <app-entity-icon icon="clients" [variant]="statusVariant(result.client)" />
                   <a
-                    [routerLink]="['/backoffice/clients', result.client.id]"
+                    [routerLink]="['/clients', result.client.id]"
                     [queryParams]="detailQuery(tab)"
                     [appSearchHighlight]="result.nameMatches"
                     >{{ result.client.displayName }}</a

@@ -12,7 +12,7 @@
       appLinkButton
       icon="plus"
       variant="primary"
-      routerLink="/backoffice/suppliers/new"
+      routerLink="/suppliers/new"
       >{{ i18n.t('supplier.create') }}</a
     >
   </app-page-header>
@@ -111,9 +111,7 @@
             @for (supplier of visible(tab); track supplier.id) {
             <tr>
               <th scope="row">
-                <a
-                  [routerLink]="['/backoffice/suppliers', supplier.id]"
-                  [queryParams]="detailQuery()"
+                <a [routerLink]="['/suppliers', supplier.id]" [queryParams]="detailQuery()"
                   >{{ supplier.displayName }}</a
                 >
               </th>

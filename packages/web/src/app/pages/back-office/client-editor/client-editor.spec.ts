@@ -52,17 +52,17 @@ async function configure(editing = false, value = client, loadError = false, que
     providers: [
       provideRouter([
         {
-          path: 'backoffice/clients/new',
+          path: 'clients/new',
           component: ClientEditor,
           canDeactivate: [unsavedChangesGuard],
         },
         {
-          path: 'backoffice/clients/:clientId/edit',
+          path: 'clients/:clientId/edit',
           component: ClientEditor,
           canDeactivate: [unsavedChangesGuard],
         },
-        { path: 'backoffice/clients/:clientId', component: ClientDestination },
-        { path: 'backoffice/clients', component: ClientDestination },
+        { path: 'clients/:clientId', component: ClientDestination },
+        { path: 'clients', component: ClientDestination },
       ]),
       { provide: ClientsApi, useValue: api },
       { provide: ClientCreationStore, useValue: { open: async () => store } },
@@ -70,7 +70,7 @@ async function configure(editing = false, value = client, loadError = false, que
     ],
   });
   const harness = await RouterTestingHarness.create();
-  const path = editing ? `/backoffice/clients/${client.id}/edit` : '/backoffice/clients/new';
+  const path = editing ? `/clients/${client.id}/edit` : '/clients/new';
   const component = await harness.navigateByUrl(`${path}${query}`, ClientEditor);
   await harness.fixture.whenStable();
   const root = harness.fixture.nativeElement as HTMLElement;
@@ -115,7 +115,7 @@ describe('ClientEditor', () => {
       city: '',
       country: '',
     });
-    expect(router.url).toBe(`/backoffice/clients/${client.id}`);
+    expect(router.url).toBe(`/clients/${client.id}`);
   });
 
   it('shows validation without submitting an invalid client', async () => {
@@ -156,9 +156,9 @@ describe('ClientEditor', () => {
     const event = new Event('beforeunload', { cancelable: true });
     window.dispatchEvent(event);
     expect(event.defaultPrevented).toBe(true);
-    expect(await router.navigateByUrl('/backoffice/clients')).toBe(false);
+    expect(await router.navigateByUrl('/clients')).toBe(false);
     confirmation.request.mockResolvedValue(true);
-    expect(await router.navigateByUrl('/backoffice/clients')).toBe(true);
+    expect(await router.navigateByUrl('/clients')).toBe(true);
   });
 
   it('blocks duplicate saves and navigation during a request', async () => {
@@ -190,8 +190,8 @@ describe('ClientEditor', () => {
     expect(store.read()).toEqual(request);
     expect(component['pendingCreation']()).toEqual(request);
     confirmation.request.mockResolvedValue(true);
-    await router.navigateByUrl('/backoffice/clients');
-    await router.navigateByUrl('/backoffice/clients/new');
+    await router.navigateByUrl('/clients');
+    await router.navigateByUrl('/clients/new');
     await fixture.whenStable();
     expect(api.create).toHaveBeenCalledTimes(2);
     expect(store.read()).toEqual(request);
@@ -199,7 +199,7 @@ describe('ClientEditor', () => {
     await save();
     expect(api.create.mock.calls.map((call) => call[0])).toEqual([request, request, request]);
     expect(store.read()).toBeUndefined();
-    expect(router.url).toBe(`/backoffice/clients/${client.id}`);
+    expect(router.url).toBe(`/clients/${client.id}`);
   });
 
   it('does not send a creation when its identity cannot be stored', async () => {
@@ -243,7 +243,6 @@ describe('ClientEditor', () => {
       await fixture.whenStable();
       const destination = router.parseUrl(router.url);
       expect(destination.root.children['primary']?.segments.map(({ path }) => path)).toEqual([
-        'backoffice',
         'clients',
         client.id,
       ]);
@@ -263,13 +262,12 @@ describe('ClientEditor', () => {
 
   it('retains allowed context after saving without adding a leave confirmation', async () => {
     const query =
-      '?q=Acme&view=all&clientAffairSort=dateDesc&clientDocumentSort=dateAsc&clientAccessSort=emailDesc&clientAccessTo=2026-09-30&returnUrl=/backoffice/team';
+      '?q=Acme&view=all&clientAffairSort=dateDesc&clientDocumentSort=dateAsc&clientAccessSort=emailDesc&clientAccessTo=2026-09-30&returnUrl=/team';
     const { fill, save, router, confirmation } = await configure(true, client, false, query);
     await fill('displayName', 'Acme Conseil');
     await save();
     const destination = router.parseUrl(router.url);
     expect(destination.root.children['primary']?.segments.map(({ path }) => path)).toEqual([
-      'backoffice',
       'clients',
       client.id,
     ]);

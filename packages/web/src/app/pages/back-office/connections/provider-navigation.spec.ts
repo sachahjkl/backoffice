@@ -9,8 +9,8 @@ describe('Provider navigation', () => {
     (provider) => {
       const tabs = providerTabs(provider, TestBed.inject(I18nService), 'saved-request');
       expect(tabs.map((tab) => tab.path)).toEqual([
-        `/backoffice/services/${provider}`,
-        `/backoffice/services/${provider}/tests`,
+        `/services/${provider}`,
+        `/services/${provider}/tests`,
       ]);
       expect(tabs[0]?.queryParams).toEqual({ request: 'saved-request' });
       expect(tabs[1]?.exact).toBe(false);

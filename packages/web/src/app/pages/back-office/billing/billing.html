@@ -7,7 +7,7 @@
       appLinkButton
       icon="file-plus"
       variant="primary"
-      routerLink="/backoffice/invoices/new"
+      routerLink="/invoices/new"
       *appCan="'invoice.create'"
       [queryParams]="detailQuery()"
       >{{ i18n.t('backOffice.invoices.new') }}</a
@@ -163,7 +163,7 @@
         <li>
           <a
             *appCan="'email.draft.manage'"
-            routerLink="/backoffice/emails/new"
+            routerLink="/emails/new"
             [queryParams]="{ invoice: invoice.id }"
             >{{ invoice.invoiceNumber }} · {{ invoice.clientDisplayName }}</a
           >
@@ -263,9 +263,7 @@
               <div class="entity-label">
                 <app-entity-icon icon="invoice" [variant]="iconVariant(invoice)" />
                 <div>
-                  <a
-                    [routerLink]="['/backoffice/invoices', invoice.id]"
-                    [queryParams]="detailQuery()"
+                  <a [routerLink]="['/invoices', invoice.id]" [queryParams]="detailQuery()"
                     ><strong [appSearchHighlight]="matchIndices(result, invoiceMatchKey(invoice))"
                       >{{ invoice.invoiceNumber ?? invoice.title }}</strong
                     ></a

@@ -69,7 +69,7 @@ describe('Dashboard', () => {
     const startedAt = Date.now();
     const { root } = await configure([invoice]);
     expect(root.querySelector('tbody a')?.getAttribute('href')).toBe(
-      `/backoffice/invoices/${invoice.id}/edit`,
+      `/invoices/${invoice.id}/edit`,
     );
     expect(root.querySelectorAll('.metrics a')).toHaveLength(5);
     const timestamp = root.querySelector('#dashboard-loaded-at time')?.getAttribute('datetime');
@@ -79,7 +79,7 @@ describe('Dashboard', () => {
     for (const metric of root.querySelectorAll('.metrics a'))
       expect(metric.getAttribute('aria-describedby')).toBe('dashboard-loaded-at');
     expect(root.querySelector('.metrics a')?.getAttribute('href')).toBe(
-      '/backoffice/affairs/attention?stage=draft',
+      '/affairs/attention?stage=draft',
     );
     expect(root.querySelector('search')).toBeNull();
     expect(root.querySelector('.activity-list time')?.getAttribute('datetime')).toBe(
@@ -112,9 +112,7 @@ describe('Dashboard', () => {
     expect(amounts[3]?.textContent).toMatch(/700[,.]00/);
     expect(amounts[4]?.textContent).toBe('1');
     expect(root.querySelectorAll('tbody tr')).toHaveLength(2);
-    expect(root.querySelector('tbody a')?.getAttribute('href')).toBe(
-      `/backoffice/invoices/${invoice.id}`,
-    );
+    expect(root.querySelector('tbody a')?.getAttribute('href')).toBe(`/invoices/${invoice.id}`);
     expect(root.querySelectorAll('tbody [appBadge]')[1]?.textContent).toMatch(
       /Attente normale|Normal waiting/,
     );
@@ -124,7 +122,7 @@ describe('Dashboard', () => {
   it('opens an eligible reminder draft without sending a message', async () => {
     const { root } = await configure([{ ...invoice, status: 'issued' }]);
     expect(root.querySelector('tbody a')?.getAttribute('href')).toBe(
-      `/backoffice/emails/new?invoice=${invoice.id}`,
+      `/emails/new?invoice=${invoice.id}`,
     );
   });
 
@@ -140,9 +138,7 @@ describe('Dashboard', () => {
       expect(root.querySelector('tbody a')?.textContent).toMatch(
         /Consulter la facture|View invoice/,
       );
-      expect(root.querySelector('tbody a')?.getAttribute('href')).toBe(
-        `/backoffice/invoices/${invoice.id}`,
-      );
+      expect(root.querySelector('tbody a')?.getAttribute('href')).toBe(`/invoices/${invoice.id}`);
     },
   );
 
@@ -164,7 +160,7 @@ describe('Dashboard', () => {
     };
     const { root } = await configure([], [], [order]);
     expect(root.querySelector('tbody a')?.getAttribute('href')).toBe(
-      `/backoffice/invoices/new?orderId=${order.id}`,
+      `/invoices/new?orderId=${order.id}`,
     );
   });
 });

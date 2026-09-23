@@ -61,8 +61,8 @@ export class RoleEditor {
   protected readonly saving = signal(false);
   protected readonly error = signal<TranslationKey | undefined>(undefined);
   protected readonly breadcrumbs = computed(() => [
-    { label: this.i18n.t('team.title'), path: '/backoffice/team' },
-    { label: this.i18n.t('role.title'), path: '/backoffice/team/roles' },
+    { label: this.i18n.t('team.title'), path: '/team' },
+    { label: this.i18n.t('role.title'), path: '/team/roles' },
   ]);
 
   constructor() {
@@ -109,7 +109,7 @@ export class RoleEditor {
         }
         this.roleForm().reset(this.model());
         this.saving.set(false);
-        await this.router.navigate(['/backoffice/team/roles'], {
+        await this.router.navigate(['/team/roles'], {
           state: { roleNotice: this.editing ? 'role.updated' : 'role.created' },
         });
       } catch {

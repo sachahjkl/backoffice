@@ -18,7 +18,7 @@
         appLinkButton
         icon="file-plus"
         variant="primary"
-        routerLink="/backoffice/quotes/new"
+        routerLink="/quotes/new"
         *appCan="'quote.create'"
         [queryParams]="{ clientId: current.id }"
         >{{ i18n.t('backOffice.dashboard.createQuote') }}</a
@@ -245,7 +245,7 @@
                   <app-entity-icon icon="folder" />
                   <div>
                     <a
-                      [routerLink]="['/backoffice/affairs', affair.id]"
+                      [routerLink]="['/affairs', affair.id]"
                       [appSearchHighlight]="affairTable.match(result, 'reference')"
                       >{{ affair.reference }}</a
                     >
@@ -583,7 +583,7 @@
         appLinkButton
         icon="plus"
         variant="primary"
-        [routerLink]="['/backoffice/clients', current.id, 'access', 'new']"
+        [routerLink]="['/clients', current.id, 'access', 'new']"
         *appCan="'client.access.manage'"
         queryParamsHandling="preserve"
         >{{ i18n.t('backOffice.clientDetail.accessCreate') }}</a

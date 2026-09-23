@@ -35,6 +35,22 @@ const layer = (appEnvironment: 'development' | 'staging' | 'production' = 'stagi
 };
 
 describe('Demonstration reset', () => {
+  it('migrates an empty branding singleton without assigning a company name', async () => {
+    await Effect.runPromise(
+      Effect.gen(function* () {
+        const database = yield* Database;
+        expect(
+          database.sqlite
+            .prepare('select id, name, logo_url as logoUrl, version from branding_settings')
+            .all(),
+        ).toEqual([{ id: 1, name: null, logoUrl: null, version: 0 }]);
+        expect(() =>
+          database.sqlite.prepare('insert into branding_settings (id) values (2)').run(),
+        ).toThrow();
+      }).pipe(Effect.provide(layer())),
+    );
+  });
+
   it('replaces a migrated database with valid deterministic staging data', async () => {
     await Effect.runPromise(
       Effect.gen(function* () {
@@ -44,6 +60,16 @@ describe('Demonstration reset', () => {
           { password: 'demo-secret', confirmed: true },
           '01ARZ3NDEKTSV4RRFFQ69G5FAA',
         );
+        expect(
+          database.sqlite
+            .prepare('select id, name, logo_url as logoUrl, version from branding_settings')
+            .all(),
+        ).toEqual([{ id: 1, name: 'Atelier Nébula', logoUrl: null, version: 0 }]);
+        database.sqlite
+          .prepare(
+            "update branding_settings set name = 'Autre marque', logo_url = '/custom.svg', version = 3 where id = 1",
+          )
+          .run();
         const firstClientNames = Schema.decodeUnknownSync(Schema.Array(Schema.String))(
           database.sqlite
             .prepare(
@@ -57,6 +83,11 @@ describe('Demonstration reset', () => {
           '01ARZ3NDEKTSV4RRFFQ69G5FAA',
         );
         expect(second).toEqual(first);
+        expect(
+          database.sqlite
+            .prepare('select id, name, logo_url as logoUrl, version from branding_settings')
+            .all(),
+        ).toEqual([{ id: 1, name: 'Atelier Nébula', logoUrl: null, version: 0 }]);
         const secondClientNames = Schema.decodeUnknownSync(Schema.Array(Schema.String))(
           database.sqlite
             .prepare(

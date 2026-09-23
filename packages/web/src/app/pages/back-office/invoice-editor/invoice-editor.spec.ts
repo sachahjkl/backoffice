@@ -26,7 +26,7 @@ describe('InvoiceEditor', () => {
   it('keeps issued invoices read-only and moves financial tasks out of the editor', async () => {
     const { root } = await setupInvoicePage(InvoiceEditor);
     expect(root.querySelector('form')).toBeNull();
-    expect(root.querySelector(`a[href="/backoffice/invoices/${invoiceId}"]`)).not.toBeNull();
+    expect(root.querySelector(`a[href="/invoices/${invoiceId}"]`)).not.toBeNull();
     expect(root.querySelector('.payment-form')).toBeNull();
   });
   it('keeps loaded values pristine through date-validity animations, submission and reload', async () => {
@@ -265,7 +265,7 @@ describe('InvoiceEditor', () => {
       dueDate: '2026-09-20',
       paymentTerms: '',
     });
-    expect(navigate).toHaveBeenCalledWith(['/backoffice/invoices', invoiceId], {
+    expect(navigate).toHaveBeenCalledWith(['/invoices', invoiceId], {
       replaceUrl: true,
       queryParams: expect.objectContaining({
         billingList: 'invoices',

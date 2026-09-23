@@ -3,7 +3,7 @@
     <h1 id="connections-title">{{ i18n.t('connections.title') }}</h1>
     <p>{{ i18n.t('connections.intro') }}</p>
     <div pageActions class="spacer-x-3">
-      <a appLinkButton icon="tests" routerLink="/backoffice/services/simulations"
+      <a appLinkButton icon="tests" routerLink="/services/simulations"
         >{{ i18n.t('connections.simulations') }}</a
       >
     </div>
@@ -44,7 +44,7 @@
           </td>
           <td>{{ i18n.t(modeLabel(connection)) }}</td>
           <td>
-            <a [routerLink]="['/backoffice/services', connection.provider]"
+            <a [routerLink]="['/services', connection.provider]"
               >{{ i18n.t('configurationWorkspace.connection') }}</a
             >
           </td>

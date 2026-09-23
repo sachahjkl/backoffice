@@ -140,14 +140,14 @@ export class InvoiceDetail {
   protected openPayment(mode: string): void {
     const invoice = this.task.invoice();
     if (!invoice || (mode !== 'partial' && mode !== 'full')) return;
-    void this.router.navigate(['/backoffice/invoices', invoice.id, 'payments', 'new'], {
+    void this.router.navigate(['/invoices', invoice.id, 'payments', 'new'], {
       queryParams: { ...this.task.navigation.detailQuery(), mode },
     });
   }
   protected openCredit(mode: string): void {
     const invoice = this.task.invoice();
     if (!invoice || (mode !== 'partial' && mode !== 'full')) return;
-    void this.router.navigate(['/backoffice/invoices', invoice.id, 'credits', 'new'], {
+    void this.router.navigate(['/invoices', invoice.id, 'credits', 'new'], {
       queryParams: { ...this.task.navigation.detailQuery(), mode },
     });
   }

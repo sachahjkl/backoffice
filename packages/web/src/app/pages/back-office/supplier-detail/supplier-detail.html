@@ -1,6 +1,6 @@
 <section class="detail-page wide-page" aria-labelledby="supplier-title">
   <app-page-header layout="stacked">
-    <a pageBack routerLink="/backoffice/suppliers" [queryParams]="listQuery()"
+    <a pageBack routerLink="/suppliers" [queryParams]="listQuery()"
       >{{ i18n.t('supplier.backToList') }}</a
     >
     @if (supplier(); as current) {

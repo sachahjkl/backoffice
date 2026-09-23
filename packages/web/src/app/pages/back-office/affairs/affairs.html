@@ -91,7 +91,7 @@
           @for (result of table.results(); track result.item.id) { @let affair = result.item;
           <tr>
             <th scope="row">
-              <a [routerLink]="['/backoffice/affairs', affair.id]">{{ affair.reference }}</a>
+              <a [routerLink]="['/affairs', affair.id]">{{ affair.reference }}</a>
             </th>
             <td>{{ affair.title }}</td>
             <td>{{ affair.clientDisplayName }}</td>

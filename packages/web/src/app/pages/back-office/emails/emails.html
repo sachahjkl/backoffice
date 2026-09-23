@@ -180,7 +180,7 @@
                   <app-entity-icon icon="mail" [variant]="iconVariant(operation)" />
                   <div>
                     <a
-                      [routerLink]="['/backoffice/emails/messages', operation.id]"
+                      [routerLink]="['/emails/messages', operation.id]"
                       [queryParams]="returnQuery(tab)"
                       [appSearchHighlight]="result.indices"
                       >{{ operation.request.subject }}</a
@@ -203,7 +203,7 @@
                   <app-entity-icon icon="mail" />
                   <div>
                     <a
-                      [routerLink]="['/backoffice/emails/drafts', draft.id, 'edit']"
+                      [routerLink]="['/emails/drafts', draft.id, 'edit']"
                       [queryParams]="returnQuery(tab)"
                       [appSearchHighlight]="result.indices"
                       >{{ draft.subject || i18n.t('emailDraft.unnamed') }}</a
@@ -230,7 +230,7 @@
                 <div class="entity-label">
                   <app-entity-icon icon="mail" />
                   <a
-                    [routerLink]="['/backoffice/emails/templates', template.id, 'edit']"
+                    [routerLink]="['/emails/templates', template.id, 'edit']"
                     [queryParams]="returnQuery(tab)"
                     [appSearchHighlight]="result.indices"
                     >{{ template.subject }}</a
@@ -250,7 +250,7 @@
                   <app-entity-icon icon="mail" [variant]="reminderIconVariant(reminder)" />
                   <div>
                     <a
-                      [routerLink]="['/backoffice/invoices', reminder.invoiceId]"
+                      [routerLink]="['/invoices', reminder.invoiceId]"
                       [appSearchHighlight]="result.indices"
                       >{{ reminder.invoiceReference }}</a
                     ><small
@@ -280,7 +280,7 @@
                   {{ i18n.t('reminder.cancel') }}
                 </button>
                 } @else if (reminder.operationId) {
-                <a [routerLink]="['/backoffice/emails/messages', reminder.operationId]"
+                <a [routerLink]="['/emails/messages', reminder.operationId]"
                   >{{ i18n.t('emailsWorkspace.viewMessage') }}</a
                 >
                 }

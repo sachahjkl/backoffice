@@ -73,7 +73,7 @@ async function openTaxChoices(root: HTMLElement, harness: RouterTestingHarness) 
   return { trigger, dialog, input };
 }
 
-async function configure(url = '/backoffice/catalog/active', fail = false) {
+async function configure(url = '/catalog/active', fail = false) {
   const list = vi.fn().mockImplementation(async () => {
     if (fail) throw new Error('unavailable');
     return records;
@@ -81,10 +81,10 @@ async function configure(url = '/backoffice/catalog/active', fail = false) {
   TestBed.configureTestingModule({
     providers: [
       provideRouter([
-        { path: 'backoffice/catalog/new', component: CatalogEditor },
-        { path: 'backoffice/catalog/:itemId/edit', component: CatalogEditor },
+        { path: 'catalog/new', component: CatalogEditor },
+        { path: 'catalog/:itemId/edit', component: CatalogEditor },
         {
-          path: 'backoffice/catalog',
+          path: 'catalog',
           component: Catalog,
           children: ['active', 'archived', 'all'].map((tab) => ({
             path: tab,
@@ -127,7 +127,7 @@ describe('Catalog', () => {
     search.dispatchEvent(new Event('input'));
     await harness.fixture.whenStable();
     expect(root.querySelectorAll('tbody tr')).toHaveLength(1);
-    expect(router.url).toBe('/backoffice/catalog/active?q=developement');
+    expect(router.url).toBe('/catalog/active?q=developement');
     expect(component['visibleItems']('active')[0]?.matches.length).toBeGreaterThan(0);
     expect(root.querySelector('tbody a')?.getAttribute('href')).toContain(`/${item.id}/edit?`);
     expect(
@@ -143,7 +143,7 @@ describe('Catalog', () => {
 
   it('preserves search, VAT and sort through views, an editor, and the return link', async () => {
     const { root, harness, router } = await configure(
-      '/backoffice/catalog/all?q=angular&sort=quantity-desc&tax=2000',
+      '/catalog/all?q=angular&sort=quantity-desc&tax=2000',
     );
     expect(root.querySelectorAll('tbody tr')).toHaveLength(1);
     root.querySelector<HTMLAnchorElement>('tbody a')!.click();
@@ -155,11 +155,11 @@ describe('Catalog', () => {
     );
     root.querySelector<HTMLAnchorElement>('.back-link')!.click();
     await harness.fixture.whenStable();
-    expect(router.url).toBe('/backoffice/catalog/all?q=angular&sort=quantity-desc&tax=2000');
+    expect(router.url).toBe('/catalog/all?q=angular&sort=quantity-desc&tax=2000');
     expect(root.querySelectorAll('[appFilterChip]')).toHaveLength(2);
     root.querySelector<HTMLAnchorElement>('#catalog-archived-tab')!.click();
     await harness.fixture.whenStable();
-    expect(router.url).toBe('/backoffice/catalog/archived?q=angular&sort=quantity-desc&tax=2000');
+    expect(router.url).toBe('/catalog/archived?q=angular&sort=quantity-desc&tax=2000');
     expect(root.querySelector('app-empty-state')).not.toBeNull();
     expect(root.querySelector('app-page-header a')?.getAttribute('href')).toContain(
       'view=archived',
@@ -204,9 +204,7 @@ describe('Catalog', () => {
   ] as const)(
     'sorts $column using raw values and stable IDs',
     async ({ column, label, ascending, descending }) => {
-      const { root, harness, router } = await configure(
-        `/backoffice/catalog/all?sort=${column}-desc`,
-      );
+      const { root, harness, router } = await configure(`/catalog/all?sort=${column}-desc`);
       const descriptions = () =>
         Array.from(root.querySelectorAll('tbody a'), (link) => link.textContent);
       const expected = (indexes: readonly number[]) =>
@@ -235,14 +233,14 @@ describe('Catalog', () => {
 
   it('resets sorting without changing search, VAT, the view, or export order', async () => {
     const { component, harness, router } = await configure(
-      '/backoffice/catalog/all?q=prestation&tax=2000&sort=price-desc',
+      '/catalog/all?q=prestation&tax=2000&sort=price-desc',
     );
     component['sortBy']('price');
     await harness.fixture.whenStable();
     expect(component['query']().sort).toBe('none');
     expect(component['sortDirection']('description')).toBe('none');
     expect(router.parseUrl(router.url).queryParams).toEqual({ q: 'prestation', tax: '2000' });
-    expect(router.url.split('?')[0]).toBe('/backoffice/catalog/all');
+    expect(router.url.split('?')[0]).toBe('/catalog/all');
     expect(component['visibleItems']('all').map(({ item }) => item.id)).toEqual([records[2]!.id]);
     expect(component['exportRows']('all').map((row) => row[0])).toEqual(['Ancienne prestation']);
     expect(component['editorQuery']('all')).toEqual({
@@ -254,7 +252,7 @@ describe('Catalog', () => {
   });
 
   it('searches VAT choices and commits with the keyboard before restoring focus', async () => {
-    const { root, harness, router } = await configure('/backoffice/catalog/all?sort=price-desc');
+    const { root, harness, router } = await configure('/catalog/all?sort=price-desc');
     const { trigger, dialog, input } = await openTaxChoices(root, harness);
     expect(
       Array.from(dialog.querySelectorAll('[role="option"]'), (option) =>
@@ -318,9 +316,7 @@ describe('Catalog', () => {
   });
 
   it('keeps a valid VAT rate without results and clears both filters without clearing sort', async () => {
-    const { root, harness, router } = await configure(
-      '/backoffice/catalog/all?q=angular&sort=tax-desc&tax=0',
-    );
+    const { root, harness, router } = await configure('/catalog/all?q=angular&sort=tax-desc&tax=0');
     expect(root.querySelectorAll('[appFilterChip]')).toHaveLength(2);
     expect(root.querySelector('app-empty-state')).not.toBeNull();
     const { trigger, dialog, input } = await openTaxChoices(root, harness);
@@ -332,19 +328,17 @@ describe('Catalog', () => {
     await harness.fixture.whenStable();
     expect(document.querySelector('[role="dialog"]')).toBeNull();
     expect(document.activeElement).toBe(trigger);
-    expect(router.url).toBe('/backoffice/catalog/all?q=angular&sort=tax-desc&tax=0');
+    expect(router.url).toBe('/catalog/all?q=angular&sort=tax-desc&tax=0');
     root.querySelector<HTMLButtonElement>('app-empty-state button')!.click();
     await harness.fixture.whenStable();
     expect(document.activeElement).toBe(searchInput(root));
-    expect(router.url).toBe('/backoffice/catalog/all?q=&sort=tax-desc');
+    expect(router.url).toBe('/catalog/all?q=&sort=tax-desc');
     expect(root.querySelectorAll('tbody tr')).toHaveLength(3);
     expect(root.querySelectorAll('[appFilterChip]')).toHaveLength(0);
   });
 
   it('exports only displayed records in table order with explicit public columns', async () => {
-    const { harness, component, root } = await configure(
-      '/backoffice/catalog/all?sort=price-desc&tax=2000',
-    );
+    const { harness, component, root } = await configure('/catalog/all?sort=price-desc&tax=2000');
     const exporter = harness.fixture.debugElement.query(By.directive(TableExport))
       .componentInstance as TableExport;
     const i18n = TestBed.inject(I18nService);
@@ -393,7 +387,7 @@ describe('Catalog', () => {
   });
 
   it('separates load errors from empty results and retries', async () => {
-    const { root, list, harness } = await configure('/backoffice/catalog/active', true);
+    const { root, list, harness } = await configure('/catalog/active', true);
     expect(root.querySelector('[role="alert"]')).not.toBeNull();
     expect(root.querySelector('app-empty-state')).toBeNull();
     const exporter = harness.fixture.debugElement.query(By.directive(TableExport))

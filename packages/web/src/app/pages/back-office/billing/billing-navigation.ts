@@ -18,10 +18,10 @@ const DueFilter = Schema.Literals(['overdue', 'upcoming']);
 const CreditFilter = Schema.Literals(['with', 'without']);
 
 const listLinks = {
-  invoices: '/backoffice/billing',
-  receipts: '/backoffice/billing/receipts',
-  credits: '/backoffice/billing/credit-notes',
-  refunds: '/backoffice/billing/refunds',
+  invoices: '/billing',
+  receipts: '/billing/receipts',
+  credits: '/billing/credit-notes',
+  refunds: '/billing/refunds',
 } as const satisfies Record<BillingList, string>;
 const sortColumns = {
   invoices: invoiceSortColumns,

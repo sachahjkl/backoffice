@@ -7,7 +7,7 @@
       appLinkButton
       icon="invoice"
       variant="primary"
-      routerLink="/backoffice/billing"
+      routerLink="/billing"
       [queryParams]="{ credit: 'with' }"
       >{{ i18n.t('billingWorkspace.chooseInvoice') }}</a
     >
@@ -100,7 +100,7 @@
               <div class="entity-label">
                 <app-entity-icon icon="bank" [variant]="iconVariant(entry)" />
                 <a
-                  [routerLink]="['/backoffice/invoices', entry.invoiceId]"
+                  [routerLink]="['/invoices', entry.invoiceId]"
                   [queryParams]="detailQuery()"
                   [fragment]="entry.id"
                   [appSearchHighlight]="matchIndices(result, 'reference')"

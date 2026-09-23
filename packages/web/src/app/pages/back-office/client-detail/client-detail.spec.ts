@@ -105,7 +105,7 @@ describe('ClientDetail', () => {
     expect(root.querySelector('form')).toBeNull();
     expect(root.querySelector('.profile')?.textContent).toContain(client.email);
     expect(root.querySelector('[pageActions] a')?.getAttribute('href')).toBe(
-      `/backoffice/quotes/new?clientId=${client.id}`,
+      `/quotes/new?clientId=${client.id}`,
     );
     expect(root.querySelectorAll('[pageActions] a')).toHaveLength(1);
     expect(root.querySelector('[appInlineEdit] button[aria-label]')).not.toBeNull();
@@ -186,7 +186,7 @@ describe('ClientDetail', () => {
     const { root } = await configure('access');
     expect(root.querySelector('form')).toBeNull();
     expect(root.querySelector('#client-access-panel a')?.getAttribute('href')).toBe(
-      `/backoffice/clients/${client.id}/access/new`,
+      `/clients/${client.id}/access/new`,
     );
   });
 
@@ -207,7 +207,7 @@ describe('ClientDetail', () => {
       false,
       '?q=Acme&view=archived&country=France&contact=incomplete&sort=name-desc&clientAccessQ=portal&clientDocumentType=invoice',
     );
-    expect(component['backLink']()).toEqual(['/backoffice/clients', 'archived']);
+    expect(component['backLink']()).toEqual(['/clients', 'archived']);
     expect(component['returnQuery']()).toEqual({
       q: 'Acme',
       country: 'France',

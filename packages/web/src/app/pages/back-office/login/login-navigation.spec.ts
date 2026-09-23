@@ -6,15 +6,15 @@ describe('loginDestination', () => {
   const id = '01ARZ3NDEKTSV4RRFFQ69G5FAV';
 
   it.each([
-    '/backoffice/client',
-    '/backoffice/client?quote=' + id,
-    '/backoffice/client/account',
-    '/backoffice/client/account/security',
-    '/backoffice/client/account/passkeys',
-    '/backoffice/client/account/sessions',
-    '/backoffice/client/account/preferences',
+    '/client',
+    '/client?quote=' + id,
+    '/client/account',
+    '/client/account/security',
+    '/client/account/passkeys',
+    '/client/account/sessions',
+    '/client/account/preferences',
     ...['quote', 'order', 'invoice'].map(
-      (kind) => `/backoffice/client/documents/${kind}/${id}?q=audit#document`,
+      (kind) => `/client/documents/${kind}/${id}?q=audit#document`,
     ),
   ])('preserves the internal client destination %s', (url) => {
     expect(loginDestination('client', url, serializer)).toBe(url);
@@ -22,27 +22,25 @@ describe('loginDestination', () => {
 
   it.each([
     null,
-    'https://example.test/backoffice/client',
-    '//example.test/backoffice/client',
-    '/\\example.test/backoffice/client',
-    '/%2F%2Fexample.test/backoffice/client',
+    'https://example.test/client',
+    '//example.test/client',
+    '/\\example.test/client',
+    '/%2F%2Fexample.test/client',
     'javascript:alert(1)',
-    '/backoffice/client-other',
-    '/backoffice/clients',
-    '/backoffice/client/account/unknown',
-    '/backoffice/client;external=1',
-    '/backoffice/client(aux:backoffice/dashboard)',
-    '/backoffice/client/documents/quote/invalid',
-    `/backoffice/client/documents/refund/${id}`,
-    `/backoffice/client/documents/quote/${id}/edit`,
-    '/backoffice/client?malformed=%',
+    '/client-other',
+    '/clients',
+    '/client/account/unknown',
+    '/client;external=1',
+    '/client(aux:backoffice/dashboard)',
+    '/client/documents/quote/invalid',
+    `/client/documents/refund/${id}`,
+    `/client/documents/quote/${id}/edit`,
+    '/client?malformed=%',
   ])('rejects an external or unsupported destination %s', (url) => {
-    expect(loginDestination('client', url, serializer)).toBe('/backoffice/client');
+    expect(loginDestination('client', url, serializer)).toBe('/client');
   });
 
   it('keeps administrator sign-in separate from client destinations', () => {
-    expect(loginDestination('administrator', '/backoffice/client', serializer)).toBe(
-      '/backoffice/dashboard',
-    );
+    expect(loginDestination('administrator', '/client', serializer)).toBe('/dashboard');
   });
 });

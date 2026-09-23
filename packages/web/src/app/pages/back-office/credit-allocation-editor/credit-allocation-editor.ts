@@ -87,7 +87,7 @@ export class CreditAllocationEditor {
       this.error.set(true);
       return;
     }
-    await this.router.navigate(['/backoffice/invoices', source.id], {
+    await this.router.navigate(['/invoices', source.id], {
       queryParams: this.task.navigation.detailQuery(),
     });
   }

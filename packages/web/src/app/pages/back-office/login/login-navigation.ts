@@ -9,8 +9,8 @@ export function loginDestination(
   returnUrl: string | null,
   serializer: UrlSerializer,
 ): string {
-  if (mode !== 'client') return '/backoffice/dashboard';
-  const fallback = '/backoffice/client';
+  if (mode !== 'client') return '/dashboard';
+  const fallback = '/client';
   if (!returnUrl?.startsWith('/') || returnUrl.startsWith('//') || returnUrl.includes('\\'))
     return fallback;
   let url: UrlTree;
@@ -24,15 +24,15 @@ export function loginDestination(
     return fallback;
   if (primary.segments.some((segment) => Object.keys(segment.parameters).length > 0))
     return fallback;
-  const [backoffice, client, section, kind, id] = primary.segments.map((segment) => segment.path);
-  if (backoffice !== 'backoffice' || client !== 'client') return fallback;
+  const [client, section, kind, id] = primary.segments.map((segment) => segment.path);
+  if (client !== 'client') return fallback;
   const length = primary.segments.length;
-  const portal = length === 2;
+  const portal = length === 1;
   const account =
     section === 'account' &&
-    (length === 3 || (length === 4 && accountRoutes.some((route) => route.path === kind)));
+    (length === 2 || (length === 3 && accountRoutes.some((route) => route.path === kind)));
   const document =
-    length === 5 &&
+    length === 4 &&
     section === 'documents' &&
     Schema.is(PortalDocumentKind)(kind) &&
     Schema.is(Ulid)(id);

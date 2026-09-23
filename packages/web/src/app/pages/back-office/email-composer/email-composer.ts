@@ -165,7 +165,7 @@ export class EmailComposer {
     );
   }
   protected backLink() {
-    return ['/backoffice/emails', emailView(this.route.snapshot.queryParamMap.get('view'))];
+    return ['/emails', emailView(this.route.snapshot.queryParamMap.get('view'))];
   }
   protected backQuery() {
     return emailFilterQuery(emailQuery(this.route.snapshot.queryParamMap));
@@ -364,7 +364,7 @@ export class EmailComposer {
       this.busy.set(false);
     }
     if (this.completed())
-      await this.router.navigate(['/backoffice/emails/drafts'], {
+      await this.router.navigate(['/emails/drafts'], {
         queryParams: this.backQuery(),
       });
   }
@@ -437,7 +437,7 @@ export class EmailComposer {
       this.busy.set(false);
     }
     const operation = this.operation();
-    if (operation) await this.router.navigate(['/backoffice/emails/messages', operation.id]);
+    if (operation) await this.router.navigate(['/emails/messages', operation.id]);
   }
   protected async archive(): Promise<void> {
     const draft = this.draft();
@@ -465,6 +465,6 @@ export class EmailComposer {
     } finally {
       this.busy.set(false);
     }
-    if (this.completed()) await this.router.navigate(['/backoffice/emails/drafts']);
+    if (this.completed()) await this.router.navigate(['/emails/drafts']);
   }
 }

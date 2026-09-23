@@ -26,14 +26,14 @@ export function commercialBreadcrumbs(
 ): readonly BreadcrumbItem[] {
   const items: BreadcrumbItem[] = [
     {
-      path: ['/backoffice/affairs', context.view ?? 'attention'],
+      path: ['/affairs', context.view ?? 'attention'],
       queryParams: context,
       label: translate(language, 'backOffice.affairs.title'),
     },
   ];
   if (affair)
     items.push({
-      path: ['/backoffice/affairs', affair.id],
+      path: ['/affairs', affair.id],
       queryParams: context,
       label: affair.reference,
     });

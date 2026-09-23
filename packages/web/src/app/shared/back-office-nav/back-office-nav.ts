@@ -153,7 +153,7 @@ const groups = [
             @for (item of group.items; track item.path) {
               <li>
                 <a
-                  [routerLink]="'/backoffice/' + item.path"
+                  [routerLink]="'/' + item.path"
                   [class.active]="item.active"
                   [attr.aria-current]="item.active ? 'page' : null"
                 >
@@ -182,8 +182,7 @@ export class BackOfficeNav {
   );
   protected readonly navigation = computed(() => {
     const path = this.url().split(/[?#]/, 1)[0];
-    const matches = (prefix: string) =>
-      path === `/backoffice/${prefix}` || path.startsWith(`/backoffice/${prefix}/`);
+    const matches = (prefix: string) => path === `/${prefix}` || path.startsWith(`/${prefix}/`);
     return groups
       .map((group) => ({
         label: group.label,

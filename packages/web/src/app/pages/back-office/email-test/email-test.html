@@ -1,6 +1,6 @@
 <section class="detail-page" aria-labelledby="email-test-title">
   <app-page-header layout="stacked">
-    <a pageBack routerLink="/backoffice/services/resend/tests" [queryParams]="testParams()"
+    <a pageBack routerLink="/services/resend/tests" [queryParams]="testParams()"
       >{{ i18n.t('configurationWorkspace.backTests') }}</a
     >
     <h1 id="email-test-title">
@@ -29,7 +29,7 @@
   <a
     appLinkButton
     variant="primary"
-    [routerLink]="['/backoffice/services/resend/tests', selected()]"
+    [routerLink]="['/services/resend/tests', selected()]"
     [queryParams]="testParams()"
     >{{ i18n.t('configurationWorkspace.testDetail') }}</a
   >

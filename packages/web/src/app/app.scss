@@ -115,12 +115,6 @@ main {
   outline: none;
 }
 
-.app-shell:has(app-home) main {
-  width: min(100% - 3rem, 48rem);
-  max-width: none;
-  margin-block: 0;
-}
-
 .standalone-shell main {
   width: 100%;
   max-width: none;

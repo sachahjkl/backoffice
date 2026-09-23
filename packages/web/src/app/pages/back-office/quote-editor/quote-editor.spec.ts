@@ -68,13 +68,13 @@ describe('Quote editor navigation', () => {
       ],
     });
   });
-  async function open(path = `/backoffice/quotes/${quoteId}/edit`) {
+  async function open(path = `/quotes/${quoteId}/edit`) {
     const harness = await RouterTestingHarness.create(path);
     await harness.fixture.whenStable();
     return { harness, root: harness.fixture.nativeElement as HTMLElement };
   }
   it('keeps submit available and focuses the first invalid field', async () => {
-    const { harness, root } = await open('/backoffice/quotes/new');
+    const { harness, root } = await open('/quotes/new');
     const save = control<HTMLButtonElement>(root, 'button[type="submit"]');
     expect(save.disabled).toBe(false);
     save.click();
@@ -110,35 +110,35 @@ describe('Quote editor navigation', () => {
     button.click();
     button.click();
     await vi.waitFor(() => expect(createRevision).toHaveBeenCalledTimes(1));
-    await TestBed.inject(Router).navigateByUrl('/backoffice/affairs');
+    await TestBed.inject(Router).navigateByUrl('/affairs');
     expect(TestBed.inject(Router).url).toContain('/edit');
     const event = new Event('beforeunload', { cancelable: true });
     window.dispatchEvent(event);
     expect(event.defaultPrevented).toBe(true);
     resolve({ success: true, result: quoteFixture });
     await harness.fixture.whenStable();
-    expect(TestBed.inject(Router).url).toBe(`/backoffice/quotes/${quoteId}/summary`);
+    expect(TestBed.inject(Router).url).toBe(`/quotes/${quoteId}/summary`);
   });
   it('asks before leaving a dirty editor through the real guard', async () => {
     const { harness, root } = await open();
     inputValue(root, '#quote-name', 'Unsaved title');
-    await TestBed.inject(Router).navigateByUrl('/backoffice/affairs');
+    await TestBed.inject(Router).navigateByUrl('/affairs');
     expect(confirm).toHaveBeenCalledOnce();
     expect(TestBed.inject(Router).url).toContain('/edit');
     confirm.mockResolvedValue(true);
-    await TestBed.inject(Router).navigateByUrl('/backoffice/affairs');
+    await TestBed.inject(Router).navigateByUrl('/affairs');
     await harness.fixture.whenStable();
-    expect(TestBed.inject(Router).url).toBe('/backoffice/affairs');
+    expect(TestBed.inject(Router).url).toBe('/affairs');
   });
   it('keeps the validated list context after saving a revision', async () => {
     createRevision.mockResolvedValue({ success: true, result: quoteFixture });
     const { harness, root } = await open(
-      `/backoffice/quotes/${quoteId}/edit?q=Audit&stage=draft&client=${quoteFixture.clientId}&view=active&sort=amount-desc&returnUrl=https://invalid.test`,
+      `/quotes/${quoteId}/edit?q=Audit&stage=draft&client=${quoteFixture.clientId}&view=active&sort=amount-desc&returnUrl=https://invalid.test`,
     );
     control<HTMLButtonElement>(root, 'button[type="submit"]').click();
     await harness.fixture.whenStable();
     const router = TestBed.inject(Router);
-    expect(router.url).toContain(`/backoffice/quotes/${quoteId}/summary?`);
+    expect(router.url).toContain(`/quotes/${quoteId}/summary?`);
     expect(router.parseUrl(router.url).queryParams).toEqual({
       q: 'Audit',
       stage: 'draft',
@@ -188,11 +188,9 @@ describe('Quote editor navigation', () => {
     expect(control<HTMLElement>(root, '#quote-conditions').textContent).toBe(conditions);
   });
   it('preselects an active client from the client profile link without making the form dirty', async () => {
-    const { harness, root } = await open(
-      `/backoffice/quotes/new?clientId=${quoteFixture.clientId}`,
-    );
+    const { harness, root } = await open(`/quotes/new?clientId=${quoteFixture.clientId}`);
     expect(control<HTMLSelectElement>(root, '#quote-client').value).toBe(quoteFixture.clientId);
-    await TestBed.inject(Router).navigateByUrl('/backoffice/affairs');
+    await TestBed.inject(Router).navigateByUrl('/affairs');
     await harness.fixture.whenStable();
     expect(confirm).not.toHaveBeenCalled();
   });
@@ -200,7 +198,7 @@ describe('Quote editor navigation', () => {
     const affairId = '01ARZ3NDEKTSV4RRFFQ69G5FC0';
     create.mockResolvedValue({ success: false, code: 'quote.error' });
     const { harness, root } = await open(
-      `/backoffice/quotes/new?affairId=${affairId}&clientId=${quoteFixture.clientId}`,
+      `/quotes/new?affairId=${affairId}&clientId=${quoteFixture.clientId}`,
     );
     const client = control<HTMLSelectElement>(root, '#quote-client');
     expect(client.value).toBe(quoteFixture.clientId);
@@ -223,7 +221,7 @@ describe('Quote editor navigation', () => {
           ],
         },
       });
-      const { root } = await open(`/backoffice/quotes/new?clientId=${id}`);
+      const { root } = await open(`/quotes/new?clientId=${id}`);
       expect(control<HTMLSelectElement>(root, '#quote-client').value).toBe('');
     },
   );
@@ -251,13 +249,13 @@ describe('Quote editor navigation', () => {
     expect(createRevision).not.toHaveBeenCalled();
   });
   it('rejects malformed URLs instead of opening a creation form', async () => {
-    const { root } = await open('/backoffice/quotes/invalid/edit');
+    const { root } = await open('/quotes/invalid/edit');
     expect(root.querySelector('form')).toBeNull();
     expect(get).not.toHaveBeenCalled();
   });
   it('does not submit a second creation after an uncertain response', async () => {
     create.mockResolvedValue({ success: false, code: 'quote.error' });
-    const { harness, root } = await open('/backoffice/quotes/new');
+    const { harness, root } = await open('/quotes/new');
     const client = control<HTMLSelectElement>(root, '#quote-client');
     selectValue(client, quoteFixture.clientId);
     inputValue(root, '#quote-name', 'New quote');
@@ -289,9 +287,9 @@ describe('Quote editor navigation', () => {
     );
     await harness.fixture.whenStable();
     expect(create).toHaveBeenCalledOnce();
-    await TestBed.inject(Router).navigateByUrl('/backoffice/affairs');
+    await TestBed.inject(Router).navigateByUrl('/affairs');
     expect(confirm).toHaveBeenCalledOnce();
-    expect(TestBed.inject(Router).url).toBe('/backoffice/quotes/new');
+    expect(TestBed.inject(Router).url).toBe('/quotes/new');
   });
   it('ignores a late response after the route changes', async () => {
     let resolve!: (value: { success: true; result: typeof quoteFixture }) => void;
@@ -301,7 +299,7 @@ describe('Quote editor navigation', () => {
           resolve = done;
         }),
     );
-    const harness = await RouterTestingHarness.create(`/backoffice/quotes/${quoteId}/edit`);
+    const harness = await RouterTestingHarness.create(`/quotes/${quoteId}/edit`);
     await vi.waitFor(() => expect(get).toHaveBeenCalledOnce());
     const otherId = '01ARZ3NDEKTSV4RRFFQ69G5FB2';
     get.mockResolvedValue({
@@ -312,7 +310,7 @@ describe('Quote editor navigation', () => {
         currentRevision: { ...quoteFixture.currentRevision, title: 'Newest quote' },
       },
     });
-    await harness.navigateByUrl(`/backoffice/quotes/${otherId}/edit`);
+    await harness.navigateByUrl(`/quotes/${otherId}/edit`);
     try {
       await vi.waitFor(() =>
         expect(control<HTMLInputElement>(harness.fixture.nativeElement, '#quote-name').value).toBe(

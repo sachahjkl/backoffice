@@ -4,7 +4,7 @@ import { emailTemplateId, setupEmailPage } from '../emails/email-workspace.spec-
 describe('EmailTemplateEditor', () => {
   it('edits templates independently and preserves version conflicts', async () => {
     const { root, fill, save, templates, api, harness } = await setupEmailPage(
-      `/backoffice/emails/templates/${emailTemplateId}/edit`,
+      `/emails/templates/${emailTemplateId}/edit`,
     );
     templates.save.mockResolvedValue({ success: false, code: 'email_template.conflict' });
     await fill('template-body', 'Changed shared text');
@@ -23,9 +23,7 @@ describe('EmailTemplateEditor', () => {
     ).toBe(false);
   });
   it('keeps the creation key after failure and never requires a recipient', async () => {
-    const { root, fill, save, templates, router } = await setupEmailPage(
-      '/backoffice/emails/templates/new',
-    );
+    const { root, fill, save, templates, router } = await setupEmailPage('/emails/templates/new');
     templates.save.mockResolvedValueOnce({ success: false, code: 'emailTemplate.error' });
     await save();
     expect(document.activeElement?.id).toBe('template-subject');
@@ -39,7 +37,7 @@ describe('EmailTemplateEditor', () => {
   });
   it('requires confirmation before archiving and preserves errors', async () => {
     const { templates, confirmation, harness, root } = await setupEmailPage(
-      `/backoffice/emails/templates/${emailTemplateId}/edit`,
+      `/emails/templates/${emailTemplateId}/edit`,
     );
     const component = harness.routeDebugElement!.componentInstance as EmailTemplateEditor;
     await component['archive']();

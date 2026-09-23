@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { ActivatedRoute, Router, RouterLink, UrlSerializer } from '@angular/router';
 import { type LoginModeValue } from '@froment/contracts';
 import { Authentication } from '@backoffice/authentication';
+import { BrandingApi } from '@backoffice/branding-api';
 import { I18nService, TranslationKey } from '@app/i18n.service';
 import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
@@ -17,6 +18,7 @@ import { loginDestination } from './login-navigation';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Login {
+  protected readonly branding = inject(BrandingApi);
   protected readonly i18n = inject(I18nService);
   private readonly auth = inject(Authentication);
   private readonly route = inject(ActivatedRoute);
@@ -25,6 +27,10 @@ export class Login {
   protected readonly error = signal<TranslationKey | undefined>(undefined);
   protected readonly pending = signal(false);
   protected readonly passkeys = inject(Passkeys);
+
+  constructor() {
+    void this.branding.load();
+  }
 
   protected async loginPasskey(): Promise<void> {
     if (this.pending()) return;

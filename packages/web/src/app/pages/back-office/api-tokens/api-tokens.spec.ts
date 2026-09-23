@@ -579,7 +579,7 @@ describe('API token pages', () => {
     window.dispatchEvent(acknowledged);
     expect(acknowledged.defaultPrevented).toBe(false);
     expect(create).toHaveBeenCalledOnce();
-    expect(Router.prototype.navigate).toHaveBeenLastCalledWith(['/backoffice/api'], {
+    expect(Router.prototype.navigate).toHaveBeenLastCalledWith(['/api'], {
       queryParams: { q: 'ERP', sort: 'nameDesc', filter: 'notRevoked' },
     });
   });

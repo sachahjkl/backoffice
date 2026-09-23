@@ -4,9 +4,7 @@
 
     @if (created()) {
     <p>{{ i18n.t('bootstrap.success') }}</p>
-    <a appLinkButton variant="primary" routerLink="/backoffice/dashboard">
-      {{ i18n.t('bootstrap.login') }}
-    </a>
+    <a appLinkButton variant="primary" routerLink="/dashboard"> {{ i18n.t('bootstrap.login') }} </a>
     } @else { @switch (state()) { @case ('loading') {
     <p aria-live="polite">{{ i18n.t('bootstrap.loading') }}</p>
     } @case ('available') {
@@ -46,9 +44,7 @@
     </form>
     } @case ('unavailable') {
     <p>{{ i18n.t('bootstrap.unavailable') }}</p>
-    <a appLinkButton variant="primary" routerLink="/backoffice/login">
-      {{ i18n.t('bootstrap.login') }}
-    </a>
+    <a appLinkButton variant="primary" routerLink="/login"> {{ i18n.t('bootstrap.login') }} </a>
     } @case ('error') {
     <p appNotice variant="danger" role="alert">{{ i18n.t('bootstrap.error') }}</p>
     } } }

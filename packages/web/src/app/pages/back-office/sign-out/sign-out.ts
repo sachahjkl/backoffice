@@ -53,6 +53,6 @@ export class SignOut {
       this.failed.set(true);
     }
     this.pending.set(false);
-    if (!this.failed()) await this.router.navigateByUrl('/backoffice/login', { replaceUrl: true });
+    if (!this.failed()) await this.router.navigateByUrl('/login', { replaceUrl: true });
   }
 }

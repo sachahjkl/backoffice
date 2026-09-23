@@ -38,7 +38,7 @@ const archivedClient = {
 
 async function configure(
   list = vi.fn().mockResolvedValue([client, archivedClient]),
-  url = '/backoffice/clients/active',
+  url = '/clients/active',
   permissions?: readonly PermissionCodeValue[],
 ) {
   TestBed.configureTestingModule({
@@ -46,7 +46,7 @@ async function configure(
       provideAccount(permissions),
       provideRouter([
         {
-          path: 'backoffice/clients',
+          path: 'clients',
           component: Clients,
           children: ['active', 'archived', 'all'].map((tab) => ({
             path: tab,
@@ -55,7 +55,7 @@ async function configure(
           })),
         },
         {
-          path: 'backoffice/clients/:clientId',
+          path: 'clients/:clientId',
           component: ClientDetail,
           children: [
             { path: '', redirectTo: 'profile', pathMatch: 'full' },
@@ -87,9 +87,9 @@ async function configure(
 
 describe('Clients', () => {
   it('keeps client records readable without offering client creation to a read-only account', async () => {
-    const { root } = await configure(undefined, '/backoffice/clients/active', ['client.read']);
-    expect(root.querySelector('a[href="/backoffice/clients/new"]')).toBeNull();
-    expect(root.querySelector(`a[href^="/backoffice/clients/${client.id}"]`)).not.toBeNull();
+    const { root } = await configure(undefined, '/clients/active', ['client.read']);
+    expect(root.querySelector('a[href="/clients/new"]')).toBeNull();
+    expect(root.querySelector(`a[href^="/clients/${client.id}"]`)).not.toBeNull();
   });
   let scrolling: ReturnType<typeof installScrollIntoView>;
   beforeEach(() => {
@@ -103,14 +103,14 @@ describe('Clients', () => {
   ] as const)(
     'pluralizes zero, one, and two filtered clients in $language',
     async ({ language, empty, one, other }) => {
-      const { root, fixture, harness } = await configure(undefined, '/backoffice/clients/all');
+      const { root, fixture, harness } = await configure(undefined, '/clients/all');
       TestBed.inject(I18nService).setLanguage(language);
       for (const [query, count, label] of [
         ['', 2, other],
         ['?q=developement', 1, one],
         ['?q=zzzzzzzz', 0, empty],
       ] as const) {
-        await harness.navigateByUrl(`/backoffice/clients/all${query}`);
+        await harness.navigateByUrl(`/clients/all${query}`);
         await fixture.whenStable();
         expect(root.querySelectorAll('tbody tr')).toHaveLength(count);
         expect(root.querySelector('footer.list-summary [role="status"]')?.textContent?.trim()).toBe(
@@ -188,7 +188,7 @@ describe('Clients', () => {
       TestBed.inject(Router).parseUrl(TestBed.inject(Router).url).queryParams,
     ).not.toHaveProperty('sort');
     expect(exporter.rows().map((row) => row[0])).toEqual(names());
-    await harness.navigateByUrl('/backoffice/clients/active?sort=unknown');
+    await harness.navigateByUrl('/clients/active?sort=unknown');
     await fixture.whenStable();
     expect(names()).toEqual(['Ecole 2', 'École 2', 'École 10']);
     expect(root.querySelectorAll('thead th[aria-sort]')).toHaveLength(0);
@@ -203,7 +203,7 @@ describe('Clients', () => {
     ];
     const { fixture } = await configure(
       vi.fn().mockResolvedValue(records),
-      '/backoffice/clients/all?q=Acme&country=France&contact=incomplete',
+      '/clients/all?q=Acme&country=France&contact=incomplete',
     );
     const page = fixture.debugElement.query(By.directive(Clients)).componentInstance as Clients;
     const router = TestBed.inject(Router);
@@ -216,7 +216,7 @@ describe('Clients', () => {
         await fixture.whenStable();
         expect(page['sortDirection'](column)).toBe(direction);
       }
-      expect(router.url.split('?')[0]).toBe('/backoffice/clients/all');
+      expect(router.url.split('?')[0]).toBe('/clients/all');
       expect(router.parseUrl(router.url).queryParams).toEqual(filters);
       expect(page['visibleClients']('all').map(({ client }) => client.id)).toEqual(initial);
       expect(page['exportRows']('all').map((row) => row[0])).toEqual([
@@ -231,7 +231,7 @@ describe('Clients', () => {
   it('keeps sorting with Fuse filters and restores the list through real detail tabs', async () => {
     const { root, fixture } = await configure(
       undefined,
-      '/backoffice/clients/all?q=developement&country=France&contact=incomplete&sort=date-desc',
+      '/clients/all?q=developement&country=France&contact=incomplete&sort=date-desc',
     );
     const router = TestBed.inject(Router);
     expect(root.querySelectorAll('tbody tr')).toHaveLength(1);
@@ -255,12 +255,12 @@ describe('Clients', () => {
     root.querySelector<HTMLAnchorElement>('a[pageBack]')!.click();
     await fixture.whenStable();
     expect(router.url).toBe(
-      '/backoffice/clients/all?q=developement&country=France&contact=incomplete&sort=date-desc',
+      '/clients/all?q=developement&country=France&contact=incomplete&sort=date-desc',
     );
     expect(root.querySelector('thead th[aria-sort]')?.textContent).toMatch(/modification|modified/);
     root.querySelector<HTMLButtonElement>('.filter-chips > button:last-child')!.click();
     await fixture.whenStable();
-    expect(router.url).toBe('/backoffice/clients/all?sort=date-desc');
+    expect(router.url).toBe('/clients/all?sort=date-desc');
     expect(root.querySelectorAll('tbody tr')).toHaveLength(2);
     expect(document.activeElement).toBe(root.querySelector('app-list-search input'));
   });
@@ -276,7 +276,7 @@ describe('Clients', () => {
           country: 'Belgique',
         },
       ]),
-      '/backoffice/clients/active?sort=date-desc',
+      '/clients/active?sort=date-desc',
     );
     const i18n = TestBed.inject(I18nService);
     const router = TestBed.inject(Router);
@@ -302,7 +302,7 @@ describe('Clients', () => {
     );
     pressKey(choice, 'Enter');
     await fixture.whenStable();
-    expect(router.url).toBe('/backoffice/clients/active?sort=date-desc');
+    expect(router.url).toBe('/clients/active?sort=date-desc');
     expect(root.querySelectorAll('tbody tr')).toHaveLength(2);
     dialog.querySelector<HTMLButtonElement>('.back')!.click();
     await fixture.whenStable();
@@ -315,12 +315,12 @@ describe('Clients', () => {
     choice.dispatchEvent(new Event('input', { bubbles: true }));
     await fixture.whenStable();
     expect(dialog.querySelectorAll('[role="option"]')).toHaveLength(1);
-    expect(router.url).toBe('/backoffice/clients/active?sort=date-desc');
+    expect(router.url).toBe('/clients/active?sort=date-desc');
     pressKey(choice, 'End');
     await fixture.whenStable();
     pressKey(choice, 'Enter');
     await fixture.whenStable();
-    expect(router.url).toBe('/backoffice/clients/active?country=France&sort=date-desc');
+    expect(router.url).toBe('/clients/active?country=France&sort=date-desc');
     expect(document.querySelector('[role="dialog"]')).toBeNull();
     expect(root.querySelectorAll('tbody tr')).toHaveLength(1);
     expect(root.querySelector('tbody a')?.textContent).toBe(client.displayName);
@@ -337,9 +337,7 @@ describe('Clients', () => {
     await fixture.whenStable();
     pressKey(choice, 'Enter');
     await fixture.whenStable();
-    expect(router.url).toBe(
-      '/backoffice/clients/active?country=France&contact=incomplete&sort=date-desc',
-    );
+    expect(router.url).toBe('/clients/active?country=France&contact=incomplete&sort=date-desc');
     expect(trigger.getAttribute('aria-label')).toMatch(/\(2\)/);
     trigger.click();
     await fixture.whenStable();
@@ -355,9 +353,7 @@ describe('Clients', () => {
     );
     await fixture.whenStable();
     expect(document.activeElement).toBe(trigger);
-    expect(router.url).toBe(
-      '/backoffice/clients/active?country=France&contact=incomplete&sort=date-desc',
-    );
+    expect(router.url).toBe('/clients/active?country=France&contact=incomplete&sort=date-desc');
     expect(root.querySelector('app-list-search label')?.textContent?.trim()).not.toBe('');
     expect(root.querySelector('[appListWorkspace]')).not.toBeNull();
   });
@@ -372,27 +368,23 @@ describe('Clients', () => {
     };
     const { root, fixture, harness } = await configure(
       vi.fn().mockResolvedValue([client, complete]),
-      '/backoffice/clients/active?country=France&contact=incomplete',
+      '/clients/active?country=France&contact=incomplete',
     );
     expect(root.querySelectorAll('tbody tr')).toHaveLength(1);
     expect(root.querySelector('tbody')?.textContent).toContain(client.displayName);
     expect(root.querySelectorAll('[appFilterChip]')).toHaveLength(2);
     root.querySelector<HTMLButtonElement>('[appFilterChip]')!.click();
     await fixture.whenStable();
-    expect(TestBed.inject(Router).url).toBe('/backoffice/clients/active?contact=incomplete');
-    await harness.navigateByUrl('/backoffice/clients/active?country=France');
+    expect(TestBed.inject(Router).url).toBe('/clients/active?contact=incomplete');
+    await harness.navigateByUrl('/clients/active?country=France');
     await fixture.whenStable();
     expect(root.querySelectorAll('tbody tr')).toHaveLength(2);
   });
   it('separates creation from the list and links clients to their details', async () => {
     const { root } = await configure();
     expect(root.querySelector('dialog, form')).toBeNull();
-    expect(root.querySelector('app-page-header a')?.getAttribute('href')).toBe(
-      '/backoffice/clients/new',
-    );
-    expect(root.querySelector('tbody a')?.getAttribute('href')).toBe(
-      `/backoffice/clients/${client.id}`,
-    );
+    expect(root.querySelector('app-page-header a')?.getAttribute('href')).toBe('/clients/new');
+    expect(root.querySelector('tbody a')?.getAttribute('href')).toBe(`/clients/${client.id}`);
     expect(root.querySelectorAll('tbody tr')).toHaveLength(1);
   });
 

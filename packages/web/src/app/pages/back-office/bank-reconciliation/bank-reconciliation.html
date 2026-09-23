@@ -1,6 +1,6 @@
 <section class="detail-page wide-page" aria-labelledby="match-title">
   <app-page-header layout="stacked">
-    <a pageBack routerLink="/backoffice/banking" [queryParams]="backQuery"
+    <a pageBack routerLink="/banking" [queryParams]="backQuery"
       >{{ i18n.t('bankWorkspace.back') }}</a
     >
     <h1 id="match-title">{{ i18n.t(titleLabel()) }}</h1>
@@ -56,7 +56,7 @@
         }
       </dl>
       <p class="muted">{{ i18n.t('bankWorkspace.accountHint') }}</p>
-      <a routerLink="/backoffice/banking/ledger" [queryParams]="ledgerQuery()"
+      <a routerLink="/banking/ledger" [queryParams]="ledgerQuery()"
         >{{ i18n.t('bankWorkspace.entries') }}</a
       >
     </aside>
@@ -98,9 +98,7 @@
               @for (match of supplierMatches(); track match.id) {
               <tr>
                 <th scope="row">
-                  <a [routerLink]="['/backoffice/purchases', match.invoiceId]"
-                    >{{ match.invoiceId }}</a
-                  >
+                  <a [routerLink]="['/purchases', match.invoiceId]">{{ match.invoiceId }}</a>
                 </th>
                 <td>{{ money(match.amountCents) }}</td>
                 <td>{{ match.cancelledAt }}</td>
@@ -179,7 +177,7 @@
             ></label
           >
           @if (matchForm.invoiceId().value()) {
-          <a [routerLink]="['/backoffice/invoices', matchForm.invoiceId().value()]"
+          <a [routerLink]="['/invoices', matchForm.invoiceId().value()]"
             >{{ i18n.t('bankWorkspace.viewInvoice') }}</a
           >
           } @if (paymentState() === 'loading') {
@@ -289,7 +287,7 @@
               @for (allocation of sortedAllocations(); track allocation.matchId) {
               <tr>
                 <th scope="row">
-                  <a [routerLink]="['/backoffice/invoices', allocation.invoiceId]"
+                  <a [routerLink]="['/invoices', allocation.invoiceId]"
                     >{{ allocation.invoiceNumber }}</a
                   >@if (allocation.paymentCancelled) {
                   <small>{{ i18n.t('bank.paymentCancelled') }}</small> }
@@ -328,7 +326,7 @@
             money(allocation.feeCents) }}
           </p>
           <p>{{ i18n.t('bankWorkspace.feePosted') }}</p>
-          <a routerLink="/backoffice/banking/ledger" [queryParams]="ledgerQuery()"
+          <a routerLink="/banking/ledger" [queryParams]="ledgerQuery()"
             >{{ i18n.t('bankWorkspace.viewFees') }}</a
           >
           <label class="field"
@@ -404,8 +402,7 @@
           @for (entry of sortedHistory(); track entry.id) {
           <tr>
             <th scope="row">
-              <a [routerLink]="['/backoffice/invoices', entry.invoiceId]"
-                >{{ entry.invoiceNumber }}</a
+              <a [routerLink]="['/invoices', entry.invoiceId]">{{ entry.invoiceNumber }}</a
               ><small>{{ entry.paymentId }}</small>
             </th>
             <td>

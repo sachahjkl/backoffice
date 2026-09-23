@@ -1,57 +1,9 @@
-import { DOCUMENT } from '@angular/common';
 import { effect, inject, Injectable } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
-import { blogPosts, type BlogPostMetadata } from '@froment/l10n/blog-posts';
 import { I18nService, TranslationKey } from './i18n.service';
-
-const origin = 'https://froment.software';
-const socialImage = `${origin}/social-card-v4.png`;
-
-export interface SiteIdentity {
-  readonly publisher: string;
-  readonly author: string;
-  readonly description: string;
-  readonly language: string;
-}
-
-export function siteIdentityGraph(identity: SiteIdentity) {
-  const organizationId = `${origin}/#organization`;
-  const websiteId = `${origin}/#website`;
-  const founderId = `${origin}/#founder`;
-  return {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'Organization',
-        '@id': organizationId,
-        name: identity.publisher,
-        url: origin,
-        email: 'contact@froment.software',
-        logo: `${origin}/brand/icon-512.png`,
-        description: identity.description,
-        founder: { '@id': founderId },
-      },
-      {
-        '@type': 'WebSite',
-        '@id': websiteId,
-        name: identity.publisher,
-        url: origin,
-        inLanguage: identity.language,
-        publisher: { '@id': organizationId },
-      },
-      {
-        '@type': 'Person',
-        '@id': founderId,
-        name: identity.author,
-        url: 'https://sacha.house',
-        sameAs: ['https://sacha.house'],
-      },
-    ],
-  };
-}
 
 @Injectable({ providedIn: 'root' })
 export class PageMetadata {
@@ -60,7 +12,6 @@ export class PageMetadata {
   private readonly i18n = inject(I18nService);
   private readonly title = inject(Title);
   private readonly meta = inject(Meta);
-  private readonly document = inject(DOCUMENT);
   private readonly navigationEnd = toSignal(
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd),
@@ -76,136 +27,17 @@ export class PageMetadata {
     });
   }
 
-  private setBlogPost(post: BlogPostMetadata): void {
-    const title = this.i18n.t(post.titleKey);
-    const description = this.i18n.t(post.descriptionKey);
-    const topics = post.topicKeys.map((key) => this.i18n.t(key));
-    const pageTitle = `${title} | froment.software`;
-    const url = `${origin}/blog/${post.slug}`;
-    this.title.setTitle(pageTitle);
-    this.meta.updateTag({ name: 'description', content: description });
-    this.meta.updateTag({ name: 'keywords', content: topics.join(', ') });
-    this.meta.updateTag({ property: 'og:type', content: 'article' });
-    this.meta.updateTag({ property: 'og:title', content: pageTitle });
-    this.meta.updateTag({ property: 'og:description', content: description });
-    this.meta.updateTag({ property: 'og:url', content: url });
-    this.meta.updateTag({ property: 'article:published_time', content: post.published });
-    this.meta.updateTag({ property: 'article:modified_time', content: post.updated });
-    this.meta.updateTag({ name: 'twitter:title', content: pageTitle });
-    this.meta.updateTag({ name: 'twitter:description', content: description });
-    let script = this.document.head.querySelector<HTMLScriptElement>('script[data-blog-post]');
-    if (!script) {
-      script = this.document.createElement('script');
-      script.type = 'application/ld+json';
-      script.setAttribute('data-blog-post', '');
-      this.document.head.appendChild(script);
-    }
-    script.textContent = JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'BlogPosting',
-      headline: title,
-      description,
-      datePublished: post.published,
-      dateModified: post.updated,
-      mainEntityOfPage: url,
-      author: {
-        '@type': 'Person',
-        name: this.i18n.t('metadata.author'),
-        url: 'https://sacha.house',
-        sameAs: ['https://sacha.house'],
-      },
-      publisher: { '@type': 'Organization', name: this.i18n.t('metadata.publisher'), url: origin },
-      keywords: topics,
-      inLanguage: this.i18n.language(),
-    });
-  }
-
   private updateRoute(): void {
     let route = this.route.snapshot;
     while (route.firstChild) route = route.firstChild;
-    let robots: string = route.data['robots'] ?? 'index, follow';
-    if (route.routeConfig?.path === 'blog/:slug') {
-      const post = blogPosts.find((post) => post.slug === route.paramMap.get('slug'));
-      if (post) {
-        this.setBlogPost(post);
-      } else {
-        this.clearBlogPost();
-        this.setPageText('page.not_found', 'page.description.not_found');
-        robots = 'noindex, nofollow';
-      }
-    } else {
-      this.clearBlogPost();
-      this.setPageText(route.data['titleKey'], route.data['descriptionKey']);
-    }
-    this.meta.updateTag({ name: 'robots', content: robots });
-    const url = this.canonicalUrl();
-    this.meta.updateTag({
-      property: 'og:locale',
-      content: this.i18n.language() === 'fr' ? 'fr_FR' : 'en_US',
-    });
-    this.meta.updateTag({ property: 'og:url', content: url });
-    this.meta.updateTag({ property: 'og:image', content: socialImage });
-    this.meta.updateTag({ name: 'twitter:image', content: socialImage });
-    const alt = this.i18n.t('meta.socialImageAlt');
-    this.meta.updateTag({ property: 'og:image:alt', content: alt });
-    this.meta.updateTag({ name: 'twitter:image:alt', content: alt });
-    this.updateCanonicalLink(url);
-    this.updateSiteGraph();
+    this.setPageTitle(route.data['titleKey']);
+    this.meta.updateTag({ name: 'robots', content: 'noindex, nofollow' });
   }
 
-  private setPageText(titleKey?: TranslationKey, descriptionKey?: TranslationKey): void {
+  private setPageTitle(titleKey?: TranslationKey): void {
     if (titleKey) {
-      const title = this.i18n.t(titleKey);
+      const title = this.i18n.t(titleKey).split(' | ')[0];
       this.title.setTitle(title);
-      this.meta.updateTag({ property: 'og:title', content: title });
-      this.meta.updateTag({ name: 'twitter:title', content: title });
     }
-    if (descriptionKey) {
-      const description = this.i18n.t(descriptionKey);
-      this.meta.updateTag({ name: 'description', content: description });
-      this.meta.updateTag({ property: 'og:description', content: description });
-      this.meta.updateTag({ name: 'twitter:description', content: description });
-    }
-  }
-
-  private updateSiteGraph(): void {
-    const graph = siteIdentityGraph({
-      publisher: this.i18n.t('metadata.publisher'),
-      author: this.i18n.t('metadata.author'),
-      description: this.i18n.t('page.description.home'),
-      language: this.i18n.language(),
-    });
-    let script = this.document.head.querySelector<HTMLScriptElement>('script[data-site-graph]');
-    if (!script) {
-      script = this.document.createElement('script');
-      script.type = 'application/ld+json';
-      script.setAttribute('data-site-graph', '');
-      this.document.head.appendChild(script);
-    }
-    script.textContent = JSON.stringify(graph);
-  }
-
-  private clearBlogPost(): void {
-    this.meta.updateTag({ property: 'og:type', content: 'website' });
-    this.meta.removeTag('property="article:published_time"');
-    this.meta.removeTag('property="article:modified_time"');
-    this.meta.removeTag('name="keywords"');
-    this.document.head.querySelector('script[data-blog-post]')?.remove();
-  }
-
-  private canonicalUrl(): string {
-    const suffix = this.router.url.search(/[?#]/);
-    const path = suffix === -1 ? this.router.url : this.router.url.slice(0, suffix);
-    return `${origin}${path.length > 1 && path.endsWith('/') ? path.slice(0, -1) : path || '/'}`;
-  }
-
-  private updateCanonicalLink(url: string): void {
-    let link = this.document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
-    if (!link) {
-      link = this.document.createElement('link');
-      link.rel = 'canonical';
-      this.document.head.appendChild(link);
-    }
-    link.href = url;
   }
 }

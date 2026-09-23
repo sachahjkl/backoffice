@@ -12,7 +12,7 @@ describe('catalog list query', () => {
       q: 'a'.repeat(150),
       sort: 'invalid',
       view: 'https://outside.example',
-      returnUrl: '/backoffice/sign-out',
+      returnUrl: '/sign-out',
     });
     expect(catalogListQuery(params)).toEqual({
       q: 'a'.repeat(120),

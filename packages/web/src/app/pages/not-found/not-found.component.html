@@ -6,10 +6,9 @@
     <nav [attr.aria-label]="i18n.t('not_found.links_label')">
       <ul>
         <li>
-          <a appLinkButton variant="primary" routerLink="/">{{ i18n.t("not_found.cta") }}</a>
-        </li>
-        <li>
-          <a appLinkButton routerLink="/services">{{ i18n.t("not_found.services") }}</a>
+          <a appLinkButton variant="primary" routerLink="/login">{{
+            i18n.t("backOffice.title")
+          }}</a>
         </li>
         <li>
           <a href="mailto:contact@froment.software">{{ i18n.t("not_found.contact") }}</a>

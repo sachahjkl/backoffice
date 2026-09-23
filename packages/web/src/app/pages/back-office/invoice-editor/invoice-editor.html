@@ -4,7 +4,7 @@
       @if (detail(); as invoice) {
       <a
         class="back-link"
-        [routerLink]="['/backoffice/invoices', invoice.id]"
+        [routerLink]="['/invoices', invoice.id]"
         [queryParams]="navigation.detailQuery()"
         >{{ i18n.t('billingWorkspace.backDetail') }}</a
       >
@@ -22,7 +22,7 @@
     <p>
       {{ i18n.t('backOffice.affair.invoice') }} {{ invoice.invoiceNumber ??
       invoice.currentRevision.title }} ·
-      <a [routerLink]="['/backoffice/clients', invoice.clientId, 'profile']"
+      <a [routerLink]="['/clients', invoice.clientId, 'profile']"
         >{{ invoice.currentRevision.clientDisplayName }}</a
       >
     </p>
@@ -43,7 +43,7 @@
     <div class="spacer-x-3">
       <a
         appLinkButton
-        [routerLink]="['/backoffice/invoices', invoice.id]"
+        [routerLink]="['/invoices', invoice.id]"
         [queryParams]="navigation.detailQuery()"
         >{{ i18n.t('billingWorkspace.backDetail') }}</a
       >

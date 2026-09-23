@@ -15,5 +15,4 @@ import { ThemeToggle } from '@shared/theme-toggle/theme-toggle';
 export class SiteFooter {
   readonly showPreferences = input(false);
   protected readonly i18n = inject(I18nService);
-  protected readonly currentYear = new Date().getFullYear();
 }

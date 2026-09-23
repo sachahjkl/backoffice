@@ -1,4 +1,5 @@
 import { Can } from '@backoffice/can';
+import { BrandingApi } from '@backoffice/branding-api';
 import { DemoApi } from '@backoffice/demo-api';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
@@ -16,6 +17,47 @@ import { Notice } from '@shared/notice/notice';
   templateUrl: './configuration-index.html',
 })
 export class ConfigurationIndex {
+  protected readonly branding = inject(BrandingApi);
+  protected readonly brandingSaving = signal(false);
+  protected readonly brandingError = signal(false);
+  protected readonly brandingSaved = signal(false);
+
+  constructor() {
+    void this.branding.load();
+  }
+
+  protected async saveBranding(event: SubmitEvent, name: string, logoUrl: string): Promise<void> {
+    event.preventDefault();
+    const current = this.branding.current();
+    if (!current || this.brandingSaving()) return;
+    this.brandingSaving.set(true);
+    this.brandingError.set(false);
+    this.brandingSaved.set(false);
+    const outcome = await this.branding.update({
+      name: name.trim(),
+      logoUrl: logoUrl.trim(),
+      expectedVersion: current.version,
+    });
+    this.brandingSaving.set(false);
+    this.brandingError.set(!outcome.success);
+    this.brandingSaved.set(outcome.success);
+  }
+
+  protected async resetBranding(): Promise<void> {
+    const current = this.branding.current();
+    if (!current || this.brandingSaving()) return;
+    this.brandingSaving.set(true);
+    this.brandingError.set(false);
+    this.brandingSaved.set(false);
+    const outcome = await this.branding.update({
+      name: null,
+      logoUrl: null,
+      expectedVersion: current.version,
+    });
+    this.brandingSaving.set(false);
+    this.brandingError.set(!outcome.success);
+    this.brandingSaved.set(outcome.success);
+  }
   protected readonly i18n = inject(I18nService);
   private readonly api = inject(DemoApi);
   private readonly confirmation = inject(Confirmation);
@@ -42,6 +84,6 @@ export class ConfigurationIndex {
       this.resetError.set(true);
       return;
     }
-    await this.router.navigate(['/backoffice/login'], { queryParams: { demoReset: 'true' } });
+    await this.router.navigate(['/login'], { queryParams: { demoReset: 'true' } });
   }
 }

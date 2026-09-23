@@ -67,7 +67,7 @@ export class SupplierInvoiceDetail {
     return ['confirmed', 'approved', 'paid'].includes(invoice.status);
   });
   protected readonly breadcrumbs = computed(() => [
-    { label: this.i18n.t('supplierInvoice.title'), path: '/backoffice/purchases' },
+    { label: this.i18n.t('supplierInvoice.title'), path: '/purchases' },
   ]);
   constructor() {
     afterNextRender(() => void this.load());
@@ -140,7 +140,7 @@ export class SupplierInvoiceDetail {
         this.error.set(outcome.code);
         return;
       }
-      await this.router.navigate(['/backoffice/purchases', outcome.result.id, 'edit']);
+      await this.router.navigate(['/purchases', outcome.result.id, 'edit']);
     } catch {
       this.error.set('supplierInvoice.error');
     } finally {

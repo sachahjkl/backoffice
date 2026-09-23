@@ -343,7 +343,7 @@ export class QuoteDetail {
     const quote = this.quote();
     const origin = this.document.location?.origin;
     if (!quote || !origin) return;
-    const url = new URL('/backoffice/client', origin);
+    const url = new URL('/client', origin);
     url.searchParams.set('quote', quote.id);
     const copied = await this.copy.copy(url.toString());
     if (this.quote()?.id === quote.id) this.copied.set(copied);

@@ -78,7 +78,7 @@ describe('Team', () => {
         .mockResolvedValueOnce({ success: false, code })
         .mockResolvedValueOnce({
           success: true,
-          result: { url: 'https://example.test/backoffice/join#secret' },
+          result: { url: 'https://example.test/join#secret' },
         });
       const list = vi.fn();
       const confirmation = vi.spyOn(Confirmation.prototype, 'request').mockResolvedValue(true);
@@ -331,7 +331,7 @@ describe('Team', () => {
       .mockResolvedValueOnce({ success: false, code: 'team.error' })
       .mockResolvedValueOnce({
         success: true,
-        result: { url: 'https://example.test/backoffice/join#secret' },
+        result: { url: 'https://example.test/join#secret' },
       });
     const confirmation = vi.spyOn(Confirmation.prototype, 'request').mockResolvedValue(false);
     TestBed.configureTestingModule({
@@ -397,7 +397,7 @@ describe('Team', () => {
   });
   it('clears the fragment and passwords after invitation acceptance', async () => {
     const token = 'A'.repeat(43);
-    window.history.replaceState({}, '', `/backoffice/join#${token}`);
+    window.history.replaceState({}, '', `/join#${token}`);
     const accept = vi.fn(async () => ({ success: true, result: null }));
     TestBed.configureTestingModule({
       providers: [provideRouter([]), { provide: TeamApi, useValue: { accept } }],

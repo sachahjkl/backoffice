@@ -45,12 +45,12 @@ describe('Breadcrumbs', () => {
     fixture.componentRef.setInput('items', [
       {
         label: 'Facturation',
-        path: '/backoffice/billing',
+        path: '/billing',
         queryParams: { q: 'Étude & audit', sort: 'due-asc' },
       },
       {
         label: 'Facture',
-        path: ['/backoffice/invoices', 'example'],
+        path: ['/invoices', 'example'],
         queryParams: { billingQ: 'Étude & audit', tab: 'receipts' },
       },
     ]);

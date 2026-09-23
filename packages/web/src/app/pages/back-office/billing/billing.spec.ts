@@ -164,19 +164,19 @@ describe('Billing', () => {
     TestBed.configureTestingModule({
       providers: [
         provideHttpClient(),
-        provideRouter([{ path: 'backoffice/billing', component: Billing }]),
+        provideRouter([{ path: 'billing', component: Billing }]),
         {
           provide: InvoicesApi,
           useValue: { list: async () => [invoice('01ARZ3NDEKTSV4RRFFQ69G5FAY')] },
         },
       ],
     });
-    const harness = await RouterTestingHarness.create('/backoffice/billing?q=Acme&status=issued');
+    const harness = await RouterTestingHarness.create('/billing?q=Acme&status=issued');
     await harness.fixture.whenStable();
     const root: HTMLElement = harness.fixture.nativeElement;
     expect(root.querySelector<HTMLInputElement>('input[type="search"]')?.value).toBe('Acme');
     expect(root.querySelector('tbody a')?.getAttribute('href')).toBe(
-      '/backoffice/invoices/01ARZ3NDEKTSV4RRFFQ69G5FAY?billingList=invoices&billingQ=Acme&billingStatus=issued',
+      '/invoices/01ARZ3NDEKTSV4RRFFQ69G5FAY?billingList=invoices&billingQ=Acme&billingStatus=issued',
     );
     expect(root.querySelector('.payment-export')).toBeNull();
     expect(root.querySelector('tbody button')).toBeNull();

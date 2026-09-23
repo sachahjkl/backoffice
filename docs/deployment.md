@@ -1,214 +1,40 @@
-# Déploiement
-
-Ce document décrit le déploiement de Froment Software.
-
-Le guide de plateforme se trouve dans `nixconfig/docs/hosting-and-deployment.md`.
-
-## Environnements
-
-L’application utilise trois environnements :
-
-| Environnement | Adresse                            | Exécution   | Données           |
-| ------------- | ---------------------------------- | ----------- | ----------------- |
-| développement | `http://localhost:4200`            | poste local | base locale       |
-| staging       | `https://staging.froment.software` | Nomad       | volume staging    |
-| production    | `https://froment.software`         | Nomad       | volume production |
-
-`APP_ENV` identifie l’environnement.
-
-`SITE_PHASE` contrôle le message public `construction` ou `live`.
-
-Ces deux valeurs restent indépendantes.
-
-Staging et production utilisent `NODE_ENV=production`.
-
-## Chaîne de déploiement
-
-```mermaid
-flowchart LR
-  Commit[Commit accepté sur master] --> Check[Checks Nix]
-  Check --> Image[Image OCI]
-  Image --> Evidence[SBOM, provenance et signature]
-  Evidence --> Registry[Digest immuable dans GHCR]
-  Registry --> Staging[Job Nomad staging]
-  Staging --> Approval[Approbation production]
-  Approval --> Verify[Vérification des preuves]
-  Verify --> Production[Job Nomad production]
-```
-
-Chaque commit accepté sur `master` produit une image.
-
-La CI publie l’image dans GitHub Container Registry (GHCR).
-
-Les checks et la publication utilisent des runners GitHub hébergés.
-
-Le serveur cible n’héberge aucun runner GitHub Actions.
-
-La CI déploie ensuite son digest sur staging.
-
-La promotion production reprend le digest actif sur staging.
-
-Elle ne reconstruit pas l’image.
-
-## Contrôles de branche
-
-Le projet utilise le développement trunk-based.
-
-Créez une branche courte pour chaque changement.
-
-Ouvrez une pull request vers `master`.
-
-Fusionnez uniquement après la réussite du check `check`.
-
-Chaque commit accepté sur `master` déclenche staging.
-
-L’environnement GitHub `production` exige une approbation.
-
-## Accès privé au plan de contrôle
-
-Les runners GitHub rejoignent temporairement le réseau Tailscale.
-
-La fédération utilise GitHub OpenID Connect (OIDC).
-
-Elle n’utilise pas de clé Tailscale persistante.
-
-Le sujet autorisé est `repo:sachahjkl@32895534/*:environment:*`.
-
-Le tag `tag:github-actions-deploy` accède uniquement à `tag:nixconfig-server` sur `tcp:4646`.
-
-L’API Nomad écoute sur l’adresse Tailscale du serveur.
-
-Elle n’est pas exposée par nginx.
-
-```mermaid
-sequenceDiagram
-  participant G as GitHub Actions
-  participant O as GitHub OIDC
-  participant T as Tailscale
-  participant N as Nomad
-  G->>O: Demande un jeton lié au job
-  G->>T: Échange le jeton OIDC
-  T-->>G: Identité éphémère avec tag
-  G->>N: Soumet le job sur tcp:4646
-  N-->>G: Retourne le résultat du déploiement
-```
-
-## Secrets
-
-Nomad Variables stocke deux ensembles séparés.
-
-Chaque namespace utilise `nomad/jobs/froment-software`.
-
-Le namespace Nomad distingue la valeur staging de la valeur production.
-
-Les valeurs peuvent être identiques pendant une phase de transition.
-
-Les chemins, droits et cycles de rotation restent séparés.
-
-Nomad injecte les secrets au démarrage avec un bloc `template`.
-
-Angular reçoit `APP_ENV`, `SITE_PHASE`, `GITHUB_REPOSITORY_URL` et le commit déployé dans `/runtime-config.js`.
-
-N’ajoutez jamais un secret applicatif dans cette ressource publique.
-
-L’API valide `PASETO_SECRET_KEY` comme une paire Ed25519 complète au démarrage.
-
-`SETTINGS_ENCRYPTION_KEY` chiffre les clés configurées depuis le backoffice.
-
-`DEMO_PASSWORD` est obligatoire hors production. Il protège la réinitialisation des données de démonstration.
-
-## Données de démonstration staging
-
-Utilisez l’action de réinitialisation depuis Configuration.
-
-Saisissez `DEMO_PASSWORD`, puis confirmez la suppression des données staging.
-
-La commande refuse les environnements autres que staging.
-
-La commande recrée les cinq profils standards et des données déterministes.
-
-Les comptes utilisent les adresses `@demo.invalid`. Le secret reste dans SOPS et Nomad Variables.
-
-Le simulateur local traite l’analyse fournisseur et la télédéclaration sans service facturé.
-
-## Données persistantes
-
-Chaque environnement possède un volume Nomad distinct.
-
-| Environnement | Volume                                 |
-| ------------- | -------------------------------------- |
-| staging       | `67d2bb7c-5ef9-4b65-c100-09d9fb991365` |
-| production    | `d4579349-f86c-330b-381a-bb854f49db21` |
-
-Le conteneur utilise `/var/lib/froment-software/froment.sqlite`.
-
-`tools/prepare.sh` sauvegarde la base avant une migration.
-
-Le script vérifie `PRAGMA integrity_check` et `PRAGMA foreign_key_check`.
-
-La production refuse de démarrer avec une base absente.
-
-Ce contrôle évite une production vide après une erreur de montage.
-
-## Spécifications Nomad
-
-Le Nomad Pack dans `deploy` décrit les deux charges de travail.
-
-`application.yaml` déclare les domaines, le port, la santé et le volume.
-
-GitHub OIDC fournit un jeton Nomad temporaire pour l’environnement demandé.
-
-## Vérification staging
-
-Après un déploiement staging, vérifiez les points suivants :
-
-1. Vérifiez que le déploiement Nomad est réussi.
-2. Vérifiez que le digest prévu est actif.
-3. Vérifiez que `/api/health` retourne HTTP 200.
-4. Vérifiez que le site public retourne HTTP 200.
-5. Vérifiez l’en-tête `X-Robots-Tag: noindex, nofollow`.
-6. Vérifiez que le bandeau identifie staging.
-7. Vérifiez une connexion et une route authentifiée.
-
-Staging reste public.
-
-Il ne doit pas retourner `WWW-Authenticate`.
-
-## Promotion production
-
-Déclenchez `.github/workflows/deploy-production.yml`.
-
-Approuvez le job dans l’environnement GitHub `production`.
-
-Le workflow vérifie la signature et la provenance du digest staging.
-
-La tâche Nomad `prepare` sauvegarde la base avant la migration et le démarrage.
-
-Après le déploiement, vérifiez les points suivants :
-
-1. Vérifiez que les digests staging et production sont identiques.
-2. Vérifiez que `/api/health` retourne HTTP 200.
-3. Vérifiez que la connexion fonctionne.
-4. Vérifiez les journaux et les traces.
-5. Vérifiez le libellé lié à `SITE_PHASE`.
-
-Conservez `SITE_PHASE=construction` avant le lancement public.
-
-Passez cette valeur à `live` lors du lancement.
-
-## Retour arrière
-
-Pour une erreur applicative sans migration, restaurez la version Nomad précédente.
-
-```sh
-nomad job history froment-software-production
-nomad job revert froment-software-production VERSION
-```
-
-Pour une erreur de migration, arrêtez d’abord l’allocation défaillante.
-
-Restaurez ensuite la sauvegarde vérifiée qui précède la migration.
-
-Soumettez enfin le digest précédent.
-
-Conservez les journaux de l’allocation pour l’analyse.
+# Déploiement du backoffice
+
+Ce dépôt fournit l’application et le paquet npm `@sachahjkl/backoffice`.
+La CI vérifie la compilation, les tests, le lint, le formatage et le contenu du paquet.
+Elle ne publie aucun paquet et ne déploie aucune instance.
+
+## Migration de l’instance réelle
+
+L’instance réelle doit utiliser `https://backoffice.froment.software`.
+L’ancien site vitrine conserve `froment.software` et son déploiement séparé.
+La configuration Nomad historique ciblait le domaine de la vitrine et a été supprimée de ce dépôt.
+
+1. Sauvegardez la base actuelle avec l’outil de sauvegarde SQLite et vérifiez la copie.
+2. Préparez un volume persistant et restaurez la base vers un nouveau fichier sur l’hôte cible.
+3. Conservez les secrets de l’instance réelle, notamment les clés d’authentification et de chiffrement.
+4. Configurez le routage HTTPS et `PUBLIC_ORIGIN=https://backoffice.froment.software`.
+5. Définissez `APP_ENV=production`, `NODE_ENV=production` et `DATABASE_PATH` pour cette instance.
+6. Configurez séparément les identifiants des intégrations et la politique de sauvegarde.
+7. Démarrez le serveur avec la version correspondant aux migrations de la base.
+8. Vérifiez `/api/health`, la connexion, les documents et les intégrations avant la bascule DNS.
+
+Lisez [Sauvegarde et restauration](backups.md) avant de transférer les données.
+Le démarrage du paquet applicatif applique les migrations avant de servir les requêtes.
+Conservez une copie vérifiée avant cette opération.
+Le déploiement du serveur et la bascule DNS restent des opérations distinctes des workflows GitHub de ce dépôt.
+
+## Démonstration
+
+Placez la démonstration dans un dépôt séparé.
+Donnez-lui sa propre CI, son propre domaine, sa base SQLite et ses secrets.
+Ne connectez pas la démonstration au volume, aux jetons ou aux prestataires de l’instance réelle.
+Configurez une politique d’indexation adaptée au domaine de démonstration.
+
+## Publication npm
+
+Le paquet applicatif se construit avec `pnpm build:app`.
+Contrôlez son contenu avec `npm pack --dry-run ./packages/app`.
+Le check Nix `npm-package` vérifie les fichiers requis, dont les migrations, les modèles de documents et les actifs web.
+Configurez explicitement un trusted publisher npm lié à ce dépôt et à un workflow de publication avant toute publication automatique.
+Aucun workflow de publication n’est actif dans ce dépôt.

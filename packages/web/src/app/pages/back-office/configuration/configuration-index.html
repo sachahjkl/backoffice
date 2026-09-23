@@ -1,12 +1,57 @@
 <section aria-labelledby="configuration-title">
   <h1 id="configuration-title">{{ i18n.t('backOffice.configuration.title') }}</h1>
   <div class="groups">
+    <section class="ds-panel" *appCan="'company.update'">
+      <h2>@if (i18n.language() === 'fr') { Identité visuelle } @else { Branding }</h2>
+      @if (branding.current(); as brand) {
+      <form (submit)="saveBranding($event, name.value, logoUrl.value)">
+        <div class="field">
+          <label for="enterprise-name"
+            >@if (i18n.language() === 'fr') { Nom de l’entreprise } @else { Enterprise name }</label
+          >
+          <input
+            #name
+            id="enterprise-name"
+            class="input"
+            required
+            maxlength="120"
+            [value]="brand.name"
+          />
+        </div>
+        <div class="field">
+          <label for="enterprise-logo"
+            >@if (i18n.language() === 'fr') { Adresse du logo } @else { Logo URL }</label
+          >
+          <input
+            #logoUrl
+            id="enterprise-logo"
+            class="input"
+            required
+            maxlength="2048"
+            [value]="brand.logoUrl"
+          />
+        </div>
+        @if (brandingError()) {
+        <p appNotice variant="danger" role="alert">{{ i18n.t('company.error') }}</p>
+        } @if (brandingSaved()) {
+        <p role="status">
+          @if (i18n.language() === 'fr') { Identité enregistrée. } @else { Branding saved. }
+        </p>
+        }
+        <button appButton type="submit" [disabled]="brandingSaving()">
+          {{ i18n.t('backOffice.issuer.save') }}
+        </button>
+        <button appButton type="button" [disabled]="brandingSaving()" (click)="resetBranding()">
+          @if (i18n.language() === 'fr') { Reprendre les valeurs par défaut } @else { Restore
+          defaults }
+        </button>
+      </form>
+      }
+    </section>
     <section class="ds-panel">
       <h2>{{ i18n.t('configurationWorkspace.account') }}</h2>
       <p>{{ i18n.t('configurationWorkspace.accountHint') }}</p>
-      <a routerLink="/backoffice/account/preferences">
-        {{ i18n.t('configurationWorkspace.preferences') }}
-      </a>
+      <a routerLink="/account/preferences"> {{ i18n.t('configurationWorkspace.preferences') }} </a>
     </section>
     <section class="ds-panel">
       <h2>{{ i18n.t('configurationWorkspace.company') }}</h2>

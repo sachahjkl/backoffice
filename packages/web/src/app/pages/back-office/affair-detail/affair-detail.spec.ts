@@ -53,7 +53,7 @@ describe('AffairDetail', () => {
         provideAccount(),
         provideRouter([
           {
-            path: 'backoffice/affairs/:affairId',
+            path: 'affairs/:affairId',
             component: AffairDetail,
             children: detailTabs('affair-detail', ['overview', 'history']),
           },
@@ -91,7 +91,7 @@ describe('AffairDetail', () => {
   });
 
   it('shows linked documents and the client link on the overview tab', async () => {
-    const harness = await RouterTestingHarness.create(`/backoffice/affairs/${affairId}/overview`);
+    const harness = await RouterTestingHarness.create(`/affairs/${affairId}/overview`);
     await harness.fixture.whenStable();
     const root = harness.routeNativeElement!;
     expect(root.textContent).toContain('DE-2026-000001');
@@ -106,17 +106,15 @@ describe('AffairDetail', () => {
     expect(root.querySelector('.affair-summary')?.textContent).toContain('Acme');
     expect(root.querySelector('.affair-summary')?.textContent).toContain('Security review');
     expect(root.querySelector('#affair-edit-title')).toBeNull();
-    expect(root.querySelector(`a[href="/backoffice/clients/${affair.clientId}"]`)).not.toBeNull();
+    expect(root.querySelector(`a[href="/clients/${affair.clientId}"]`)).not.toBeNull();
     expect(
-      root.querySelector(
-        `a[href="/backoffice/quotes/new?affairId=${affair.id}&clientId=${affair.clientId}"]`,
-      ),
+      root.querySelector(`a[href="/quotes/new?affairId=${affair.id}&clientId=${affair.clientId}"]`),
     ).not.toBeNull();
     expect(events).not.toHaveBeenCalled();
   });
 
   it('archives an affair after confirmation', async () => {
-    const harness = await RouterTestingHarness.create(`/backoffice/affairs/${affairId}/overview`);
+    const harness = await RouterTestingHarness.create(`/affairs/${affairId}/overview`);
     await harness.fixture.whenStable();
     harness
       .routeNativeElement!.querySelector<HTMLButtonElement>('[data-button-variant="danger"]')!
@@ -130,7 +128,7 @@ describe('AffairDetail', () => {
   });
 
   it('sorts affair history without changing the response', async () => {
-    const harness = await RouterTestingHarness.create(`/backoffice/affairs/${affairId}/history`);
+    const harness = await RouterTestingHarness.create(`/affairs/${affairId}/history`);
     await harness.fixture.whenStable();
     expect(
       Array.from(harness.routeNativeElement!.querySelectorAll('time'), (time) => time.dateTime),
@@ -138,7 +136,7 @@ describe('AffairDetail', () => {
   });
 
   it('reloads visible history after a successful update', async () => {
-    const harness = await RouterTestingHarness.create(`/backoffice/affairs/${affairId}/history`);
+    const harness = await RouterTestingHarness.create(`/affairs/${affairId}/history`);
     await harness.fixture.whenStable();
     await vi.waitFor(() => expect(events).toHaveBeenCalledOnce());
     events.mockResolvedValue({
@@ -161,18 +159,18 @@ describe('AffairDetail', () => {
   });
 
   it('loads invalidated history when its tab opens', async () => {
-    const harness = await RouterTestingHarness.create(`/backoffice/affairs/${affairId}/overview`);
+    const harness = await RouterTestingHarness.create(`/affairs/${affairId}/overview`);
     await harness.fixture.whenStable();
 
     await harness.routeDebugElement!.componentInstance.save('title', 'Updated review');
     expect(events).not.toHaveBeenCalled();
 
-    await TestBed.inject(Router).navigate(['/backoffice/affairs', affairId, 'history']);
+    await TestBed.inject(Router).navigate(['/affairs', affairId, 'history']);
     await vi.waitFor(() => expect(events).toHaveBeenCalledOnce());
   });
 
   it('opens editing controls only after an edit request', async () => {
-    const harness = await RouterTestingHarness.create(`/backoffice/affairs/${affairId}/overview`);
+    const harness = await RouterTestingHarness.create(`/affairs/${affairId}/overview`);
     await harness.fixture.whenStable();
     expect(harness.routeNativeElement!.querySelectorAll('form')).toHaveLength(0);
     harness.routeNativeElement!.querySelector<HTMLButtonElement>('[appInlineEdit] button')!.click();

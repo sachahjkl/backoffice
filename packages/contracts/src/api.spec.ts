@@ -20,6 +20,7 @@ describe('API contracts', () => {
       'version',
       'bootstrapStatus',
       'bootstrapCreate',
+      'brandingGet',
       'login',
       'refresh',
       'logout',

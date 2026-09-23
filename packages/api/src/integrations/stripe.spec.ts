@@ -19,7 +19,7 @@ const input = {
   amountCents: 12500,
   expiresAt: 1789045200000,
   returnUrl:
-    'https://froment.example.test/backoffice/services/stripe/tests/5189676e-7c04-4448-8f85-fa7ca68b9c15',
+    'https://froment.example.test/services/stripe/tests/5189676e-7c04-4448-8f85-fa7ca68b9c15',
 };
 const body = {
   id: 'cs_test_example',

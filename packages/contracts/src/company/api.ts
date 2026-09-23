@@ -23,6 +23,7 @@ import {
   ExchangeRateList,
   ExchangeRateManualRequest,
 } from './contracts.js';
+import { Branding, BrandingConflict, BrandingUpdateRequest } from './branding.js';
 
 const readErrors = [
   AuthenticationRequired.pipe(HttpApiSchema.status(401)),
@@ -32,6 +33,14 @@ const readErrors = [
 const writeErrors = [...readErrors, RequestRateLimited.pipe(HttpApiSchema.status(429))] as const;
 
 export class CompanyApi extends HttpApiGroup.make('company', { topLevel: true }).add(
+  HttpApiEndpoint.get('brandingGet', '/api/branding', { success: Branding }).pipe(frontendSpecific),
+  HttpApiEndpoint.put('brandingUpdate', '/api/branding', {
+    payload: BrandingUpdateRequest,
+    success: Branding,
+    error: [...writeErrors, BrandingConflict.pipe(HttpApiSchema.status(409))],
+  })
+    .middleware(ApiRequestBody)
+    .pipe(requirePermissions([Permissions.companyUpdate]), authenticate, frontendSpecific),
   HttpApiEndpoint.get('companySettingsGet', '/api/company', {
     success: CompanySettings,
     error: readErrors,

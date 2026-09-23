@@ -4,7 +4,7 @@ import { unsavedChangesGuard } from '@backoffice/unsaved-changes-guard';
 
 export const serviceRoutes: Routes = [
   {
-    path: 'backoffice/services',
+    path: 'services',
     pathMatch: 'full',
     loadComponent: () => import('./connections').then((module) => module.Connections),
     canActivate: [administratorGuard],
@@ -15,7 +15,7 @@ export const serviceRoutes: Routes = [
     },
   },
   {
-    path: 'backoffice/services/simulations',
+    path: 'services/simulations',
     loadComponent: () =>
       import('../integrations/integrations').then((module) => module.Integrations),
     canActivate: [administratorGuard],
@@ -27,7 +27,7 @@ export const serviceRoutes: Routes = [
     },
   },
   {
-    path: 'backoffice/services/resend/tests/new',
+    path: 'services/resend/tests/new',
     loadComponent: () => import('../email-test/email-test').then((module) => module.EmailTest),
     canActivate: [administratorGuard],
     canDeactivate: [unsavedChangesGuard],
@@ -38,7 +38,7 @@ export const serviceRoutes: Routes = [
     },
   },
   {
-    path: 'backoffice/services/resend/tests/:requestId',
+    path: 'services/resend/tests/:requestId',
     loadComponent: () =>
       import('../email-test/email-test-detail').then((module) => module.EmailTestDetail),
     canActivate: [administratorGuard],
@@ -49,7 +49,7 @@ export const serviceRoutes: Routes = [
     },
   },
   {
-    path: 'backoffice/services/resend/tests',
+    path: 'services/resend/tests',
     loadComponent: () =>
       import('../email-test/email-test-list').then((module) => module.EmailTestList),
     canActivate: [administratorGuard],
@@ -60,7 +60,7 @@ export const serviceRoutes: Routes = [
     },
   },
   {
-    path: 'backoffice/services/stripe/tests/new',
+    path: 'services/stripe/tests/new',
     loadComponent: () => import('../checkout/checkout').then((module) => module.Checkout),
     canActivate: [administratorGuard],
     canDeactivate: [unsavedChangesGuard],
@@ -71,7 +71,7 @@ export const serviceRoutes: Routes = [
     },
   },
   {
-    path: 'backoffice/services/stripe/tests/:requestId',
+    path: 'services/stripe/tests/:requestId',
     loadComponent: () =>
       import('../checkout/checkout-detail').then((module) => module.CheckoutDetail),
     canActivate: [administratorGuard],
@@ -82,7 +82,7 @@ export const serviceRoutes: Routes = [
     },
   },
   {
-    path: 'backoffice/services/stripe/tests',
+    path: 'services/stripe/tests',
     loadComponent: () => import('../checkout/checkout-list').then((module) => module.CheckoutList),
     canActivate: [administratorGuard],
     data: {
@@ -92,7 +92,7 @@ export const serviceRoutes: Routes = [
     },
   },
   ...['resend', 'stripe', 'signwell', 'superpdp'].map((provider) => ({
-    path: `backoffice/services/${provider}`,
+    path: `services/${provider}`,
     data: {
       ...permissionData('integration.configure'),
       provider,

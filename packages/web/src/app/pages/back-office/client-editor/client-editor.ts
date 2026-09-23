@@ -97,8 +97,8 @@ export class ClientEditor {
   );
   protected readonly backLink = computed(() => {
     const client = this.client();
-    if (client) return ['/backoffice/clients', client.id];
-    return ['/backoffice/clients', this.returnQuery().view ?? 'active'];
+    if (client) return ['/clients', client.id];
+    return ['/clients', this.returnQuery().view ?? 'active'];
   });
   protected readonly groups = [
     {
@@ -315,7 +315,7 @@ export class ClientEditor {
     this.completed.set(true);
     this.clientForm().reset();
     this.saving.set(false);
-    await this.router.navigate(['/backoffice/clients', outcome.result.id], {
+    await this.router.navigate(['/clients', outcome.result.id], {
       queryParams: this.returnQuery(),
       queryParamsHandling: 'replace',
     });

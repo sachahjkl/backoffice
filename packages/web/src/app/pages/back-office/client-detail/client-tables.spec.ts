@@ -66,7 +66,7 @@ const documents: readonly ClientDocument[] = [
     title: 'Étage 10',
     status: 'Accepté',
     totalCents: 100,
-    link: ['/backoffice/quotes', 'quote-b'],
+    link: ['/quotes', 'quote-b'],
     updatedAt: '2026-08-31T23:00:00.000Z',
   },
   {
@@ -77,7 +77,7 @@ const documents: readonly ClientDocument[] = [
     title: 'Étage 2',
     status: 'Brouillon',
     totalCents: -20,
-    link: ['/backoffice/invoices', 'invoice-c'],
+    link: ['/invoices', 'invoice-c'],
     updatedAt: '2026-09-01T00:00:00.001Z',
   },
   {
@@ -88,7 +88,7 @@ const documents: readonly ClientDocument[] = [
     title: 'Support',
     status: 'Confirmée',
     totalCents: 0,
-    link: ['/backoffice/orders', 'order-a'],
+    link: ['/orders', 'order-a'],
     updatedAt: '2026-09-01T00:00:00.000Z',
   },
 ];

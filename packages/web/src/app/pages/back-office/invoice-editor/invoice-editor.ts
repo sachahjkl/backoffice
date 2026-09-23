@@ -285,7 +285,7 @@ export class InvoiceEditor {
               if (outcome.failure?._tag === 'InvoiceAlreadyExists') {
                 this.resetForm();
                 this.completed.set(true);
-                await this.router.navigate(['/backoffice/invoices', outcome.failure.invoiceId], {
+                await this.router.navigate(['/invoices', outcome.failure.invoiceId], {
                   replaceUrl: true,
                   queryParams: this.navigation.detailQuery(),
                 });
@@ -296,7 +296,7 @@ export class InvoiceEditor {
             }
             this.resetForm();
             this.completed.set(true);
-            await this.router.navigate(['/backoffice/invoices', outcome.result.id], {
+            await this.router.navigate(['/invoices', outcome.result.id], {
               replaceUrl: true,
               queryParams: this.navigation.detailQuery(),
             });

@@ -61,8 +61,8 @@ export class ClientAccessEditor {
   protected readonly passwordLength = computed(() => this.model().password.length);
   protected readonly backLink = computed(() => {
     const client = this.client();
-    if (client) return ['/backoffice/clients', client.id, 'access'];
-    return ['/backoffice/clients', this.returnQuery().view ?? 'active'];
+    if (client) return ['/clients', client.id, 'access'];
+    return ['/clients', this.returnQuery().view ?? 'active'];
   });
   protected readonly accessForm = form(this.model, (path) => {
     disabled(

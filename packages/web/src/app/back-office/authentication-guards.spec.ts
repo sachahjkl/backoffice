@@ -31,7 +31,7 @@ const accountResponse = (permissions: readonly PermissionCodeValue[]) => ({
 @Component({ template: '' })
 class GuardedPage {}
 
-const clientUrl = '/backoffice/client/quotes/document-id?quote=a%2Fb&query=%C3%A9%20%2B#details';
+const clientUrl = '/client/quotes/document-id?quote=a%2Fb&query=%C3%A9%20%2B#details';
 
 const runGuard = (guard: CanActivateFn, url: string) => {
   const router = TestBed.inject(Router);
@@ -45,9 +45,7 @@ const expectLoginRedirect = (result: Awaited<ReturnType<CanActivateFn>>, returnU
   if (!(result instanceof UrlTree)) throw new Error('The guard did not return a redirect.');
   expect(result.queryParams).toEqual(returnUrl === undefined ? {} : { returnUrl });
   expect(TestBed.inject(Router).serializeUrl(result)).toBe(
-    returnUrl === undefined
-      ? '/backoffice/login'
-      : `/backoffice/login?returnUrl=${encodeURIComponent(returnUrl)}`,
+    returnUrl === undefined ? '/login' : `/login?returnUrl=${encodeURIComponent(returnUrl)}`,
   );
 };
 
@@ -67,7 +65,7 @@ describe('authentication guards', () => {
     });
     TestBed.inject(Router).routerState.snapshot.root.data = permissionData('client.read');
     const http = TestBed.inject(HttpTestingController);
-    const result = runGuard(administratorGuard, '/backoffice/clients');
+    const result = runGuard(administratorGuard, '/clients');
     const initial = await vi.waitFor(() => http.expectOne('/api/auth/account'));
     initial.flush({}, { status: 401, statusText: 'Unauthorized' });
     const refresh = await vi.waitFor(() => http.expectOne('/api/auth/refresh'));
@@ -104,7 +102,7 @@ describe('authentication guards', () => {
             canActivate: [administratorGuard],
             data: permissionData('invoice.read'),
           },
-          { path: 'backoffice/account', component: GuardedPage },
+          { path: 'account', component: GuardedPage },
         ]),
         provideHttpClient(),
         provideHttpClientTesting(),
@@ -147,7 +145,7 @@ describe('authentication guards', () => {
     http.expectOne('/api/auth/account').flush(accountResponse(['quote.read']));
     await reload;
     await router.navigateByUrl('/clients/archived');
-    expect(router.url).toBe('/backoffice/account');
+    expect(router.url).toBe('/account');
     http.expectNone('/api/auth/account');
     http.verify();
   });
@@ -158,13 +156,13 @@ describe('authentication guards', () => {
     const router = TestBed.inject(Router);
     const route = router.routerState.snapshot.root;
     route.data = permissionData('client.read');
-    expect(await runGuard(administratorGuard, '/backoffice/clients')).toBe(true);
+    expect(await runGuard(administratorGuard, '/clients')).toBe(true);
     route.data = permissionData('client.create');
-    const denied = await runGuard(administratorGuard, '/backoffice/clients/new');
+    const denied = await runGuard(administratorGuard, '/clients/new');
     expect(denied).toBeInstanceOf(UrlTree);
-    if (denied instanceof UrlTree) expect(router.serializeUrl(denied)).toBe('/backoffice/account');
+    if (denied instanceof UrlTree) expect(router.serializeUrl(denied)).toBe('/account');
     route.data = {};
-    expect(await runGuard(permissionsGuard, '/backoffice/clients/new')).toBeInstanceOf(UrlTree);
+    expect(await runGuard(permissionsGuard, '/clients/new')).toBeInstanceOf(UrlTree);
   });
   it('denies routes when their inferred or declared modules are disabled', async () => {
     const context = accountFixture(['accounting.read', 'supplier-invoice.analyze']);
@@ -175,16 +173,14 @@ describe('authentication guards', () => {
     const router = TestBed.inject(Router);
     const route = router.routerState.snapshot.root;
     route.data = permissionData('accounting.read');
-    expect(await runGuard(permissionsGuard, '/backoffice/accounting')).toBeInstanceOf(UrlTree);
+    expect(await runGuard(permissionsGuard, '/accounting')).toBeInstanceOf(UrlTree);
     route.data = {
       ...permissionData('supplier-invoice.analyze'),
       modules: ['purchasing', 'ai'],
     };
-    expect(
-      await runGuard(permissionsGuard, '/backoffice/supplier-invoices/analyze'),
-    ).toBeInstanceOf(UrlTree);
+    expect(await runGuard(permissionsGuard, '/supplier-invoices/analyze')).toBeInstanceOf(UrlTree);
     context.account.set({ ...account, enabledModules: ['accounting', 'purchasing', 'ai'] });
-    expect(await runGuard(permissionsGuard, '/backoffice/supplier-invoices/analyze')).toBe(true);
+    expect(await runGuard(permissionsGuard, '/supplier-invoices/analyze')).toBe(true);
   });
   it.each(['administrator', 'client', undefined] as const)(
     'applies the existing route policies for session mode %s',
@@ -201,7 +197,7 @@ describe('authentication guards', () => {
       });
 
       TestBed.inject(Router).routerState.snapshot.root.data = sessionData();
-      const administratorResult = await runGuard(administratorGuard, '/backoffice/team?role=all');
+      const administratorResult = await runGuard(administratorGuard, '/team?role=all');
       if (mode === 'administrator') expect(administratorResult).toBe(true);
       else expectLoginRedirect(administratorResult);
 
@@ -251,11 +247,11 @@ describe('authentication guards', () => {
     const store = TestBed.inject(BrowserSessionStore);
     const http = TestBed.inject(HttpTestingController);
 
-    expectLoginRedirect(await runGuard(administratorGuard, '/backoffice/team'));
+    expectLoginRedirect(await runGuard(administratorGuard, '/team'));
     expectLoginRedirect(await runGuard(clientGuard, clientUrl), clientUrl);
 
     store.set({ mode: 'administrator', expiresAt: Date.now() + 600_000 });
-    expectLoginRedirect(await runGuard(administratorGuard, '/backoffice/team'));
+    expectLoginRedirect(await runGuard(administratorGuard, '/team'));
 
     store.set({ mode: 'client', expiresAt: Date.now() + 600_000 });
     expectLoginRedirect(await runGuard(clientGuard, clientUrl), clientUrl);

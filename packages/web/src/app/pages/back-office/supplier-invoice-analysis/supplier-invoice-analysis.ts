@@ -51,7 +51,7 @@ export class SupplierInvoiceAnalysisPage {
   private readonly suppliersApi = inject(SuppliersApi);
   private readonly router = inject(Router);
   protected readonly breadcrumbs = signal([
-    { label: this.i18n.t('supplierInvoice.title'), path: '/backoffice/purchases' },
+    { label: this.i18n.t('supplierInvoice.title'), path: '/purchases' },
   ]);
   protected readonly model = signal<AnalysisModel>({ supplierId: '', consent: false });
   protected readonly analysisForm = form(this.model, (path) => required(path.supplierId));
@@ -113,7 +113,7 @@ export class SupplierInvoiceAnalysisPage {
           this.error.set(outcome.code);
           return;
         }
-        await this.router.navigate(['/backoffice/purchases', outcome.result.id]);
+        await this.router.navigate(['/purchases', outcome.result.id]);
       } catch {
         this.error.set('supplierInvoice.analysis.failed');
       } finally {

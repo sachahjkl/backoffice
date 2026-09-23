@@ -1,6 +1,15 @@
 export { HealthStatus, type HealthStatus as HealthStatusValue } from './status/contracts.js';
 export * from './accounting/contracts.js';
 export * from './demo/contracts.js';
+export {
+  Branding,
+  type Branding as BrandingValue,
+  BrandingName,
+  BrandingLogoUrl,
+  BrandingUpdateRequest,
+  type BrandingUpdateRequest as BrandingUpdateRequestValue,
+  BrandingConflict,
+} from './company/branding.js';
 export { DocumentCalendar } from './documents/contracts.js';
 export {
   AccountingAlreadyInitialized,
