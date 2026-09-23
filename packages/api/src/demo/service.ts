@@ -201,14 +201,14 @@ const make = Effect.gen(function* () {
                 .run(now);
               sqlite
                 .prepare(
-                  "insert into branding_settings (id, name, logo_url, version) values (1, 'Atelier Nébula', null, 0)",
+                  'insert into branding_settings (id, name, logo_url, version) values (1, ?, null, 0)',
                 )
-                .run();
+                .run(runtime.branding.name);
               sqlite
                 .prepare(
-                  "insert into issuer_settings (id, display_name, address_line_1, address_line_2, postal_code, city, country, email, phone, registration_number, vat_number, iban, bic, version, updated_at) values (1, 'Atelier Nébula', '18 rue des Forges', '', '44000', 'Nantes', 'France', 'bonjour@atelier-nebula.invalid', '+33251840024', '84372860100019', 'FR32843728601', 'FR7630006000011234567890189', 'AGRIFRPP', 1, ?)",
+                  "insert into issuer_settings (id, display_name, address_line_1, address_line_2, postal_code, city, country, email, phone, registration_number, vat_number, iban, bic, version, updated_at) values (1, ?, '18 rue des Forges', '', '44000', 'Nantes', 'France', 'bonjour@demo.invalid', '+33251840024', '84372860100019', 'FR32843728601', 'FR7630006000011234567890189', 'AGRIFRPP', 1, ?)",
                 )
-                .run(now);
+                .run(runtime.branding.name, now);
               sqlite
                 .prepare(
                   "insert into supplier_invoice_analysis_settings (id, adapter) values (1, 'local')",
@@ -277,13 +277,13 @@ const make = Effect.gen(function* () {
               const year = new Date(now).getUTCFullYear();
               const isoNow = DateTime.formatIso(DateTime.makeUnsafe(now));
               const issuer = {
-                displayName: 'Atelier Nébula',
+                displayName: runtime.branding.name,
                 addressLine1: '18 rue des Forges',
                 addressLine2: '',
                 postalCode: '44000',
                 city: 'Nantes',
                 country: 'France',
-                email: 'bonjour@atelier-nebula.invalid',
+                email: 'bonjour@demo.invalid',
                 phone: '+33251840024',
                 registrationNumber: '84372860100019',
                 vatNumber: 'FR32843728601',

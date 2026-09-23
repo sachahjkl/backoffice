@@ -4,25 +4,24 @@ Ce dépôt fournit l’application et le paquet npm `@sachahjkl/backoffice`.
 La CI vérifie la compilation, les tests, le lint, le formatage et le contenu du paquet.
 Elle ne publie aucun paquet et ne déploie aucune instance.
 
-## Migration de l’instance réelle
+## Instances
 
-L’instance réelle doit utiliser `https://backoffice.froment.software`.
-L’ancien site vitrine conserve `froment.software` et son déploiement séparé.
-La configuration Nomad historique ciblait le domaine de la vitrine et a été supprimée de ce dépôt.
+Chaque instance installe une version publiée du paquet npm.
+Son dépôt définit le domaine, le volume persistant, les secrets et le déploiement.
+Définissez `ENTERPRISE_NAME` et `ENTERPRISE_LOGO_URL` dans la configuration de l’instance.
+Le serveur lit ces valeurs si la base ne contient pas de marque personnalisée.
 
-1. Sauvegardez la base actuelle avec l’outil de sauvegarde SQLite et vérifiez la copie.
-2. Préparez un volume persistant et restaurez la base vers un nouveau fichier sur l’hôte cible.
-3. Conservez les secrets de l’instance réelle, notamment les clés d’authentification et de chiffrement.
-4. Configurez le routage HTTPS et `PUBLIC_ORIGIN=https://backoffice.froment.software`.
-5. Définissez `APP_ENV=production`, `NODE_ENV=production` et `DATABASE_PATH` pour cette instance.
-6. Configurez séparément les identifiants des intégrations et la politique de sauvegarde.
-7. Démarrez le serveur avec la version correspondant aux migrations de la base.
-8. Vérifiez `/api/health`, la connexion, les documents et les intégrations avant la bascule DNS.
+1. Sauvegardez la base actuelle et vérifiez la copie avec la version en service.
+2. Arrêtez les anciens workers avant de transférer une base vers une autre instance.
+3. Restaurez la base vers un volume distinct et protégez ses secrets.
+4. Définissez `PUBLIC_ORIGIN`, `APP_ENV`, `NODE_ENV` et `DATABASE_PATH` dans l’instance.
+5. Démarrez le serveur avec la version qui contient les migrations requises.
+6. Vérifiez `/api/health`, la connexion, les documents et les intégrations.
 
 Lisez [Sauvegarde et restauration](backups.md) avant de transférer les données.
 Le démarrage du paquet applicatif applique les migrations avant de servir les requêtes.
 Conservez une copie vérifiée avant cette opération.
-Le déploiement du serveur et la bascule DNS restent des opérations distinctes des workflows GitHub de ce dépôt.
+Ce dépôt ne configure ni domaine, ni volume, ni job Nomad d’une instance.
 
 ## Démonstration
 

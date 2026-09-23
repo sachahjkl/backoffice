@@ -31,6 +31,7 @@ const layer = (
     ),
     Layer.succeed(RuntimeConfiguration, {
       ...defaultRuntimeConfig,
+      branding: { ...defaultRuntimeConfig.branding, name: 'ACME' },
       application: { ...defaultRuntimeConfig.application, appEnvironment },
       demo: {
         enabled,
@@ -72,7 +73,21 @@ describe('Demonstration reset', () => {
           database.sqlite
             .prepare('select id, name, logo_url as logoUrl, version from branding_settings')
             .all(),
-        ).toEqual([{ id: 1, name: 'Atelier Nébula', logoUrl: null, version: 0 }]);
+        ).toEqual([{ id: 1, name: 'ACME', logoUrl: null, version: 0 }]);
+        expect(
+          database.sqlite
+            .prepare('select display_name from issuer_settings where id = 1')
+            .pluck()
+            .get(),
+        ).toBe('ACME');
+        expect(
+          database.sqlite
+            .prepare(
+              'select render_snapshot from quote_revisions where render_snapshot is not null limit 1',
+            )
+            .pluck()
+            .get(),
+        ).toContain('ACME');
         database.sqlite
           .prepare(
             "update branding_settings set name = 'Autre marque', logo_url = '/custom.svg', version = 3 where id = 1",
@@ -101,7 +116,7 @@ describe('Demonstration reset', () => {
           database.sqlite
             .prepare('select id, name, logo_url as logoUrl, version from branding_settings')
             .all(),
-        ).toEqual([{ id: 1, name: 'Atelier Nébula', logoUrl: null, version: 0 }]);
+        ).toEqual([{ id: 1, name: 'ACME', logoUrl: null, version: 0 }]);
         const secondClientNames = Schema.decodeUnknownSync(Schema.Array(Schema.String))(
           database.sqlite
             .prepare(
