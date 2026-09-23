@@ -59,12 +59,8 @@ html:has(.back-office-shell, app-design) {
 }
 
 html:has(app-home) {
-  background-color: #fff;
+  background-color: var(--color-surface-raised);
   background-image: none;
-}
-
-html:has(app-home) :is(.site-header, .footer) {
-  background: #fff;
 }
 
 .app-shell:has(app-design) {

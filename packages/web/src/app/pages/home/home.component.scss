@@ -1,6 +1,6 @@
 :host {
   display: block;
-  color: #171717;
+  color: var(--color-ink);
 }
 
 .home {
@@ -36,7 +36,7 @@
 
 h1,
 h2 {
-  color: #171717;
+  color: var(--color-ink);
   font-family: inherit;
   letter-spacing: -0.035em;
 }
@@ -57,16 +57,17 @@ h2 {
 }
 
 .contact-links a[appLinkButton] {
-  min-height: 4.25rem;
-  padding: 0.9rem 1.5rem;
-  border-radius: 0.875rem;
-  font-size: 1.25rem;
+  min-height: 3.25rem;
+  max-width: 100%;
+  padding: 0.65rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1.125rem;
 }
 
 section {
   margin-top: 5rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid var(--color-line);
 }
 
 .projects {
@@ -76,7 +77,7 @@ section {
 
 .projects a {
   gap: 0.75rem;
-  color: #174ca6;
+  color: var(--color-link);
   font-weight: 600;
   text-underline-offset: 0.18em;
 }

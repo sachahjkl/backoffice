@@ -3,7 +3,7 @@
 }
 
 .footer {
-  background: var(--color-surface);
+  background: var(--color-surface-raised);
 }
 
 .footer-inner {
@@ -13,8 +13,8 @@
   width: min(100% - 3rem, 48rem);
   margin-inline: auto;
   padding-block: 1.5rem 2.5rem;
-  border-top: 1px solid #ddd;
-  color: #666;
+  border-top: 1px solid var(--color-line);
+  color: var(--color-muted);
   font-size: 0.8rem;
   text-align: center;
 }
