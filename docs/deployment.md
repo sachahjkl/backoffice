@@ -2,29 +2,27 @@
 
 Ce dépôt fournit l’application et le paquet npm `@sachahjkl/backoffice`.
 La CI vérifie la compilation, les tests, le lint, le formatage et le contenu du paquet.
-Elle ne publie aucun paquet npm et ne déploie aucune instance.
+Elle ne publie aucun paquet et ne déploie aucune instance.
 
 ## Migration de l’instance réelle
 
 L’instance réelle doit utiliser `https://backoffice.froment.software`.
-`application.yaml` définit son job Nomad `backoffice` dans l’espace `production`.
-Le volume `backoffice-production-data` est distinct du volume de l’ancien job `froment-software`.
 L’ancien site vitrine conserve `froment.software` et son déploiement séparé.
+La configuration Nomad historique ciblait le domaine de la vitrine et a été supprimée de ce dépôt.
 
-1. Vérifiez les migrations appliquées à la base et celles incluses dans la nouvelle image.
-2. Vérifiez en staging la vitrine indépendante de la base métier et des workers du backoffice.
-3. Promouvez cette vitrine en production. Attendez l’arrêt de l’ancienne allocation avant de copier sa base.
-4. Créez une sauvegarde cohérente de la base arrêtée et vérifiez-la avec l’ancienne image.
-5. Restaurez la base sur le nouveau volume et copiez les secrets de production dans `nomad/jobs/backoffice`.
-6. Lancez `deploy-production.yml` depuis `master`. Il vérifie le code et publie son image OCI dans GHCR.
-7. Attendez la fin du workflow. Il déploie le digest publié dans l’espace Nomad `production`.
-8. Le job `prepare` exige une base existante et sauvegarde la base avant les migrations.
-9. Vérifiez `/api/health`, la connexion, les documents, les intégrations et les deux domaines.
+1. Sauvegardez la base actuelle avec l’outil de sauvegarde SQLite et vérifiez la copie.
+2. Préparez un volume persistant et restaurez la base vers un nouveau fichier sur l’hôte cible.
+3. Conservez les secrets de l’instance réelle, notamment les clés d’authentification et de chiffrement.
+4. Configurez le routage HTTPS et `PUBLIC_ORIGIN=https://backoffice.froment.software`.
+5. Définissez `APP_ENV=production`, `NODE_ENV=production` et `DATABASE_PATH` pour cette instance.
+6. Configurez séparément les identifiants des intégrations et la politique de sauvegarde.
+7. Démarrez le serveur avec la version correspondant aux migrations de la base.
+8. Vérifiez `/api/health`, la connexion, les documents et les intégrations avant la bascule DNS.
 
 Lisez [Sauvegarde et restauration](backups.md) avant de transférer les données.
 Le démarrage du paquet applicatif applique les migrations avant de servir les requêtes.
 Conservez une copie vérifiée avant cette opération.
-La CI valide le contrat et le rendu du job Nomad. Le déploiement effectif reste une opération distincte.
+Le déploiement du serveur et la bascule DNS restent des opérations distinctes des workflows GitHub de ce dépôt.
 
 ## Démonstration
 
