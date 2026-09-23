@@ -1,8 +1,8 @@
-name: "froment.software"
-description: "Site d'entreprise - https://froment.software/"
-topics: []
-homepage: ""
+name: "backoffice"
+description: "Backoffice générique pour la gestion commerciale, documentaire et comptable."
+topics: ["backoffice", "gestion", "typescript", "angular"]
+homepage: "https://backoffice-demo.sacha.house/"
 source:
   provider: github
   namespace: "sachahjkl"
-  path: "sachahjkl/froment.software"
+  path: "sachahjkl/backoffice"
