@@ -64,6 +64,9 @@ export class I18nService {
   }
 
   private detectLanguage(): Language {
+    const pathLanguage = this.document.location.pathname.split('/')[1];
+    if (isSupportedLanguage(pathLanguage)) return pathLanguage;
+
     const stored = this.readStoredLanguage();
     if (isSupportedLanguage(stored)) return stored;
 

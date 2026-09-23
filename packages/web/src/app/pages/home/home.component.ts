@@ -1,95 +1,21 @@
-import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { I18nService } from '@app/i18n.service';
-import { AnchorLink } from '@shared/anchor-link/anchor-link';
-import { ConcreteExamples } from '@shared/concrete-examples/concrete-examples';
-import { ContactActions } from '@shared/contact-actions/contact-actions';
-import { ProcessTimeline, TimelineStep } from '@shared/process-timeline/process-timeline';
-
-type PublicEntry = {
-  title: string;
-  description: string;
-  href: string;
-  cta: string;
-};
-
-type ContentEntry = {
-  title: string;
-  description: string;
-  href: string;
-};
+import { Button } from '@shared/button/button';
+import { NewLabel } from '@shared/new-label/new-label';
 
 @Component({
-  host: { class: 'page-container' },
   selector: 'app-home',
-  standalone: true,
-  imports: [AnchorLink, ConcreteExamples, ContactActions, ProcessTimeline, RouterLink],
+  imports: [Button, NewLabel],
   templateUrl: './home.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './home.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
   protected readonly i18n = inject(I18nService);
-  protected readonly publicEntries = computed<PublicEntry[]>(() => [
-    {
-      title: 'albumator.sacha.house',
-      description: this.i18n.t('home.timeline.albumator.desc'),
-      href: 'https://albumator.sacha.house',
-      cta: this.i18n.t('home.timeline.albumator.cta'),
-    },
-    {
-      title: 'sacha.house',
-      description: this.i18n.t('home.timeline.sacha.desc'),
-      href: 'https://sacha.house',
-      cta: this.i18n.t('home.timeline.sacha.cta'),
-    },
-    {
-      title: 'clockin.sacha.house',
-      description: this.i18n.t('home.timeline.clockin.desc'),
-      href: 'https://clockin.sacha.house',
-      cta: this.i18n.t('home.timeline.clockin.cta'),
-    },
-    {
-      title: 'htmx.sacha.house',
-      description: this.i18n.t('home.timeline.htmx.desc'),
-      href: 'https://htmx.sacha.house',
-      cta: this.i18n.t('home.timeline.htmx.cta'),
-    },
-  ]);
+  protected readonly projectNames = { albumator: 'Albumator', clockin: 'Clock-in', dw: 'dw' };
 
-  protected readonly services = computed<ContentEntry[]>(() => [
-    {
-      title: this.i18n.t('home.services.renovation.title'),
-      description: this.i18n.t('home.services.renovation.desc'),
-      href: '/services/audit-renovation',
-    },
-    {
-      title: this.i18n.t('home.services.development.title'),
-      description: this.i18n.t('home.services.development.desc'),
-      href: '/services/development',
-    },
-  ]);
-
-  protected readonly process = computed<TimelineStep[]>(() => [
-    {
-      title: this.i18n.t('services.process.analysis.title'),
-      description: this.i18n.t('services.process.analysis.desc'),
-    },
-    {
-      title: this.i18n.t('services.process.quote.title'),
-      description: this.i18n.t('services.process.quote.desc'),
-    },
-    {
-      title: this.i18n.t('services.process.agreement.title'),
-      description: this.i18n.t('services.process.agreement.desc'),
-    },
-    {
-      title: this.i18n.t('services.process.delivery.title'),
-      description: this.i18n.t('services.process.delivery.desc'),
-    },
-    {
-      title: this.i18n.t('services.process.validation.title'),
-      description: this.i18n.t('services.process.validation.desc'),
-    },
-  ]);
+  constructor() {
+    this.i18n.setLanguage(inject(ActivatedRoute).snapshot.data['language']);
+  }
 }

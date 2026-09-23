@@ -41,7 +41,7 @@ describe('App shell', () => {
     element = fixture.nativeElement;
   });
 
-  it('exposes the skip target and current route without publishing the design route in navigation', async () => {
+  it('exposes the skip target and keeps the design route out of navigation', async () => {
     const skipLink = element.querySelector<HTMLAnchorElement>('.skip-link')!;
     const main = element.querySelector<HTMLElement>('main#main-content')!;
 
@@ -49,12 +49,24 @@ describe('App shell', () => {
     expect(main.tabIndex).toBe(-1);
     expect(router.config.some((route) => route.path === 'design')).toBe(true);
     expect(element.querySelector('a[href="/design"]')).toBeNull();
+    expect(element.querySelector('app-site-header')).toBeNull();
+    expect(element.querySelector('app-site-footer')).not.toBeNull();
 
     await navigate(fixture, router, '/about');
 
-    const current = element.querySelector<HTMLAnchorElement>('nav a[aria-current="page"]');
-    expect(current?.getAttribute('href')).toBe('/about');
     expect(element.querySelector('app-about')).not.toBeNull();
+  });
+
+  it('uses the URL to select the landing page language', async () => {
+    expect(router.url).toBe('/fr');
+    expect(i18n.language()).toBe('fr');
+
+    await navigate(fixture, router, '/en');
+
+    expect(i18n.language()).toBe('en');
+    expect(document.documentElement.lang).toBe('en');
+    expect(element.querySelector('app-site-header')).toBeNull();
+    expect(element.querySelector('app-site-footer')).not.toBeNull();
   });
 
   it('uses the standalone shell for the version page', async () => {
@@ -148,85 +160,6 @@ describe('App shell', () => {
     await navigate(fixture, router, '/about#contact');
 
     expect(document.activeElement).toBe(element.querySelector('h2#contact'));
-  });
-
-  it('opens the mobile navigation and closes it after navigation', async () => {
-    Object.defineProperty(HTMLDialogElement.prototype, 'showModal', {
-      configurable: true,
-      value(this: HTMLDialogElement) {
-        this.setAttribute('open', '');
-      },
-    });
-    Object.defineProperty(HTMLDialogElement.prototype, 'close', {
-      configurable: true,
-      value(this: HTMLDialogElement) {
-        this.removeAttribute('open');
-      },
-    });
-    await navigate(fixture, router, '/about');
-
-    const trigger = element.querySelector<HTMLButtonElement>('.menu-trigger')!;
-    trigger.click();
-    await fixture.whenStable();
-    const navigation = element.querySelector<HTMLElement>('app-mobile-navigation')!;
-    const dialog = navigation.querySelector<HTMLDialogElement>('dialog')!;
-    expect(trigger.getAttribute('aria-expanded')).toBe('true');
-    expect(document.body.style.overflow).toBe('hidden');
-    expect(dialog.getAttribute('aria-modal')).toBe('true');
-    expect(dialog.getAttribute('aria-labelledby')).toBe('mobile-navigation-title');
-    const closeButton = navigation.querySelector<HTMLButtonElement>('.mobile-nav-header button')!;
-    const languageSelect = navigation.querySelector<HTMLSelectElement>('select')!;
-    expect(document.activeElement).toBe(closeButton);
-
-    languageSelect.focus();
-    expect(document.activeElement).toBe(languageSelect);
-    languageSelect.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }));
-    expect(document.activeElement).toBe(closeButton);
-
-    const servicesLink = navigation.querySelector<HTMLAnchorElement>('a[href="/services"]')!;
-    servicesLink.click();
-    await fixture.whenStable();
-
-    expect(trigger.getAttribute('aria-expanded')).toBe('false');
-    expect(element.querySelector('app-mobile-navigation')).toBeNull();
-    expect(document.body.style.overflow).toBe('');
-    expect(router.url).toBe('/services');
-  });
-
-  it('switches theme and stores the user choice', async () => {
-    const toggle = element.querySelector<HTMLButtonElement>('app-theme-toggle button')!;
-
-    expect(document.documentElement.dataset['theme']).toBe('light');
-    toggle.click();
-    await fixture.whenStable();
-
-    expect(document.documentElement.dataset['theme']).toBe('dark');
-    expect(localStorage.getItem('froment.software.theme')).toBe('dark');
-    expect(toggle.getAttribute('aria-label')).toBe('Activer le mode clair');
-  });
-
-  it('closes the mobile navigation after an outside click', async () => {
-    const trigger = element.querySelector<HTMLButtonElement>('.menu-trigger')!;
-    trigger.click();
-    await fixture.whenStable();
-
-    element.querySelector<HTMLElement>('main')!.click();
-    await fixture.whenStable();
-
-    expect(trigger.getAttribute('aria-expanded')).toBe('false');
-    expect(document.activeElement).toBe(trigger);
-  });
-
-  it('closes the mobile navigation with Escape', async () => {
-    const trigger = element.querySelector<HTMLButtonElement>('.menu-trigger')!;
-    trigger.click();
-    await fixture.whenStable();
-
-    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
-    await fixture.whenStable();
-
-    expect(trigger.getAttribute('aria-expanded')).toBe('false');
-    expect(document.activeElement).toBe(trigger);
   });
 
   it('copies a section URL and shows a status message', async () => {

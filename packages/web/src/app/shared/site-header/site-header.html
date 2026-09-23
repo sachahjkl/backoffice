@@ -1,65 +1,6 @@
 <header class="site-header">
   <app-navigation-progress />
   <div class="header-inner">
-    <div class="identity-row">
-      <div class="brand-wrap">
-        <a class="brand" routerLink="/" [attr.aria-label]="i18n.t('brand.home')">
-          <img src="/brand/favicon.png" alt="" width="24" height="24" />
-        </a>
-        <div class="brand-copy">
-          <a class="brand-name" routerLink="/">froment.software</a>
-          <app-new-label />
-        </div>
-      </div>
-      <div class="header-controls">
-        <app-language-selector class="header-language" [compact]="true" />
-        <app-theme-toggle />
-        <div class="mobile-navigation-control">
-          <button
-            #menuTrigger
-            class="menu-trigger"
-            type="button"
-            [attr.aria-label]="i18n.t('shell.menu')"
-            [attr.aria-expanded]="mobileNavigation.open()"
-            aria-controls="mobile-navigation"
-            (click)="mobileNavigation.toggle(menuTrigger)"
-          >
-            <span class="burger" aria-hidden="true"><span></span><span></span><span></span></span>
-          </button>
-          @if (mobileNavigation.open()) {
-          <app-mobile-navigation
-            animate.enter="mobile-navigation-enter"
-            animate.leave="mobile-navigation-leave"
-          />
-          }
-        </div>
-      </div>
-    </div>
-
-    <nav class="nav desktop-nav" [attr.aria-label]="i18n.t('nav.primary')">
-      <a
-        routerLink="/"
-        routerLinkActive="active"
-        ariaCurrentWhenActive="page"
-        [routerLinkActiveOptions]="{ exact: true }"
-        >{{ i18n.t('nav.home') }}</a
-      >
-      <a routerLink="/services" routerLinkActive="active" ariaCurrentWhenActive="page"
-        >{{ i18n.t('nav.services') }}</a
-      >
-      <a routerLink="/about" routerLinkActive="active" ariaCurrentWhenActive="page"
-        >{{ i18n.t('nav.about') }}</a
-      >
-      <a routerLink="/tools" routerLinkActive="active" ariaCurrentWhenActive="page"
-        >{{ i18n.t('nav.products') }}</a
-      >
-      <a routerLink="/clients" routerLinkActive="active" ariaCurrentWhenActive="page"
-        >{{ i18n.t('nav.clients') }}</a
-      >
-      <a routerLink="/blog" routerLinkActive="active" ariaCurrentWhenActive="page"
-        >{{ i18n.t('nav.blog') }}</a
-      >
-      <a href="mailto:contact@froment.software">{{ i18n.t("shell.contact") }}</a>
-    </nav>
+    <a class="brand" routerLink="/">froment.software</a>
   </div>
 </header>

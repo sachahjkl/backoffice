@@ -47,8 +47,28 @@ export const routes: Routes = [
   },
   {
     path: '',
+    redirectTo: 'fr',
+    pathMatch: 'full',
+  },
+  {
+    path: 'fr',
     component: HomeComponent,
-    data: { titleKey: 'page.home', descriptionKey: 'page.description.home' },
+    data: {
+      shell: 'landing',
+      language: 'fr',
+      titleKey: 'page.home',
+      descriptionKey: 'page.description.home',
+    },
+  },
+  {
+    path: 'en',
+    component: HomeComponent,
+    data: {
+      shell: 'landing',
+      language: 'en',
+      titleKey: 'page.home',
+      descriptionKey: 'page.description.home',
+    },
   },
   {
     path: 'about',

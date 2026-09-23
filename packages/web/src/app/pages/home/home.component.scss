@@ -1,151 +1,86 @@
 :host {
   display: block;
+  color: #171717;
 }
 
 .home {
-  padding-inline: var(--page-x);
+  padding-block: clamp(4rem, 12vw, 8rem) 6rem;
 }
 
-.intro {
-  display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-  align-items: start;
-  gap: var(--space-8);
-  margin-inline: calc(-1 * var(--page-x));
+.identity,
+.contact-links,
+.projects,
+.projects a {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
-.lead {
-  margin-top: var(--space-5);
-  color: var(--color-ink-soft);
-  font-size: var(--text-lg);
-  line-height: 1.6;
+.identity {
+  gap: 1rem;
+  margin-bottom: 3rem;
 }
 
-.intro-actions {
-  margin-top: var(--space-7);
-}
-
-.intro-services {
-  padding: var(--panel-padding);
-}
-
-.intro-services h2 {
-  font-size: var(--text-lg);
-}
-
-.intro-services > a {
-  font-size: var(--text-sm);
-}
-
-.service-list {
-  display: grid;
-  gap: var(--space-5);
-  margin-block: var(--space-5);
-}
-
-.service-list dt {
-  font-weight: 700;
-}
-
-.service-list dd {
-  margin: var(--space-2) 0 0;
-  color: var(--color-ink-soft);
-  font-size: var(--text-sm);
-}
-
-.home > section,
-.home > app-concrete-examples,
-.home-details {
-  padding-block: var(--page-section-y);
-}
-
-.home > section:not(.contact-panel),
-.home-details {
-  border-top: 1px solid var(--color-line);
-}
-
-app-process-timeline {
-  margin-top: var(--space-6);
-}
-
-.home-details {
-  display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-  gap: var(--space-8);
-}
-
-.home-details section > p {
-  margin-top: var(--space-3);
-}
-
-.project-list {
-  display: grid;
-  gap: var(--space-4);
-  margin: var(--space-5) 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.project-list li {
-  display: grid;
-  gap: var(--space-1);
-  padding-inline-start: var(--space-4);
-  border-inline-start: 2px solid var(--color-line-strong);
-  overflow-wrap: anywhere;
-}
-
-.project-list span {
-  color: var(--color-ink-soft);
-  font-size: var(--text-sm);
-}
-
-.team-list {
-  margin: var(--space-5) 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.team-list li {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  column-gap: var(--space-4);
-  align-items: end;
-}
-
-.team-portrait {
-  grid-row: span 2;
-}
-
-.team-list img {
+.identity img {
   display: block;
-  width: 5rem;
-  height: auto;
-  border-radius: var(--radius-xs);
-  box-shadow: var(--shadow-sm);
+  border: 1px solid #159447;
 }
 
-.team-list h3 {
-  font-size: var(--text-base);
+.identity-name {
+  display: grid;
+  justify-items: start;
+  gap: 0.25rem;
+  font-size: 1.35rem;
+  letter-spacing: -0.04em;
 }
 
-.team-list p {
-  align-self: start;
-  margin-top: var(--space-1);
-  color: var(--color-muted);
-  font-size: var(--text-sm);
+h1,
+h2 {
+  color: #171717;
+  font-family: inherit;
+  letter-spacing: -0.035em;
 }
 
-.contact-panel {
-  margin-inline: calc(-1 * var(--page-x));
+h1 {
+  max-width: 18ch;
+  font-size: clamp(2.4rem, 6vw, 4.25rem);
+  line-height: 1.1;
+}
+
+h2 {
+  font-size: 1.05rem;
 }
 
 .contact-links {
-  margin-top: var(--space-5);
+  gap: 0.75rem;
+  margin-top: 2.5rem;
 }
 
-@media (max-width: 46rem) {
-  .intro,
-  .home-details {
-    grid-template-columns: minmax(0, 1fr);
-  }
+.contact-links a[appLinkButton] {
+  min-height: 3.75rem;
+  padding: 0.85rem 1.35rem;
+  font-size: 1.1rem;
+}
+
+section {
+  margin-top: 5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #ddd;
+}
+
+.projects {
+  gap: 1rem 2rem;
+  margin-top: 1.5rem;
+}
+
+.projects a {
+  gap: 0.75rem;
+  color: #174ca6;
+  font-weight: 600;
+  text-underline-offset: 0.18em;
+}
+
+.projects img {
+  display: block;
+  object-fit: contain;
 }

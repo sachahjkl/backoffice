@@ -70,7 +70,10 @@ export class App {
   );
   protected readonly administrator = computed(() => this.shell() === 'administrator');
   protected readonly standalonePage = computed(() => this.shell() === 'standalone');
-  protected readonly publicPage = computed(() => this.shell() === 'public');
+  protected readonly publicPage = computed(
+    () => this.shell() === 'public' || this.shell() === 'landing',
+  );
+  protected readonly landingPage = computed(() => this.shell() === 'landing');
 
   constructor() {
     inject(NavigationFocus);
