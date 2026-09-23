@@ -99,6 +99,10 @@ export const translations = {
     'login.heading': 'Connexion',
     'login.description': 'Vos documents et le suivi de vos règlements, au même endroit.',
     'login.access': 'Votre compte donne accès aux documents et aux actions qui vous concernent.',
+    'login.demoHeading': 'Comptes de démonstration',
+    'login.demoDescription':
+      'Données fictives réinitialisées régulièrement. Choisissez un compte pour vous connecter.',
+    'login.demoPassword': 'Mot de passe des comptes',
     'bank.history': 'Historique des rapprochements',
     'bank.historyHint':
       'Les 100 derniers rapprochements, avec dates, identifiants des auteurs et motifs de dissociation.',
@@ -1670,6 +1674,9 @@ export const translations = {
     'login.heading': 'Sign in',
     'login.description': 'Your documents and payment records, in one place.',
     'login.access': 'Your account gives you access to the documents and actions available to you.',
+    'login.demoHeading': 'Demo accounts',
+    'login.demoDescription': 'Synthetic data resets regularly. Choose an account to sign in.',
+    'login.demoPassword': 'Account password',
     'bank.history': 'Reconciliation history',
     'bank.historyHint':
       'The latest 100 matches, with dates, actor identifiers and reasons for removal.',

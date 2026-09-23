@@ -24,6 +24,7 @@ const assets = [
   ["packages/api/dist/main.cjs", "main.cjs"],
   ["packages/api/dist/migrate.cjs", "migrate.cjs"],
   ["packages/api/dist/backup.cjs", "backup.cjs"],
+  ["packages/api/dist/demo-reset.cjs", "demo-reset.cjs"],
   ["packages/api/drizzle", "drizzle"],
   ["packages/documents/templates", "templates"],
   ["packages/web/dist/froment-software/browser", "web"],

@@ -55,4 +55,16 @@
       <a class="bootstrap-link" routerLink="/bootstrap"> {{ i18n.t('backOffice.bootstrap') }} </a>
     </div>
   </div>
+  @if (demo; as demoAccounts) {
+  <aside class="demo-accounts" aria-labelledby="demo-accounts-title">
+    <h2 id="demo-accounts-title">{{ i18n.t('login.demoHeading') }}</h2>
+    <p>{{ i18n.t('login.demoDescription') }}</p>
+    <ul>
+      @for (account of demoAccounts.accounts; track account.email) {
+      <li><strong>{{ account.name }}</strong> <code>{{ account.email }}</code></li>
+      }
+    </ul>
+    <p>{{ i18n.t('login.demoPassword') }}: <code>{{ demoAccounts.password }}</code></p>
+  </aside>
+  }
 </section>

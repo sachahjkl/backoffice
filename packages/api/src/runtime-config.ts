@@ -84,7 +84,7 @@ export const defaultRuntimeConfig = {
     requestTimeoutMillis: 10_000,
   },
   taxFiling: { apiKey: Option.none(), requestTimeoutMillis: 20_000 },
-  demo: { password: Option.none() },
+  demo: { enabled: false, password: Option.none(), accountPassword: Option.none() },
 } as const;
 
 export const RuntimeConfig = {
@@ -277,7 +277,9 @@ export const RuntimeConfig = {
     ),
   }),
   demo: Config.all({
+    enabled: Config.boolean('DEMO_MODE').pipe(Config.withDefault(false)),
     password: Config.option(Config.redacted('DEMO_PASSWORD')),
+    accountPassword: Config.option(Config.redacted('DEMO_ACCOUNT_PASSWORD')),
   }),
 } as const;
 

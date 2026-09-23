@@ -14,6 +14,7 @@ describe('RuntimeConfiguration', () => {
       sitePhase: 'live',
       commit: null,
       githubRepositoryUrl: null,
+      demo: null,
     });
   });
 
@@ -23,6 +24,7 @@ describe('RuntimeConfiguration', () => {
       sitePhase: 'construction',
       commit: '6c9757782e249d4db6ffb804349b7da620494565',
       githubRepositoryUrl: 'https://github.com/example/application',
+      demo: null,
     };
     const runtime = TestBed.inject(RuntimeConfiguration);
     expect(runtime.value).toEqual(globalThis.fromentRuntimeConfig);
@@ -39,6 +41,7 @@ describe('RuntimeConfiguration', () => {
       sitePhase: 'live',
       commit: '6c9757782e249d4db6ffb804349b7da620494565',
       githubRepositoryUrl,
+      demo: null,
     };
     const runtime = TestBed.inject(RuntimeConfiguration);
     expect(runtime.commitUrl(runtime.value?.commit)).toBe(

@@ -10,7 +10,11 @@ import { defaultRuntimeConfig, RuntimeConfiguration } from '../runtime-config.js
 import { Demo, DemoLive } from './service.js';
 import { CurrentOrderConfirmationEvidence } from '../orders/confirmation-evidence.js';
 
-const layer = (appEnvironment: 'development' | 'staging' | 'production' = 'staging') => {
+const layer = (
+  appEnvironment: 'development' | 'staging' | 'production' = 'staging',
+  enabled = true,
+  accountPassword = 'demo-account-password',
+) => {
   const database = makeMigratedDatabaseLayer({
     filename: ':memory:',
     migrationsFolder: join(import.meta.dirname, '../../drizzle'),
@@ -21,14 +25,18 @@ const layer = (appEnvironment: 'development' | 'staging' | 'production' = 'stagi
     Layer.succeed(
       Passwords,
       Passwords.of({
-        hash: () => Effect.succeed('$argon2id$demo'),
+        hash: (password) => Effect.succeed(`$argon2id$demo:${password}`),
         verify: () => Effect.succeed(true),
       }),
     ),
     Layer.succeed(RuntimeConfiguration, {
       ...defaultRuntimeConfig,
       application: { ...defaultRuntimeConfig.application, appEnvironment },
-      demo: { password: Option.some(Redacted.make('demo-secret')) },
+      demo: {
+        enabled,
+        password: Option.some(Redacted.make('demo-secret')),
+        accountPassword: Option.some(Redacted.make(accountPassword)),
+      },
     }),
   );
   return Layer.merge(database, DemoLive.pipe(Layer.provide(dependencies)));
@@ -83,6 +91,12 @@ describe('Demonstration reset', () => {
           '01ARZ3NDEKTSV4RRFFQ69G5FAA',
         );
         expect(second).toEqual(first);
+        expect(
+          database.sqlite
+            .prepare('select password_hash from password_credentials limit 1')
+            .pluck()
+            .get(),
+        ).toBe('$argon2id$demo:demo-account-password');
         expect(
           database.sqlite
             .prepare('select id, name, logo_url as logoUrl, version from branding_settings')
@@ -157,6 +171,33 @@ describe('Demonstration reset', () => {
         if (error._tag === 'DemoResetRejected')
           expect(error.code).toBe('demo.environment_rejected');
       }).pipe(Effect.provide(layer('production'))),
+    );
+  });
+
+  it('rejects reset when demo mode is disabled without changing the database', async () => {
+    await Effect.runPromise(
+      Effect.gen(function* () {
+        const demo = yield* Demo;
+        const database = yield* Database;
+        const error = yield* demo
+          .reset({ password: 'demo-secret', confirmed: true }, '01ARZ3NDEKTSV4RRFFQ69G5FAA')
+          .pipe(Effect.flip);
+        expect(error._tag).toBe('DemoResetRejected');
+        expect(database.sqlite.prepare('select count(*) from users').pluck().get()).toBe(0);
+      }).pipe(Effect.provide(layer('staging', false))),
+    );
+  });
+
+  it('rejects an account password that matches the reset secret', async () => {
+    await Effect.runPromise(
+      Effect.gen(function* () {
+        const demo = yield* Demo;
+        const error = yield* demo
+          .reset({ password: 'demo-secret', confirmed: true }, '01ARZ3NDEKTSV4RRFFQ69G5FAA')
+          .pipe(Effect.flip);
+        expect(error._tag).toBe('DemoResetRejected');
+        if (error._tag === 'DemoResetRejected') expect(error.code).toBe('demo.password_conflict');
+      }).pipe(Effect.provide(layer('staging', true, 'demo-secret'))),
     );
   });
 });

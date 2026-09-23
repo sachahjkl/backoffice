@@ -34,6 +34,7 @@ export class DemoResetRejected extends Schema.TaggedError<DemoResetRejected>()(
     code: Schema.Literals([
       'demo.environment_rejected',
       'demo.secret_missing',
+      'demo.password_conflict',
       'demo.password_invalid',
     ]),
   },

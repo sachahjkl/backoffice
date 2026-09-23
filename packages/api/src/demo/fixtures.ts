@@ -87,41 +87,43 @@ const emailFor = (displayName: string, index: number) => {
 
 const frenchPhone = () => `+336${faker.string.numeric(8)}`;
 
+export const demoProfiles = [
+  {
+    name: 'Léa Morel',
+    email: 'administrator@demo.invalid',
+    roleName: 'Administration',
+    profile: null,
+  },
+  {
+    name: 'Hugo Bernard',
+    email: 'collaborator@demo.invalid',
+    roleName: 'Équipe commerciale',
+    profile: 'collaborator',
+  },
+  {
+    name: 'Inès Laurent',
+    email: 'accountant@demo.invalid',
+    roleName: 'Comptabilité',
+    profile: 'accountant',
+  },
+  {
+    name: 'Thomas Leroy',
+    email: 'validator@demo.invalid',
+    roleName: 'Validation comptable',
+    profile: 'accounting-validator',
+  },
+  {
+    name: 'Sofia Roux',
+    email: 'reader@demo.invalid',
+    roleName: 'Consultation comptable',
+    profile: 'accounting-reader',
+  },
+] as const;
+
 export const generateDemoFixtures = () => {
   faker.seed(20_260_913);
 
-  const profiles = [
-    {
-      name: 'Léa Morel',
-      email: 'administrator@demo.invalid',
-      roleName: 'Administration',
-      profile: null,
-    },
-    {
-      name: 'Hugo Bernard',
-      email: 'collaborator@demo.invalid',
-      roleName: 'Équipe commerciale',
-      profile: 'collaborator',
-    },
-    {
-      name: 'Inès Laurent',
-      email: 'accountant@demo.invalid',
-      roleName: 'Comptabilité',
-      profile: 'accountant',
-    },
-    {
-      name: 'Thomas Leroy',
-      email: 'validator@demo.invalid',
-      roleName: 'Validation comptable',
-      profile: 'accounting-validator',
-    },
-    {
-      name: 'Sofia Roux',
-      email: 'reader@demo.invalid',
-      roleName: 'Consultation comptable',
-      profile: 'accounting-reader',
-    },
-  ] as const;
+  const profiles = demoProfiles;
 
   const makeClient = (index: number) => {
     const displayName = faker.company.name();

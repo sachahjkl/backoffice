@@ -3,6 +3,7 @@ import { provideRouter, Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 
 import { Authentication } from '@backoffice/authentication';
+import { RuntimeConfiguration } from '@app/runtime-configuration';
 import { Login } from './login';
 
 class AuthStub {
@@ -20,6 +21,30 @@ class AuthStub {
 }
 
 describe('Login', () => {
+  it('shows synthetic credentials only when demo configuration is available', async () => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter([{ path: '', component: Login }]),
+        { provide: Authentication, useValue: new AuthStub('administrator') },
+        {
+          provide: RuntimeConfiguration,
+          useValue: {
+            value: {
+              demo: {
+                password: 'public-demo-password',
+                accounts: [{ name: 'Léa Morel', email: 'administrator@demo.invalid' }],
+              },
+            },
+          },
+        },
+      ],
+    });
+    const harness = await RouterTestingHarness.create('/');
+    const text = harness.fixture.nativeElement.textContent as string;
+    expect(text).toContain('administrator@demo.invalid');
+    expect(text).toContain('public-demo-password');
+  });
+
   it('redirects an administrator from the single login form', async () => {
     const auth = new AuthStub('administrator');
     TestBed.configureTestingModule({
@@ -35,6 +60,7 @@ describe('Login', () => {
     expect(root.querySelector('.eyebrow')).toBeNull();
     expect(root.querySelector('.ds-panel')).toBeNull();
     expect(root.querySelector('.login-intro')).not.toBeNull();
+    expect(root.querySelector('.demo-accounts')).toBeNull();
     expect(root.querySelector('form')?.getAttribute('aria-labelledby')).toBe('login-form-title');
     expect(root.querySelector('h1')?.textContent).toContain('Back office');
     const bootstrapLink = () => root.querySelector<HTMLAnchorElement>('.bootstrap-link');

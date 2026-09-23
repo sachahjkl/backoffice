@@ -11,6 +11,7 @@ const developmentConfig: PublicRuntimeConfigValue = {
   sitePhase: 'live',
   commit: null,
   githubRepositoryUrl: null,
+  demo: null,
 };
 
 const readBrowserConfig = (): PublicRuntimeConfigValue =>

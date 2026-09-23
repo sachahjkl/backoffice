@@ -115,16 +115,19 @@ const make = Effect.gen(function* () {
     request: DemoResetRequest,
     actorUserId: UlidValue,
   ) {
-    if (runtime.application.appEnvironment === 'production')
+    if (runtime.application.appEnvironment === 'production' || !runtime.demo.enabled)
       return yield* new DemoResetRejected({ code: 'demo.environment_rejected' });
     const password = Option.getOrUndefined(runtime.demo.password);
-    if (password === undefined)
+    const accountPassword = Option.getOrUndefined(runtime.demo.accountPassword);
+    if (password === undefined || accountPassword === undefined)
       return yield* new DemoResetRejected({ code: 'demo.secret_missing' });
+    if (Redacted.value(password) === Redacted.value(accountPassword))
+      return yield* new DemoResetRejected({ code: 'demo.password_conflict' });
     const provided = Buffer.from(request.password);
     const expected = Buffer.from(Redacted.value(password));
     if (provided.length !== expected.length || !timingSafeEqual(provided, expected))
       return yield* new DemoResetRejected({ code: 'demo.password_invalid' });
-    const passwordHash = yield* passwords.hash(Redacted.value(password)).pipe(Effect.orDie);
+    const passwordHash = yield* passwords.hash(Redacted.value(accountPassword)).pipe(Effect.orDie);
     const now = yield* Clock.currentTimeMillis;
     const fixtures = generateDemoFixtures();
     const result = yield* Effect.try({

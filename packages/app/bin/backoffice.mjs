@@ -22,8 +22,8 @@ const typst =
       }
     });
 
-if (!["start", "migrate", "backup"].includes(action) || process.argv.length > 3) {
-  console.error("Usage: froment-backoffice [start|migrate|backup]");
+if (!["start", "migrate", "backup", "demo-reset"].includes(action) || process.argv.length > 3) {
+  console.error("Usage: froment-backoffice [start|migrate|backup|demo-reset]");
   process.exit(64);
 }
 

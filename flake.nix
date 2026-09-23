@@ -144,6 +144,7 @@
                 cp packages/api/dist/main.cjs "$libDir/server.cjs"
                 cp packages/api/dist/migrate.cjs "$libDir/migrate.cjs"
                 cp packages/api/dist/backup.cjs "$libDir/backup.cjs"
+                cp packages/api/dist/demo-reset.cjs "$libDir/demo-reset.cjs"
                 cp -r packages/api/drizzle "$shareDir/drizzle"
                 argon2Modules=$(dirname $(readlink -f packages/api/node_modules/argon2))
                 cp -rL "$argon2Modules/argon2" "$libDir/node_modules/"
@@ -173,6 +174,11 @@
                 cp tools/prepare.sh $out/bin/${pname}-prepare
                 makeWrapper ${runtimeNode}/bin/node $out/bin/${pname}-backup \
                   --add-flags "$libDir/backup.cjs" \
+                  --set-default DATABASE_PATH data/froment.sqlite \
+                  --set MIGRATIONS_ROOT "$shareDir/drizzle"
+                makeWrapper ${runtimeNode}/bin/node $out/bin/${pname}-demo-reset \
+                  --add-flags "$libDir/demo-reset.cjs" \
+                  --set BUSINESS_TIME_ZONE Europe/Paris \
                   --set-default DATABASE_PATH data/froment.sqlite \
                   --set MIGRATIONS_ROOT "$shareDir/drizzle"
                 chmod +x $out/bin/${pname}-deploy $out/bin/${pname}-prepare
@@ -390,6 +396,7 @@
                     "dist/main.cjs",
                     "dist/migrate.cjs",
                     "dist/backup.cjs",
+                    "dist/demo-reset.cjs",
                     "dist/web/index.csr.html",
                     "dist/templates/document.typ",
                     "dist/web/fonts/Cousine-Regular.ttf",

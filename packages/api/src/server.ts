@@ -1,6 +1,6 @@
 import { NodeHttpServer } from '@effect/platform-node';
 import type { PublicRuntimeConfigValue } from '@froment/contracts';
-import { Config, Effect, FileSystem, Layer, Schema } from 'effect';
+import { Config, Effect, FileSystem, Layer, Option, Redacted, Schema } from 'effect';
 import {
   HttpRouter,
   HttpServerRequest,
@@ -57,6 +57,7 @@ import { StatusHandlers } from './status/handlers.js';
 import { blogHandlers } from './blog/handlers.js';
 import { AccountingHandlers } from './accounting/handlers.js';
 import { DemoHandlers } from './demo/handlers.js';
+import { demoProfiles } from './demo/fixtures.js';
 
 const FrenchApi = apiForLanguage('fr');
 const EnglishApi = apiForLanguage('en');
@@ -247,7 +248,26 @@ export const ServerLive = Layer.unwrap(
       port,
       publicOrigin: publicUrl.origin,
       staticRoot,
-      runtimeConfig: { ...runtime.application, commit: deployment.metadata.commit },
+      runtimeConfig: {
+        ...runtime.application,
+        commit: deployment.metadata.commit,
+        demo:
+          runtime.demo.enabled && runtime.application.appEnvironment !== 'production'
+            ? Option.match(runtime.demo.accountPassword, {
+                onNone: () => null,
+                onSome: (password) =>
+                  Option.exists(
+                    runtime.demo.password,
+                    (secret) => Redacted.value(secret) === Redacted.value(password),
+                  )
+                    ? null
+                    : {
+                        password: Redacted.value(password),
+                        accounts: demoProfiles.map(({ name, email }) => ({ name, email })),
+                      },
+              })
+            : null,
+      },
     }).pipe(Layer.provide(Layer.succeed(TrustedProxyAddresses, new Set(trustedProxyAddresses))));
   }),
 );

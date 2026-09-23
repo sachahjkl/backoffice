@@ -8,6 +8,7 @@ import { Button } from '@shared/button/button';
 import { Notice } from '@shared/notice/notice';
 import { Passkeys } from '@backoffice/passkeys';
 import { loginDestination } from './login-navigation';
+import { RuntimeConfiguration } from '@app/runtime-configuration';
 
 @Component({
   host: { class: 'page-container' },
@@ -27,6 +28,7 @@ export class Login {
   protected readonly error = signal<TranslationKey | undefined>(undefined);
   protected readonly pending = signal(false);
   protected readonly passkeys = inject(Passkeys);
+  protected readonly demo = inject(RuntimeConfiguration).value?.demo;
 
   constructor() {
     void this.branding.load();
