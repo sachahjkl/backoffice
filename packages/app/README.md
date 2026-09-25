@@ -32,4 +32,4 @@ See the source repository's `docs/secrets.md` and `docs/runtime-configuration.md
 
 ## Build a local package from source
 
-Run `pnpm pack:app` at the repository root. This builds the API and web application, assembles the assets, and writes an npm tarball to the repository root. Install that tarball with `npm install ./sachahjkl-backoffice-0.2.8.tgz` in the consuming application.
+Run `pnpm pack:app` at the repository root. This builds the API and web application, assembles the assets, and writes an npm tarball to the repository root. Install that tarball with `npm install ./sachahjkl-backoffice-0.2.9.tgz` in the consuming application.
