@@ -100,7 +100,7 @@ export const translations = {
     'login.identity.label': 'Compte de démonstration',
     'login.identity.placeholder': 'Choisir un compte',
     'login.identity.hint': 'Choisissez un compte pour remplir le formulaire.',
-    'login.copyright': '© {year} {company}',
+    'login.copyright': '© {year} {company} · {product}',
     'login.source': 'Source · {commit}',
     'bank.history': 'Historique des rapprochements',
     'bank.historyHint':
@@ -301,7 +301,6 @@ export const translations = {
     'backOffice.backToAffairs': 'Retour aux affaires',
     'backOffice.backToBilling': 'Retour à la facturation',
     'backOffice.backToClients': 'Retour aux clients',
-    'backOffice.intro': 'Entrez votre adresse email et votre mot de passe.',
     'backOffice.email': 'Adresse email',
     'backOffice.password': 'Mot de passe',
     'authentication.invalid_credentials': 'Adresse email ou mot de passe incorrect.',
@@ -1674,7 +1673,7 @@ export const translations = {
     'login.identity.label': 'Demo account',
     'login.identity.placeholder': 'Choose an account',
     'login.identity.hint': 'Choose an account to fill the form.',
-    'login.copyright': '© {year} {company}',
+    'login.copyright': '© {year} {company} · {product}',
     'login.source': 'Source · {commit}',
     'bank.history': 'Reconciliation history',
     'bank.historyHint':
@@ -1870,7 +1869,6 @@ export const translations = {
     'backOffice.backToAffairs': 'Back to engagements',
     'backOffice.backToBilling': 'Back to billing',
     'backOffice.backToClients': 'Back to clients',
-    'backOffice.intro': 'Enter your email address and password.',
     'backOffice.email': 'Email address',
     'backOffice.password': 'Password',
     'authentication.invalid_credentials': 'Incorrect email address or password.',

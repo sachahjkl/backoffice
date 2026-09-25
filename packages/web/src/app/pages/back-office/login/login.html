@@ -1,20 +1,14 @@
-<section class="login-page" aria-labelledby="back-office-title">
+<section class="login-page" aria-labelledby="login-form-title">
   <header class="login-intro">
     <div class="brand-lockup">
       <img class="enterprise-logo" [src]="brandLogoUrl()" alt="" width="64" height="64" />
       <p class="enterprise-name">{{ brandName() }}</p>
     </div>
-    <h1 id="back-office-title">{{ i18n.t('backOffice.title') }}</h1>
-    <p id="login-description" class="login-description">{{ i18n.t('backOffice.intro') }}</p>
   </header>
 
   <div class="login-fields">
-    <h2 id="login-form-title">{{ i18n.t('login.heading') }}</h2>
-    <form
-      aria-labelledby="login-form-title"
-      aria-describedby="login-description"
-      (submit)="submit($event, email.value, password.value)"
-    >
+    <h1 id="login-form-title">{{ i18n.t('login.heading') }}</h1>
+    <form aria-labelledby="login-form-title" (submit)="submit($event, email.value, password.value)">
       <div class="field">
         <label for="back-office-email">{{ i18n.t('backOffice.email') }}</label>
         <input
@@ -86,7 +80,10 @@
   </div>
 
   <footer class="login-footer">
-    <span>{{ i18n.tf('login.copyright', { year: currentYear, company: brandName() }) }}</span>
+    <span
+      >{{ i18n.tf('login.copyright', { year: currentYear, company: brandName(), product:
+      i18n.t('backOffice.title') }) }}</span
+    >
     @if (source(); as release) {
     <a
       [href]="release.url"

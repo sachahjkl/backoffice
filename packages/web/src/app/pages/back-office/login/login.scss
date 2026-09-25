@@ -33,44 +33,31 @@
   display: block;
   width: 3.5rem;
   height: 3.5rem;
-  padding: 0.2rem;
+  padding: 0;
   border: 2px solid rgb(0 0 0 / 0.2);
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   background: transparent;
   object-fit: contain;
 }
 
 .enterprise-name {
   min-inline-size: 0;
-  max-inline-size: 18rem;
-  overflow: hidden;
+  max-inline-size: 24rem;
   color: var(--color-ink-soft);
-  font-size: var(--text-sm);
+  font-size: var(--text-lg);
   font-weight: 700;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: var(--leading-heading);
+  overflow-wrap: anywhere;
 }
 
 h1 {
-  font-size: clamp(2rem, 6vw, 3rem);
-}
-
-.login-description {
-  max-inline-size: 34ch;
-  color: var(--color-muted);
-  font-size: var(--text-lg);
-  line-height: var(--leading-heading);
-  text-wrap: balance;
+  font-size: var(--text-xl);
 }
 
 .login-fields {
   width: 100%;
   max-inline-size: 26rem;
   justify-self: center;
-}
-
-h2 {
-  font-size: var(--text-xl);
 }
 
 form {

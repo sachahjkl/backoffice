@@ -81,12 +81,11 @@ describe('Login', () => {
     expect(root.querySelector('.eyebrow')).toBeNull();
     expect(root.querySelector('.ds-panel')).toBeNull();
     expect(root.querySelector('.login-intro')).not.toBeNull();
-    expect(root.querySelector('.login-description')?.textContent).toContain('email');
     expect(root.querySelector('.identity-picker')).toBeNull();
     expect(root.querySelector('.login-footer')).not.toBeNull();
     expect(root.querySelector('form')?.getAttribute('aria-labelledby')).toBe('login-form-title');
-    expect(root.querySelector('form')?.getAttribute('aria-describedby')).toBe('login-description');
-    expect(root.querySelector('h1')?.textContent).toContain('Back office');
+    expect(root.querySelector('h1')?.textContent?.trim()).not.toBe('Back office');
+    expect(root.querySelector('.login-footer')?.textContent).toContain('Back office');
     const bootstrapLink = () => root.querySelector<HTMLAnchorElement>('.bootstrap-link');
     expect(root.querySelector('.bootstrap-slot')).not.toBeNull();
     expect(bootstrapLink()?.hasAttribute('appLinkButton')).toBe(false);
