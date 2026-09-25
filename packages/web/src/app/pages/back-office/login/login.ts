@@ -24,11 +24,25 @@ export class Login {
   private readonly auth = inject(Authentication);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly runtime = inject(RuntimeConfiguration);
   private readonly urlSerializer = inject(UrlSerializer);
   protected readonly error = signal<TranslationKey | undefined>(undefined);
   protected readonly pending = signal(false);
   protected readonly passkeys = inject(Passkeys);
-  protected readonly demo = inject(RuntimeConfiguration).value?.demo;
+  protected readonly demo = this.runtime.value?.demo;
+  protected readonly selectedIdentity = signal('');
+  protected readonly currentYear = new Date().getUTCFullYear();
+  protected readonly brandName = computed(
+    () => this.branding.current()?.name ?? this.i18n.t('backOffice.title'),
+  );
+  protected readonly brandLogoUrl = computed(
+    () => this.branding.current()?.logoUrl ?? '/brand/default.svg',
+  );
+  protected readonly source = computed(() => {
+    const commit = this.runtime.value?.commit;
+    const url = this.runtime.commitUrl(commit);
+    return commit && url ? { commit: commit.slice(0, 8), url } : undefined;
+  });
 
   constructor() {
     void this.branding.load();
@@ -43,10 +57,26 @@ export class Login {
     if (outcome.success) await this.router.navigateByUrl(this.destination(outcome.mode));
     else this.error.set(outcome.code);
   }
+
   protected readonly submitLabel = computed<TranslationKey>(() => {
     if (this.pending()) return 'backOffice.pending';
     return 'backOffice.submit';
   });
+
+  protected selectIdentity(
+    email: string,
+    emailInput: HTMLInputElement,
+    passwordInput: HTMLInputElement,
+  ): void {
+    const account = this.demo?.accounts.find((candidate) => candidate.email === email);
+    if (!account || !this.demo) {
+      this.selectedIdentity.set('');
+      return;
+    }
+    this.selectedIdentity.set(account.email);
+    emailInput.value = account.email;
+    passwordInput.value = this.demo.password;
+  }
 
   async submit(event: SubmitEvent, email: string, password: string): Promise<void> {
     event.preventDefault();

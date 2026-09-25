@@ -21,7 +21,7 @@ class AuthStub {
 }
 
 describe('Login', () => {
-  it('shows synthetic credentials only when demo configuration is available', async () => {
+  it('fills the form from the selected demo identity', async () => {
     TestBed.configureTestingModule({
       providers: [
         provideRouter([{ path: '', component: Login }]),
@@ -30,19 +30,40 @@ describe('Login', () => {
           provide: RuntimeConfiguration,
           useValue: {
             value: {
+              appEnvironment: 'development',
+              sitePhase: 'live',
+              commit: '6c9757782e249d4db6ffb804349b7da620494565',
+              githubRepositoryUrl: 'https://github.com/example/backoffice',
               demo: {
                 password: 'public-demo-password',
                 accounts: [{ name: 'Léa Morel', email: 'administrator@demo.invalid' }],
               },
             },
+            commitUrl: (commit: string | null | undefined) =>
+              commit ? `https://github.com/example/backoffice/commit/${commit}` : undefined,
           },
         },
       ],
     });
     const harness = await RouterTestingHarness.create('/');
-    const text = harness.fixture.nativeElement.textContent as string;
-    expect(text).toContain('administrator@demo.invalid');
-    expect(text).toContain('public-demo-password');
+    const root: HTMLElement = harness.fixture.nativeElement;
+    const identity = root.querySelector<HTMLSelectElement>('#login-identity');
+    const email = root.querySelector<HTMLInputElement>('#back-office-email');
+    const password = root.querySelector<HTMLInputElement>('#back-office-password');
+
+    expect(identity).not.toBeNull();
+    expect(identity?.options).toHaveLength(2);
+    expect(root.querySelector('.demo-accounts')).toBeNull();
+    expect(root.textContent).not.toContain('public-demo-password');
+    expect(root.querySelector<HTMLAnchorElement>('.login-footer a')?.getAttribute('href')).toBe(
+      'https://github.com/example/backoffice/commit/6c9757782e249d4db6ffb804349b7da620494565',
+    );
+
+    identity!.value = 'administrator@demo.invalid';
+    identity!.dispatchEvent(new Event('change'));
+
+    expect(email?.value).toBe('administrator@demo.invalid');
+    expect(password?.value).toBe('public-demo-password');
   });
 
   it('redirects an administrator from the single login form', async () => {
@@ -60,8 +81,11 @@ describe('Login', () => {
     expect(root.querySelector('.eyebrow')).toBeNull();
     expect(root.querySelector('.ds-panel')).toBeNull();
     expect(root.querySelector('.login-intro')).not.toBeNull();
-    expect(root.querySelector('.demo-accounts')).toBeNull();
+    expect(root.querySelector('.login-description')?.textContent).toContain('email');
+    expect(root.querySelector('.identity-picker')).toBeNull();
+    expect(root.querySelector('.login-footer')).not.toBeNull();
     expect(root.querySelector('form')?.getAttribute('aria-labelledby')).toBe('login-form-title');
+    expect(root.querySelector('form')?.getAttribute('aria-describedby')).toBe('login-description');
     expect(root.querySelector('h1')?.textContent).toContain('Back office');
     const bootstrapLink = () => root.querySelector<HTMLAnchorElement>('.bootstrap-link');
     expect(root.querySelector('.bootstrap-slot')).not.toBeNull();

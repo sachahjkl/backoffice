@@ -1,27 +1,27 @@
 <section class="login-page" aria-labelledby="back-office-title">
   <header class="login-intro">
-    @if (branding.current(); as brand) {
-    <img class="enterprise-logo" [src]="brand.logoUrl" alt="" width="64" height="64" />
-    <p class="enterprise-name">{{ brand.name }}</p>
-    }
+    <div class="brand-lockup">
+      <img class="enterprise-logo" [src]="brandLogoUrl()" alt="" width="64" height="64" />
+      <p class="enterprise-name">{{ brandName() }}</p>
+    </div>
     <h1 id="back-office-title">{{ i18n.t('backOffice.title') }}</h1>
-    <p class="login-description">{{ i18n.t('login.description') }}</p>
-    <p class="login-access">{{ i18n.t('login.access') }}</p>
+    <p id="login-description" class="login-description">{{ i18n.t('backOffice.intro') }}</p>
   </header>
+
   <div class="login-fields">
     <h2 id="login-form-title">{{ i18n.t('login.heading') }}</h2>
-    <p id="login-hint">{{ i18n.t('backOffice.intro') }}</p>
     <form
       aria-labelledby="login-form-title"
-      aria-describedby="login-hint"
+      aria-describedby="login-description"
       (submit)="submit($event, email.value, password.value)"
     >
       <div class="field">
-        <label for="back-office-email"> {{ i18n.t('backOffice.email') }} </label>
+        <label for="back-office-email">{{ i18n.t('backOffice.email') }}</label>
         <input
           #email
           id="back-office-email"
           class="input"
+          name="email"
           type="email"
           autocomplete="username"
           required
@@ -34,6 +34,7 @@
           #password
           id="back-office-password"
           class="input"
+          name="password"
           type="password"
           autocomplete="current-password"
           required
@@ -42,29 +43,59 @@
       @if (error(); as errorKey) {
       <p appNotice variant="danger" role="alert">{{ i18n.t(errorKey) }}</p>
       }
-      <button appButton variant="primary" type="submit" [disabled]="pending()">
-        {{ i18n.t(submitLabel()) }}
-      </button>
-      @if (passkeys.supported) {
-      <button appButton type="button" [disabled]="pending()" (click)="loginPasskey()">
-        {{ i18n.t('passkey.login') }}
-      </button>
-      }
+      <div class="form-actions">
+        <button appButton variant="primary" size="large" type="submit" [disabled]="pending()">
+          {{ i18n.t(submitLabel()) }}
+        </button>
+        @if (passkeys.supported) {
+        <button
+          appButton
+          size="large"
+          type="button"
+          [disabled]="pending()"
+          (click)="loginPasskey()"
+        >
+          {{ i18n.t('passkey.login') }}
+        </button>
+        }
+      </div>
+      @if (demo; as demoConfig) { @if (demoConfig.accounts.length > 0) {
+      <div class="identity-picker">
+        <label class="ds-label" for="login-identity">{{ i18n.t('login.identity.label') }}</label>
+        <select
+          #identity
+          id="login-identity"
+          class="select"
+          [value]="selectedIdentity()"
+          [disabled]="pending()"
+          aria-describedby="login-identity-hint"
+          (change)="selectIdentity(identity.value, email, password)"
+        >
+          <option value="">{{ i18n.t('login.identity.placeholder') }}</option>
+          @for (account of demoConfig.accounts; track account.email) {
+          <option [value]="account.email">{{ account.name }} · {{ account.email }}</option>
+          }
+        </select>
+        <p id="login-identity-hint" class="identity-hint">{{ i18n.t('login.identity.hint') }}</p>
+      </div>
+      } }
     </form>
     <div class="bootstrap-slot">
-      <a class="bootstrap-link" routerLink="/bootstrap"> {{ i18n.t('backOffice.bootstrap') }} </a>
+      <a class="bootstrap-link" routerLink="/bootstrap">{{ i18n.t('backOffice.bootstrap') }}</a>
     </div>
   </div>
-  @if (demo; as demoAccounts) {
-  <aside class="demo-accounts" aria-labelledby="demo-accounts-title">
-    <h2 id="demo-accounts-title">{{ i18n.t('login.demoHeading') }}</h2>
-    <p>{{ i18n.t('login.demoDescription') }}</p>
-    <ul>
-      @for (account of demoAccounts.accounts; track account.email) {
-      <li><strong>{{ account.name }}</strong> <code>{{ account.email }}</code></li>
-      }
-    </ul>
-    <p>{{ i18n.t('login.demoPassword') }}: <code>{{ demoAccounts.password }}</code></p>
-  </aside>
-  }
+
+  <footer class="login-footer">
+    <span>{{ i18n.tf('login.copyright', { year: currentYear, company: brandName() }) }}</span>
+    @if (source(); as release) {
+    <a
+      [href]="release.url"
+      target="_blank"
+      rel="noopener noreferrer"
+      [attr.aria-label]="i18n.tf('version.commitLink', { commit: release.commit })"
+    >
+      {{ i18n.tf('login.source', { commit: release.commit }) }}
+    </a>
+    }
+  </footer>
 </section>
