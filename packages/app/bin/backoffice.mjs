@@ -27,6 +27,16 @@ if (!["start", "migrate", "backup", "demo-reset"].includes(action) || process.ar
   process.exit(64);
 }
 
+const deploymentMetadata =
+  process.env["DEPLOYMENT_METADATA"] ??
+  JSON.stringify({
+    commit: "0".repeat(40),
+    packages: [
+      { name: "@froment/api", version: manifest.version },
+      { name: manifest.name, version: manifest.version },
+    ],
+  });
+
 Object.assign(process.env, {
   DATABASE_PATH: database,
   MIGRATIONS_ROOT: join(root, "drizzle"),
@@ -36,13 +46,7 @@ Object.assign(process.env, {
   BUSINESS_TIME_ZONE: process.env["BUSINESS_TIME_ZONE"] ?? "Europe/Paris",
   PORT: process.env["PORT"] ?? "3000",
   TYPST_PATH: typst ?? "typst",
-  DEPLOYMENT_METADATA: JSON.stringify({
-    commit: "0".repeat(40),
-    packages: [
-      { name: "@froment/api", version: manifest.version },
-      { name: manifest.name, version: manifest.version },
-    ],
-  }),
+  DEPLOYMENT_METADATA: deploymentMetadata,
 });
 
 if (action !== "backup") mkdirSync(dirname(database), { recursive: true });
