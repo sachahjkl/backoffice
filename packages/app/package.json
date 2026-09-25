@@ -1,6 +1,6 @@
 {
   "name": "@sachahjkl/backoffice",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "description": "Standalone Froment Software backoffice server and web application",
   "license": "SEE LICENSE IN LICENSE",
   "bin": {
