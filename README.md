@@ -3,6 +3,10 @@
 This repository contains the backoffice application and its npm package, `@sachahjkl/backoffice`.
 It contains an Angular web application and an Effect API backed by SQLite.
 
+## License
+
+This repository is proprietary software. You must obtain prior written permission from Sacha Froment before using it. Permission may be granted free of charge or for a fee. Send requests through [froment.software](https://froment.software) or to [contact@froment.software](mailto:contact@froment.software). See [LICENSE](LICENSE) for the complete terms.
+
 ## Development
 
 Use Node.js 26.7 or later within the 26.x series and pnpm 11.25.0, or enter `nix develop`.

@@ -2,7 +2,7 @@
   "name": "@sachahjkl/backoffice",
   "version": "0.2.9",
   "description": "Standalone Froment Software backoffice server and web application",
-  "license": "UNLICENSED",
+  "license": "SEE LICENSE IN LICENSE",
   "bin": {
     "froment-backoffice": "bin/backoffice.mjs"
   },

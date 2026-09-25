@@ -2,6 +2,10 @@
 
 Standalone Froment Software backoffice server and web application.
 
+## License
+
+This package is proprietary software. You must obtain prior written permission from Sacha Froment before using it. Permission may be granted free of charge or for a fee. Send requests through [froment.software](https://froment.software) or to [contact@froment.software](mailto:contact@froment.software). See [LICENSE](LICENSE) for the complete terms.
+
 ## Install
 
 Install Node.js 26.7 or later in the 26.x series and Typst. Install the package in your application:

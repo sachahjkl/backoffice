@@ -1,0 +1,69 @@
+Froment Software License
+Version 1.0 — 25 September 2026
+
+Copyright (c) 2026 Sacha Froment. All rights reserved.
+
+This license governs the Froment Software backoffice application and its source code, including the `@sachahjkl/backoffice` package, unless a third-party component states otherwise.
+
+1. Definitions
+
+"Licensor" means Sacha Froment, the copyright holder of the Software.
+"Software" means this repository, the `@sachahjkl/backoffice` package, and any source code, build output, documentation, templates, and materials distributed with them, except for third-party components.
+"You" means the person or legal entity that requests, obtains, or uses the Software.
+
+2. Permission required
+
+You must obtain prior written permission from the Licensor before you copy, download, install, execute, run, host, modify, adapt, translate, distribute, sublicense, publish, sell, or otherwise use the Software, in whole or in part.
+
+Written permission means a permission notice sent by email, a signed agreement, or another written record that clearly identifies the Software and the scope of the permission.
+
+Send your request through https://froment.software or to contact@froment.software.
+
+A request does not grant permission. Possession of the source code, access to the repository, an npm package, or a copy of this license does not grant permission.
+
+3. Permission terms
+
+The Licensor may grant permission free of charge, for a fee, or on other conditions. Any permission may limit the purpose, users, duration, deployment, modification, distribution, or commercial use of the Software.
+
+Unless the written permission states otherwise, permission is personal, non-transferable, non-exclusive, and limited to the specific use described in that permission. You must not sublicense or transfer the permission without the Licensor's prior written approval.
+
+4. Ownership and restrictions
+
+The Licensor retains all copyright, trademark, and other intellectual property rights in the Software. No rights are granted by implication.
+
+You must not remove or obscure copyright, license, attribution, or other proprietary notices from the Software or its permitted copies. You must not claim authorship or ownership of the Software or of modifications created from it.
+
+5. Third-party components
+
+The Software may contain third-party components. Their own licenses govern their use. This license does not grant rights to those components, restrict rights granted by their licenses, or replace any required attribution or notice.
+
+6. Contributions
+
+You have no right to submit contributions unless the Licensor separately agrees to accept them. The Licensor may accept, reject, modify, or relicense any contribution at their discretion.
+
+7. Termination
+
+Any permission ends automatically if you breach its terms. The Licensor may revoke permission for a material breach that causes harm to the Licensor or third parties. You must stop using and remove all copies of the Software when permission ends, unless applicable law requires otherwise.
+
+8. No warranty
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT. THE LICENSOR DOES NOT WARRANT THAT THE SOFTWARE WILL BE ERROR-FREE, SECURE, AVAILABLE, OR SUITABLE FOR A PARTICULAR PURPOSE.
+
+9. Limitation of liability
+
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE LICENSOR IS NOT LIABLE FOR ANY CLAIM, DAMAGES, DATA LOSS, BUSINESS INTERRUPTION, OR OTHER LIABILITY ARISING FROM THE SOFTWARE OR ITS USE, EVEN IF THE LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+10. No obligation to support
+
+Permission to use the Software does not include support, maintenance, updates, hosting, training, or a service level. The Licensor has no obligation to provide any of them.
+
+11. Severability
+
+If a provision of this license is unenforceable, that provision must be modified to the minimum extent necessary to make it enforceable. The remaining provisions remain in effect.
+
+12. Contact
+
+Permission requests and license questions:
+
+- Website: https://froment.software
+- Email: contact@froment.software
