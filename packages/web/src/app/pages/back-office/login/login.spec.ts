@@ -34,6 +34,7 @@ describe('Login', () => {
               sitePhase: 'live',
               commit: '6c9757782e249d4db6ffb804349b7da620494565',
               githubRepositoryUrl: 'https://github.com/example/backoffice',
+              brandingLogoUrl: null,
               demo: {
                 password: 'public-demo-password',
                 accounts: [{ name: 'Léa Morel', email: 'administrator@demo.invalid' }],

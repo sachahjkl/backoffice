@@ -11,6 +11,7 @@ const developmentConfig: PublicRuntimeConfigValue = {
   sitePhase: 'live',
   commit: null,
   githubRepositoryUrl: null,
+  brandingLogoUrl: null,
   demo: null,
 };
 

@@ -1,3 +1,4 @@
+import { DOCUMENT } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
@@ -14,6 +15,10 @@ describe('BrandingApi', () => {
     http.expectOne('/api/branding').flush({ name: 'Example', logoUrl: '/logo.png', version: 0 });
     await load;
     expect(api.current()?.name).toBe('Example');
+    const document = TestBed.inject(DOCUMENT);
+    expect(
+      document.head.querySelector<HTMLLinkElement>('link[rel~="icon"]')?.getAttribute('href'),
+    ).toBe('/logo.png');
 
     const update = api.update({ name: 'New name', logoUrl: null, expectedVersion: 0 });
     const request = http.expectOne('/api/branding');

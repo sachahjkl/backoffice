@@ -1,3 +1,4 @@
+import { DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import {
@@ -12,16 +13,17 @@ import { requestOutcome } from '@shared/api-outcome';
 
 @Injectable({ providedIn: 'root' })
 export class BrandingApi {
+  private readonly document = inject(DOCUMENT);
   private readonly http = inject(HttpClient);
   readonly current = signal<Branding | null>(null);
 
   async load(): Promise<void> {
     try {
-      this.current.set(
-        Schema.decodeUnknownSync(Branding)(
-          await firstValueFrom(this.http.get<unknown>('/api/branding')),
-        ),
+      const branding = Schema.decodeUnknownSync(Branding)(
+        await firstValueFrom(this.http.get<unknown>('/api/branding')),
       );
+      this.current.set(branding);
+      this.updateFavicon(branding.logoUrl);
     } catch {
       this.current.set(null);
     }
@@ -34,7 +36,24 @@ export class BrandingApi {
       BrandingConflict,
       'company.error',
     );
-    if (outcome.success) this.current.set(outcome.result);
+    if (outcome.success) {
+      this.current.set(outcome.result);
+      this.updateFavicon(outcome.result.logoUrl);
+    }
     return outcome;
+  }
+
+  private updateFavicon(logoUrl: string): void {
+    const icon =
+      this.document.head.querySelector<HTMLLinkElement>('link[rel~="icon"]') ??
+      this.document.createElement('link');
+    icon.rel = 'icon';
+    icon.href = logoUrl;
+    if (!icon.parentNode) this.document.head.append(icon);
+
+    const appleTouchIcon = this.document.head.querySelector<HTMLLinkElement>(
+      'link[rel="apple-touch-icon"]',
+    );
+    if (appleTouchIcon) appleTouchIcon.href = logoUrl;
   }
 }

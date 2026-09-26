@@ -180,7 +180,7 @@ export const makeServerLayer = (options: {
     'GET',
     '/runtime-config.js',
     HttpServerResponse.text(
-      `globalThis.fromentRuntimeConfig=${JSON.stringify(options.runtimeConfig)};document.documentElement.dataset.appEnvironment=globalThis.fromentRuntimeConfig.appEnvironment;document.documentElement.dataset.sitePhase=globalThis.fromentRuntimeConfig.sitePhase;`,
+      `globalThis.fromentRuntimeConfig=${JSON.stringify(options.runtimeConfig)};document.documentElement.dataset.appEnvironment=globalThis.fromentRuntimeConfig.appEnvironment;document.documentElement.dataset.sitePhase=globalThis.fromentRuntimeConfig.sitePhase;if(globalThis.fromentRuntimeConfig.brandingLogoUrl){document.querySelector('link[rel~="icon"]')?.setAttribute('href',globalThis.fromentRuntimeConfig.brandingLogoUrl);}`,
       {
         contentType: 'text/javascript; charset=utf-8',
         headers: {
@@ -251,6 +251,7 @@ export const ServerLive = Layer.unwrap(
       runtimeConfig: {
         ...runtime.application,
         commit: deployment.metadata.commit,
+        brandingLogoUrl: runtime.branding.logoUrl,
         demo:
           runtime.demo.enabled && runtime.application.appEnvironment !== 'production'
             ? Option.match(runtime.demo.accountPassword, {

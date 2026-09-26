@@ -1,4 +1,5 @@
 import { Schema } from 'effect';
+import { BrandingLogoUrl } from '../company/branding.js';
 import { GitCommit } from './contracts.js';
 
 export const AppEnvironment = Schema.Literals(['development', 'staging', 'production']);
@@ -12,6 +13,7 @@ export const PublicRuntimeConfig = Schema.Struct({
   sitePhase: SitePhase,
   commit: Schema.NullOr(GitCommit),
   githubRepositoryUrl: Schema.NullOr(Schema.String),
+  brandingLogoUrl: Schema.NullOr(BrandingLogoUrl),
   demo: Schema.NullOr(
     Schema.Struct({
       password: Schema.String,
