@@ -11,7 +11,7 @@ import {
   type UlidValue,
 } from '@froment/contracts';
 import { Clock, Context, DateTime, Effect, Layer, Option, Redacted, Schema } from 'effect';
-import { HttpClient, HttpClientRequest, HttpClientResponse } from 'effect/unstable/http';
+import { HttpClient, HttpClientRequest, HttpClientResponse } from 'effect/http';
 import { createCipheriv, createDecipheriv, createHash, randomBytes } from 'node:crypto';
 import { ulid } from 'ulid';
 

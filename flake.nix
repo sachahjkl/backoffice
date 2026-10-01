@@ -116,10 +116,11 @@
           inherit pname version src;
           inherit pnpm;
           fetcherVersion = 4;
-          hash = "sha256-nHIMQBQN3lsIIYbNyi1w21j+S4V7N+9MB3rUB8eqCmI=";
+          hash = "sha256-CitgZe5kBhgbIrkEA5MoIZ15u1g9qS1ILwKyT9K9gJE=";
         };
         commonPnpmAttrs = {
           inherit pname version src pnpmDeps;
+          NG_BUILD_SASS_EMBEDDED = "false";
           nativeBuildInputs = [
             buildNode
             pnpm
@@ -210,6 +211,7 @@
               dontBuild = true;
               installPhase = ''
                 runHook preInstall
+                export VITEST_MAX_WORKERS="$NIX_BUILD_CORES"
                 ${command}
                 touch "$out"
                 runHook postInstall
@@ -276,7 +278,7 @@
 
         preCommitCheck = git-hooks.lib.${system}.run {
           package = pkgs.prek;
-          src = lib.cleanSource ./.;
+          src = pkgs.nix-gitignore.gitignoreSource [] ./.;
           hooks = {
             actionlint.enable = true;
             check-added-large-files.enable = true;

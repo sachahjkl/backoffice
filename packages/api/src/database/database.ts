@@ -167,7 +167,7 @@ export const makeDatabaseLayer = (options: { readonly filename: string }) =>
 
 export const DatabaseLive = Layer.unwrap(
   Effect.gen(function* () {
-    const filename = yield* Config.string('DATABASE_PATH').pipe(
+    const filename = yield* Config.String('DATABASE_PATH').pipe(
       Config.withDefault('data/froment.sqlite'),
     );
     return makeDatabaseLayer({ filename });

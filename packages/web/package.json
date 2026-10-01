@@ -28,7 +28,7 @@
     "@tiptap/core": "catalog:",
     "@tiptap/starter-kit": "catalog:",
     "effect": "catalog:",
-    "entities": "8.0.0",
+    "entities": "8.1.0",
     "fuse.js": "catalog:",
     "marked": "catalog:",
     "mermaid": "catalog:",
@@ -39,7 +39,7 @@
     "@angular/build": "catalog:",
     "@angular/cli": "catalog:",
     "@angular/compiler-cli": "catalog:",
-    "@scalar/api-reference": "1.67.0",
+    "@scalar/api-reference": "1.72.3",
     "jsdom": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"

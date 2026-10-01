@@ -1,10 +1,5 @@
 import { Effect, Exit, Logger, Tracer } from 'effect';
-import {
-  HttpEffect,
-  HttpMiddleware,
-  HttpServerRequest,
-  HttpServerResponse,
-} from 'effect/unstable/http';
+import { HttpEffect, HttpMiddleware, HttpServerRequest, HttpServerResponse } from 'effect/http';
 import { describe, expect, it } from 'vitest';
 
 import { type RecordedAuditEvent, RequestContext } from '../http/request-context.js';

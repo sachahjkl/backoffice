@@ -1,4 +1,4 @@
-import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema } from 'effect/unstable/httpapi';
+import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema } from 'effect/http-api';
 import { ApiAuthentication, ApiBrowserRequest, ApiRequestBody } from '../api-authentication.js';
 import { frontendSpecific } from '../api-policy/visibility.js';
 import { Ulid } from '../identifiers.js';

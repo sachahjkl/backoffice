@@ -1,5 +1,5 @@
 import { Effect } from 'effect';
-import { HttpEffect, HttpServerRequest, HttpServerResponse } from 'effect/unstable/http';
+import { HttpEffect, HttpServerRequest, HttpServerResponse } from 'effect/http';
 import { randomUUID } from 'node:crypto';
 
 import {

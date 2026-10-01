@@ -44,19 +44,19 @@ export const AuthenticationConfigLive = Layer.effect(
   AuthenticationConfig,
   Effect.gen(function* () {
     const encodedBootstrapPasswordHash = yield* Schema.decodeUnknownEffect(ScryptHash)(
-      Redacted.value(yield* Config.redacted('BOOTSTRAP_PASSWORD_SCRYPT')),
+      Redacted.value(yield* Config.Redacted('BOOTSTRAP_PASSWORD_SCRYPT')),
     );
     const pasetoSecretKey = yield* Schema.decodeUnknownEffect(PasetoSecretKey)(
-      Redacted.value(yield* Config.redacted('PASETO_SECRET_KEY')),
+      Redacted.value(yield* Config.Redacted('PASETO_SECRET_KEY')),
     );
     const refreshHmacKey = yield* Schema.decodeUnknownEffect(HmacKey)(
-      Redacted.value(yield* Config.redacted('REFRESH_HMAC_KEY')),
+      Redacted.value(yield* Config.Redacted('REFRESH_HMAC_KEY')),
     );
     const apiTokenHmacKey = yield* Schema.decodeUnknownEffect(HmacKey)(
-      Redacted.value(yield* Config.redacted('API_TOKEN_HMAC_KEY')),
+      Redacted.value(yield* Config.Redacted('API_TOKEN_HMAC_KEY')),
     );
     const quoteLinkHmacKey = yield* Schema.decodeUnknownEffect(HmacKey)(
-      Redacted.value(yield* Config.redacted('QUOTE_LINK_HMAC_KEY')),
+      Redacted.value(yield* Config.Redacted('QUOTE_LINK_HMAC_KEY')),
     );
     const publicUrl = yield* Config.schema(Schema.URL, 'PUBLIC_ORIGIN');
     const pasetoPublicKey = extractPublicKeyFromSecretKey(

@@ -1,7 +1,7 @@
 import { AppEnvironment, DeploymentMetadata } from '@froment/contracts';
 import { Config, Effect, Layer, Schema } from 'effect';
-import { FetchHttpClient } from 'effect/unstable/http';
-import { OtlpLogger, OtlpSerialization, OtlpTracer } from 'effect/unstable/observability';
+import { FetchHttpClient } from 'effect/http';
+import { OtlpLogger, OtlpSerialization, OtlpTracer } from 'effect/observability';
 
 export const ObservabilityLive = Layer.unwrap(
   Effect.gen(function* () {

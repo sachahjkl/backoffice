@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "effect": "catalog:",
-    "entities": "8.0.0",
+    "entities": "8.1.0",
     "marked": "catalog:"
   },
   "devDependencies": {

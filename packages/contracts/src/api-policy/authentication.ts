@@ -1,5 +1,5 @@
 import { Schema } from 'effect';
-import type * as HttpMethod from 'effect/unstable/http/HttpMethod';
+import type * as HttpMethod from 'effect/http/HttpMethod';
 
 import { ApiAuthentication } from '../api-authentication.js';
 import type { Endpoint } from './endpoint.js';

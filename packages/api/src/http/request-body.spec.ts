@@ -5,8 +5,8 @@ import {
 } from '@froment/contracts';
 import { NodeHttpServer } from '@effect/platform-node';
 import { Deferred, Effect, Layer, Scope } from 'effect';
-import { HttpRouter, HttpServer, HttpServerResponse } from 'effect/unstable/http';
-import { HttpApi, HttpApiBuilder, HttpApiGroup } from 'effect/unstable/httpapi';
+import { HttpRouter, HttpServer, HttpServerResponse } from 'effect/http';
+import { HttpApi, HttpApiBuilder, HttpApiGroup } from 'effect/http-api';
 import { IncomingMessage, ServerResponse } from 'node:http';
 import { Socket } from 'node:net';
 import { describe, expect, it, vi } from 'vitest';

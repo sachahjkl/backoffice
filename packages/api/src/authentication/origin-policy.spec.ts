@@ -1,6 +1,6 @@
 import { Effect, Layer } from 'effect';
-import { HttpRouter, HttpServer, HttpServerResponse } from 'effect/unstable/http';
-import { HttpApi, HttpApiBuilder, HttpApiGroup } from 'effect/unstable/httpapi';
+import { HttpRouter, HttpServer, HttpServerResponse } from 'effect/http';
+import { HttpApi, HttpApiBuilder, HttpApiGroup } from 'effect/http-api';
 import { describe, expect, it, vi } from 'vitest';
 
 import { ClientsApi } from '../../../contracts/src/clients/api.js';

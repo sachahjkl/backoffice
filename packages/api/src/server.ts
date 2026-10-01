@@ -1,13 +1,8 @@
 import { NodeHttpServer } from '@effect/platform-node';
 import type { PublicRuntimeConfigValue } from '@froment/contracts';
-import { Config, Effect, FileSystem, Layer, Option, Redacted, Schema } from 'effect';
-import {
-  HttpRouter,
-  HttpServerRequest,
-  HttpServerResponse,
-  HttpStaticServer,
-} from 'effect/unstable/http';
-import { HttpApiBuilder, OpenApi } from 'effect/unstable/httpapi';
+import { ByteSize, Config, Effect, Layer, Option, Redacted, Schema } from 'effect';
+import { HttpRouter, HttpServerRequest, HttpServerResponse, HttpStaticServer } from 'effect/http';
+import { HttpApiBuilder, OpenApi } from 'effect/http-api';
 import { scalarDocumentation } from './documentation/scalar.js';
 import { createServer } from 'node:http';
 
@@ -220,7 +215,7 @@ export const makeServerLayer = (options: {
       Layer.effect(
         HttpServerRequest.MaxBodySize,
         Effect.map(RuntimeConfiguration, (runtime) =>
-          FileSystem.Size(runtime.http.maximumRequestBodyBytes),
+          ByteSize.bytes(runtime.http.maximumRequestBodyBytes),
         ),
       ),
     ),
@@ -230,12 +225,12 @@ export const makeServerLayer = (options: {
 
 export const ServerLive = Layer.unwrap(
   Effect.gen(function* () {
-    const port = yield* Config.int('PORT').pipe(Config.withDefault(3000));
+    const port = yield* Config.Int('PORT').pipe(Config.withDefault(3000));
     const publicUrl = yield* Config.schema(Schema.URL, 'PUBLIC_ORIGIN');
-    const staticRoot = yield* Config.string('STATIC_ROOT');
+    const staticRoot = yield* Config.String('STATIC_ROOT');
     const runtime = yield* RuntimeConfiguration;
     const deployment = yield* Deployment;
-    const trustedProxyText = yield* Config.string('TRUSTED_PROXY_ADDRESSES').pipe(
+    const trustedProxyText = yield* Config.String('TRUSTED_PROXY_ADDRESSES').pipe(
       Config.withDefault(''),
     );
     const trustedProxyAddresses = yield* Schema.decodeUnknownEffect(Schema.Array(IpAddress))(

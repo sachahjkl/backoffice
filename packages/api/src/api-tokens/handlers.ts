@@ -1,6 +1,6 @@
 import { Api, ApiPrincipal, Ulid } from '@froment/contracts';
 import { Effect, Schema } from 'effect';
-import { HttpApiBuilder } from 'effect/unstable/httpapi';
+import { HttpApiBuilder } from 'effect/http-api';
 
 import { setPrivateResponseHeaders } from '../http/response.js';
 import { ApiTokens } from './service.js';

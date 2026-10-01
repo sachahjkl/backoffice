@@ -66,9 +66,9 @@ export class DocumentRenderer extends Context.Service<DocumentRenderer, Document
 export const DocumentRendererLive = Layer.effect(
   DocumentRenderer,
   Effect.gen(function* () {
-    const executable = yield* Config.string('TYPST_PATH');
-    const templatesPath = yield* Config.string('DOCUMENT_TEMPLATES_PATH');
-    const fontsPath = yield* Config.string('DOCUMENT_FONTS_PATH');
+    const executable = yield* Config.String('TYPST_PATH');
+    const templatesPath = yield* Config.String('DOCUMENT_TEMPLATES_PATH');
+    const fontsPath = yield* Config.String('DOCUMENT_FONTS_PATH');
     const temporaryDirectory = yield* DocumentTemporaryDirectory;
     const config = (yield* RuntimeConfiguration).documentRenderer;
     const permits = yield* TxSemaphore.make(config.concurrency);

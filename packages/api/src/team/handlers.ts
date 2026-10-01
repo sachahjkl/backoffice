@@ -1,6 +1,6 @@
 import { Api, ApiPrincipal, RequestRateLimited } from '@froment/contracts';
 import { Effect, Layer } from 'effect';
-import { HttpApiBuilder } from 'effect/unstable/httpapi';
+import { HttpApiBuilder } from 'effect/http-api';
 import { getClientAddress } from '../http/request.js';
 import { setPrivateResponseHeaders } from '../http/response.js';
 import { RequestLimiter } from '../server/request-limiter.js';

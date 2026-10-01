@@ -1,4 +1,4 @@
-import { HttpApiEndpoint, HttpApiGroup } from 'effect/unstable/httpapi';
+import { HttpApiEndpoint, HttpApiGroup } from 'effect/http-api';
 import { Schema } from 'effect';
 import { ApiBrowserRequest, ApiRequestBody } from '../api-authentication.js';
 import { authenticate } from '../api-policy/authentication.js';

@@ -1,7 +1,7 @@
 import { Api } from '@froment/contracts';
 import { Effect } from 'effect';
-import { HttpEffect, HttpServerResponse } from 'effect/unstable/http';
-import { HttpApiBuilder } from 'effect/unstable/httpapi';
+import { HttpEffect, HttpServerResponse } from 'effect/http';
+import { HttpApiBuilder } from 'effect/http-api';
 import { blogFeed } from './feed.js';
 
 export const blogHandlers = (publicOrigin: string) =>

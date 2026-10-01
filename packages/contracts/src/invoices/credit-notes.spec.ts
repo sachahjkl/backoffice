@@ -1,5 +1,5 @@
 import { Schema } from 'effect';
-import { OpenApi } from 'effect/unstable/httpapi';
+import { OpenApi } from 'effect/http-api';
 import { describe, expect, it } from 'vitest';
 import {
   Api,

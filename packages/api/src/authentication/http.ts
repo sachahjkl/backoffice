@@ -13,9 +13,9 @@ import {
   type CompanyModuleValue,
 } from '@froment/contracts';
 import { Clock, Context, Effect, Layer, Option, Redacted, Schema } from 'effect';
-import { HttpEffect, HttpServerRequest } from 'effect/unstable/http';
-import { HttpApiBuilder } from 'effect/unstable/httpapi';
-import { HttpApiSecurity } from 'effect/unstable/httpapi';
+import { HttpEffect, HttpServerRequest } from 'effect/http';
+import { HttpApiBuilder } from 'effect/http-api';
+import { HttpApiSecurity } from 'effect/http-api';
 
 import { ApiTokens } from '../api-tokens/service.js';
 import { Audit } from '../audit/audit.js';

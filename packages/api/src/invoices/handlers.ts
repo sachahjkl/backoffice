@@ -1,7 +1,7 @@
 import { Api, ApiPrincipal } from '@froment/contracts';
 import { Effect } from 'effect';
-import { HttpEffect, HttpServerResponse } from 'effect/unstable/http';
-import { HttpApiBuilder } from 'effect/unstable/httpapi';
+import { HttpEffect, HttpServerResponse } from 'effect/http';
+import { HttpApiBuilder } from 'effect/http-api';
 
 import { DocumentArtifacts } from '../documents/document-artifacts.js';
 import { DocumentRenderer } from '../documents/document-renderer.js';

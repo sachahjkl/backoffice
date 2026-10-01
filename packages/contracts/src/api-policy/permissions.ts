@@ -1,6 +1,6 @@
 import { Context, Schema } from 'effect';
-import type * as HttpMethod from 'effect/unstable/http/HttpMethod';
-import { OpenApi } from 'effect/unstable/httpapi';
+import type * as HttpMethod from 'effect/http/HttpMethod';
+import { OpenApi } from 'effect/http-api';
 
 import { ApiAuthorization } from '../api-authentication.js';
 import type { Permission, PermissionCode } from '../permissions.js';

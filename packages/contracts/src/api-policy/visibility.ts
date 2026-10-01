@@ -1,6 +1,6 @@
 import { Schema } from 'effect';
-import type * as HttpMethod from 'effect/unstable/http/HttpMethod';
-import { OpenApi } from 'effect/unstable/httpapi';
+import type * as HttpMethod from 'effect/http/HttpMethod';
+import { OpenApi } from 'effect/http-api';
 
 import type { Endpoint } from './endpoint.js';
 

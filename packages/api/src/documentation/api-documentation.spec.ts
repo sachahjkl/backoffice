@@ -10,7 +10,7 @@ import {
 } from '@froment/contracts';
 import { apiDocumentation, apiRequestExamples, type Language } from '@froment/l10n';
 import { Schema, type JsonSchema } from 'effect';
-import { OpenApi } from 'effect/unstable/httpapi';
+import { OpenApi } from 'effect/http-api';
 import { describe, expect, it } from 'vitest';
 
 import { apiForLanguage } from './api-documentation.js';
@@ -80,7 +80,9 @@ describe('API documentation', () => {
           operation === undefined ||
           localized === undefined ||
           Array.isArray(operation) ||
-          Array.isArray(localized)
+          Array.isArray(localized) ||
+          !('responses' in operation) ||
+          !('responses' in localized)
         )
           continue;
         expect(validationOnly({ parameters: { values: localized.parameters } })).toEqual(

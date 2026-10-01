@@ -5,8 +5,8 @@ import { Api, ApiTelemetry, BlogApi } from '@froment/contracts';
 import { translate } from '@froment/l10n';
 import { blogPosts } from '@froment/l10n/blog-posts';
 import { Layer } from 'effect';
-import { HttpRouter, HttpServer } from 'effect/unstable/http';
-import { HttpApi, HttpApiBuilder, OpenApi } from 'effect/unstable/httpapi';
+import { HttpRouter, HttpServer } from 'effect/http';
+import { HttpApi, HttpApiBuilder, OpenApi } from 'effect/http-api';
 import { expect, it } from 'vitest';
 import { blogHandlers } from './handlers.js';
 

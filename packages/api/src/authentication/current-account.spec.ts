@@ -9,8 +9,8 @@ import {
   type UserPreferencesValue,
 } from '@froment/contracts';
 import { Effect, Layer, Schema } from 'effect';
-import { HttpRouter, HttpServer } from 'effect/unstable/http';
-import { HttpApi, HttpApiBuilder } from 'effect/unstable/httpapi';
+import { HttpRouter, HttpServer } from 'effect/http';
+import { HttpApi, HttpApiBuilder } from 'effect/http-api';
 import { describe, expect, it, vi } from 'vitest';
 import { AuthenticationApi } from '../../../contracts/src/authentication/api.js';
 import { RuntimeConfigurationDefaults } from '../runtime-config.js';

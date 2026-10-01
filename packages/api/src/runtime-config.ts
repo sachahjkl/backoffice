@@ -185,7 +185,7 @@ export const RuntimeConfig = {
     ),
   }),
   requestLimiter: Config.all({
-    enabled: Config.boolean('REQUEST_LIMITING_ENABLED').pipe(Config.withDefault(true)),
+    enabled: Config.Boolean('REQUEST_LIMITING_ENABLED').pipe(Config.withDefault(true)),
     capacity: positiveInt('REQUEST_LIMITER_CAPACITY', 10_000),
     publicCapacity: positiveInt('REQUEST_LIMITER_PUBLIC_CAPACITY', 10_000),
     windowMillis: positiveInt('REQUEST_LIMITER_WINDOW_MILLIS', 60_000),
@@ -242,11 +242,11 @@ export const RuntimeConfig = {
     ),
   }),
   secrets: Config.all({
-    settingsEncryptionKey: Config.option(Config.redacted('SETTINGS_ENCRYPTION_KEY')),
+    settingsEncryptionKey: Config.option(Config.Redacted('SETTINGS_ENCRYPTION_KEY')),
   }),
   supplierInvoiceAnalysis: Config.all({
-    apiKey: Config.option(Config.redacted('SUPPLIER_INVOICE_ANALYSIS_API_KEY')),
-    model: Config.string('SUPPLIER_INVOICE_ANALYSIS_MODEL').pipe(
+    apiKey: Config.option(Config.Redacted('SUPPLIER_INVOICE_ANALYSIS_API_KEY')),
+    model: Config.String('SUPPLIER_INVOICE_ANALYSIS_MODEL').pipe(
       Config.withDefault(defaultRuntimeConfig.supplierInvoiceAnalysis.model),
     ),
     requestTimeoutMillis: positiveInt(
@@ -261,7 +261,7 @@ export const RuntimeConfig = {
     ),
   }),
   vies: Config.all({
-    endpoint: Config.string('VIES_ENDPOINT').pipe(
+    endpoint: Config.String('VIES_ENDPOINT').pipe(
       Config.withDefault(defaultRuntimeConfig.vies.endpoint),
     ),
     requestTimeoutMillis: positiveInt(
@@ -270,16 +270,16 @@ export const RuntimeConfig = {
     ),
   }),
   taxFiling: Config.all({
-    apiKey: Config.option(Config.redacted('ACCOUNTING_TAX_FILING_API_KEY')),
+    apiKey: Config.option(Config.Redacted('ACCOUNTING_TAX_FILING_API_KEY')),
     requestTimeoutMillis: positiveInt(
       'ACCOUNTING_TAX_FILING_REQUEST_TIMEOUT_MILLIS',
       defaultRuntimeConfig.taxFiling.requestTimeoutMillis,
     ),
   }),
   demo: Config.all({
-    enabled: Config.boolean('DEMO_MODE').pipe(Config.withDefault(false)),
-    password: Config.option(Config.redacted('DEMO_PASSWORD')),
-    accountPassword: Config.option(Config.redacted('DEMO_ACCOUNT_PASSWORD')),
+    enabled: Config.Boolean('DEMO_MODE').pipe(Config.withDefault(false)),
+    password: Config.option(Config.Redacted('DEMO_PASSWORD')),
+    accountPassword: Config.option(Config.Redacted('DEMO_ACCOUNT_PASSWORD')),
   }),
 } as const;
 

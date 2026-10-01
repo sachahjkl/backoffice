@@ -1,6 +1,6 @@
 import { Api, ApiPrincipal } from '@froment/contracts';
 import { Effect } from 'effect';
-import { HttpApiBuilder } from 'effect/unstable/httpapi';
+import { HttpApiBuilder } from 'effect/http-api';
 import { setPrivateResponseHeaders } from '../http/response.js';
 import { Integrations } from './service.js';
 import { IntegrationRetries } from './retries.js';

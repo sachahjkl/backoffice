@@ -1,4 +1,4 @@
-import { HttpApi, OpenApi } from 'effect/unstable/httpapi';
+import { HttpApi, OpenApi } from 'effect/http-api';
 
 import { ApiTelemetry } from './api-authentication.js';
 import { CatalogApi } from './catalog/api.js';

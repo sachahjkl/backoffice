@@ -1,5 +1,5 @@
 import { Schema } from 'effect';
-import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema } from 'effect/unstable/httpapi';
+import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema } from 'effect/http-api';
 
 export class BlogApi extends HttpApiGroup.make('blog', { topLevel: true }).add(
   HttpApiEndpoint.get('blogFeed', '/api/blog/feed', {

@@ -5,8 +5,8 @@ import {
   RequestRateLimited,
 } from '@froment/contracts';
 import { Effect } from 'effect';
-import { HttpServerRequest } from 'effect/unstable/http';
-import { HttpApiBuilder } from 'effect/unstable/httpapi';
+import { HttpServerRequest } from 'effect/http';
+import { HttpApiBuilder } from 'effect/http-api';
 
 import { setPrivateResponseHeaders } from '../http/response.js';
 import { getClientAddress } from '../http/request.js';

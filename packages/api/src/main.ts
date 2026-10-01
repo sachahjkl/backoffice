@@ -1,6 +1,6 @@
 import { NodeRuntime } from '@effect/platform-node';
 import { Layer } from 'effect';
-import { FetchHttpClient } from 'effect/unstable/http';
+import { FetchHttpClient } from 'effect/http';
 import { ConnectionConfigLive } from './integrations/connection-config.js';
 import { ResendEmailTransportLive } from './integrations/resend.js';
 import { EmailTestsLive, EmailTestWorkerLive } from './integrations/email-test-service.js';

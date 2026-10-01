@@ -1,5 +1,5 @@
 import { ConfigProvider, Effect, Layer } from 'effect';
-import { HttpClient, HttpClientResponse, type HttpClientRequest } from 'effect/unstable/http';
+import { HttpClient, HttpClientResponse, type HttpClientRequest } from 'effect/http';
 import { expect, it } from 'vitest';
 import { ConnectionConfigLive } from './connection-config.js';
 import { EmailTransport } from './email-transport.js';

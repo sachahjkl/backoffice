@@ -1,6 +1,6 @@
 import { Context, Effect, Option, Schema } from 'effect';
 import { isIP } from 'node:net';
-import { HttpServerRequest } from 'effect/unstable/http';
+import { HttpServerRequest } from 'effect/http';
 
 export const IpAddress = Schema.String.check(
   Schema.makeFilter((value) => isIP(value) !== 0, { identifier: 'IpAddress' }),

@@ -60,7 +60,7 @@ describe('IconToolbar', () => {
     expect(activate).toHaveBeenCalledOnce();
   });
 
-  it('activates commands with Enter and Space without duplicate clicks', async () => {
+  it('keeps native Enter and Space activation without duplicate commands', async () => {
     const { fixture, root } = await setup();
     const activate = vi.fn();
     fixture.componentInstance.activated.subscribe(activate);
@@ -70,19 +70,18 @@ describe('IconToolbar', () => {
       const event = new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true });
       button.dispatchEvent(event);
       await fixture.whenStable();
-      expect(event.defaultPrevented).toBe(true);
+      expect(event.defaultPrevented).toBe(false);
+      button.click();
     }
     expect(activate.mock.calls).toEqual([['bold'], ['bold']]);
   });
 
-  it('activates the clicked command after Angular Aria moves focus', async () => {
+  it('activates the clicked command once', async () => {
     const { fixture, root } = await setup();
     const button = root.querySelectorAll<HTMLButtonElement>('button')[1]!;
-    const focusOnActivation = vi.fn();
-    fixture.componentInstance.activated.subscribe((value) => {
-      focusOnActivation(value, document.activeElement);
-    });
+    const activate = vi.fn();
+    fixture.componentInstance.activated.subscribe(activate);
     button.dispatchEvent(new PointerEvent('click', { pointerType: 'mouse', bubbles: true }));
-    expect(focusOnActivation).toHaveBeenCalledExactlyOnceWith('italic', button);
+    expect(activate).toHaveBeenCalledExactlyOnceWith('italic');
   });
 });

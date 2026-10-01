@@ -1,6 +1,6 @@
 import { ApiRequestBody, RequestBodyKind, RequestTooLarge } from '@froment/contracts';
-import { Context, Effect, FileSystem, Layer, Option, Schema } from 'effect';
-import { HttpServerRequest } from 'effect/unstable/http';
+import { ByteSize, Context, Effect, Layer, Option, Schema } from 'effect';
+import { HttpServerRequest } from 'effect/http';
 
 import { setPrivateResponseHeaders } from './response.js';
 import { RuntimeConfiguration } from '../runtime-config.js';
@@ -32,7 +32,7 @@ export const ApiRequestBodyLive = Layer.effect(
         const text = yield* request.text.pipe(
           Effect.provideService(
             HttpServerRequest.MaxBodySize,
-            FileSystem.Size(maximumRequestBodyBytes),
+            ByteSize.bytes(maximumRequestBodyBytes),
           ),
           Effect.mapError(() => new RequestTooLarge({ code: 'request.too_large' })),
         );
@@ -42,7 +42,7 @@ export const ApiRequestBodyLive = Layer.effect(
         return yield* httpEffect.pipe(
           Effect.provideService(
             HttpServerRequest.MaxBodySize,
-            FileSystem.Size(maximumRequestBodyBytes),
+            ByteSize.bytes(maximumRequestBodyBytes),
           ),
         );
       }),

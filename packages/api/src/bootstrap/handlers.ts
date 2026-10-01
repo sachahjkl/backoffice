@@ -1,6 +1,6 @@
 import { Api } from '@froment/contracts';
 import { Effect } from 'effect';
-import { HttpApiBuilder } from 'effect/unstable/httpapi';
+import { HttpApiBuilder } from 'effect/http-api';
 
 import { setAccessCookie, setRefreshCookie } from '../authentication/http.js';
 import { setPrivateResponseHeaders } from '../http/response.js';

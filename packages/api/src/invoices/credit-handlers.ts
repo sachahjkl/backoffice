@@ -1,7 +1,7 @@
 import { Api, ApiPrincipal } from '@froment/contracts';
 import { Effect, Layer } from 'effect';
-import { HttpEffect, HttpServerResponse } from 'effect/unstable/http';
-import { HttpApiBuilder } from 'effect/unstable/httpapi';
+import { HttpEffect, HttpServerResponse } from 'effect/http';
+import { HttpApiBuilder } from 'effect/http-api';
 import { authorizeClient } from '../authentication/http.js';
 import { Clients } from '../clients/clients.js';
 import { setPrivateResponseHeaders, setPdfResponseHeaders } from '../http/response.js';

@@ -1,5 +1,5 @@
 import { Effect, Layer } from 'effect';
-import { FetchHttpClient } from 'effect/unstable/http';
+import { FetchHttpClient } from 'effect/http';
 import { randomUUID } from 'node:crypto';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';

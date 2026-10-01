@@ -1,6 +1,6 @@
 import type { Schema } from 'effect';
-import type * as HttpMethod from 'effect/unstable/http/HttpMethod';
-import type { HttpApiEndpoint } from 'effect/unstable/httpapi';
+import type * as HttpMethod from 'effect/http/HttpMethod';
+import type { HttpApiEndpoint } from 'effect/http-api';
 
 export type Endpoint<
   Identifier extends string,

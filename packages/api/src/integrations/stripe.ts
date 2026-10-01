@@ -1,7 +1,7 @@
 import { Config, Effect, Layer, Option, Redacted, Schema } from 'effect';
 import { CheckoutSessionId, CheckoutUrl } from '@froment/contracts';
-import { HttpClient, HttpClientRequest } from 'effect/unstable/http';
-import { RateLimiter } from 'effect/unstable/persistence';
+import { HttpClient, HttpClientRequest } from 'effect/http';
+import { RateLimiter } from 'effect/persistence';
 import { createHash } from 'node:crypto';
 import {
   CheckoutTransport,

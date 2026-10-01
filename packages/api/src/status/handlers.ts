@@ -1,6 +1,6 @@
 import { Api } from '@froment/contracts';
 import { Effect } from 'effect';
-import { HttpApiBuilder } from 'effect/unstable/httpapi';
+import { HttpApiBuilder } from 'effect/http-api';
 
 import { Database } from '../database/database.js';
 import { Deployment } from '../deployment/deployment.js';

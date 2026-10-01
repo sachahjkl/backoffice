@@ -2,12 +2,12 @@ import { Config, Context, Effect, Layer, Option, Redacted } from 'effect';
 import type { ProviderConnections } from '@froment/contracts';
 
 const makeConnectionConfig = Effect.gen(function* () {
-  const resend = yield* Config.option(Config.redacted('RESEND_API_KEY'));
-  const stripe = yield* Config.option(Config.redacted('STRIPE_SECRET_KEY'));
-  const stripeWebhook = yield* Config.option(Config.redacted('STRIPE_WEBHOOK_SECRET'));
-  const signwell = yield* Config.option(Config.redacted('SIGNWELL_API_KEY'));
-  const superpdpId = yield* Config.option(Config.redacted('SUPERPDP_CLIENT_ID'));
-  const superpdpSecret = yield* Config.option(Config.redacted('SUPERPDP_CLIENT_SECRET'));
+  const resend = yield* Config.option(Config.Redacted('RESEND_API_KEY'));
+  const stripe = yield* Config.option(Config.Redacted('STRIPE_SECRET_KEY'));
+  const stripeWebhook = yield* Config.option(Config.Redacted('STRIPE_WEBHOOK_SECRET'));
+  const signwell = yield* Config.option(Config.Redacted('SIGNWELL_API_KEY'));
+  const superpdpId = yield* Config.option(Config.Redacted('SUPERPDP_CLIENT_ID'));
+  const superpdpSecret = yield* Config.option(Config.Redacted('SUPERPDP_CLIENT_SECRET'));
   const present = (value: Option.Option<Redacted.Redacted<string>>) =>
     Option.isSome(value) && Redacted.value(value.value).trim().length > 0;
   const connections: typeof ProviderConnections.Type = [

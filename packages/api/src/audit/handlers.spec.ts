@@ -5,8 +5,8 @@ import {
   type GlobalAuditPage,
 } from '@froment/contracts';
 import { ConfigProvider, Effect, Layer } from 'effect';
-import { HttpRouter, HttpServer, UrlParams } from 'effect/unstable/http';
-import { HttpApi, HttpApiBuilder } from 'effect/unstable/httpapi';
+import { HttpRouter, HttpServer, UrlParams } from 'effect/http';
+import { HttpApi, HttpApiBuilder } from 'effect/http-api';
 import { describe, expect, it, vi } from 'vitest';
 
 import { AuditApi } from '../../../contracts/src/audit/api.js';

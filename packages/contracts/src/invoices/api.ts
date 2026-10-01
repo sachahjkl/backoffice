@@ -5,7 +5,7 @@ import {
   PaymentExportInvalidRange,
   PaymentExportTooLarge,
 } from './payment-export.js';
-import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema } from 'effect/unstable/httpapi';
+import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema } from 'effect/http-api';
 
 import { ApiRequestBody } from '../api-authentication.js';
 import { RevisionVersionParameter } from '../api-common.js';

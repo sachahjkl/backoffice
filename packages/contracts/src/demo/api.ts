@@ -1,4 +1,4 @@
-import { HttpApiEndpoint, HttpApiGroup } from 'effect/unstable/httpapi';
+import { HttpApiEndpoint, HttpApiGroup } from 'effect/http-api';
 import { authenticate } from '../api-policy/authentication.js';
 import { requirePermissions } from '../api-policy/permissions.js';
 import { frontendSpecific } from '../api-policy/visibility.js';

@@ -1,6 +1,6 @@
 import { apiSchemaDocumentation, type ApiFieldDocumentation, type Language } from '@froment/l10n';
 import { Predicate, type JsonSchema } from 'effect';
-import type { OpenApi } from 'effect/unstable/httpapi';
+import type { OpenApi } from 'effect/http-api';
 
 export const describeSchema = (
   schema: JsonSchema.JsonSchema,

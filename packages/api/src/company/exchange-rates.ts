@@ -11,7 +11,7 @@ import {
 } from '@froment/contracts';
 import { XMLParser } from 'fast-xml-parser';
 import { Clock, Context, Effect, Layer, Schema } from 'effect';
-import { HttpClient } from 'effect/unstable/http';
+import { HttpClient } from 'effect/http';
 import { ulid } from 'ulid';
 
 import { Audit } from '../audit/audit.js';

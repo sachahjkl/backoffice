@@ -5,10 +5,10 @@ import { migrateDatabase } from './database/database.js';
 import { RuntimeConfigurationLive } from './runtime-config.js';
 
 Effect.gen(function* () {
-  const filename = yield* Config.string('DATABASE_PATH').pipe(
+  const filename = yield* Config.String('DATABASE_PATH').pipe(
     Config.withDefault('data/froment.sqlite'),
   );
-  const migrationsFolder = yield* Config.string('MIGRATIONS_ROOT');
+  const migrationsFolder = yield* Config.String('MIGRATIONS_ROOT');
   const timeZoneName = yield* Config.schema(
     Schema.String.check(
       Schema.makeFilter((value) => Option.isSome(DateTime.zoneMakeNamed(value)), {

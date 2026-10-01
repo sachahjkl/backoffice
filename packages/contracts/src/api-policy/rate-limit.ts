@@ -1,5 +1,5 @@
 import { Context, Schema } from 'effect';
-import type * as HttpMethod from 'effect/unstable/http/HttpMethod';
+import type * as HttpMethod from 'effect/http/HttpMethod';
 
 import type { Endpoint } from './endpoint.js';
 

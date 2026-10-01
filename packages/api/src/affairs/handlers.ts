@@ -1,6 +1,6 @@
 import { Api, ApiPrincipal } from '@froment/contracts';
 import { Effect, Layer } from 'effect';
-import { HttpApiBuilder } from 'effect/unstable/httpapi';
+import { HttpApiBuilder } from 'effect/http-api';
 import { Audit } from '../audit/audit.js';
 import { setPrivateResponseHeaders } from '../http/response.js';
 import { Affairs, AffairsLive } from './service.js';

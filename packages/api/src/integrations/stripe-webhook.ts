@@ -1,6 +1,6 @@
 import { CheckoutSessionId } from '@froment/contracts';
 import { Clock, Effect, Option, Redacted, Schema } from 'effect';
-import { HttpRouter, HttpServerRequest, HttpServerResponse } from 'effect/unstable/http';
+import { HttpRouter, HttpServerRequest, HttpServerResponse } from 'effect/http';
 import Stripe from 'stripe';
 import { RequestLimiter } from '../server/request-limiter.js';
 import { ConnectionConfig } from './connection-config.js';

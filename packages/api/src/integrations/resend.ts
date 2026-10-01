@@ -1,7 +1,7 @@
 import { Effect, Layer, Option, Redacted, Schema } from 'effect';
 import { createHash } from 'node:crypto';
-import { HttpClient, HttpClientRequest, HttpClientResponse } from 'effect/unstable/http';
-import { RateLimiter } from 'effect/unstable/persistence';
+import { HttpClient, HttpClientRequest, HttpClientResponse } from 'effect/http';
+import { RateLimiter } from 'effect/persistence';
 import { ConnectionConfig } from './connection-config.js';
 import { EmailTransport, EmailTransportError, type OutgoingEmail } from './email-transport.js';
 import { documentTextContent, documentTextHtml } from '@froment/contracts';

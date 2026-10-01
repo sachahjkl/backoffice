@@ -12,7 +12,7 @@ import {
 } from '@froment/contracts';
 import Sqlite from 'better-sqlite3';
 import { Effect, Layer, Schema } from 'effect';
-import { FetchHttpClient } from 'effect/unstable/http';
+import { FetchHttpClient } from 'effect/http';
 import { join } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { expect, it } from 'vitest';
