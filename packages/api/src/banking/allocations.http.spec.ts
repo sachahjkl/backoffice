@@ -35,7 +35,7 @@ it('splits receipts across credits, groups receipts, rejects excess allocations,
         await post('/api/invoices', {
           orderId: accepted.orderId,
           serviceDate: '2026-09-01',
-          dueDate: '2026-10-01',
+          dueDate: '2099-10-01',
           paymentTerms: '30 days',
         })
       ).json(),
@@ -47,7 +47,7 @@ it('splits receipts across credits, groups receipts, rejects excess allocations,
           refreshParties: false,
           title: draft.currentRevision.title,
           serviceDate: '2026-09-01',
-          dueDate: '2026-10-01',
+          dueDate: '2099-10-01',
           paymentTerms: '30 days',
           lines: [
             {

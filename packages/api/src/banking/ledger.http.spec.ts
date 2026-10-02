@@ -259,7 +259,7 @@ it('requires fee reversal before dissociation or receipt correction and rejects 
         await post('/api/invoices', {
           orderId: accepted.orderId,
           serviceDate: '2026-09-01',
-          dueDate: '2026-10-01',
+          dueDate: '2099-10-01',
           paymentTerms: '30 days',
         })
       ).json(),

@@ -36,7 +36,7 @@ describe('banking HTTP', () => {
       const created = await post('/api/invoices', {
         orderId: accepted.orderId,
         serviceDate: '2026-09-01',
-        dueDate: '2026-10-01',
+        dueDate: '2099-10-01',
         paymentTerms: '30 days',
       });
       const invoice = Schema.decodeUnknownSync(InvoiceDetail)(await created.json());
