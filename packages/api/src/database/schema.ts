@@ -2440,6 +2440,7 @@ export const webhookDeliveries = sqliteTable(
     nextAttemptAt: integer('next_attempt_at', { mode: 'timestamp_ms' }),
     lastAttemptAt: integer('last_attempt_at', { mode: 'timestamp_ms' }),
     deliveredAt: integer('delivered_at', { mode: 'timestamp_ms' }),
+    completedAt: integer('completed_at', { mode: 'timestamp_ms' }),
     responseStatus: integer('response_status'),
     error: text(),
     createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),

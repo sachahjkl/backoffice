@@ -1,8 +1,9 @@
 import { Context, Effect, Layer, Schema } from 'effect';
-import { lookup, type LookupOptions } from 'node:dns';
+import { lookup, type LookupAddress, type LookupOptions } from 'node:dns';
 import { request as requestHttp } from 'node:http';
 import { request as requestHttps } from 'node:https';
 import { BlockList, isIP } from 'node:net';
+import { clearTimeout, setTimeout } from 'node:timers';
 
 import { RuntimeConfiguration } from '../runtime-config.js';
 
@@ -46,7 +47,6 @@ for (const [network, prefix] of [
 for (const [network, prefix] of [
   ['::', 128],
   ['::1', 128],
-  ['::ffff:0:0', 96],
   ['fc00::', 7],
   ['fe80::', 10],
   ['ff00::', 8],
@@ -55,31 +55,46 @@ for (const [network, prefix] of [
   blockedAddresses.addSubnet(network, prefix, 'ipv6');
 }
 
+export const isWebhookAddressAllowed = (address: string): boolean => {
+  const family = isIP(address);
+  if (family === 0) return false;
+  return !blockedAddresses.check(address, family === 6 ? 'ipv6' : 'ipv4');
+};
+
 const makeLookup =
   (allowPrivate: boolean) =>
   (
     hostname: string,
-    _options: LookupOptions,
-    callback: (error: NodeJS.ErrnoException | null, address: string, family: number) => void,
+    options: LookupOptions,
+    callback: (
+      error: NodeJS.ErrnoException | null,
+      address: string | Array<LookupAddress>,
+      family?: number,
+    ) => void,
   ) => {
-    lookup(hostname, { all: true, verbatim: true }, (error, addresses) => {
-      if (error !== null) {
-        callback(error, '', 0);
-        return;
-      }
-      const allowed = addresses.find(({ address, family }) => {
-        if (allowPrivate) return true;
-        return !blockedAddresses.check(address, family === 6 ? 'ipv6' : 'ipv4');
-      });
-      if (allowed === undefined) {
-        const denied = Object.assign(new Error('webhook.destination_address_denied'), {
-          code: 'EACCES',
-        });
-        callback(denied, '', 0);
-        return;
-      }
-      callback(null, allowed.address, allowed.family);
-    });
+    lookup(
+      hostname,
+      { all: true, verbatim: true, family: options.family, hints: options.hints },
+      (error, addresses) => {
+        if (error !== null) {
+          callback(error, '', 0);
+          return;
+        }
+        const allowed = allowPrivate
+          ? addresses
+          : addresses.filter(({ address }) => isWebhookAddressAllowed(address));
+        const first = allowed.at(0);
+        if (first === undefined) {
+          const denied = Object.assign(new Error('webhook.destination_address_denied'), {
+            code: 'EACCES',
+          });
+          callback(denied, '', 0);
+          return;
+        }
+        if (options.all) callback(null, allowed);
+        else callback(null, first.address, first.family);
+      },
+    );
   };
 
 export const WebhookTransportLive = Layer.effect(
@@ -96,11 +111,12 @@ export const WebhookTransportLive = Layer.effect(
       if (url.protocol !== 'https:' && !(allowHttp && url.protocol === 'http:'))
         throw new WebhookTransportError({ reason: 'destination' });
       const hostname = url.hostname.replace(/^\[|\]$/g, '');
-      if (isIP(hostname) !== 0 && !runtime.webhooks.allowPrivateDestinations) {
-        const family = isIP(hostname) === 6 ? 'ipv6' : 'ipv4';
-        if (blockedAddresses.check(hostname, family))
-          throw new WebhookTransportError({ reason: 'destination' });
-      }
+      if (
+        isIP(hostname) !== 0 &&
+        !runtime.webhooks.allowPrivateDestinations &&
+        !isWebhookAddressAllowed(hostname)
+      )
+        throw new WebhookTransportError({ reason: 'destination' });
       return url;
     };
     const send = (
@@ -127,22 +143,29 @@ export const WebhookTransportLive = Layer.effect(
             method,
             headers,
             lookup: makeLookup(runtime.webhooks.allowPrivateDestinations),
-            timeout: runtime.webhooks.requestTimeoutMillis,
           },
           (response) => {
+            clearTimeout(deadline);
             const status = response.statusCode ?? 0;
             const responseHeaders = response.headers;
             response.destroy();
             resume(Effect.succeed({ status, headers: responseHeaders }));
           },
         );
-        request.once('timeout', () => request.destroy(new Error('webhook.request_timeout')));
-        request.once('error', () =>
-          resume(Effect.fail(new WebhookTransportError({ reason: 'network' }))),
+        const deadline = setTimeout(
+          () => request.destroy(new Error('webhook.request_timeout')),
+          runtime.webhooks.requestTimeoutMillis,
         );
+        request.once('error', () => {
+          clearTimeout(deadline);
+          resume(Effect.fail(new WebhookTransportError({ reason: 'network' })));
+        });
         if (body !== undefined) request.write(body);
         request.end();
-        return Effect.sync(() => request.destroy());
+        return Effect.sync(() => {
+          clearTimeout(deadline);
+          request.destroy();
+        });
       });
 
     const verify = Effect.fn('WebhookTransport.verify')(function* (url: string, challenge: string) {

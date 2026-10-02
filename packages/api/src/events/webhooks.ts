@@ -398,7 +398,9 @@ export const WebhooksLive = Layer.effect(
                 .prepare(`update webhook_deliveries
                   set status = 'sending', attempts = attempts + 1, lease = lease + 1,
                       last_attempt_at = ?, next_attempt_at = ?
-                  where id = ? and status in ('queued', 'retrying') and next_attempt_at <= ?`)
+                  where id = ? and status in ('queued', 'retrying') and next_attempt_at <= ?
+                    and exists (select 1 from webhook_subscriptions s
+                      where s.id = webhook_deliveries.subscription_id and s.status = 'active')`)
                 .run(now, now + runtime.webhooks.requestTimeoutMillis + 30_000, id, now).changes;
               if (changed !== 1) return undefined;
               return Schema.decodeUnknownSync(DeliveryJob)(
@@ -408,39 +410,35 @@ export const WebhooksLive = Layer.effect(
                     from webhook_deliveries d
                     join webhook_subscriptions s on s.id = d.subscription_id
                     join outbox_events e on e.id = d.event_id
-                    where d.id = ?`)
+                    where d.id = ? and s.status = 'active'`)
                   .get(id),
               );
             })
             .immediate(),
         catch: databaseFailure,
       });
-    const process = Effect.fn('Webhooks.process')(function* (id: string) {
+    const process = Effect.fn('Webhooks.process')(function* (id: string, key: Buffer) {
       const now = yield* Clock.currentTimeMillis;
       const job = yield* claim(id, now);
       if (job === undefined) return;
-      const key = Option.getOrUndefined(signingKey);
       const body = Buffer.from(job.content);
       const timestamp = Math.floor(now / 1_000);
-      const outcome =
-        key === undefined
-          ? { status: 0, error: 'webhook.signing_key_unavailable' }
-          : yield* transport
-              .deliver(
-                job.url,
-                body,
-                `t=${timestamp},k=v${job.keyVersion},v1=${createHmac(
-                  'sha256',
-                  deriveSecret(key, job.subscriptionId, job.keyVersion),
-                )
-                  .update(`${timestamp}.`)
-                  .update(body)
-                  .digest('hex')}`,
-              )
-              .pipe(
-                Effect.map((status) => ({ status, error: null })),
-                Effect.catch(() => Effect.succeed({ status: 0, error: 'webhook.delivery_failed' })),
-              );
+      const outcome = yield* transport
+        .deliver(
+          job.url,
+          body,
+          `t=${timestamp},k=v${job.keyVersion},v1=${createHmac(
+            'sha256',
+            deriveSecret(key, job.subscriptionId, job.keyVersion),
+          )
+            .update(`${timestamp}.`)
+            .update(body)
+            .digest('hex')}`,
+        )
+        .pipe(
+          Effect.map((status) => ({ status, error: null })),
+          Effect.catch(() => Effect.succeed({ status: 0, error: 'webhook.delivery_failed' })),
+        );
       const finishedAt = yield* Clock.currentTimeMillis;
       const delivered = outcome.status >= 200 && outcome.status < 300;
       const failed = !delivered && job.attempts >= 10;
@@ -451,12 +449,13 @@ export const WebhooksLive = Layer.effect(
         try: () =>
           sqlite
             .prepare(`update webhook_deliveries set status = ?, next_attempt_at = ?,
-              delivered_at = ?, response_status = ?, error = ?
+              delivered_at = ?, completed_at = ?, response_status = ?, error = ?
               where id = ? and status = 'sending' and lease = ?`)
             .run(
               delivered ? 'delivered' : failed ? 'failed' : 'retrying',
               delivered || failed ? null : finishedAt + jitter,
               delivered ? finishedAt : null,
+              delivered || failed ? finishedAt : null,
               outcome.status === 0 ? null : outcome.status,
               delivered ? null : (outcome.error ?? `webhook.http_${outcome.status}`),
               job.id,
@@ -473,23 +472,43 @@ export const WebhooksLive = Layer.effect(
           sqlite
             .prepare(`update webhook_deliveries
               set status = case when attempts >= 10 then 'failed' else 'retrying' end,
-                  error = 'webhook.delivery_interrupted'
+                  error = 'webhook.delivery_interrupted',
+                  completed_at = case when attempts >= 10 then ? else null end
               where status = 'sending' and next_attempt_at <= ?`)
-            .run(now);
+            .run(now, now);
           const retentionCutoff = now - runtime.webhooks.retentionMillis;
           sqlite
-            .prepare(`delete from webhook_deliveries where event_id in (
-              select e.id from outbox_events e where e.occurred_at < ?
-                and e.dispatched_at is not null
-                and not exists (select 1 from webhook_deliveries active
-                  where active.event_id = e.id and active.status in ('queued', 'sending', 'retrying'))
-            )`)
-            .run(retentionCutoff);
-          sqlite
-            .prepare(`delete from outbox_events where occurred_at < ?
-              and dispatched_at is not null
-              and not exists (select 1 from webhook_deliveries d where d.event_id = outbox_events.id)`)
-            .run(retentionCutoff);
+            .transaction(() => {
+              const expiredEventIds = Schema.decodeUnknownSync(Schema.Array(Schema.String))(
+                sqlite
+                  .prepare(`select e.id from outbox_events e
+                    where e.dispatched_at is not null
+                      and exists (select 1 from webhook_deliveries history
+                        where history.event_id = e.id)
+                      and not exists (select 1 from webhook_deliveries active
+                        where active.event_id = e.id
+                          and active.status in ('queued', 'sending', 'retrying'))
+                      and (select max(history.completed_at) from webhook_deliveries history
+                        where history.event_id = e.id) <= ?`)
+                  .pluck()
+                  .all(retentionCutoff),
+              );
+              const deleteDeliveries = sqlite.prepare(
+                'delete from webhook_deliveries where event_id = ?',
+              );
+              const deleteEvent = sqlite.prepare('delete from outbox_events where id = ?');
+              for (const eventId of expiredEventIds) {
+                deleteDeliveries.run(eventId);
+                deleteEvent.run(eventId);
+              }
+              sqlite
+                .prepare(`delete from outbox_events where dispatched_at <= ?
+                  and not exists (select 1 from webhook_deliveries d
+                    where d.event_id = outbox_events.id)`)
+                .run(retentionCutoff);
+            })
+            .immediate();
+          if (Option.isNone(signingKey)) return [];
           return Schema.decodeUnknownSync(Schema.Array(Schema.String))(
             sqlite
               .prepare(`select d.id from webhook_deliveries d
@@ -510,7 +529,9 @@ export const WebhooksLive = Layer.effect(
         },
         catch: databaseFailure,
       });
-      yield* Effect.forEach(ids, process, { discard: true });
+      if (Option.isNone(signingKey)) return;
+      const key = signingKey.value;
+      yield* Effect.forEach(ids, (id) => process(id, key), { discard: true });
     });
     return Webhooks.of({
       listSubscriptions,
