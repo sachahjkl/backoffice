@@ -604,6 +604,18 @@ export const QuoteLinksLive = Layer.effect(
                   signatureId,
                   now,
                 );
+              audit.insert({
+                action: 'order.created',
+                actorUserId: null,
+                resourceType: 'order',
+                resourceId: orderId,
+                metadata: {
+                  orderReference,
+                  quoteId: quote.quoteId,
+                  quoteReference: quote.quoteReference,
+                },
+                occurredAt: now,
+              });
 
               return QuoteAcceptanceResult.make({
                 quoteId: quote.quoteId,

@@ -3,6 +3,7 @@ import {
   AuditEvent,
   AuditMetadata,
   AuditResourceType,
+  PublicBusinessEventType,
   Ulid,
   type AuditActionValue,
   type AuditEventValue,
@@ -15,6 +16,7 @@ import { ulid } from 'ulid';
 
 import { Database, DatabaseError } from '../database/database.js';
 import { RequestContext } from '../http/request-context.js';
+import { EventOutbox, EventOutboxLive } from '../events/outbox.js';
 
 const AuditInsert = Schema.Struct({
   action: AuditAction,
@@ -46,10 +48,11 @@ export interface AuditService {
 
 export class Audit extends Context.Service<Audit, AuditService>()('@froment/api/Audit') {}
 
-export const AuditLive = Layer.effect(
+const AuditServiceLive = Layer.effect(
   Audit,
   Effect.gen(function* () {
     const database = yield* Database;
+    const eventOutbox = yield* EventOutbox;
     const statement = database.sqlite.prepare(
       `insert into audit_events
        (id, action, actor_user_id, resource_type, resource_id,
@@ -86,6 +89,19 @@ export const AuditLive = Layer.effect(
         event.occurredAt,
         JSON.stringify(event.metadata),
       );
+      const publicEventType = `software.froment.${event.action}.v1`;
+      if (Schema.is(PublicBusinessEventType)(publicEventType)) {
+        eventOutbox.insertBusinessEvent(
+          publicEventType,
+          {
+            resourceType: event.resourceType,
+            resourceId: event.resourceId,
+            actorUserId: event.actorUserId,
+            attributes: event.metadata,
+          },
+          event.occurredAt,
+        );
+      }
       requestContext?.recordAuditEvent({
         id,
         action: event.action,
@@ -160,3 +176,5 @@ export const AuditLive = Layer.effect(
     return Audit.of({ insert, listAffair });
   }),
 );
+
+export const AuditLive = AuditServiceLive.pipe(Layer.provide(EventOutboxLive));

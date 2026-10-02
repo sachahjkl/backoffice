@@ -456,15 +456,23 @@ describe('quote lifecycle', () => {
         const links = yield* QuoteLinks;
         yield* links.accept(signatureRequest, publicContext);
         yield* TestClock.setTime(expiresAt);
+        const database = yield* Database;
         return {
           consultation: yield* links.get(token),
           pdf: yield* links.getPdf(token),
+          orderEvents: database.sqlite
+            .prepare(
+              "select count(*) from outbox_events where event_type = 'software.froment.order.created.v1'",
+            )
+            .pluck()
+            .get(),
         };
       }).pipe(Effect.provide(lifecycleLayer()), Effect.provide(TestClock.layer())),
     );
 
     expect(result.consultation).toMatchObject({ status: 'accepted', canSign: false });
     expect(result.pdf).toMatchObject({ quoteId, reference: 'DE-1970-000001', version: 1 });
+    expect(result.orderEvents).toBe(1);
   });
 
   it('keeps acceptance atomic when expiration runs concurrently', async () => {

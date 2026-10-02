@@ -207,6 +207,8 @@ describe('event outbox and webhooks', () => {
         const event = Schema.decodeUnknownSync(PublicCloudEvent)(
           JSON.parse(Buffer.from(body).toString()),
         );
+        if (event.type !== 'software.froment.invoice.issued.v1')
+          return Effect.die('unexpected event type');
         deliveredNumbers.push(event.data.invoiceNumber);
         return Effect.succeed(event.data.invoiceNumber === 'F-2026-0042' ? 503 : 204);
       },

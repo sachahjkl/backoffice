@@ -177,6 +177,9 @@ describe('HTTP server', () => {
       components: {
         messages: {
           invoiceIssued: { name: 'software.froment.invoice.issued.v1' },
+          'software.froment.client.created.v1': {
+            name: 'software.froment.client.created.v1',
+          },
         },
       },
     });
@@ -186,6 +189,12 @@ describe('HTTP server', () => {
     expect(eventSchema.status).toBe(200);
     await expect(eventSchema.json()).resolves.toMatchObject({
       $id: 'https://froment.software/api/events/schemas/software.froment.invoice.issued.v1.json',
+      type: 'object',
+    });
+    const businessEventSchema = await fetch(`${baseUrl}/api/events/schemas/business-event.v1.json`);
+    expect(businessEventSchema.status).toBe(200);
+    await expect(businessEventSchema.json()).resolves.toMatchObject({
+      $id: 'https://froment.software/api/events/schemas/business-event.v1.json',
       type: 'object',
     });
     const runtimeConfig = await fetch(`${baseUrl}/runtime-config.js`);

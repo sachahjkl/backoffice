@@ -8,7 +8,17 @@ Elle complète l’API HTTP sans exposer le fonctionnement interne du serveur.
 OpenAPI décrit la gestion des abonnements et des livraisons.
 AsyncAPI décrit les événements et le protocole de livraison.
 
-La première version publie uniquement `software.froment.invoice.issued.v1`.
+La première version publie les faits des domaines métier suivants :
+
+- affaires, devis et commandes ;
+- clients, équipe et rôles ;
+- factures, règlements, avoirs et remboursements ;
+- fournisseurs, factures fournisseurs et lots de paiement ;
+- banque, comptabilité et paramètres de société ;
+- catalogue et identité de l’émetteur.
+
+Elle exclut l’authentification, les jetons, l’audit et les opérations techniques.
+Le document AsyncAPI contient la liste exacte des types publics.
 
 ## Architecture
 
@@ -66,6 +76,12 @@ Un consommateur utilise ce couple pour dédupliquer les messages.
 
 `traceparent` et `tracestate` suivent le format W3C quand une trace existe.
 Ils ne remplacent pas les identifiants de corrélation et de causalité.
+
+`software.froment.invoice.issued.v1` conserve une charge utile financière dédiée.
+Les autres types utilisent le schéma commun `business-event.v1.json`.
+
+Ce schéma contient le type de ressource, son identifiant, l’acteur et des attributs textuels.
+Les montants présents dans ces attributs utilisent une représentation décimale exacte.
 
 ## Noms et versions
 

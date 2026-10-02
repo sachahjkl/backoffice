@@ -70,6 +70,7 @@ export const AuditActions = [
   'invoice.payment-cancelled',
   'invoice.revised',
   'invoice.voided',
+  'order.created',
   'issuer.updated',
   'company.settings-updated',
   'company.accounting-initialized',

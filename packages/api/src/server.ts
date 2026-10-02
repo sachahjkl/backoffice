@@ -54,7 +54,11 @@ import { AccountingHandlers } from './accounting/handlers.js';
 import { DemoHandlers } from './demo/handlers.js';
 import { demoProfiles } from './demo/fixtures.js';
 import { WebhookHandlers } from './events/handlers.js';
-import { asyncApiSpecification, invoiceIssuedEventJsonSchema } from './events/documentation.js';
+import {
+  asyncApiSpecification,
+  businessEventJsonSchema,
+  invoiceIssuedEventJsonSchema,
+} from './events/documentation.js';
 
 const FrenchApi = apiForLanguage('fr');
 const EnglishApi = apiForLanguage('en');
@@ -166,6 +170,11 @@ const EventDocumentationRoutes = Layer.mergeAll(
     'GET',
     '/api/events/schemas/software.froment.invoice.issued.v1.json',
     HttpServerResponse.jsonUnsafe(invoiceIssuedEventJsonSchema),
+  ),
+  HttpRouter.add(
+    'GET',
+    '/api/events/schemas/business-event.v1.json',
+    HttpServerResponse.jsonUnsafe(businessEventJsonSchema),
   ),
 );
 

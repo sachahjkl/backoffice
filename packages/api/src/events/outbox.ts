@@ -1,7 +1,11 @@
 import {
+  BusinessCloudEvent,
+  type BusinessCloudEvent as BusinessCloudEventValue,
+  type BusinessEventData,
   InvoiceIssuedCloudEvent,
   type InvoiceIssuedEventData,
   type InvoiceIssuedCloudEvent as InvoiceIssuedCloudEventValue,
+  type PublicBusinessEventType,
 } from '@froment/contracts';
 import { Context, DateTime, Effect, Fiber, Layer, Option, Schema } from 'effect';
 import { v7 as uuidv7 } from 'uuid';
@@ -15,6 +19,11 @@ export interface EventOutboxService {
     data: InvoiceIssuedEventData,
     occurredAt: number,
   ) => InvoiceIssuedCloudEventValue;
+  readonly insertBusinessEvent: (
+    type: PublicBusinessEventType,
+    data: BusinessEventData,
+    occurredAt: number,
+  ) => BusinessCloudEventValue;
 }
 
 export class EventOutbox extends Context.Service<EventOutbox, EventOutboxService>()(
@@ -51,16 +60,27 @@ export const EventOutboxLive = Layer.effect(
        (id, event_type, subject, content, occurred_at, dispatched_at)
        values (?, ?, ?, ?, ?, null)`,
     );
-
-    const insertInvoiceIssued = (
-      data: InvoiceIssuedEventData,
-      occurredAt: number,
-    ): InvoiceIssuedCloudEventValue => {
+    const contextFields = () => {
       const fiber = Fiber.getCurrent();
       const requestContext =
         fiber === undefined
           ? undefined
           : Option.getOrUndefined(Context.getOption(fiber.context, RequestContext));
+      return {
+        correlationid: requestContext?.correlationId ?? uuidv7(),
+        causationid: requestContext?.causationId ?? uuidv7(),
+        traceparent:
+          requestContext === undefined
+            ? undefined
+            : `00-${requestContext.traceId}-${requestContext.spanId}-01`,
+      };
+    };
+
+    const insertInvoiceIssued = (
+      data: InvoiceIssuedEventData,
+      occurredAt: number,
+    ): InvoiceIssuedCloudEventValue => {
+      const context = contextFields();
       const base = {
         specversion: '1.0',
         id: uuidv7(),
@@ -71,22 +91,48 @@ export const EventOutboxLive = Layer.effect(
         datacontenttype: 'application/json',
         dataschema:
           'https://froment.software/api/events/schemas/software.froment.invoice.issued.v1.json',
-        correlationid: requestContext?.correlationId ?? uuidv7(),
-        causationid: requestContext?.causationId ?? uuidv7(),
+        correlationid: context.correlationid,
+        causationid: context.causationid,
         data,
       };
       const event = Schema.decodeUnknownSync(InvoiceIssuedCloudEvent)(
-        requestContext === undefined
+        context.traceparent === undefined
           ? base
           : {
               ...base,
-              traceparent: `00-${requestContext.traceId}-${requestContext.spanId}-01`,
+              traceparent: context.traceparent,
             },
       );
       insert.run(event.id, event.type, event.subject, JSON.stringify(event), occurredAt);
       return event;
     };
 
-    return EventOutbox.of({ installationId, insertInvoiceIssued });
+    const insertBusinessEvent = (
+      type: PublicBusinessEventType,
+      data: BusinessEventData,
+      occurredAt: number,
+    ): BusinessCloudEventValue => {
+      const context = contextFields();
+      const base = {
+        specversion: '1.0',
+        id: uuidv7(),
+        source: `urn:froment:installation:${installationId}`,
+        type,
+        subject: `${data.resourceType}/${encodeURIComponent(data.resourceId)}`,
+        time: DateTime.formatIso(DateTime.makeUnsafe(occurredAt)),
+        datacontenttype: 'application/json',
+        dataschema: 'https://froment.software/api/events/schemas/business-event.v1.json',
+        correlationid: context.correlationid,
+        causationid: context.causationid,
+        data,
+      };
+      const event = Schema.decodeUnknownSync(BusinessCloudEvent)(
+        context.traceparent === undefined ? base : { ...base, traceparent: context.traceparent },
+      );
+      insert.run(event.id, event.type, event.subject, JSON.stringify(event), occurredAt);
+      return event;
+    };
+
+    return EventOutbox.of({ installationId, insertInvoiceIssued, insertBusinessEvent });
   }),
 );
