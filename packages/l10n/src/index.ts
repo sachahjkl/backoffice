@@ -14,3 +14,4 @@ export * from './roles.js';
 export * from './supplier-invoices.js';
 export * from './company-workspace.js';
 export * from './accounting.js';
+export * from './event-api.js';

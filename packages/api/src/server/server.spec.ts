@@ -170,6 +170,24 @@ describe('HTTP server', () => {
       description: apiDocumentation.en.security.bearer,
     });
     expect(englishSpecification.components.securitySchemes).not.toHaveProperty('sessionCookie');
+    const asyncApi = await fetch(`${baseUrl}/api/asyncapi.json`);
+    expect(asyncApi.status).toBe(200);
+    await expect(asyncApi.json()).resolves.toMatchObject({
+      asyncapi: '3.0.0',
+      components: {
+        messages: {
+          invoiceIssued: { name: 'software.froment.invoice.issued.v1' },
+        },
+      },
+    });
+    const eventSchema = await fetch(
+      `${baseUrl}/api/events/schemas/software.froment.invoice.issued.v1.json`,
+    );
+    expect(eventSchema.status).toBe(200);
+    await expect(eventSchema.json()).resolves.toMatchObject({
+      $id: 'https://froment.software/api/events/schemas/software.froment.invoice.issued.v1.json',
+      type: 'object',
+    });
     const runtimeConfig = await fetch(`${baseUrl}/runtime-config.js`);
     expect(runtimeConfig.headers.get('cache-control')).toBe('no-store');
     await expect(runtimeConfig.text()).resolves.toBe(
@@ -193,6 +211,9 @@ describe('HTTP server', () => {
     );
     expect(firstRequestId).not.toBe('client-controlled');
     expect(second.headers.get('x-request-id')).not.toBe(firstRequestId);
+    expect(first.headers.get('x-correlation-id')).toMatch(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+    );
 
     const version = await fetch(`${baseUrl}/api/version`);
     expect(version.headers.get('cache-control')).toBe('no-store');
@@ -505,6 +526,47 @@ describe('HTTP server', () => {
         }),
       ]),
     );
+  });
+
+  it('uses dedicated browser permissions for webhook administration', async () => {
+    const subscriptions = await fetch(`${baseUrl}/api/webhooks/subscriptions`, {
+      headers: administratorSessionHeaders,
+    });
+    expect(subscriptions.status).toBe(200);
+    await expect(subscriptions.json()).resolves.toEqual([]);
+
+    const unavailable = await fetch(`${baseUrl}/api/webhooks/subscriptions`, {
+      method: 'POST',
+      headers: {
+        ...administratorSessionHeaders,
+        'content-type': 'application/json',
+        origin: baseUrl,
+      },
+      body: JSON.stringify({
+        requestId: randomUUID(),
+        name: 'Accounting',
+        url: 'https://events.example.test/froment',
+        eventTypes: ['software.froment.invoice.issued.v1'],
+      }),
+    });
+    expect(unavailable.status).toBe(503);
+    await expect(unavailable.json()).resolves.toMatchObject({ code: 'webhook.unavailable' });
+
+    const token = await fetch(`${baseUrl}/api/tokens`, {
+      method: 'POST',
+      headers: {
+        ...administratorSessionHeaders,
+        'content-type': 'application/json',
+        origin: baseUrl,
+      },
+      body: JSON.stringify({
+        name: 'invalid-webhook-token',
+        permissions: ['webhook.subscription.read'],
+        expiresAt: Date.now() + 86_400_000,
+        rateLimitPerMinute: 60,
+      }),
+    });
+    expect(token.status).toBe(400);
   });
 
   it('logs out one refresh family and clears its cookie', async () => {

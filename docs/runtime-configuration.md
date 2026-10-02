@@ -98,6 +98,21 @@ Les espaces supplémentaires dans le JSON restent soumis à la limite de transpo
 La règle métier conserve au maximum 1 000 lignes de données.
 Une valeur de transport inférieure réduit la taille réellement acceptée, sans modifier le contrat CSV.
 
+## Webhooks sortants
+
+`WEBHOOK_SIGNING_KEY` contient 32 octets en base64url.
+Une clé absente interdit la création et la rotation des abonnements.
+
+`WEBHOOK_REQUEST_TIMEOUT_MILLIS` limite un appel distant à 10 000 ms par défaut.
+`WEBHOOK_WORKER_INTERVAL_MILLIS` règle le passage du worker à 1 000 ms par défaut.
+`WEBHOOK_RETENTION_MILLIS` conserve les événements terminés pendant 30 jours par défaut.
+
+`WEBHOOK_ALLOW_PRIVATE_DESTINATIONS` vaut `false` par défaut.
+Si cette option vaut `true`, le serveur autorise les destinations privées.
+Une destination HTTP reste limitée aux environnements `development` et `staging`.
+
+Consultez `docs/event-api.md` pour le contrat, la signature et les règles de livraison.
+
 ## Tests
 
 Pour tester le chargement, fournissez `ConfigProvider.layer(ConfigProvider.fromUnknown(...))` à `RuntimeConfigurationLive`.

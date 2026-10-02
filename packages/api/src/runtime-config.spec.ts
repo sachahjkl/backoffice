@@ -1,4 +1,4 @@
-import { ConfigProvider, Effect } from 'effect';
+import { ConfigProvider, Effect, Option, Redacted } from 'effect';
 import { describe, expect, it } from 'vitest';
 
 import {
@@ -26,6 +26,9 @@ describe('RuntimeConfiguration', () => {
         HTTP_MAXIMUM_SUPPLIER_INVOICE_ANALYSIS_BODY_BYTES: '700000',
         SUPPLIER_INVOICE_ANALYSIS_REQUEST_TIMEOUT_MILLIS: '8000',
         EXCHANGE_RATE_REQUEST_TIMEOUT_MILLIS: '7000',
+        WEBHOOK_ALLOW_PRIVATE_DESTINATIONS: 'true',
+        WEBHOOK_REQUEST_TIMEOUT_MILLIS: '9000',
+        WEBHOOK_SIGNING_KEY: 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
       }),
     );
     expect(config.authentication.loginAttemptsPerMinute).toBe(3);
@@ -38,6 +41,11 @@ describe('RuntimeConfiguration', () => {
     expect(config.http.maximumSupplierInvoiceAnalysisBodyBytes).toBe(700_000);
     expect(config.supplierInvoiceAnalysis.requestTimeoutMillis).toBe(8_000);
     expect(config.exchangeRates.requestTimeoutMillis).toBe(7_000);
+    expect(config.webhooks.allowPrivateDestinations).toBe(true);
+    expect(config.webhooks.requestTimeoutMillis).toBe(9_000);
+    expect(Option.map(config.webhooks.signingKey, Redacted.value)).toEqual(
+      Option.some('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'),
+    );
   });
   it('loads the application environment and site phase', async () => {
     const config = await Effect.runPromise(
@@ -63,6 +71,12 @@ describe('RuntimeConfiguration', () => {
     expect((await Effect.runPromise(load({ [name]: value }).pipe(Effect.flip)))._tag).toBe(
       'ConfigError',
     );
+  });
+  it('rejects an invalid webhook signing key', async () => {
+    const error = await Effect.runPromise(
+      load({ WEBHOOK_SIGNING_KEY: 'not-base64url-32-bytes' }).pipe(Effect.flip),
+    );
+    expect(error._tag).toBe('ConfigError');
   });
   it.each([
     'AUTH_LOGIN_ATTEMPTS_PER_MINUTE',

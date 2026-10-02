@@ -26,6 +26,7 @@ import { Quotes, type QuotesService } from '../quotes/quotes.js';
 import { issueInvoice } from './issue.js';
 import { InvoicePdfJobs, InvoicePdfJobsLive } from './pdf-jobs.js';
 import { Invoices, InvoicesLive } from './invoices.js';
+import { EventOutboxLive } from '../events/outbox.js';
 
 const actorId = '01ARZ3NDEKTSV4RRFFQ69G5FAV';
 const invoiceId = '01ARZ3NDEKTSV4RRFFQ69G5FAW';
@@ -120,7 +121,10 @@ const makeTestLayer = (filename: string, renderer: DocumentRendererService) => {
     OrdersLive,
     Layer.succeed(DocumentRenderer, renderer),
     Layer.succeed(Quotes, quotes),
-  ).pipe(Layer.provideMerge(Layer.succeed(IssuerSettings, issuerSettings)));
+  ).pipe(
+    Layer.provideMerge(Layer.succeed(IssuerSettings, issuerSettings)),
+    Layer.provideMerge(EventOutboxLive.pipe(Layer.provide(databaseLayer))),
+  );
   const configuredCoreLayer = coreLayer.pipe(
     Layer.provideMerge(
       Layer.succeed(BusinessConfig, {
@@ -695,6 +699,7 @@ describe('invoice issue recovery', () => {
             )
             .pluck()
             .get(),
+          eventCount: database.sqlite.prepare('select count(*) from outbox_events').pluck().get(),
         };
       }).pipe(Effect.provide(testLayer), Effect.scoped),
     );
@@ -713,6 +718,7 @@ describe('invoice issue recovery', () => {
     });
     expect(state.revisionCount).toBe(2);
     expect(state.nextNumber).toBe(2);
+    expect(state.eventCount).toBe(1);
     expect(state.artifact).toMatchObject({ invoiceRevisionId: state.firstIssue.revisionId });
     expect(Buffer.from(state.content)).toEqual(Buffer.from(pdf));
     expect(renderAttempts).toBe(2);
@@ -737,6 +743,9 @@ describe('invoice issue recovery', () => {
           job: database.sqlite
             .prepare('select status, attempts, error from invoice_pdf_jobs')
             .get(),
+          event: database.sqlite
+            .prepare('select event_type as type, content from outbox_events')
+            .get(),
         };
       }).pipe(Effect.provide(testLayer), Effect.scoped),
     );
@@ -746,6 +755,21 @@ describe('invoice issue recovery', () => {
       status: 'failed',
       attempts: 1,
       error: 'pdf.render_failed',
+    });
+    expect(result.event).toMatchObject({ type: 'software.froment.invoice.issued.v1' });
+    const event = result.event as { readonly content: string };
+    expect(JSON.parse(event.content)).toMatchObject({
+      type: 'software.froment.invoice.issued.v1',
+      data: {
+        invoiceId,
+        invoiceNumber: 'FA-2026-000001',
+        revisionId: result.issued.revisionId,
+        version: 2,
+        currency: 'EUR',
+        netTotalCents: 10_000,
+        vatTotalCents: 2_000,
+        totalCents: 12_000,
+      },
     });
     expect(JSON.stringify(result.job)).not.toContain('secret renderer detail');
   });

@@ -1,6 +1,7 @@
 import { Effect } from 'effect';
 import { HttpEffect, HttpServerRequest, HttpServerResponse } from 'effect/http';
 import { randomUUID } from 'node:crypto';
+import { v7 as uuidv7 } from 'uuid';
 
 import {
   type ApiRequestTelemetry,
@@ -81,11 +82,15 @@ export const identifyRequest = <Error, Requirements>(
 > =>
   Effect.gen(function* () {
     const requestId = randomUUID();
+    const correlationId = uuidv7();
+    const causationId = uuidv7();
     const span = yield* Effect.orDie(Effect.currentParentSpan);
     let apiTelemetry: ApiRequestTelemetry | undefined;
     const recordedAuditEvents: Array<RecordedAuditEvent> = [];
     const requestContext = RequestContext.of({
       requestId,
+      correlationId,
+      causationId,
       traceId: span.traceId,
       spanId: span.spanId,
       apiTelemetry: () => apiTelemetry,
@@ -98,12 +103,18 @@ export const identifyRequest = <Error, Requirements>(
       },
     });
     yield* HttpEffect.appendPreResponseHandler((_request, response) =>
-      Effect.succeed(HttpServerResponse.setHeader(response, 'x-request-id', requestId)),
+      Effect.succeed(
+        HttpServerResponse.setHeaders(response, {
+          'x-request-id': requestId,
+          'x-correlation-id': correlationId,
+        }),
+      ),
     );
     return yield* application.pipe(
       Effect.provideService(RequestContext, requestContext),
       Effect.annotateLogs({
         'request.id': requestId,
+        'correlation.id': correlationId,
         'trace.id': span.traceId,
         'span.id': span.spanId,
       }),

@@ -4,6 +4,7 @@ import { Config, Context, Layer, Option, Schema } from 'effect';
 import { BrandingLogoUrl, BrandingName } from '../../contracts/src/company/branding.js';
 
 const PositiveInt = Schema.Int.check(Schema.isGreaterThan(0));
+export const WebhookSigningKey = Schema.String.check(Schema.isPattern(/^[A-Za-z0-9_-]{43}$/));
 
 const positiveInt = (name: string, defaultValue: number) =>
   Config.schema(PositiveInt, name).pipe(Config.withDefault(defaultValue));
@@ -65,6 +66,13 @@ export const defaultRuntimeConfig = {
   },
   documentRenderer: { concurrency: 2, maximumOutputBytes: 1_048_576 },
   invoicePdfWorker: { concurrency: 1, intervalMillis: 1_000 },
+  webhooks: {
+    signingKey: Option.none(),
+    allowPrivateDestinations: false,
+    requestTimeoutMillis: 10_000,
+    workerIntervalMillis: 1_000,
+    retentionMillis: 2_592_000_000,
+  },
   database: { busyTimeoutMillis: 5_000 },
   http: {
     maximumRequestBodyBytes: 400_000,
@@ -222,6 +230,17 @@ export const RuntimeConfig = {
   invoicePdfWorker: Config.all({
     concurrency: positiveInt('INVOICE_PDF_WORKER_CONCURRENCY', 1),
     intervalMillis: positiveInt('INVOICE_PDF_WORKER_INTERVAL_MILLIS', 1_000),
+  }),
+  webhooks: Config.all({
+    signingKey: Config.option(
+      Config.schema(Schema.RedactedFromValue(WebhookSigningKey), 'WEBHOOK_SIGNING_KEY'),
+    ),
+    allowPrivateDestinations: Config.Boolean('WEBHOOK_ALLOW_PRIVATE_DESTINATIONS').pipe(
+      Config.withDefault(false),
+    ),
+    requestTimeoutMillis: positiveInt('WEBHOOK_REQUEST_TIMEOUT_MILLIS', 10_000),
+    workerIntervalMillis: positiveInt('WEBHOOK_WORKER_INTERVAL_MILLIS', 1_000),
+    retentionMillis: positiveInt('WEBHOOK_RETENTION_MILLIS', 2_592_000_000),
   }),
   database: Config.all({
     busyTimeoutMillis: positiveInt('DATABASE_BUSY_TIMEOUT_MILLIS', 5_000),

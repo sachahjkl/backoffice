@@ -77,6 +77,7 @@
           root = ./.;
           fileset = lib.fileset.unions [
             ./.editorconfig
+            ./.gitignore
             ./.oxfmtrc.json
             ./.oxlintrc.json
             ./package.json

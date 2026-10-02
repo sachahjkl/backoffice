@@ -31,7 +31,8 @@
     "negotiator": "^1.1.0",
     "paseto-ts": "^2.0.7",
     "stripe": "^22.6.2",
-    "ulid": "catalog:"
+    "ulid": "catalog:",
+    "uuid": "catalog:"
   },
   "devDependencies": {
     "@types/better-sqlite3": "catalog:",

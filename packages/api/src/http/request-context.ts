@@ -16,6 +16,8 @@ export interface RecordedAuditEvent {
 
 export interface RequestContextService {
   readonly requestId: string;
+  readonly correlationId: string;
+  readonly causationId: string;
   readonly traceId: string;
   readonly spanId: string;
   readonly apiTelemetry: () => ApiRequestTelemetry | undefined;

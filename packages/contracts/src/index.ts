@@ -138,6 +138,7 @@ export {
   type AuditResourceType as AuditResourceTypeValue,
 } from './audit/contracts.js';
 export { AuditApi } from './audit/api.js';
+export * from './events/contracts.js';
 export {
   GlobalAuditEvent,
   GlobalAuditPage,

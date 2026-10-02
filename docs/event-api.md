@@ -35,7 +35,7 @@ La requête utilise `Content-Type: application/cloudevents+json`.
   "subject": "invoice/01K6K5XFXJATJFD92RD6QFCW8B",
   "time": "2026-10-02T12:00:00.000Z",
   "datacontenttype": "application/json",
-  "dataschema": "https://froment.software/events/schemas/software.froment.invoice.issued.v1.json",
+  "dataschema": "https://froment.software/api/events/schemas/software.froment.invoice.issued.v1.json",
   "correlationid": "0199a2bf-e17a-71f2-b7f4-35dd1aa0f398",
   "causationid": "0199a2c0-c82f-725c-b720-da4300040d47",
   "data": {
@@ -56,6 +56,10 @@ Les identifiants métier utilisent les ULID existants.
 
 `source` contient l’UUID persistant de l’installation.
 Un clone autonome doit régénérer cet UUID explicitement.
+
+Arrêtez le serveur avant de rendre un clone autonome.
+Supprimez ensuite la ligne de `event_installation` dans la base du clone.
+Le prochain démarrage crée une nouvelle identité d’installation.
 
 Le couple `(source, id)` identifie un événement CloudEvents.
 Un consommateur utilise ce couple pour dédupliquer les messages.
@@ -81,6 +85,9 @@ La première version n’accepte aucun wildcard.
 
 Le serveur vérifie une nouvelle URL avant d’activer l’abonnement.
 Une modification d’URL impose une nouvelle vérification.
+
+Le serveur envoie une requête `HEAD` avec `Froment-Webhook-Verification`.
+La destination doit renvoyer la même valeur dans un en-tête de réponse.
 
 La vérification refuse les redirections.
 Elle refuse aussi les adresses loopback, privées et link-local par défaut.
@@ -110,6 +117,7 @@ L’API affiche le secret uniquement lors de la création ou de la rotation.
 Une version de clé permet une rotation future de la clé maîtresse.
 
 Le serveur signe l’horodatage et les octets exacts du corps avec HMAC-SHA256.
+L’entrée HMAC est `<timestamp>.<corps brut>` sans saut de ligne ajouté.
 
 ```text
 Froment-Signature: t=1790932800,k=v1,v1=abcdef...

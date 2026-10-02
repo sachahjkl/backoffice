@@ -85,6 +85,15 @@ const addedOperationIds = [
   'supplierInvoiceEvidenceList',
 ] as const;
 
+const webhookOperationIds = [
+  'webhookDeliveryList',
+  'webhookDeliveryReplay',
+  'webhookSubscriptionCreate',
+  'webhookSubscriptionList',
+  'webhookSubscriptionRotateSecret',
+  'webhookSubscriptionUpdate',
+] as const;
+
 const operationDocumentation = (
   ids: ReadonlyArray<string>,
   summary: string,
@@ -178,6 +187,10 @@ export const apiDocumentation = {
         title: 'Services externes',
         description: 'Adaptateurs et journal des demandes.',
       },
+      webhooks: {
+        title: 'Webhooks',
+        description: 'Abonnements, livraisons signées, erreurs et rejeux des événements métier.',
+      },
     },
     operations: {
       ...operationDocumentation(
@@ -189,6 +202,11 @@ export const apiDocumentation = {
         addedOperationIds,
         'Gérer la suite de gestion',
         'Exécute une opération métier selon les permissions et les contrôles applicables.',
+      ),
+      ...operationDocumentation(
+        webhookOperationIds,
+        'Gérer les webhooks',
+        'Gère les abonnements et les livraisons avec les permissions dédiées.',
       ),
       ...auditDocumentation.fr.operations,
       blogFeed: {
@@ -689,6 +707,10 @@ export const apiDocumentation = {
         description: 'Protected reset of demonstration data outside production.',
       },
       integrations: { title: 'External services', description: 'Adapters and request history.' },
+      webhooks: {
+        title: 'Webhooks',
+        description: 'Subscriptions, signed deliveries, errors, and business event replays.',
+      },
     },
     operations: {
       ...operationDocumentation(
@@ -700,6 +722,11 @@ export const apiDocumentation = {
         addedOperationIds,
         'Manage the business suite',
         'Runs a business operation with the applicable permissions and controls.',
+      ),
+      ...operationDocumentation(
+        webhookOperationIds,
+        'Manage webhooks',
+        'Manages subscriptions and deliveries with dedicated permissions.',
       ),
       ...auditDocumentation.en.operations,
       blogFeed: {

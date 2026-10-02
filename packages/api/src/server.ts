@@ -53,6 +53,8 @@ import { blogHandlers } from './blog/handlers.js';
 import { AccountingHandlers } from './accounting/handlers.js';
 import { DemoHandlers } from './demo/handlers.js';
 import { demoProfiles } from './demo/fixtures.js';
+import { WebhookHandlers } from './events/handlers.js';
+import { asyncApiSpecification, invoiceIssuedEventJsonSchema } from './events/documentation.js';
 
 const FrenchApi = apiForLanguage('fr');
 const EnglishApi = apiForLanguage('en');
@@ -97,6 +99,7 @@ const apiRoutes = (publicOrigin: string) =>
         ApiTokenHandlers,
         AccountingHandlers,
         DemoHandlers,
+        WebhookHandlers,
       ),
     ),
     Layer.provide(
@@ -157,6 +160,14 @@ const LocalizedOpenApiRoutes = Layer.mergeAll(
     HttpServerResponse.jsonUnsafe(openApiSpecifications.en),
   ),
 );
+const EventDocumentationRoutes = Layer.mergeAll(
+  HttpRouter.add('GET', '/api/asyncapi.json', HttpServerResponse.jsonUnsafe(asyncApiSpecification)),
+  HttpRouter.add(
+    'GET',
+    '/api/events/schemas/software.froment.invoice.issued.v1.json',
+    HttpServerResponse.jsonUnsafe(invoiceIssuedEventJsonSchema),
+  ),
+);
 
 export const makeServerLayer = (options: {
   readonly port: number;
@@ -199,6 +210,7 @@ export const makeServerLayer = (options: {
       FrenchApiDocs,
       EnglishApiDocs,
       LocalizedOpenApiRoutes,
+      EventDocumentationRoutes,
       ApiCatalogRoute,
       RuntimeConfigRoute,
       StaticRoutes,

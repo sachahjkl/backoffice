@@ -47,6 +47,7 @@ import {
 import { BusinessConfig } from '../business/business-config.js';
 import { allocateBusinessReference, businessYear } from '../business/business-references.js';
 import { Database, DatabaseError } from '../database/database.js';
+import { EventOutbox } from '../events/outbox.js';
 import { calculateDocumentLine, calculateDocumentTotals } from '../documents/calculation.js';
 import { validateDocumentParties } from '../documents/validation.js';
 import { StoredTextPresentation, storeTextPresentation } from '../documents/text-presentation.js';
@@ -275,6 +276,7 @@ export const InvoicesLive = Layer.effect(
     const issuerSettings = yield* IssuerSettings;
     const audit = yield* Audit;
     const businessConfig = yield* BusinessConfig;
+    const eventOutbox = yield* EventOutbox;
 
     const readDetail = (invoiceId: string): InvoiceDetailValue | undefined => {
       const rawInvoice = database.sqlite.prepare(`${invoiceSql} where id = ?`).get(invoiceId);
@@ -1053,6 +1055,19 @@ export const InvoicesLive = Layer.effect(
                   now,
                   now,
                 );
+              eventOutbox.insertInvoiceIssued(
+                {
+                  invoiceId,
+                  invoiceNumber,
+                  revisionId: finalSnapshot.revisionId,
+                  version: nextVersion,
+                  currency: finalSnapshot.currency,
+                  netTotalCents: finalSnapshot.netTotalCents,
+                  vatTotalCents: finalSnapshot.vatTotalCents,
+                  totalCents: finalSnapshot.totalCents,
+                },
+                now,
+              );
               return InvoiceIssueResult.make({
                 invoiceId,
                 revisionId: finalSnapshot.revisionId,

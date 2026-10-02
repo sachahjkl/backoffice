@@ -126,6 +126,9 @@ catalogs:
     ulid:
       specifier: 3.0.2
       version: 3.0.2
+    uuid:
+      specifier: 14.0.2
+      version: 14.0.2
     vitest:
       specifier: ^5.0.3
       version: 5.0.3
@@ -216,6 +219,9 @@ importers:
       ulid:
         specifier: 'catalog:'
         version: 3.0.2
+      uuid:
+        specifier: 'catalog:'
+        version: 14.0.2
     devDependencies:
       '@types/better-sqlite3':
         specifier: 'catalog:'

@@ -95,6 +95,8 @@ describe('HTTP tracing', () => {
     ) => {
       const context = RequestContext.of({
         requestId: '45b0257f-8a17-40d8-bb8d-f7bc6bc50f4a',
+        correlationId: '0199a2bf-e17a-71f2-b7f4-35dd1aa0f398',
+        causationId: '0199a2c0-c82f-725c-b720-da4300040d47',
         traceId: '0123456789abcdef0123456789abcdef',
         spanId: '0123456789abcdef',
         apiTelemetry: () => apiTelemetry,

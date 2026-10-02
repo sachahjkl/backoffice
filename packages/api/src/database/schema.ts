@@ -2352,3 +2352,125 @@ export const checkoutEvents = sqliteTable('checkout_events', {
   eventType: text('event_type').notNull(),
   receivedAt: integer('received_at').notNull(),
 });
+
+export const eventInstallation = sqliteTable(
+  'event_installation',
+  {
+    singleton: integer().notNull().primaryKey(),
+    installationId: text('installation_id').notNull().unique(),
+    createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
+  },
+  (table) => [
+    check('event_installation_singleton_check', sql`${table.singleton} = 1`),
+    check(
+      'event_installation_uuid_check',
+      sql`length(${table.installationId}) = 36 and substr(${table.installationId}, 15, 1) = '7'`,
+    ),
+  ],
+);
+
+export const outboxEvents = sqliteTable(
+  'outbox_events',
+  {
+    id: text().notNull().primaryKey(),
+    eventType: text('event_type').notNull(),
+    subject: text().notNull(),
+    content: text().notNull(),
+    occurredAt: integer('occurred_at', { mode: 'timestamp_ms' }).notNull(),
+    dispatchedAt: integer('dispatched_at', { mode: 'timestamp_ms' }),
+  },
+  (table) => [
+    check(
+      'outbox_events_uuid_check',
+      sql`length(${table.id}) = 36 and substr(${table.id}, 15, 1) = '7'`,
+    ),
+    check('outbox_events_content_check', sql`json_valid(${table.content})`),
+    index('outbox_events_dispatch_index').on(table.dispatchedAt, table.occurredAt, table.id),
+  ],
+);
+
+export const webhookSubscriptions = sqliteTable(
+  'webhook_subscriptions',
+  {
+    id: text().notNull().primaryKey(),
+    requestId: text('request_id').notNull().unique(),
+    name: text().notNull(),
+    url: text().notNull(),
+    eventTypes: text('event_types').notNull(),
+    status: text().notNull(),
+    keyVersion: integer('key_version').notNull().default(1),
+    version: integer().notNull().default(1),
+    createdByUserId: text('created_by_user_id')
+      .notNull()
+      .references(() => users.id),
+    createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
+    updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),
+  },
+  (table) => [
+    check(
+      'webhook_subscriptions_uuid_check',
+      sql`length(${table.id}) = 36 and substr(${table.id}, 15, 1) = '7'`,
+    ),
+    check('webhook_subscriptions_request_id_check', sql`length(${table.requestId}) = 36`),
+    check('webhook_subscriptions_name_check', sql`length(trim(${table.name})) between 1 and 80`),
+    check('webhook_subscriptions_url_check', sql`length(${table.url}) between 1 and 2048`),
+    check('webhook_subscriptions_events_check', sql`json_valid(${table.eventTypes})`),
+    check('webhook_subscriptions_status_check', sql`${table.status} in ('active', 'disabled')`),
+    check('webhook_subscriptions_key_version_check', sql`${table.keyVersion} > 0`),
+    check('webhook_subscriptions_version_check', sql`${table.version} > 0`),
+    check('webhook_subscriptions_timestamps_check', sql`${table.updatedAt} >= ${table.createdAt}`),
+  ],
+);
+
+export const webhookDeliveries = sqliteTable(
+  'webhook_deliveries',
+  {
+    id: text().notNull().primaryKey(),
+    eventId: text('event_id')
+      .notNull()
+      .references(() => outboxEvents.id),
+    subscriptionId: text('subscription_id')
+      .notNull()
+      .references(() => webhookSubscriptions.id),
+    replayNumber: integer('replay_number').notNull().default(0),
+    replayOf: text('replay_of'),
+    status: text().notNull(),
+    attempts: integer().notNull().default(0),
+    lease: integer().notNull().default(0),
+    nextAttemptAt: integer('next_attempt_at', { mode: 'timestamp_ms' }),
+    lastAttemptAt: integer('last_attempt_at', { mode: 'timestamp_ms' }),
+    deliveredAt: integer('delivered_at', { mode: 'timestamp_ms' }),
+    responseStatus: integer('response_status'),
+    error: text(),
+    createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
+  },
+  (table) => [
+    check(
+      'webhook_deliveries_uuid_check',
+      sql`length(${table.id}) = 36 and substr(${table.id}, 15, 1) = '7'`,
+    ),
+    check(
+      'webhook_deliveries_status_check',
+      sql`${table.status} in ('queued', 'sending', 'retrying', 'delivered', 'failed')`,
+    ),
+    check('webhook_deliveries_attempts_check', sql`${table.attempts} between 0 and 10`),
+    check('webhook_deliveries_lease_check', sql`${table.lease} >= 0`),
+    check('webhook_deliveries_replay_check', sql`${table.replayNumber} >= 0`),
+    uniqueIndex('webhook_deliveries_event_subscription_replay_unique').on(
+      table.eventId,
+      table.subscriptionId,
+      table.replayNumber,
+    ),
+    index('webhook_deliveries_due_index').on(
+      table.status,
+      table.nextAttemptAt,
+      table.createdAt,
+      table.id,
+    ),
+    index('webhook_deliveries_subscription_index').on(
+      table.subscriptionId,
+      table.createdAt,
+      table.id,
+    ),
+  ],
+);

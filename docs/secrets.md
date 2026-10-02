@@ -18,6 +18,7 @@ Les identifiants de prestataires restent facultatifs tant que les adaptateurs ne
 La clé `SUPPLIER_INVOICE_ANALYSIS_API_KEY` initialise l’adaptateur d’analyse quand elle existe.
 La clé `ACCOUNTING_TAX_FILING_API_KEY` initialise l’adaptateur de télédéclaration quand elle existe.
 L’administration peut remplacer cette clé avec `SETTINGS_ENCRYPTION_KEY` configurée.
+`WEBHOOK_SIGNING_KEY` dérive un secret HMAC distinct pour chaque abonnement sortant.
 
 `DEMO_PASSWORD` protège la réinitialisation hors production. Ne publiez jamais sa valeur.
 

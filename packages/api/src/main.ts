@@ -46,6 +46,9 @@ import { ClientPortalLive } from './client-portal/client-portal.js';
 import { RuntimeConfigurationLive } from './runtime-config.js';
 import { AccountingLive } from './accounting/service.js';
 import { DemoLive } from './demo/service.js';
+import { EventOutboxLive } from './events/outbox.js';
+import { WebhookTransportLive } from './events/transport.js';
+import { WebhooksLive, WebhookWorkerLive } from './events/webhooks.js';
 
 const QuoteCoreLive = Layer.mergeAll(
   QuotesLive,
@@ -61,6 +64,11 @@ const InvoicePdfRuntimeLive = Layer.merge(
 );
 const AuthenticationServicesLive = BootstrapLive.pipe(
   Layer.provideMerge(AuthenticationLive.pipe(Layer.provideMerge(AccessTokensLive))),
+);
+const WebhookServicesLive = WebhooksLive.pipe(Layer.provideMerge(WebhookTransportLive));
+const WebhookRuntimeLive = Layer.merge(
+  WebhookServicesLive,
+  WebhookWorkerLive.pipe(Layer.provide(WebhookServicesLive)),
 );
 
 const ServicesLive = Layer.mergeAll(
@@ -108,12 +116,14 @@ const ServicesLive = Layer.mergeAll(
   ClientPortalLive,
   AccountingLive.pipe(Layer.provide(FetchHttpClient.layer)),
   DemoLive,
+  WebhookRuntimeLive,
 ).pipe(
   Layer.provideMerge(ConnectionConfigLive),
   Layer.provideMerge(AuditLive),
   Layer.provideMerge(PasswordsLive),
   Layer.provideMerge(AuthenticationConfigLive),
   Layer.provideMerge(RuntimeConfigurationLive),
+  Layer.provideMerge(EventOutboxLive),
   Layer.provideMerge(DatabaseLive),
 );
 
