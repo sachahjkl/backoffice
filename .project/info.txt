@@ -1,0 +1,2 @@
+name=backoffice
+description=Backoffice générique pour la gestion commerciale, documentaire et comptable.
