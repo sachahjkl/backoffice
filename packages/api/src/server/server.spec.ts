@@ -177,9 +177,15 @@ describe('HTTP server', () => {
       asyncapi: '3.0.0',
       components: {
         messages: {
-          invoiceIssued: { name: 'software.froment.invoice.issued.v1' },
+          invoiceIssued: {
+            name: 'software.froment.invoice.issued.v1',
+            payload: {
+              $ref: './events/schemas/software.froment.invoice.issued.v1.json',
+            },
+          },
           'software.froment.client.created.v1': {
             name: 'software.froment.client.created.v1',
+            payload: { $ref: './events/schemas/business-event.v1.json' },
           },
         },
       },

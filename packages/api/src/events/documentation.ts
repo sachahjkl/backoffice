@@ -34,7 +34,7 @@ const businessMessages = Object.fromEntries(
       name: type,
       title: eventApiDocumentation.businessEventTitle,
       contentType: 'application/cloudevents+json',
-      payload: { $ref: '/api/events/schemas/business-event.v1.json' },
+      payload: { $ref: './events/schemas/business-event.v1.json' },
     },
   ]),
 );
@@ -97,7 +97,7 @@ export const asyncApiSpecification = {
         title: eventApiDocumentation.invoiceIssuedTitle,
         contentType: 'application/cloudevents+json',
         payload: {
-          $ref: '/api/events/schemas/software.froment.invoice.issued.v1.json',
+          $ref: './events/schemas/software.froment.invoice.issued.v1.json',
         },
       },
       ...businessMessages,
