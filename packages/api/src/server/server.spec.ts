@@ -172,6 +172,7 @@ describe('HTTP server', () => {
     expect(englishSpecification.components.securitySchemes).not.toHaveProperty('sessionCookie');
     const asyncApi = await fetch(`${baseUrl}/api/asyncapi.json`);
     expect(asyncApi.status).toBe(200);
+    expect(asyncApi.headers.get('access-control-allow-origin')).toBe('*');
     await expect(asyncApi.json()).resolves.toMatchObject({
       asyncapi: '3.0.0',
       components: {
@@ -187,16 +188,34 @@ describe('HTTP server', () => {
       `${baseUrl}/api/events/schemas/software.froment.invoice.issued.v1.json`,
     );
     expect(eventSchema.status).toBe(200);
+    expect(eventSchema.headers.get('access-control-allow-origin')).toBe('*');
     await expect(eventSchema.json()).resolves.toMatchObject({
       $id: 'https://froment.software/api/events/schemas/software.froment.invoice.issued.v1.json',
       type: 'object',
     });
     const businessEventSchema = await fetch(`${baseUrl}/api/events/schemas/business-event.v1.json`);
     expect(businessEventSchema.status).toBe(200);
+    expect(businessEventSchema.headers.get('access-control-allow-origin')).toBe('*');
     await expect(businessEventSchema.json()).resolves.toMatchObject({
       $id: 'https://froment.software/api/events/schemas/business-event.v1.json',
       type: 'object',
     });
+    for (const path of [
+      '/api/asyncapi.json',
+      '/api/events/schemas/software.froment.invoice.issued.v1.json',
+      '/api/events/schemas/business-event.v1.json',
+    ]) {
+      const preflight = await fetch(`${baseUrl}${path}`, {
+        method: 'OPTIONS',
+        headers: {
+          origin: 'https://studio.asyncapi.com',
+          'access-control-request-method': 'GET',
+        },
+      });
+      expect(preflight.status).toBe(204);
+      expect(preflight.headers.get('access-control-allow-origin')).toBe('*');
+      expect(preflight.headers.get('access-control-allow-methods')).toBe('GET, OPTIONS');
+    }
     const runtimeConfig = await fetch(`${baseUrl}/runtime-config.js`);
     expect(runtimeConfig.headers.get('cache-control')).toBe('no-store');
     await expect(runtimeConfig.text()).resolves.toBe(

@@ -164,18 +164,40 @@ const LocalizedOpenApiRoutes = Layer.mergeAll(
     HttpServerResponse.jsonUnsafe(openApiSpecifications.en),
   ),
 );
+const publicContractHeaders = { 'access-control-allow-origin': '*' } as const;
+const publicContractPreflight = HttpServerResponse.empty({
+  headers: {
+    ...publicContractHeaders,
+    'access-control-allow-methods': 'GET, OPTIONS',
+    'access-control-allow-headers': 'Content-Type',
+    'access-control-max-age': '86400',
+  },
+});
 const EventDocumentationRoutes = Layer.mergeAll(
-  HttpRouter.add('GET', '/api/asyncapi.json', HttpServerResponse.jsonUnsafe(asyncApiSpecification)),
+  HttpRouter.add(
+    'GET',
+    '/api/asyncapi.json',
+    HttpServerResponse.jsonUnsafe(asyncApiSpecification, { headers: publicContractHeaders }),
+  ),
+  HttpRouter.add('OPTIONS', '/api/asyncapi.json', publicContractPreflight),
   HttpRouter.add(
     'GET',
     '/api/events/schemas/software.froment.invoice.issued.v1.json',
-    HttpServerResponse.jsonUnsafe(invoiceIssuedEventJsonSchema),
+    HttpServerResponse.jsonUnsafe(invoiceIssuedEventJsonSchema, {
+      headers: publicContractHeaders,
+    }),
+  ),
+  HttpRouter.add(
+    'OPTIONS',
+    '/api/events/schemas/software.froment.invoice.issued.v1.json',
+    publicContractPreflight,
   ),
   HttpRouter.add(
     'GET',
     '/api/events/schemas/business-event.v1.json',
-    HttpServerResponse.jsonUnsafe(businessEventJsonSchema),
+    HttpServerResponse.jsonUnsafe(businessEventJsonSchema, { headers: publicContractHeaders }),
   ),
+  HttpRouter.add('OPTIONS', '/api/events/schemas/business-event.v1.json', publicContractPreflight),
 );
 
 export const makeServerLayer = (options: {
